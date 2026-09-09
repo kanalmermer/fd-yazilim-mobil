@@ -1917,6 +1917,14 @@
                 <details class="profile-section"><summary>Personel Tarih ve Belge Ayarları</summary><div>
                     <div class="form-row"><div class="form-group"><label>Personel Tarihlerini Kaç Gün Önceden Hatırlatsın?</label><input id="ayarHatirlatmaGunu" type="number" min="1" max="365" step="1" required><small>Sertifika bitişi, askerlik tecil bitişi ve yıllık sağlık kontrolü için kullanılır.</small></div><div class="form-group"><label>Yüklenecek PDF Dosyalarının Azami Boyutu (MB)</label><input id="ayarPdfAzamiMb" type="number" min="1" max="10" step="1" required><small>İcra, araç takip ve ihracat modüllerinde Drive’a yüklenecek PDF dosyaları için geçerlidir. En fazla 10 MB olabilir.</small></div></div>
                 </div></details>
+                <details class="profile-section" id="ayarKvkkBolumu" ontoggle="if(this.open)kvkkAyarlariniYukle()"><summary>KVKK Aydınlatma Metni</summary><div>
+                    <p style="margin:0 0 12px;color:#64748b;line-height:1.55;">Personelin uygulamaya geçmeden önce okuyup teyit edeceği metindir. Yeni sürüm yayımlandığında tüm kullanıcıların tekrar teyit vermesi gerekir.</p>
+                    <div class="form-row"><div class="form-group"><label>Metin Başlığı</label><input id="ayarKvkkBaslik" maxlength="200" data-case-preserve="true"></div><div class="form-group"><label>Sürüm</label><input id="ayarKvkkSurum" maxlength="40" placeholder="Örn. 1.1" data-case-preserve="true"><small>Her metin değişikliğinde yeni bir sürüm yazın.</small></div></div>
+                    <div class="form-group"><label>Aydınlatma Metni</label><textarea id="ayarKvkkMetni" rows="18" minlength="300" data-case-preserve="true" style="line-height:1.55;"></textarea></div>
+                    <div id="ayarKvkkDurum" style="margin:8px 0;color:#64748b;font-size:.78rem;"></div>
+                    <div style="display:flex;justify-content:flex-end;"><button id="ayarKvkkYayinlaBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="kvkkMetniniYayinla(this)">📜 Yeni Sürümü Yayımla</button></div>
+                    <small style="display:block;margin-top:10px;color:#9a3412;">Bu alan aydınlatma metnidir; açık rıza beyanı değildir. Yayımlamadan önce şirketinizin hukuk/KVKK danışmanına kontrol ettirmeniz önerilir.</small>
+                </div></details>
                 <details class="profile-section"><summary>Günlük Rapor ve Kart Okuma Ayarları</summary><div>
                     <div class="form-row">
                         <div class="form-group"><label>Mesai Yapan Sayılma Sınırı (Dakika)</label><input id="ayarMagicGunlukMesaiEsik" type="number" min="0" max="1440" step="1" value="70"><small>Bu süreden fazla mesai yapanlar günlük detayda listelenir.</small></div>
@@ -3111,6 +3119,23 @@
             </div>
         </section>
     </main></div>
+</div>
+
+<div id="modalKvkkAydinlatma" class="modal-overlay" style="z-index:100000;background:rgba(15,23,42,.82);backdrop-filter:blur(5px);">
+    <div class="modal-card" style="width:min(820px,96vw);max-width:820px;height:min(760px,94vh);max-height:94vh;">
+        <div class="modal-header" style="background:linear-gradient(135deg,#0f4c6e,#0f766e);color:#fff;">
+            <div><h3 style="color:#fff;">🔐 KVKK Aydınlatma Metni</h3><small id="kvkkModalSurum" style="display:block;margin-top:3px;color:#ccfbf1;">Metin yükleniyor...</small></div>
+        </div>
+        <div class="modal-body" style="display:flex;flex-direction:column;min-height:0;padding:0;">
+            <div id="kvkkModalYukleniyor" style="padding:32px;text-align:center;color:#475569;">Aydınlatma metni güvenli sunucudan alınıyor...</div>
+            <div id="kvkkModalIcerik" style="display:none;flex:1;min-height:0;overflow:auto;padding:20px 22px;white-space:pre-wrap;line-height:1.65;color:#253247;background:#fff;"></div>
+            <div id="kvkkModalHata" style="display:none;margin:18px;padding:12px;border:1px solid #fecaca;border-radius:9px;background:#fef2f2;color:#b91c1c;"></div>
+        </div>
+        <div style="padding:13px 16px;border-top:1px solid #dbe5ef;background:#f8fafc;">
+            <label id="kvkkOnaySatiri" style="display:none;align-items:flex-start;gap:10px;color:#334155;font-weight:700;line-height:1.4;cursor:pointer;"><input id="kvkkOkudum" type="checkbox" style="margin-top:3px;transform:scale(1.15);" onchange="document.getElementById('kvkkOnaylaBtn').disabled=!this.checked"> <span>Aydınlatma metnini okudum ve tarafıma sunulduğunu teyit ediyorum.</span></label>
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-top:12px;"><button type="button" class="btn-cancel" style="width:auto;margin:0;" onclick="logout()">Oturumu Kapat</button><button id="kvkkOnaylaBtn" type="button" class="btn-submit" style="width:auto;margin:0;" disabled onclick="kvkkAydinlatmayiOnayla()">Okudum, Devam Et</button></div>
+        </div>
+    </div>
 </div>
 
 <div id="modalPersonelDetay" class="modal-overlay">
@@ -13832,6 +13857,7 @@
                 item('Kan Grubu', safe(p.kanGrubu)) + item('Son Sağlık Taraması', date(p.sonSaglikTaramasi)) + item('İş Yeri Hekimi', safe(p.isyeriHekimi)) + item('Kronik Rahatsızlıklar', safe(p.kronikRahatsizlik)) + item('Alerjiler', safe(p.alerjiler)) + item('Sağlık / İSG Notu', safe(p.saglikNotu)))}
             ${section('Zimmet, Kariyer ve Notlar',
                 item('Zimmet Bilgisi', safe(p.zimmetNotu)) + item('Terfi / Ünvan Geçmişi', safe(p.terfiGecmisi)) + item('Performans / Ödül Notları', safe(p.performansNotu)) + item('Açıklamalar', safe(p.aciklama)))}
+            <section style="margin-top:12px;border:1px solid #dce8f1;border-radius:10px;background:#fbfdff;overflow:hidden;"><h5 style="margin:0;padding:10px 12px;color:#0f4c6e;background:#f0f8fc;font-size:.8rem;">KVKK Aydınlatma Teyidi</h5><div id="personelKvkkDurumu" style="padding:12px;color:#64748b;">Onay kaydı kontrol ediliyor...</div></section>
             ${personelSubeBelgeleriHtml(p)}
         `;
         personelBelgeButonlariniBagla(p.id, body);
@@ -13943,6 +13969,7 @@
         );
 
         document.getElementById('modalPersonelDetay').style.display = 'flex';
+        kvkkPersonelDurumunuYukle(String(p.id));
     }
     function closePersonelDetayModal() {
         document.getElementById('modalPersonelDetay').style.display = 'none';
@@ -20098,6 +20125,74 @@ document.addEventListener('click',function(e){
     const eskiShowHub=window.showHub;
     if(typeof eskiShowHub==='function')window.showHub=function(){const sonuc=eskiShowHub.apply(this,arguments);setTimeout(()=>{sessizEsitle();fdBekleyenBildirimiGoster()},500);return sonuc};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{izinDugmesiniGuncelle();urlBildirimiKontrolEt()});else{izinDugmesiniGuncelle();urlBildirimiKontrolEt()}
+})();
+</script>
+
+<script id="fdKvkkAydinlatmaSistemi">
+(function(){
+    const FONKSIYON='kvkk-notice';
+    let aktifBelge=null, kontrolSozu=null;
+    function hataMetni(error,varsayilan='İşlem tamamlanamadı.'){
+        return String(error?.message||error?.context?.body?.message||varsayilan);
+    }
+    async function cagir(body){
+        if(!SUPABASE_MODE||!supabaseClient)throw new Error('KVKK kaydı için güvenli oturum gerekli.');
+        const {data:oturum,error:oturumHatasi}=await supabaseClient.auth.getSession();if(oturumHatasi)throw oturumHatasi;
+        const token=oturum?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
+        const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
+        let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
+        if(!response.ok||!data?.success)throw new Error(data?.message||('KVKK sunucusu hatası: '+response.status));return data;
+    }
+    function modalHazirla(){
+        const modal=document.getElementById('modalKvkkAydinlatma');if(!modal)return null;
+        modal.style.display='flex';document.getElementById('kvkkModalYukleniyor').style.display='block';document.getElementById('kvkkModalIcerik').style.display='none';document.getElementById('kvkkModalHata').style.display='none';document.getElementById('kvkkOnaySatiri').style.display='none';document.getElementById('kvkkOkudum').checked=false;document.getElementById('kvkkOnaylaBtn').disabled=true;return modal;
+    }
+    window.fdKvkkErisimKontrolu=async function(zorla=false){
+        if(!activeUser||!SUPABASE_MODE){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
+        if(kontrolSozu&&!zorla)return kontrolSozu;
+        modalHazirla();
+        kontrolSozu=(async()=>{
+            try{
+                const sonuc=await cagir({action:'get-active'});aktifBelge=sonuc.document;
+                if(sonuc.acknowledged){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
+                document.getElementById('kvkkModalYukleniyor').style.display='none';
+                const icerik=document.getElementById('kvkkModalIcerik');icerik.textContent=aktifBelge.content||'';icerik.style.display='block';
+                document.getElementById('kvkkModalSurum').textContent=(aktifBelge.title||'KVKK Aydınlatma Metni')+' · Sürüm '+(aktifBelge.version||'-');
+                document.getElementById('kvkkOnaySatiri').style.display='flex';return false;
+            }catch(error){
+                document.getElementById('kvkkModalYukleniyor').style.display='none';const alan=document.getElementById('kvkkModalHata');alan.innerHTML=escapeDashboardText(hataMetni(error,'Aydınlatma metni alınamadı.'))+'<br><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px" onclick="fdKvkkErisimKontrolu(true)">Yeniden Dene</button>';alan.style.display='block';return false;
+            }finally{kontrolSozu=null}
+        })();return kontrolSozu;
+    };
+    window.kvkkAydinlatmayiOnayla=async function(){
+        if(!document.getElementById('kvkkOkudum')?.checked)return;
+        const dugme=document.getElementById('kvkkOnaylaBtn');dugme.disabled=true;dugme.textContent='Kaydediliyor...';
+        try{await cagir({action:'accept',userAgent:navigator.userAgent});document.getElementById('modalKvkkAydinlatma').style.display='none';showToast('KVKK aydınlatma teyidiniz kaydedildi.','success');}
+        catch(error){showToast(hataMetni(error,'KVKK teyidi kaydedilemedi.'),'error');dugme.disabled=false}
+        finally{dugme.textContent='Okudum, Devam Et'}
+    };
+    window.kvkkAyarlariniYukle=async function(){
+        if(!isManagerUser())return;const durum=document.getElementById('ayarKvkkDurum');if(!durum)return;durum.textContent='Güncel metin yükleniyor...';
+        try{const sonuc=await cagir({action:'get-active'}),belge=sonuc.document||{};document.getElementById('ayarKvkkBaslik').value=belge.title||'';document.getElementById('ayarKvkkSurum').value=belge.version||'1.0';document.getElementById('ayarKvkkMetni').value=belge.content||'';durum.textContent='Yürürlükteki sürüm: '+(belge.version||'-')+' · '+new Date(belge.created_at).toLocaleString('tr-TR');}
+        catch(error){durum.textContent=hataMetni(error,'Metin yüklenemedi.');durum.style.color='#b91c1c'}
+    };
+    window.kvkkMetniniYayinla=async function(dugme){
+        if(!isManagerUser())return;const title=document.getElementById('ayarKvkkBaslik').value.trim(),version=document.getElementById('ayarKvkkSurum').value.trim(),content=document.getElementById('ayarKvkkMetni').value.trim();
+        if(!title||!version||content.length<300)return showToast('Başlık, sürüm ve ayrıntılı metni doldurun.','warning');
+        if(!await fdYuzerOnaySor('Yeni sürüm yayımlandığında tüm kullanıcıların uygulamaya devam etmek için bu metni yeniden teyit etmesi gerekir. Yayımlansın mı?','KVKK Metnini Yayımla','Yayımla'))return;
+        const eski=dugme.innerHTML;dugme.disabled=true;dugme.textContent='Yayımlanıyor...';
+        try{const sonuc=await cagir({action:'publish',title,version,content});if(sonuc.unchanged)showToast('Metinde veya sürümde değişiklik yok.','warning');else{showToast('Yeni KVKK aydınlatma metni yayımlandı.','success');await fdKvkkErisimKontrolu(true)}}
+        catch(error){showToast(hataMetni(error,'Metin yayımlanamadı.'),'error')}
+        finally{dugme.disabled=false;dugme.innerHTML=eski}
+    };
+    window.kvkkPersonelDurumunuYukle=async function(employeeId){
+        const alan=document.getElementById('personelKvkkDurumu');if(!alan)return;alan.textContent='Onay kaydı kontrol ediliyor...';
+        try{const sonuc=await cagir({action:'employee-status',employeeId:String(employeeId||'')}),durum=sonuc.status;if(!durum){alan.innerHTML='<span style="color:#b45309;font-weight:800;">Yürürlükte bir aydınlatma metni bulunmuyor.</span>';return}if(durum.acknowledged){alan.innerHTML='<span class="badge" style="background:#dcfce7;color:#166534;">✓ Teyit Edildi</span><div style="margin-top:7px;"><strong>Sürüm '+escapeDashboardText(durum.version||'-')+'</strong> · '+new Date(durum.acceptedAt).toLocaleString('tr-TR')+'</div>'}else alan.innerHTML='<span class="badge" style="background:#fee2e2;color:#b91c1c;">Teyit Edilmedi</span><div style="margin-top:7px;">Personel, yürürlükteki '+escapeDashboardText(durum.version||'-')+' sürümünü henüz teyit etmedi.</div>'}
+        catch(error){alan.innerHTML='<span style="color:#b91c1c;">'+escapeDashboardText(hataMetni(error,'Onay kaydı alınamadı.'))+'</span>'}
+    };
+    const oncekiShowHub=window.showHub;
+    if(typeof oncekiShowHub==='function')window.showHub=function(){const sonuc=oncekiShowHub.apply(this,arguments);fdKvkkErisimKontrolu();return sonuc};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{if(activeUser)fdKvkkErisimKontrolu()});else if(activeUser)fdKvkkErisimKontrolu();
 })();
 </script>
 
