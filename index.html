@@ -18314,6 +18314,12 @@
             baglam.moduller={avanslar:listeHazirla(avanslar,ilgili('avans')?2500:80),ekOdemeler:listeHazirla(ekOdemeler,ilgili('ek odeme','prim')?2500:80),vardiyalar:listeHazirla(vardiyaKayitlari,ilgili('vardiya')?2500:100),tasimaIrsaliyeleri:listeHazirla(tasimaIrsaliyeleri,ilgili('irsaliye','sevkiyat')?2500:80),kiralarVeVarliklar:listeHazirla(kiraKayitlari,ilgili('kira','daire','isyeri','sozlesme','odeme','masraf')?3000:120),ihracat:listeHazirla(ihracatFirmalari,ilgili('ihracat','proforma','firma')?2500:80),icralar:listeHazirla(icralar,ilgili('icra')?2500:80),araclar:listeHazirla(araclar,ilgili('arac','plaka','vize','bakim','ruhsat','yakit','akaryakit','belge')?1800:120),subeler:(Array.isArray(subeler)?subeler:[]).filter(aktifSirketeAit).slice(0,300).map(s=>({id:s.id,ad:s.ad||s.subeAdi||''}))};
             try{baglam.policeler=typeof policeTumKayitlar==='function'?policeTumKayitlar().slice(0,ilgili('police','sigorta','kasko','dask','belge')?2500:120).map(p=>fdAiGuvenliDeger({...p,durum:policeDurumu(p).metin})):[];}catch(_){baglam.policeler=[];}
         }else baglam.moduller={avanslar:listeHazirla(avanslar,2000),ekOdemeler:listeHazirla(ekOdemeler,2000),vardiyalar:listeHazirla(vardiyaKayitlari,2000),icralar:listeHazirla(icralar,2000)};
+        const insanKaynaklari=ilgili('personel','izin','rapor','puantaj','mesai','avans','icra','prim','kkd','vardiya','giris','cikis','devamsiz','gelmeyen','gec gelen','erken cikan');
+        if(!insanKaynaklari){delete baglam.bugunGirisCikis;delete baglam.gunlukGirisCikis;delete baglam.izinOzetleri;delete baglam.izinKayitlari;delete baglam.puantajYilOzetleri;delete baglam.buAyPuantaj;delete baglam.kkd;}
+        const modulKonulari={avanslar:['avans'],ekOdemeler:['ek odeme','prim'],vardiyalar:['vardiya','mesai','giris','cikis'],tasimaIrsaliyeleri:['irsaliye','sevkiyat','tasima'],kiralarVeVarliklar:['kira','kiraci','daire','isyeri','sozlesme','odeme','aidat'],ihracat:['ihracat','proforma','yukleme'],icralar:['icra'],araclar:['arac','plaka','ruhsat','bakim','muayene','yakit','akaryakit','mazot','motorin','benzin','litre']};
+        if(baglam.moduller)Object.keys(baglam.moduller).forEach(anahtar=>{if(!(modulKonulari[anahtar]||[]).some(k=>q.includes(k)))delete baglam.moduller[anahtar];});
+        if(!ilgili('yakit','akaryakit','mazot','motorin','benzin','litre','depo'))delete baglam.akaryakit;
+        if(!ilgili('police','sigorta','kasko','dask'))delete baglam.policeler;
         return baglam;
     }
     function fdAiAdDeseni(ad){
