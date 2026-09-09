@@ -3504,6 +3504,7 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
         auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
+    let supabaseManuelGirisBaslatildi = false;
 
     // İş verileri yalnızca E-Tablo'dan okunur; tarayıcıda veri önbelleği tutulmaz.
     ['pData', 'iData', 'kData', 'puanData', 'avansData', 'sirketData', 'subeData'].forEach(key => localStorage.removeItem(key));
@@ -4084,6 +4085,9 @@
         try {
             const { data, error } = await supabaseClient.auth.getSession();
             if (error) throw error;
+            // Kullanıcı giriş formunu gönderirken daha önceki oturumun eş zamanlı
+            // olarak ekranı açmasına izin verme. Parola sonucu tek belirleyici olsun.
+            if (supabaseManuelGirisBaslatildi) return false;
             if (!data?.session?.user) {
                 sessionStorage.removeItem('loggedInUser');
                 activeUser = null;
@@ -4626,11 +4630,18 @@
         loginButton.textContent = 'Kontrol ediliyor...';
         if (SUPABASE_MODE) {
             try {
+                supabaseManuelGirisBaslatildi = true;
                 const kullaniciAdi = document.getElementById('loginUser').value.trim();
                 const password = document.getElementById('loginPass').value;
                 const secilenSirketId = document.getElementById('loginCompany').value;
                 if (!kullaniciAdi) throw new Error('Kullanıcı adı girin.');
                 if (!secilenSirketId) throw new Error('Şirket seçin.');
+                // Giriş ekranından yapılan her deneme bağımsız doğrulanır. Tarayıcıda
+                // kalmış geçerli bir oturum yanlış parolayı örtemez.
+                await supabaseClient.auth.signOut();
+                sessionStorage.removeItem('loggedInUser');
+                activeUser = null;
+                supabaseProfile = null;
                 let data = null;
                 let sonGirisHatasi = null;
                 for (const email of supabaseKullaniciEpostalari(kullaniciAdi)) {
@@ -18134,6 +18145,16 @@
         return String(deger || '').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\u0131/g,'i').replace(/\u015f/g,'s').replace(/\u011f/g,'g').replace(/\u00fc/g,'u').replace(/\u00f6/g,'o').replace(/\u00e7/g,'c');
     }
     function fdAiBugun(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+    function fdAiSoruTarihiBul(soru){
+        const q=fdAiMetinAnahtari(soru),bugun=new Date(fdAiBugun()+'T12:00:00');
+        if(q.includes('dun'))bugun.setDate(bugun.getDate()-1);
+        else if(q.includes('onceki gun'))bugun.setDate(bugun.getDate()-1);
+        else {
+            const eslesme=String(soru||'').match(/\b(\d{1,2})[.\/-](\d{1,2})(?:[.\/-](\d{4}))?\b/);
+            if(eslesme){const yil=Number(eslesme[3]||bugun.getFullYear()),ay=Number(eslesme[2]),gun=Number(eslesme[1]),aday=new Date(yil,ay-1,gun,12);if(aday.getFullYear()===yil&&aday.getMonth()===ay-1&&aday.getDate()===gun)return yil+'-'+String(ay).padStart(2,'0')+'-'+String(gun).padStart(2,'0');}
+        }
+        return bugun.getFullYear()+'-'+String(bugun.getMonth()+1).padStart(2,'0')+'-'+String(bugun.getDate()).padStart(2,'0');
+    }
     function fdAiYetkiliPersoneller(){
         const liste=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null'));
         return isPersonelUser()?liste.filter(p=>String(p.id)===String(activeUser.tcNo||'')):liste;
@@ -18226,26 +18247,16 @@
 
         if(!q)return '';
         if(q.includes('yardim')||q.includes('neler yap'))return '\u015eunlar\u0131 sorabilirsiniz:\n- Bug\u00fcnk\u00fc personel durumunu \u00f6zetle\n- \u0130zinleri g\u00f6ster\n- KKD teslimlerini g\u00f6ster\n- Yakla\u015fan belgeleri g\u00f6ster\n- Aktif personel say\u0131s\u0131';
-        if(q.includes('bugun')||q.includes('gunluk')||q.includes('gelmeyen')||q.includes('gec gelen')||q.includes('erken cikan'))return fdAiGunlukOzet();
+        if(q.includes('bugun')||q.includes('dun')||q.includes('onceki gun')||q.includes('gunluk')||q.includes('gelmeyen')||q.includes('gec gelen')||q.includes('erken cikan'))return fdAiGunlukOzet(soru);
         if(q.includes('kkd'))return fdAiKkdOzeti();
         if(q.includes('izin'))return fdAiIzinOzeti();
         if(q.includes('police')||q.includes('belge')||q.includes('sigorta')||q.includes('vize'))return fdAiYaklasanBelgeler();
         if(q.includes('personel')&&(q.includes('kac')||q.includes('sayi')||q.includes('aktif')))return 'Aktif personel say\u0131s\u0131: '+fdAiYetkiliPersoneller().length;
         return 'Bu soruyu hen\u00fcz yerel rapor motorunda tan\u0131mlayamad\u0131m. Yard\u0131m yazarak kullanabilece\u011finiz komutlar\u0131 g\u00f6rebilirsiniz.';
     }
-    function fdAiMesajEkle(rol,metin){
-        const alan=document.getElementById('fdAiMesajlar');if(!alan)return;
-        const mesaj=document.createElement('div');mesaj.className='fd-ai-mesaj '+rol;mesaj.textContent=metin;alan.appendChild(mesaj);alan.scrollTop=alan.scrollHeight;
-        fdAiMesajlar.push({rol,metin});fdAiMesajlar=fdAiMesajlar.slice(-16);
-    }
-    function fdAiSor(soru){
-        soru=String(soru||'').trim();if(!soru)return;
-        fdAiMesajEkle('kullanici',soru);setTimeout(()=>fdAiMesajEkle('asistan',fdAiYerelYaniti(soru)),120);
-    }
     function fdAiFormGonder(event){event.preventDefault();const input=document.getElementById('fdAiInput'),soru=input?.value||'';if(input)input.value='';fdAiSor(soru);}
-    // Gercek hareket kaniti ve OpenAI destekli guvenli analiz baglantisi.
-    fdAiGunlukVeri=function(){
-        const tarih=fdAiBugun();
+    // Gercek hareket kaniti ve Gemini destekli guvenli analiz baglantisi.
+    fdAiGunlukVeri=function(tarih=fdAiBugun()){
         return fdAiYetkiliPersoneller().map(personel=>{
             let hesap={};try{hesap=typeof magicpassGunHesapla==='function'?magicpassGunHesapla(personel,tarih):{};}catch(_){}
             let ham=[];try{ham=typeof magicpassGunHamHareketleriBul==='function'?magicpassGunHamHareketleriBul(personel,tarih):[];}catch(_){}
@@ -18254,10 +18265,10 @@
             return {ad:personel.ad||'-',sube:personel.sube||'-',gorev:personel.gorev||'-',durum:hesap.durum||'',izinTur:hesap.izin?.tur||'',planlananVardiya:hesap.vardiya||'',gercekKayitVar:gercek,cihazHareketAdedi:ham.length,manuelKayitVar:manuel,giris:gercek?fdAiSaat(hesap.giris):'-',cikis:gercek?fdAiSaat(hesap.cikis):'-',gec:gercek?Number(hesap.gec||0):0,erken:gercek?Number(hesap.erken||0):0,mesai:gercek?Number(hesap.brutMesai??hesap.mesai??0):0,acikGelmedi};
         });
     };
-    fdAiGunlukOzet=function(){
-        const veri=fdAiGunlukVeri(),izinli=veri.filter(x=>x.izinTur),hareketAktarildi=veri.some(x=>x.cihazHareketAdedi>0),manuelVar=veri.some(x=>x.manuelKayitVar),veriVar=hareketAktarildi||manuelVar,gelen=veri.filter(x=>x.gercekKayitVar),gelmeyen=veri.filter(x=>!x.izinTur&&!x.gercekKayitVar&&(x.acikGelmedi||(hareketAktarildi&&fdAiMetinAnahtari(x.durum).includes('gelmedi')))),bekleyen=veri.filter(x=>!x.izinTur&&!x.gercekKayitVar&&!gelmeyen.includes(x)),gec=gelen.filter(x=>x.gec>0),erken=gelen.filter(x=>x.erken>0),mesai=gelen.filter(x=>x.mesai>Math.max(60,Number(uygulamaAyarlari?.magicpassGunlukMesaiEsikDakika||70)));
+    fdAiGunlukOzet=function(soru=''){
+        const tarih=fdAiSoruTarihiBul(soru),veri=fdAiGunlukVeri(tarih),izinli=veri.filter(x=>x.izinTur),hareketAktarildi=veri.some(x=>x.cihazHareketAdedi>0),manuelVar=veri.some(x=>x.manuelKayitVar),veriVar=hareketAktarildi||manuelVar,gelen=veri.filter(x=>x.gercekKayitVar),gelmeyen=veri.filter(x=>!x.izinTur&&!x.gercekKayitVar&&(x.acikGelmedi||(hareketAktarildi&&fdAiMetinAnahtari(x.durum).includes('gelmedi')))),bekleyen=veri.filter(x=>!x.izinTur&&!x.gercekKayitVar&&!gelmeyen.includes(x)),gec=gelen.filter(x=>x.gec>0),erken=gelen.filter(x=>x.erken>0),mesai=gelen.filter(x=>x.mesai>Math.max(60,Number(uygulamaAyarlari?.magicpassGunlukMesaiEsikDakika||70)));
         const not=!veriVar?'\u26a0 Bug\u00fcne ait cihaz veya manuel giri\u015f-\u00e7\u0131k\u0131\u015f kayd\u0131 hen\u00fcz bulunmuyor. Vardiya saatleri ger\u00e7ek hareket say\u0131lmad\u0131.\n\n':'',gelmeyenBolumu=!veriVar?'Gelmeyenler: Hen\u00fcz belirlenemez; hareket kay\u0131tlar\u0131 aktar\u0131lmam\u0131\u015f.':fdAiBolum('Gelmeyenler',gelmeyen,x=>'- '+x.ad);
-        return new Date().toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',weekday:'long'})+' personel \u00f6zeti\n\n'+not+fdAiBolum('Gelenler',gelen,x=>'- '+x.ad+' | '+x.giris+' - '+x.cikis)+'\n\n'+gelmeyenBolumu+'\n\n'+fdAiBolum('Kayd\u0131 beklenenler',bekleyen,x=>'- '+x.ad)+'\n\n'+fdAiBolum('\u0130zinliler',izinli,x=>'- '+x.ad+' | '+x.izinTur)+'\n\n'+fdAiBolum('Ge\u00e7 gelenler',gec,x=>'- '+x.ad+' | '+x.giris+' ('+x.gec+' dk)')+'\n\n'+fdAiBolum('Erken \u00e7\u0131kanlar',erken,x=>'- '+x.ad+' | '+x.cikis+' ('+x.erken+' dk)')+'\n\n'+fdAiBolum('Fazla mesai e\u015fi\u011fini a\u015fanlar',mesai,x=>'- '+x.ad+' | '+Math.floor(x.mesai/60)+' sa '+(x.mesai%60)+' dk');
+        return new Date(tarih+'T12:00:00').toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',weekday:'long'})+' personel \u00f6zeti\n\n'+not+fdAiBolum('Gelenler',gelen,x=>'- '+x.ad+' | '+x.giris+' - '+x.cikis)+'\n\n'+gelmeyenBolumu+'\n\n'+fdAiBolum('Kayd\u0131 beklenenler',bekleyen,x=>'- '+x.ad)+'\n\n'+fdAiBolum('\u0130zinliler',izinli,x=>'- '+x.ad+' | '+x.izinTur)+'\n\n'+fdAiBolum('Ge\u00e7 gelenler',gec,x=>'- '+x.ad+' | '+x.giris+' ('+x.gec+' dk)')+'\n\n'+fdAiBolum('Erken \u00e7\u0131kanlar',erken,x=>'- '+x.ad+' | '+x.cikis+' ('+x.erken+' dk)')+'\n\n'+fdAiBolum('Fazla mesai e\u015fi\u011fini a\u015fanlar',mesai,x=>'- '+x.ad+' | '+Math.floor(x.mesai/60)+' sa '+(x.mesai%60)+' dk');
     };
     function fdAiIzinOzetleriniOlustur(yetkili,idler){
         const ozet=new Map(yetkili.map(p=>[String(p.id),{personel:p.ad||'-',turler:{},toplamGun:0}]));
@@ -18291,12 +18302,12 @@
         return String(deger);
     }
     function fdAiGuvenliBaglamOlustur(soru){
-        const yetkili=fdAiYetkiliPersoneller(),idler=new Set(yetkili.map(p=>String(p.id))),adBul=id=>yetkili.find(p=>String(p.id)===String(id))?.ad||'-',yonetici=isManagerUser(),bugun=fdAiBugun(),buAy=bugun.slice(0,7),q=fdAiMetinAnahtari(soru);
+        const yetkili=fdAiYetkiliPersoneller(),idler=new Set(yetkili.map(p=>String(p.id))),adBul=id=>yetkili.find(p=>String(p.id)===String(id))?.ad||'-',yonetici=isManagerUser(),bugun=fdAiBugun(),sorguTarihi=fdAiSoruTarihiBul(soru),buAy=bugun.slice(0,7),q=fdAiMetinAnahtari(soru);
         const ilgili=(...kelimeler)=>kelimeler.some(k=>q.includes(k));
         const tarihSirala=(a,b)=>String(b?.tarih||b?.baslangic||b?.kayitTarihi||b?.createdAt||'').localeCompare(String(a?.tarih||a?.baslangic||a?.kayitTarihi||a?.createdAt||''));
         const personelBagla=kayit=>{const pId=kayit?.pId??kayit?.personelId??kayit?.pid;return pId?{...kayit,personel:adBul(pId)}:kayit;};
         const listeHazirla=(liste,limit=200)=>(Array.isArray(liste)?liste:[]).filter(k=>aktifSirketeAit(k)&&(yonetici||idler.has(String(k?.pId??k?.personelId??k?.pid??'')))).sort(tarihSirala).slice(0,limit).map(k=>fdAiGuvenliDeger(personelBagla(k)));
-        const baglam={veriKurallari:{kapsam:'Yetkili operasyon kayitlari',hesaplarAyarlariVeKimlikBilgileriGonderilmedi:true,sifrelerVeAnahtarlarGonderilmedi:true,dosyaHamIcerigiGonderilmedi:true,belgeBaglantilariCevaptaVerilebilir:true,vardiyaGercekHareketDegildir:true},tarih:bugun,rol:activeUser?.rol||'',soru:String(soru||''),personeller:yetkili.slice(0,600).map(p=>({id:p.id,ad:p.ad||'',sube:p.sube||'',gorev:p.gorev||'',girisTarihi:p.girisTarihi||'',cikisTarihi:p.cikisTarihi||'',durum:p.cikisTarihi?'Ayrildi':'Aktif'})),bugunGirisCikis:fdAiGunlukVeri(),izinOzetleri:fdAiIzinOzetleriniOlustur(yetkili,idler),izinKayitlari:(Array.isArray(izinler)?izinler:[]).filter(i=>aktifSirketeAit(i)&&idler.has(String(i.pId))).sort((a,b)=>String(b.baslangic||'').localeCompare(String(a.baslangic||''))).slice(0,ilgili('izin','rapor','devamsiz')?3000:120).map(i=>fdAiGuvenliDeger({...i,personel:adBul(i.pId),gun:fdAiTarihAraligiGun(i.baslangic,i.bitis,{bas:'1900-01-01',son:'2999-12-31'})})),puantajYilOzetleri:fdAiPuantajOzetleriniOlustur(yetkili,idler),buAyPuantaj:(Array.isArray(puantajVerileri)?puantajVerileri:[]).filter(p=>aktifSirketeAit(p)&&idler.has(String(p.pId))&&String(p.tarih||'').startsWith(buAy)).slice(0,ilgili('personel','giris','cikis','puantaj','mesai','gec','erken','devamsiz','vardiya')?3500:120).map(p=>fdAiGuvenliDeger({...p,personel:adBul(p.pId)})),kkd:listeHazirla(kkdKayitlari,ilgili('kkd')?2500:120)};
+        const baglam={veriKurallari:{kapsam:'Yetkili operasyon kayitlari',hesaplarAyarlariVeKimlikBilgileriGonderilmedi:true,sifrelerVeAnahtarlarGonderilmedi:true,dosyaHamIcerigiGonderilmedi:true,belgeBaglantilariCevaptaVerilebilir:true,vardiyaGercekHareketDegildir:true},tarih:bugun,sorguTarihi,rol:activeUser?.rol||'',soru:String(soru||''),personeller:yetkili.slice(0,600).map(p=>({id:p.id,ad:p.ad||'',sube:p.sube||'',gorev:p.gorev||'',girisTarihi:p.girisTarihi||'',cikisTarihi:p.cikisTarihi||'',durum:p.cikisTarihi?'Ayrildi':'Aktif'})),gunlukGirisCikis:fdAiGunlukVeri(sorguTarihi),bugunGirisCikis:fdAiGunlukVeri(),izinOzetleri:fdAiIzinOzetleriniOlustur(yetkili,idler),izinKayitlari:(Array.isArray(izinler)?izinler:[]).filter(i=>aktifSirketeAit(i)&&idler.has(String(i.pId))).sort((a,b)=>String(b.baslangic||'').localeCompare(String(a.baslangic||''))).slice(0,ilgili('izin','rapor','devamsiz')?3000:120).map(i=>fdAiGuvenliDeger({...i,personel:adBul(i.pId),gun:fdAiTarihAraligiGun(i.baslangic,i.bitis,{bas:'1900-01-01',son:'2999-12-31'})})),puantajYilOzetleri:fdAiPuantajOzetleriniOlustur(yetkili,idler),buAyPuantaj:(Array.isArray(puantajVerileri)?puantajVerileri:[]).filter(p=>aktifSirketeAit(p)&&idler.has(String(p.pId))&&String(p.tarih||'').startsWith(buAy)).slice(0,ilgili('personel','giris','cikis','puantaj','mesai','gec','erken','devamsiz','vardiya')?3500:120).map(p=>fdAiGuvenliDeger({...p,personel:adBul(p.pId)})),kkd:listeHazirla(kkdKayitlari,ilgili('kkd')?2500:120)};
         if(yonetici){
             const depoAdlari=new Map((typeof akaryakitDepolari==='function'?akaryakitDepolari():[]).map(d=>[String(d.id),d.ad||'Depo'])),aracAdlari=new Map((Array.isArray(araclar)?araclar:[]).map(a=>[String(a.id),a.plaka||'Ara\u00e7']));
             baglam.akaryakit={depolar:(typeof akaryakitDepolari==='function'?akaryakitDepolari():[]).map(d=>({ad:d.ad||'',kapasite:Number(d.kapasite||0),mevcutStok:typeof akaryakitDepoBakiyesi==='function'?Number(akaryakitDepoBakiyesi(d.id)||0):0})),hareketler:(typeof akaryakitHareketleri==='function'?akaryakitHareketleri():[]).slice().sort(tarihSirala).slice(0,ilgili('yakit','akaryakit','mazot','motorin','benzin','litre','depo')?2500:120).map(h=>({islem:h.tur==='giris'?'Depoya giren yak\u0131t':'Araca verilen yak\u0131t',tarih:h.tarih||'',litre:Number(h.litre||0),depo:depoAdlari.get(String(h.depoId))||'',plaka:aracAdlari.get(String(h.aracId))||'',km:Number(h.km||0),alan:h.alan||'',veren:h.veren||'',tedarikci:h.tedarikci||''}))};
@@ -18322,16 +18333,38 @@
         if(/^\s*(?:\{|\[|<!doctype|<html|function\s|const\s|let\s|var\s|class\s|import\s|export\s)/i.test(metin))throw new Error('Yapay zekâ rapor yerine teknik çıktı üretti. Lütfen sorunuzu yeniden deneyin.');
         return metin.slice(0,12000);
     }
+    async function fdAiGerekliVerileriYukle(soru){
+        if(!SUPABASE_MODE||!supabaseClient)return;
+        const q=fdAiMetinAnahtari(soru),moduller=new Set();
+        const ekle=(modul,...kelimeler)=>{if(kelimeler.some(k=>q.includes(k)))moduller.add(modul);};
+        ekle('personel','personel','izin','rapor','puantaj','mesai','avans','icra','prim','kkd','vardiya','giris','cikis','devamsiz','gec','erken');
+        ekle('arac','arac','plaka','ruhsat','bakim','muayene','yakit','akaryakit','mazot','motorin','benzin','litre','depo');
+        ekle('kira','kira','kiraci','daire','isyeri','sozlesme','aidat');
+        ekle('police','police','sigorta','kasko','dask');
+        ekle('irsaliye','irsaliye','sevkiyat','tasima');
+        ekle('ihracat','ihracat','proforma','yukleme');
+        if(!moduller.size)moduller.add('personel');
+        await Promise.all([...moduller].map(modul=>supabaseVerileriniYukle(modul)));
+    }
     async function fdAiGercekYaniti(soru){
         if(!SUPABASE_MODE||!supabaseClient||!activeUser)throw new Error('Uygulama oturumu bulunamad\u0131.');
+        await fdAiGerekliVerileriYukle(soru);
         const oturumSonucu=await supabaseClient.auth.getSession(),erisimAnahtari=oturumSonucu?.data?.session?.access_token;if(oturumSonucu?.error)throw oturumSonucu.error;if(!erisimAnahtari)throw new Error('Kullan\u0131c\u0131 oturumu do\u011frulanamad\u0131. Uygulamadan \u00e7\u0131k\u0131p yeniden girin.');const paket=fdAiTakmaAdliPaketOlustur(soru),sonuc=await supabaseClient.functions.invoke('fd-ai-assistant',{headers:{Authorization:'Bearer '+erisimAnahtari},body:{question:paket.soru,context:paket.baglam,messages:paket.mesajlar}});
         if(sonuc.error){let mesaj=sonuc.error.message||String(sonuc.error);try{const detay=await sonuc.error.context?.json();if(detay?.error||detay?.message)mesaj=detay.error||detay.message;}catch(_){}throw new Error(mesaj);}
         if(!sonuc.data?.answer)throw new Error('Yapay zek\u00e2 servisi bo\u015f cevap verdi.');
         return fdAiYanitiTemizle(paket.cevabiAc(sonuc.data.answer));
     }
     function fdAiMesajHtml(metin){let html=escapeDashboardText(String(metin||''));html=html.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');html=html.replace(/(https?:\/\/[^\s<]+)/g,'<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\">Belgeyi a&ccedil;</a>');return html;}
-    fdAiMesajEkle=function(rol,metin,gecici=false){const alan=document.getElementById('fdAiMesajlar');if(!alan)return null;const mesaj=document.createElement('div');mesaj.className='fd-ai-mesaj '+rol;if(rol==='asistan')mesaj.innerHTML=fdAiMesajHtml(metin);else mesaj.textContent=metin;alan.appendChild(mesaj);alan.scrollTop=alan.scrollHeight;if(!gecici){fdAiMesajlar.push({rol,metin});fdAiMesajlar=fdAiMesajlar.slice(-16);}return mesaj;};
-    fdAiSor=async function(soru){soru=String(soru||'').trim();if(!soru)return;fdAiMesajEkle('kullanici',soru);const bekleyen=fdAiMesajEkle('asistan','Fatih yaz\u0131yor...',true);bekleyen?.classList.add('yukleniyor');try{const cevap=await fdAiGercekYaniti(soru);bekleyen?.remove();fdAiMesajEkle('asistan',cevap);}catch(error){console.warn('Yapay zek\u00e2 ba\u011flant\u0131s\u0131:',error);bekleyen?.remove();const yerel=fdAiYerelYaniti(soru),tanimli=!fdAiMetinAnahtari(yerel).includes('henuz yerel rapor motorunda');fdAiMesajEkle('asistan',tanimli?yerel+'\\n\\nYapay zek\u00e2 yan\u0131t veremedi; bu sonu\u00e7 uygulaman\u0131n yerel raporundan haz\u0131rland\u0131.':'Yapay zek\u00e2 yan\u0131t veremedi: '+String(error?.message||'Ba\u011flant\u0131 hatas\u0131'));}};
+    function fdAiMesajEkle(rol,metin,gecici=false){const alan=document.getElementById('fdAiMesajlar');if(!alan)return null;const mesaj=document.createElement('div');mesaj.className='fd-ai-mesaj '+rol;if(rol==='asistan')mesaj.innerHTML=fdAiMesajHtml(metin);else mesaj.textContent=metin;alan.appendChild(mesaj);alan.scrollTop=alan.scrollHeight;if(!gecici){fdAiMesajlar.push({rol,metin});fdAiMesajlar=fdAiMesajlar.slice(-16);}return mesaj;}
+    let fdAiIstekDevamEdiyor=false;
+    async function fdAiSor(soru){
+        soru=String(soru||'').trim();if(!soru||fdAiIstekDevamEdiyor)return;
+        fdAiIstekDevamEdiyor=true;const input=document.getElementById('fdAiInput'),gonder=document.querySelector('.fd-ai-gonder');if(input)input.disabled=true;if(gonder)gonder.disabled=true;
+        fdAiMesajEkle('kullanici',soru);const bekleyen=fdAiMesajEkle('asistan','G\u00fcncel kay\u0131tlar kontrol ediliyor...',true);bekleyen?.classList.add('yukleniyor');
+        try{const cevap=await fdAiGercekYaniti(soru);bekleyen?.remove();fdAiMesajEkle('asistan',cevap);}
+        catch(error){console.warn('Yapay zek\u00e2 ba\u011flant\u0131s\u0131:',error);bekleyen?.remove();const yerel=fdAiYerelYaniti(soru),tanimli=!fdAiMetinAnahtari(yerel).includes('henuz yerel rapor motorunda'),hata=String(error?.message||'Ba\u011flant\u0131 hatas\u0131');fdAiMesajEkle('asistan',tanimli?yerel+'\n\nNot: Yapay zek\u00e2 servisine ula\u015f\u0131lamad\u0131 ('+hata+'). Bu sonu\u00e7 uygulaman\u0131n yerel raporundan haz\u0131rland\u0131.':'Yapay zek\u00e2 yan\u0131t veremedi: '+hata);}
+        finally{fdAiIstekDevamEdiyor=false;if(input){input.disabled=false;input.focus();}if(gonder)gonder.disabled=false;}
+    }
     function fdAiPanelAc(acik=true){
         if(acik&&isPersonelUser())return;
         const panel=document.getElementById('fdAiPanel'),perde=document.getElementById('fdAiPerde');if(!panel)return;
@@ -18848,11 +18881,6 @@ tapuCksArayuzunuKur();
         if(!personel||!tarihKey)return[];const vardiya=magicpassGunVardiyasi(personel,tarihKey),saatler=magicpassVardiyaSaatleri(vardiya,tarihKey),pencereBas=new Date(saatler.bas),pencereBit=new Date(saatler.bit);pencereBas.setHours(pencereBas.getHours()-4);pencereBit.setHours(pencereBit.getHours()+8);return(fdMagicpassHareketIndeksiniHazirla().get(String(personel.id))||[]).filter(k=>{const zaman=new Date(k.zamanDamgasi);return zaman>=pencereBas&&zaman<=pencereBit;});
     };
 
-    // Tanımlı rapor sorularını gecikmeden yerel veriden yanıtla; serbest sorularda uzak asistana geç.
-    const fdAiUzakSorOncesi=fdAiSor;
-    fdAiSor=async function(soru){
-        soru=String(soru||'').trim();if(!soru)return;const yerel=fdAiYerelYaniti(soru),tanimli=yerel&&!fdAiMetinAnahtari(yerel).includes('henuz yerel rapor motorunda');if(!tanimli)return fdAiUzakSorOncesi(soru);fdAiMesajEkle('kullanici',soru);const bekleyen=fdAiMesajEkle('asistan','Rapor hazırlanıyor...',true);bekleyen?.classList.add('yukleniyor');setTimeout(()=>{bekleyen?.remove();fdAiMesajEkle('asistan',yerel);},40);
-    };
     // FD toplu sağlamlaştırma: belge yükleme, izin, PDF, puantaj renkleri, kira ve pazar hesabı.
     function izinPersonelSeciminiTemizle(){
         const kutu=document.getElementById('izinPersonelSecimKutusu'),select=document.getElementById('izinPersonelSelect');
