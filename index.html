@@ -155,6 +155,8 @@
         .push-compose-note{margin:0 0 14px;padding:11px 12px;border:1px solid #bae6fd;border-radius:10px;background:#f0f9ff;color:#075985;font-size:.8rem;line-height:1.5}
         .push-compose-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border-radius:9px;background:#f8fafc;color:#475569;font-size:.77rem}
         .push-compose-status strong{color:#0f172a}
+        .push-personel-tools{display:flex;gap:6px;justify-content:flex-end;margin-bottom:7px}.push-personel-tools button{padding:5px 8px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:#334155;cursor:pointer;font-size:.7rem;font-weight:750}
+        .push-personel-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:230px;padding:8px;overflow:auto;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc}.push-personel-list label{display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid #e2e8f0;border-radius:7px;background:#fff;color:#334155;font-size:.76rem;cursor:pointer}.push-personel-list input{width:auto}.push-personel-empty{grid-column:1/-1;padding:12px;text-align:center;color:#64748b;font-size:.76rem}@media(max-width:560px){.push-personel-list{grid-template-columns:1fr}}
 
         /* UYGULAMA SEKME CUBUGU */
         .fd-app-tabs{display:none;align-items:flex-end;gap:3px;min-height:37px;padding:5px 16px 0;overflow-x:auto;overflow-y:hidden;background:#edf3f8;border-bottom:1px solid #c5d2dd;box-shadow:0 2px 6px rgba(15,23,42,.035);scrollbar-width:thin}
@@ -1458,7 +1460,7 @@
             <div id="fdBildirimHedefOzeti" class="push-compose-note">Mesaj bu şirkete bağlı ve telefonunda bildirim izni veren tüm kullanıcılara gider.</div>
             <div class="form-row">
                 <div class="form-group"><label>Şube</label><select id="fdBildirimSube" onchange="fdBildirimPersonelleriniDoldur()"><option value="">Tüm Şubeler</option></select></div>
-                <div class="form-group"><label>Personel</label><select id="fdBildirimPersonel" onchange="fdBildirimHedefOzetiniGuncelle()"><option value="">Şubedeki Tüm Personeller</option></select></div>
+                <div class="form-group"><label>Personeller <small>(birden fazla seçilebilir)</small></label><div class="push-personel-tools"><button type="button" onclick="fdBildirimTumPersonelleriSec(true)">Tümünü Seç</button><button type="button" onclick="fdBildirimTumPersonelleriSec(false)">Temizle</button></div><div id="fdBildirimPersonelListesi" class="push-personel-list"><div class="push-personel-empty">Personeller yükleniyor...</div></div></div>
             </div>
             <div class="form-group"><label>Başlık</label><input id="fdBildirimBaslik" maxlength="80" value="FD YAZILIM" data-case-preserve="true" required></div>
             <div class="form-group"><label>Mesaj</label><textarea id="fdBildirimMesaj" rows="5" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz bildirimi yazın..." required></textarea></div>
@@ -19914,8 +19916,11 @@ document.addEventListener('click',function(e){
     }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('Bildirim sistemi için güvenli oturum gerekli.');
-        const{data,error}=await supabaseClient.functions.invoke(FONKSIYON,{body});
-        if(error)throw error;if(!data?.success)throw new Error(data?.message||'Bildirim işlemi tamamlanamadı.');return data;
+        const{data:oturumVerisi,error:oturumHatasi}=await supabaseClient.auth.getSession();if(oturumHatasi)throw oturumHatasi;
+        const token=oturumVerisi?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Çıkış yapıp yeniden giriş yapın.');
+        const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
+        let data={};try{data=await response.json()}catch(_){throw new Error('Bildirim sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
+        if(!response.ok||!data?.success)throw new Error(data?.message||('Bildirim sunucusu hatası: '+response.status));return data;
     }
     function base64UrlDizisi(deger){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
@@ -19956,7 +19961,7 @@ document.addEventListener('click',function(e){
         izinDugmesiniGuncelle();
         if(activeUser&&destekleniyor()&&mobilUygulamaOrtami()&&Notification.permission==='default'){setTimeout(ilkIzinPenceresiniGoster,350);return}
         if(!activeUser||!destekleniyor()||!mobilUygulamaOrtami()||Notification.permission!=='granted')return;
-        try{const registration=await navigator.serviceWorker.ready,mevcut=await registration.pushManager.getSubscription();if(!mevcut)return;await cagir({action:'subscribe',subscription:mevcut.toJSON(),userAgent:navigator.userAgent})}catch(error){console.warn('Bildirim aboneliği yenilenemedi:',error)}
+        try{const registration=await navigator.serviceWorker.ready,config=await cagir({action:'config'});await aboneligiKaydet(registration,config);izinDugmesiniGuncelle()}catch(error){console.warn('Bildirim aboneliği yenilenemedi:',error)}
     }
     window.openBildirimModal=async function(){
         if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
@@ -19971,22 +19976,23 @@ document.addEventListener('click',function(e){
         if(adlar.includes(onceki))secim.value=onceki;fdBildirimPersonelleriniDoldur();
     };
     window.fdBildirimPersonelleriniDoldur=function(){
-        const sube=String(document.getElementById('fdBildirimSube')?.value||''),secim=document.getElementById('fdBildirimPersonel');if(!secim)return;
-        const onceki=secim.value,liste=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')&&(!sube||String(p.sube||'Merkez')===sube)).sort((a,b)=>String(a.ad||'').localeCompare(String(b.ad||''),'tr'));
-        secim.innerHTML='<option value="">'+(sube?'Bu Şubedeki Tüm Personeller':'Tüm Personeller')+'</option>'+liste.map(p=>'<option value="'+escapeDashboardText(String(p.id))+'">'+escapeDashboardText(p.ad||'-')+'</option>').join('');
-        if(liste.some(p=>String(p.id)===String(onceki)))secim.value=onceki;fdBildirimHedefOzetiniGuncelle();
+        const sube=String(document.getElementById('fdBildirimSube')?.value||''),alan=document.getElementById('fdBildirimPersonelListesi');if(!alan)return;
+        const onceki=new Set(fdBildirimSeciliPersonelIds()),liste=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')&&(!sube||String(p.sube||'Merkez')===sube)).sort((a,b)=>String(a.ad||'').localeCompare(String(b.ad||''),'tr'));
+        alan.innerHTML=liste.length?liste.map(p=>'<label><input type="checkbox" class="fd-bildirim-personel-sec" value="'+escapeDashboardText(String(p.id))+'" '+(onceki.has(String(p.id))?'checked':'')+' onchange="fdBildirimHedefOzetiniGuncelle()"><span>'+escapeDashboardText(p.ad||'-')+'</span></label>').join(''):'<div class="push-personel-empty">Bu şubede aktif personel bulunamadı.</div>';
+        fdBildirimHedefOzetiniGuncelle();
     };
+    window.fdBildirimSeciliPersonelIds=function(){return [...document.querySelectorAll('#fdBildirimPersonelListesi .fd-bildirim-personel-sec:checked')].map(kutu=>String(kutu.value))};
+    window.fdBildirimTumPersonelleriSec=function(secili){document.querySelectorAll('#fdBildirimPersonelListesi .fd-bildirim-personel-sec').forEach(kutu=>kutu.checked=secili);fdBildirimHedefOzetiniGuncelle()};
     window.fdBildirimHedefOzetiniGuncelle=function(){
-        const sube=String(document.getElementById('fdBildirimSube')?.value||''),pId=String(document.getElementById('fdBildirimPersonel')?.value||''),alan=document.getElementById('fdBildirimHedefOzeti');if(!alan)return;
-        const personel=(Array.isArray(personeller)?personeller:[]).find(p=>String(p.id)===pId);
-        alan.textContent=personel?'Bildirim yalnızca '+String(personel.ad||'seçili personel')+' kullanıcısının izin verdiği telefonlarına gider.':(sube?'Bildirim '+sube+' şubesindeki tüm personelin izin verdiği telefonlara gider.':'Bildirim bu şirkette izin veren tüm kullanıcıların telefonlarına gider.');
+        const sube=String(document.getElementById('fdBildirimSube')?.value||''),secili=fdBildirimSeciliPersonelIds(),alan=document.getElementById('fdBildirimHedefOzeti');if(!alan)return;
+        alan.textContent=secili.length?('Bildirim seçilen '+secili.length+' personelin izin verdiği telefonlara gider.'):(sube?'Personel işaretlemezseniz bildirim '+sube+' şubesindeki tüm personele gider.':'Personel işaretlemezseniz bildirim bu şirkette izin veren tüm kullanıcılara gider.');
     };
     window.fdBildirimGonder=async function(event){
         event.preventDefault();if(!isManagerUser())return;
-        const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn'),sube=String(document.getElementById('fdBildirimSube')?.value||''),pId=String(document.getElementById('fdBildirimPersonel')?.value||'');
+        const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn'),sube=String(document.getElementById('fdBildirimSube')?.value||''),seciliPersoneller=fdBildirimSeciliPersonelIds();
         if(!mesaj)return showToast('Gönderilecek mesajı yazın.','warning');
-        const hedefPersoneller=pId?[pId]:(sube?(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')&&String(p.sube||'Merkez')===sube).map(p=>String(p.id)):[]),hedefModu=(pId||sube)?'selection':'all';
-        const hedefMetni=pId?String((Array.isArray(personeller)?personeller:[]).find(p=>String(p.id)===pId)?.ad||'seçili personel'):(sube?sube+' şubesi':'tüm şirket');
+        const hedefPersoneller=seciliPersoneller.length?seciliPersoneller:(sube?(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')&&String(p.sube||'Merkez')===sube).map(p=>String(p.id)):[]),hedefModu=(seciliPersoneller.length||sube)?'selection':'all';
+        const hedefMetni=seciliPersoneller.length?(seciliPersoneller.length+' seçili personel'):(sube?sube+' şubesi':'tüm şirket');
         if(!await fdYuzerOnaySor('Bildirim '+hedefMetni+' hedefine gönderilsin mi?','Bildirimi Gönder','Gönder'))return;
         dugme.disabled=true;showGlobalOverlay?.('Bildirim gönderiliyor','Kayıtlı telefonlara ulaştırılıyor...');
         try{const sonuc=await cagir({action:'send',title:baslik,message:mesaj,targetMode:hedefModu,targetEmployeeIds:hedefPersoneller});showToast(sonuc.sent?sonuc.sent+' cihaza bildirim gönderildi.':'Seçilen hedefte bildirim izni verilmiş cihaz bulunamadı.',sonuc.sent?'success':'warning');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimCihazSayisi').textContent=sonuc.total+' hedef cihaz'}
