@@ -37,7 +37,7 @@
   <iframe id="uygulama" title="FD Yazılım" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
   <button id="yukleBtn" class="yukle-btn" type="button">▣ Telefona Yükle</button>
   <div id="kurulumPerde" class="kurulum-perde" role="dialog" aria-modal="true" aria-labelledby="kurulumBaslik">
-    <div class="kurulum-kart"><h2 id="kurulumBaslik">Telefona yükleme</h2><p>iPhone veya iPad’de uygulamayı ana ekrana eklemek için:</p><ol><li>Safari’nin <strong>Paylaş</strong> düğmesine dokunun.</li><li><strong>Ana Ekrana Ekle</strong> seçeneğini seçin.</li><li>Sağ üstten <strong>Ekle</strong> düğmesine dokunun.</li></ol><button id="kapatBtn" class="kapat" type="button">Tamam</button></div>
+    <div class="kurulum-kart"><h2 id="kurulumBaslik">Telefona yükleme</h2><p id="kurulumMetni"></p><ol id="kurulumAdimlari"></ol><button id="kapatBtn" class="kapat" type="button">Tamam</button></div>
   </div>
   <div id="hata" class="hata">Uygulama açılamadı. İnternet bağlantısını kontrol edip tekrar deneyin.</div>
   <script>
@@ -51,10 +51,16 @@
     setTimeout(()=>{if(!acildi){acilis.classList.add('gizli');document.getElementById('hata').style.display='block'}},18000);
     window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();yuklemeOlayi=e;if(!kurulu())yukleBtn.classList.add('goster')});
     window.addEventListener('appinstalled',()=>{yuklemeOlayi=null;yukleBtn.classList.remove('goster')});
-    yukleBtn.addEventListener('click',async()=>{if(yuklemeOlayi){yuklemeOlayi.prompt();await yuklemeOlayi.userChoice;yuklemeOlayi=null;yukleBtn.classList.remove('goster');return}perde.classList.add('goster')});
+    function kurulumBilgisiniGoster(){
+      const metin=document.getElementById('kurulumMetni'),adimlar=document.getElementById('kurulumAdimlari');
+      if(ios()){metin.textContent='iPhone veya iPad’de uygulamayı ana ekrana eklemek için:';adimlar.innerHTML='<li>Bu sayfayı <strong>Safari</strong> ile açın.</li><li>Alttaki <strong>Paylaş</strong> düğmesine dokunun.</li><li><strong>Ana Ekrana Ekle</strong> ve ardından <strong>Ekle</strong> seçeneğine dokunun.</li>'}
+      else{metin.textContent='Android telefonda uygulamayı yüklemek için:';adimlar.innerHTML='<li>Bu sayfayı <strong>Chrome</strong> ile açın.</li><li>Sağ üstteki <strong>üç nokta</strong> menüsüne dokunun.</li><li><strong>Uygulamayı yükle</strong> veya <strong>Ana ekrana ekle</strong> seçeneğine dokunun.</li>'}
+      perde.classList.add('goster');
+    }
+    yukleBtn.addEventListener('click',async()=>{if(yuklemeOlayi){yuklemeOlayi.prompt();await yuklemeOlayi.userChoice;yuklemeOlayi=null;return}kurulumBilgisiniGoster()});
     document.getElementById('kapatBtn').addEventListener('click',()=>perde.classList.remove('goster'));
     perde.addEventListener('click',e=>{if(e.target===perde)perde.classList.remove('goster')});
-    if(!kurulu()&&ios())yukleBtn.classList.add('goster');
+    if(!kurulu())yukleBtn.classList.add('goster');
     if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
   </script>
 </body>
