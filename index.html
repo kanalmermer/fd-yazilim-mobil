@@ -158,6 +158,7 @@
         .push-personel-tools{display:flex;gap:6px;justify-content:flex-end;margin-bottom:7px}.push-personel-tools button{padding:5px 8px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:#334155;cursor:pointer;font-size:.7rem;font-weight:750}
         .push-personel-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:230px;padding:8px;overflow:auto;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc}.push-personel-list label{display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid #e2e8f0;border-radius:7px;background:#fff;color:#334155;font-size:.76rem;cursor:pointer}.push-personel-list input{width:auto}.push-personel-empty{grid-column:1/-1;padding:12px;text-align:center;color:#64748b;font-size:.76rem}@media(max-width:560px){.push-personel-list{grid-template-columns:1fr}}
         .push-message-card{padding:18px;border:1px solid #bae6fd;border-radius:12px;background:linear-gradient(145deg,#f0f9ff,#fff);color:#0f172a}.push-message-card h4{margin:0 0 10px;color:#075985;font-size:1.02rem}.push-message-card p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;font-size:.9rem}
+        .push-history{margin-top:14px;border:1px solid #cbd5e1;border-radius:11px;background:#fff;overflow:hidden}.push-history>summary{padding:12px 14px;background:#f8fafc;color:#0f172a;font-size:.8rem;font-weight:800;cursor:pointer}.push-history-list{display:grid;gap:8px;max-height:390px;padding:10px;overflow:auto}.push-history-item{border:1px solid #e2e8f0;border-radius:9px;background:#fff;overflow:hidden}.push-history-item>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;cursor:pointer}.push-history-item>summary span{min-width:0}.push-history-item>summary strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#0f172a;font-size:.78rem}.push-history-item>summary small{display:block;margin-top:3px;color:#64748b;font-size:.68rem}.push-history-count{flex:0 0 auto;padding:4px 7px;border-radius:999px;background:#e0f2fe;color:#075985;font-size:.67rem;font-weight:800}.push-history-detail{padding:0 11px 11px}.push-history-message{margin:0 0 9px;padding:9px;border-radius:7px;background:#f8fafc;color:#334155;white-space:pre-wrap;font-size:.74rem;line-height:1.45}.push-receipt-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.push-receipt{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 7px;border:1px solid #e2e8f0;border-radius:7px;font-size:.68rem}.push-receipt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.push-receipt b{flex:0 0 auto;font-size:.63rem}.push-receipt.read b{color:#15803d}.push-receipt.unread b{color:#b45309}.push-receipt.undelivered b{color:#64748b}@media(max-width:560px){.push-receipt-list{grid-template-columns:1fr}}
 
         /* UYGULAMA SEKME CUBUGU */
         .fd-app-tabs{display:none;align-items:flex-end;gap:3px;min-height:37px;padding:5px 16px 0;overflow-x:auto;overflow-y:hidden;background:#edf3f8;border-bottom:1px solid #c5d2dd;box-shadow:0 2px 6px rgba(15,23,42,.035);scrollbar-width:thin}
@@ -1467,6 +1468,7 @@
             <div class="form-group"><label>Mesaj</label><textarea id="fdBildirimMesaj" rows="5" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz bildirimi yazın..." required></textarea></div>
             <div class="push-compose-status"><span>Kayıtlı bildirim cihazı</span><strong id="fdBildirimCihazSayisi">Kontrol ediliyor...</strong></div>
             <button id="fdBildirimGonderBtn" class="btn-submit" type="submit">🔔 Bildirimi Gönder</button>
+            <details class="push-history" ontoggle="if(this.open)fdBildirimGecmisiniYukle()"><summary>📋 Son 1 Yıllık Bildirim Geçmişi</summary><div id="fdBildirimGecmisi" class="push-history-list"><div class="push-personel-empty">Geçmişi görmek için bölümü açın.</div></div></details>
         </form>
     </div>
 </div>
@@ -19974,22 +19976,23 @@ document.addEventListener('click',function(e){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
         for(let i=0;i<ham.length;i++)sonuc[i]=ham.charCodeAt(i);return sonuc;
     }
-    function bildirimiBeklet(baslik,mesaj){try{sessionStorage.setItem(BEKLEYEN_BILDIRIM_ANAHTARI,JSON.stringify({baslik:String(baslik||'FD YAZILIM'),mesaj:String(mesaj||'Yeni bir bildiriminiz var.')}))}catch(_){}}
-    window.fdGelenBildirimiGoster=function(baslik,mesaj){
-        if(!activeUser){bildirimiBeklet(baslik,mesaj);return}
+    function bildirimiBeklet(baslik,mesaj,notificationId){try{sessionStorage.setItem(BEKLEYEN_BILDIRIM_ANAHTARI,JSON.stringify({baslik:String(baslik||'FD YAZILIM'),mesaj:String(mesaj||'Yeni bir bildiriminiz var.'),notificationId:String(notificationId||'')}))}catch(_){}}
+    window.fdGelenBildirimiGoster=function(baslik,mesaj,notificationId){
+        if(!activeUser){bildirimiBeklet(baslik,mesaj,notificationId);return}
         const modal=document.getElementById('modalGelenBildirim');if(!modal)return;
         document.getElementById('fdGelenBildirimBaslik').textContent=String(baslik||'FD YAZILIM');
         document.getElementById('fdGelenBildirimMesaj').textContent=String(mesaj||'Yeni bir bildiriminiz var.');modal.style.display='flex';try{sessionStorage.removeItem(BEKLEYEN_BILDIRIM_ANAHTARI)}catch(_){}
+        if(notificationId)cagir({action:'mark-read',notificationId:String(notificationId)}).catch(error=>console.warn('Bildirim okundu bilgisi kaydedilemedi:',error));
     };
     window.fdBekleyenBildirimiGoster=function(){
         if(!activeUser)return;let bildirim=null;try{bildirim=JSON.parse(sessionStorage.getItem(BEKLEYEN_BILDIRIM_ANAHTARI)||'null')}catch(_){}
-        if(bildirim?.mesaj)fdGelenBildirimiGoster(bildirim.baslik,bildirim.mesaj);
+        if(bildirim?.mesaj)fdGelenBildirimiGoster(bildirim.baslik,bildirim.mesaj,bildirim.notificationId);
     };
     function urlBildirimiKontrolEt(){
         const params=new URLSearchParams(location.search),mesaj=params.get('fdPushMessage');if(!mesaj)return;
-        const baslik=params.get('fdPushTitle')||'FD YAZILIM';bildirimiBeklet(baslik,mesaj);params.delete('fdPushTitle');params.delete('fdPushMessage');const yeni=location.pathname+(params.toString()?'?'+params.toString():'')+location.hash;history.replaceState(null,'',yeni);fdBekleyenBildirimiGoster();
+        const baslik=params.get('fdPushTitle')||'FD YAZILIM',notificationId=params.get('fdPushId')||'';bildirimiBeklet(baslik,mesaj,notificationId);params.delete('fdPushTitle');params.delete('fdPushMessage');params.delete('fdPushId');const yeni=location.pathname+(params.toString()?'?'+params.toString():'')+location.hash;history.replaceState(null,'',yeni);fdBekleyenBildirimiGoster();
     }
-    if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='FD_PUSH_NOTIFICATION_OPEN')fdGelenBildirimiGoster(event.data.title,event.data.body)});
+    if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='FD_PUSH_NOTIFICATION_OPEN')fdGelenBildirimiGoster(event.data.title,event.data.body,event.data.notificationId)});
     async function aboneligiKaydet(registration,config){
         let subscription=await registration.pushManager.getSubscription();
         if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlDizisi(config.publicKey)});
@@ -20052,6 +20055,15 @@ document.addEventListener('click',function(e){
         const sube=String(document.getElementById('fdBildirimSube')?.value||''),secili=fdBildirimSeciliPersonelIds(),alan=document.getElementById('fdBildirimHedefOzeti');if(!alan)return;
         alan.textContent=secili.length?('Bildirim seçilen '+secili.length+' personelin izin verdiği telefonlara gider.'):(sube?'Personel işaretlemezseniz bildirim '+sube+' şubesindeki tüm personele gider.':'Personel işaretlemezseniz bildirim bu şirkette izin veren tüm kullanıcılara gider.');
     };
+    function fdBildirimTarihi(deger){try{return new Date(deger).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}catch(_){return '-'}}
+    function fdBildirimAliciAdi(alici){const id=String(alici.employee_legacy_id||''),personel=(Array.isArray(personeller)?personeller:[]).find(p=>String(p.id)===id);return personel?.ad||('Kullanıcı '+id.slice(-4))}
+    window.fdBildirimGecmisiniYukle=async function(){
+        const alan=document.getElementById('fdBildirimGecmisi');if(!alan||alan.dataset.loading==='1')return;alan.dataset.loading='1';alan.innerHTML='<div class="push-personel-empty">Bildirim geçmişi yükleniyor...</div>';
+        try{
+            const sonuc=await cagir({action:'history'}),alicilar=Array.isArray(sonuc.recipients)?sonuc.recipients:[],bildirimler=Array.isArray(sonuc.notifications)?sonuc.notifications:[];
+            alan.innerHTML=bildirimler.length?bildirimler.map(b=>{const liste=alicilar.filter(a=>String(a.notification_id)===String(b.id)),okuyan=liste.filter(a=>a.read_at).length,ulasan=liste.filter(a=>a.delivered_at).length;return '<details class="push-history-item"><summary><span><strong>'+escapeDashboardText(b.title||'FD YAZILIM')+'</strong><small>'+fdBildirimTarihi(b.created_at)+' · '+liste.length+' kişi · '+ulasan+' kişiye ulaştı</small></span><b class="push-history-count">'+okuyan+' / '+liste.length+' okudu</b></summary><div class="push-history-detail"><p class="push-history-message">'+escapeDashboardText(b.message||'')+'</p><div class="push-receipt-list">'+(liste.length?liste.sort((a,c)=>fdBildirimAliciAdi(a).localeCompare(fdBildirimAliciAdi(c),'tr')).map(a=>{const durum=a.read_at?'Okudu':(a.delivered_at?'Okumadı':'Cihaz yok'),sinif=a.read_at?'read':(a.delivered_at?'unread':'undelivered'),zaman=a.read_at?(' · '+fdBildirimTarihi(a.read_at)):'';return '<div class="push-receipt '+sinif+'"><span>'+escapeDashboardText(fdBildirimAliciAdi(a))+'</span><b>'+durum+zaman+'</b></div>'}).join(''):'<div class="push-personel-empty">Kayıtlı alıcı bulunmuyor.</div>')+'</div></div></details>'}).join(''):'<div class="push-personel-empty">Son bir yılda gönderilmiş bildirim bulunmuyor.</div>';
+        }catch(error){alan.innerHTML='<div class="push-personel-empty" style="color:#b91c1c">'+escapeDashboardText(hataMesaji(error,'Bildirim geçmişi alınamadı.'))+'</div>'}finally{delete alan.dataset.loading}
+    };
     window.fdBildirimGonder=async function(event){
         event.preventDefault();if(!isManagerUser())return;
         const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn'),sube=String(document.getElementById('fdBildirimSube')?.value||''),seciliPersoneller=fdBildirimSeciliPersonelIds();
@@ -20060,7 +20072,7 @@ document.addEventListener('click',function(e){
         const hedefMetni=seciliPersoneller.length?(seciliPersoneller.length+' seçili personel'):(sube?sube+' şubesi':'tüm şirket');
         if(!await fdYuzerOnaySor('Bildirim '+hedefMetni+' hedefine gönderilsin mi?','Bildirimi Gönder','Gönder'))return;
         dugme.disabled=true;showGlobalOverlay?.('Bildirim gönderiliyor','Kayıtlı telefonlara ulaştırılıyor...');
-        try{const sonuc=await cagir({action:'send',title:baslik,message:mesaj,targetMode:hedefModu,targetEmployeeIds:hedefPersoneller});showToast(sonuc.sent?sonuc.sent+' cihaza bildirim gönderildi.':'Seçilen hedefte bildirim izni verilmiş cihaz bulunamadı.',sonuc.sent?'success':'warning');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimCihazSayisi').textContent=sonuc.total+' hedef cihaz'}
+        try{const sonuc=await cagir({action:'send',title:baslik,message:mesaj,targetMode:hedefModu,targetEmployeeIds:hedefPersoneller});showToast(sonuc.sent?sonuc.sent+' cihaza bildirim gönderildi.':'Seçilen hedefte bildirim izni verilmiş cihaz bulunamadı.',sonuc.sent?'success':'warning');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimCihazSayisi').textContent=sonuc.total+' hedef cihaz';const gecmis=document.getElementById('fdBildirimGecmisi');if(gecmis){gecmis.innerHTML='';fdBildirimGecmisiniYukle()}}
         catch(error){showToast(hataMesaji(error,'Bildirim gönderilemedi.'),'error')}finally{dugme.disabled=false;hideGlobalOverlay?.()}
     };
     const eskiShowHub=window.showHub;
