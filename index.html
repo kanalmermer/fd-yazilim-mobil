@@ -1459,7 +1459,7 @@
         <div class="modal-header"><div><h3>🔔 Bildirim Gönder</h3><small>Telefon uygulamasında bildirimleri açan kullanıcılara gönderilir.</small></div><button type="button" class="modal-close" onclick="modalKapat('modalBildirimGonder')">✕</button></div>
         <form class="modal-body" onsubmit="fdBildirimGonder(event)">
             <div id="fdBildirimHedefOzeti" class="push-compose-note">Mesaj bu şirkete bağlı ve telefonunda bildirim izni veren tüm kullanıcılara gider.</div>
-            <div class="form-row">
+            <div>
                 <div class="form-group"><label>Şube</label><select id="fdBildirimSube" onchange="fdBildirimPersonelleriniDoldur()"><option value="">Tüm Şubeler</option></select></div>
                 <div class="form-group"><label>Personeller <small>(birden fazla seçilebilir)</small></label><div class="push-personel-tools"><button type="button" onclick="fdBildirimTumPersonelleriSec(true)">Tümünü Seç</button><button type="button" onclick="fdBildirimTumPersonelleriSec(false)">Temizle</button></div><div id="fdBildirimPersonelListesi" class="push-personel-list"><div class="push-personel-empty">Personeller yükleniyor...</div></div></div>
             </div>
@@ -4076,6 +4076,7 @@
         if (acikModulKorunacak) fdSekmeCubugunuGuncelle();
         else showHub();
         initUI();
+        setTimeout(()=>window.fdBekleyenBildirimiGoster?.(),350);
         if (activeUser.rol === 'Personel' && activeUser.sifreDegismeli) setTimeout(zorunluSifreModaliniGoster, 50);
     }
 
@@ -4698,6 +4699,7 @@
             sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
             document.getElementById('loginAlert').style.display = 'none';
             showHub();
+            setTimeout(()=>window.fdBekleyenBildirimiGoster?.(),350);
         } else {
             document.getElementById('loginAlert').textContent = kullanicilar.length
                 ? 'Kullanıcı adı veya şifre hatalı!'
@@ -19918,6 +19920,7 @@ document.addEventListener('click',function(e){
 <script id="fdBildirimSistemi">
 (function(){
     const FONKSIYON='push-notification';
+    const BEKLEYEN_BILDIRIM_ANAHTARI='fd_pending_push_notification';
     function destekleniyor(){return 'Notification' in window&&'serviceWorker' in navigator&&'PushManager' in window}
     function mobilUygulamaOrtami(){return location.hostname==='kanalmermer.github.io'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
     function hataMesaji(error,varsayilan='İşlem tamamlanamadı.'){
@@ -19937,14 +19940,20 @@ document.addEventListener('click',function(e){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
         for(let i=0;i<ham.length;i++)sonuc[i]=ham.charCodeAt(i);return sonuc;
     }
+    function bildirimiBeklet(baslik,mesaj){try{sessionStorage.setItem(BEKLEYEN_BILDIRIM_ANAHTARI,JSON.stringify({baslik:String(baslik||'FD YAZILIM'),mesaj:String(mesaj||'Yeni bir bildiriminiz var.')}))}catch(_){}}
     window.fdGelenBildirimiGoster=function(baslik,mesaj){
+        if(!activeUser){bildirimiBeklet(baslik,mesaj);return}
         const modal=document.getElementById('modalGelenBildirim');if(!modal)return;
         document.getElementById('fdGelenBildirimBaslik').textContent=String(baslik||'FD YAZILIM');
-        document.getElementById('fdGelenBildirimMesaj').textContent=String(mesaj||'Yeni bir bildiriminiz var.');modal.style.display='flex';
+        document.getElementById('fdGelenBildirimMesaj').textContent=String(mesaj||'Yeni bir bildiriminiz var.');modal.style.display='flex';try{sessionStorage.removeItem(BEKLEYEN_BILDIRIM_ANAHTARI)}catch(_){}
+    };
+    window.fdBekleyenBildirimiGoster=function(){
+        if(!activeUser)return;let bildirim=null;try{bildirim=JSON.parse(sessionStorage.getItem(BEKLEYEN_BILDIRIM_ANAHTARI)||'null')}catch(_){}
+        if(bildirim?.mesaj)fdGelenBildirimiGoster(bildirim.baslik,bildirim.mesaj);
     };
     function urlBildirimiKontrolEt(){
         const params=new URLSearchParams(location.search),mesaj=params.get('fdPushMessage');if(!mesaj)return;
-        const baslik=params.get('fdPushTitle')||'FD YAZILIM';params.delete('fdPushTitle');params.delete('fdPushMessage');const yeni=location.pathname+(params.toString()?'?'+params.toString():'')+location.hash;history.replaceState(null,'',yeni);fdGelenBildirimiGoster(baslik,mesaj);
+        const baslik=params.get('fdPushTitle')||'FD YAZILIM';bildirimiBeklet(baslik,mesaj);params.delete('fdPushTitle');params.delete('fdPushMessage');const yeni=location.pathname+(params.toString()?'?'+params.toString():'')+location.hash;history.replaceState(null,'',yeni);fdBekleyenBildirimiGoster();
     }
     if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='FD_PUSH_NOTIFICATION_OPEN')fdGelenBildirimiGoster(event.data.title,event.data.body)});
     async function aboneligiKaydet(registration,config){
@@ -20021,7 +20030,7 @@ document.addEventListener('click',function(e){
         catch(error){showToast(hataMesaji(error,'Bildirim gönderilemedi.'),'error')}finally{dugme.disabled=false;hideGlobalOverlay?.()}
     };
     const eskiShowHub=window.showHub;
-    if(typeof eskiShowHub==='function')window.showHub=function(){const sonuc=eskiShowHub.apply(this,arguments);setTimeout(sessizEsitle,500);return sonuc};
+    if(typeof eskiShowHub==='function')window.showHub=function(){const sonuc=eskiShowHub.apply(this,arguments);setTimeout(()=>{sessizEsitle();fdBekleyenBildirimiGoster()},500);return sonuc};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{izinDugmesiniGuncelle();urlBildirimiKontrolEt()});else{izinDugmesiniGuncelle();urlBildirimiKontrolEt()}
 })();
 </script>
