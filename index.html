@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FD Yazılım">
+  <meta name="description" content="FD Yazılım kurumsal personel ve iş takip uygulaması">
+  <title>FD Yazılım</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <style>
+    :root{color-scheme:light;--lacivert:#0f172a;--mavi:#0284c7;--yesil:#10b981}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#edf3f8;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    #uygulama{display:block;width:100%;height:100%;height:100dvh;border:0;background:#edf3f8}
+    #acilis{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:linear-gradient(145deg,#081426,#123354);color:#fff;transition:opacity .25s ease,visibility .25s ease}
+    #acilis.gizli{opacity:0;visibility:hidden;pointer-events:none}
+    .acilis-kart{text-align:center;padding:28px}
+    .logo{display:grid;place-items:center;width:86px;height:86px;margin:0 auto 18px;border-radius:24px;background:linear-gradient(145deg,#0ea5e9,#155e75);box-shadow:0 18px 45px rgba(0,0,0,.28);font-size:29px;font-weight:950;letter-spacing:-.06em}
+    .acilis-kart strong{display:block;font-size:1.25rem;letter-spacing:.08em}.acilis-kart small{display:block;margin-top:7px;color:#bae6fd;font-weight:650}
+    .yukle-btn{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:20;display:none;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 16px;background:var(--yesil);color:#fff;box-shadow:0 10px 30px rgba(15,23,42,.3);font-size:.82rem;font-weight:850;cursor:pointer}
+    .yukle-btn.goster{display:flex}
+    .kurulum-perde{position:fixed;inset:0;z-index:30;display:none;place-items:end center;padding:18px;background:rgba(15,23,42,.58)}
+    .kurulum-perde.goster{display:grid}
+    .kurulum-kart{width:min(480px,100%);border-radius:20px;background:#fff;padding:22px;color:#0f172a;box-shadow:0 22px 60px rgba(0,0,0,.35)}
+    .kurulum-kart h2{margin:0 0 9px;font-size:1.15rem}.kurulum-kart p{margin:0;color:#475569;line-height:1.55;font-size:.88rem}.kurulum-kart ol{margin:14px 0 18px;padding-left:21px;color:#334155;line-height:1.8;font-size:.86rem}.kapat{width:100%;border:0;border-radius:11px;padding:11px;background:#e2e8f0;color:#0f172a;font-weight:800;cursor:pointer}
+    .hata{position:fixed;inset:auto 12px 12px;z-index:40;display:none;border-radius:12px;padding:12px 14px;background:#fff7ed;color:#9a3412;box-shadow:0 8px 28px rgba(0,0,0,.18);font-size:.82rem;font-weight:700;text-align:center}
+  </style>
+</head>
+<body>
+  <div id="acilis"><div class="acilis-kart"><div class="logo">FD</div><strong>FD YAZILIM</strong><small>Kurumsal Yönetim Platformu</small></div></div>
+  <iframe id="uygulama" title="FD Yazılım" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <button id="yukleBtn" class="yukle-btn" type="button">▣ Telefona Yükle</button>
+  <div id="kurulumPerde" class="kurulum-perde" role="dialog" aria-modal="true" aria-labelledby="kurulumBaslik">
+    <div class="kurulum-kart"><h2 id="kurulumBaslik">Telefona yükleme</h2><p>iPhone veya iPad’de uygulamayı ana ekrana eklemek için:</p><ol><li>Safari’nin <strong>Paylaş</strong> düğmesine dokunun.</li><li><strong>Ana Ekrana Ekle</strong> seçeneğini seçin.</li><li>Sağ üstten <strong>Ekle</strong> düğmesine dokunun.</li></ol><button id="kapatBtn" class="kapat" type="button">Tamam</button></div>
+  </div>
+  <div id="hata" class="hata">Uygulama açılamadı. İnternet bağlantısını kontrol edip tekrar deneyin.</div>
+  <script>
+    const UYGULAMA_URL='https://script.google.com/macros/s/AKfycbwD5X0AmoC5qq-FBMD2Pf0XiL9h-vNP6o0Aqxen7zgMZbujYAg200ArI2KtRBEOIg3M/exec';
+    const cerceve=document.getElementById('uygulama'),acilis=document.getElementById('acilis'),yukleBtn=document.getElementById('yukleBtn'),perde=document.getElementById('kurulumPerde');
+    let yuklemeOlayi=null,acildi=false;
+    const kurulu=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+    const ios=()=>/iphone|ipad|ipod/i.test(navigator.userAgent);
+    cerceve.addEventListener('load',()=>{acildi=true;setTimeout(()=>acilis.classList.add('gizli'),250)});
+    cerceve.src=UYGULAMA_URL;
+    setTimeout(()=>{if(!acildi){acilis.classList.add('gizli');document.getElementById('hata').style.display='block'}},18000);
+    window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();yuklemeOlayi=e;if(!kurulu())yukleBtn.classList.add('goster')});
+    window.addEventListener('appinstalled',()=>{yuklemeOlayi=null;yukleBtn.classList.remove('goster')});
+    yukleBtn.addEventListener('click',async()=>{if(yuklemeOlayi){yuklemeOlayi.prompt();await yuklemeOlayi.userChoice;yuklemeOlayi=null;yukleBtn.classList.remove('goster');return}perde.classList.add('goster')});
+    document.getElementById('kapatBtn').addEventListener('click',()=>perde.classList.remove('goster'));
+    perde.addEventListener('click',e=>{if(e.target===perde)perde.classList.remove('goster')});
+    if(!kurulu()&&ios())yukleBtn.classList.add('goster');
+    if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  </script>
+</body>
+</html>
