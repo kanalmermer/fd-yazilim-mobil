@@ -1923,6 +1923,11 @@
                         <div class="form-group"><label>Tekrarlanan Kart Basımı Aralığı (Dakika)</label><input id="ayarMagicMukerrerDakika" type="number" min="0" max="30" step="1" value="3"><small>Bu süre içinde art arda yapılan basımlarda yalnızca ilk basım geçerli olur.</small></div>
                     </div>
                     <div class="form-group"><label>Cihaz Numarası Olmayanlarda Durum</label><input id="ayarMagicCihazsizDurum" maxlength="40" value="Kayıt Yok"><small>Günlük raporda “Cihaz No Tanımsız” yerine bu metin gösterilir.</small></div>
+                    <div class="form-group"><label>İşe Gelmeme Bildirimi</label><textarea id="ayarMagicBildirimGelmedi" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
+                    <div class="form-group"><label>Giriş Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimGirisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
+                    <div class="form-group"><label>Çıkış Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimCikisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
+                    <div class="form-group"><label>Doğum Günü Bildirimi</label><textarea id="ayarMagicBildirimDogumGunu" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
+                    <div class="form-group"><label>Yıllık İzin Hak Edişi Bildirimi</label><textarea id="ayarMagicBildirimYillikIzin" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Kullanılabilir alanlar: {AD}, {TARİH} ve yıllık izin mesajında {YIL}.</small></div>
                     <div style="display:flex;justify-content:flex-end;margin-top:10px;"><button id="ayarMagicRaporKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="magicpassRaporAyarlariniKaydet(this)">💾 Rapor Ayarlarını Kaydet</button></div>
                 </div></details>
                 <details class="profile-section"><summary>Araç Takip Ayarları</summary><div>
@@ -3586,6 +3591,11 @@
         magicpassGunlukMesaiEsikDakika: 70,
         magicpassMukerrerBasimDakika: 3,
         magicpassCihazsizDurumMetni: 'Kayıt Yok',
+        magicpassBildirimGelmediMetni: '{AD}, {TARİH} tarihinde işe gelmediniz. Lütfen izin dilekçenizi imzalayınız.',
+        magicpassBildirimGirisYokMetni: '{AD}, {TARİH} tarihli giriş kaydınız bulunmuyor. Lütfen kaydınızı düzelttiriniz.',
+        magicpassBildirimCikisYokMetni: '{AD}, {TARİH} tarihli çıkış kaydınız bulunmuyor. Lütfen kaydınızı düzelttiriniz.',
+        magicpassBildirimDogumGunuMetni: '{AD}, doğum gününüz kutlu olsun. Sağlıklı ve mutlu yıllar dileriz.',
+        magicpassBildirimYillikIzinMetni: '{AD}, bugün {YIL}. çalışma yılınızı tamamladınız ve yıllık izin hakkı kazandınız.',
         vardiyaAciklamalar: 'HERKES GÖREVİ NEREDE YAZIYORSA ORADA ÇALIŞACAK.\nHERKES ÇALIŞTIĞI BÖLGEYİ AKŞAM TEMİZLEYECEK.\nGİRİŞ VE ÇIKIŞLARDA HERKES KARTINI MAKİNAYA OKUTACAK.',
         yedekleme: {
             aktif: false,
@@ -6922,7 +6932,7 @@
             yedek=await magicpassTxtDriveaYedekle(dosya,aktarim);globalOverlayIlerleme(88,'Yedek tamamlandı, kaynak dosya temizleniyor...');
             await magicpassSabitTxtDosyasiniTemizle(handle,dosya);globalOverlayIlerleme(100,'Aktarım tamamlandı.');await new Promise(resolve=>setTimeout(resolve,260));
             const aktarilanToplam=Number(aktarim.kaydedilen||0)+Number(aktarim.yenilenen||0),sonHareket=aktarim.son?new Date(aktarim.son).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'-';magicpassDosyaDurumuYaz('Son aktarım tamamlandı · '+aktarilanToplam+' hareket · Son hareket: '+sonHareket+' · TXT yedeklendi ve temizlendi','#047857');
-            showToast(aktarilanToplam+' hareket işlendi. Okunan TXT belgesi yedeklendi.','success');
+            showToast(aktarilanToplam+' hareket işlendi. Okunan TXT belgesi yedeklendi. Otomatik personel bildirimleri saat 12.00’de güncel kayıtlara göre gönderilecek.','success');
             return{aktarim,yedek};
         } catch(error) {
             magicpassDosyaDurumuYaz('Aktarım tamamlanamadı: '+(error.message||error),'#b91c1c');
@@ -17383,6 +17393,7 @@
     function magicpassGunlukRaporAyarlariniDoldur(){
         const mesai=document.getElementById('ayarMagicGunlukMesaiEsik'),mukerrer=document.getElementById('ayarMagicMukerrerDakika'),durum=document.getElementById('ayarMagicCihazsizDurum');
         if(mesai)mesai.value=magicpassGunlukMesaiEsigi();if(mukerrer)mukerrer.value=Math.min(30,Math.max(0,Number(uygulamaAyarlari.magicpassMukerrerBasimDakika??3)));if(durum)durum.value=String(uygulamaAyarlari.magicpassCihazsizDurumMetni||'Kayıt Yok');
+        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
     }
 
     async function magicpassRaporAyarlariniKaydet(buton=null){
@@ -17391,12 +17402,13 @@
         if(!mesaiAlani||!mukerrerAlani||!durumAlani)return showToast('Rapor ayar alanları bulunamadı. Ayarlar ekranını yeniden açın.','error');
         const mesai=Math.min(1440,Math.max(0,Number(mesaiAlani.value))),mukerrer=Math.min(30,Math.max(0,Number(mukerrerAlani.value))),durum=String(durumAlani.value||'').trim()||'Kayıt Yok';
         if(!Number.isFinite(mesai)||!Number.isFinite(mukerrer))return showToast('Dakika alanlarına geçerli bir sayı yazın.','warning');
-        const degisiklik={magicpassGunlukMesaiEsikDakika:mesai,magicpassMukerrerBasimDakika:mukerrer,magicpassCihazsizDurumMetni:durum},eskiYazi=buton?.innerHTML||'';
+        const sablonDegerleri={magicpassBildirimGelmediMetni:String(document.getElementById('ayarMagicBildirimGelmedi')?.value||'').trim(),magicpassBildirimGirisYokMetni:String(document.getElementById('ayarMagicBildirimGirisYok')?.value||'').trim(),magicpassBildirimCikisYokMetni:String(document.getElementById('ayarMagicBildirimCikisYok')?.value||'').trim(),magicpassBildirimDogumGunuMetni:String(document.getElementById('ayarMagicBildirimDogumGunu')?.value||'').trim(),magicpassBildirimYillikIzinMetni:String(document.getElementById('ayarMagicBildirimYillikIzin')?.value||'').trim()};if(Object.values(sablonDegerleri).some(x=>!x))return showToast('Otomatik bildirim mesajlarının tamamını doldurun.','warning');
+        const degisiklik={magicpassGunlukMesaiEsikDakika:mesai,magicpassMukerrerBasimDakika:mukerrer,magicpassCihazsizDurumMetni:durum,...sablonDegerleri},eskiYazi=buton?.innerHTML||'';
         if(buton){buton.disabled=true;buton.innerHTML='⏳ Kaydediliyor...';}
         showGlobalOverlay('Rapor ayarları kaydediliyor','Ayarlar kaydediliyor...');
         try{
             const kayitli=await sirketUygulamaAyarParcasiKaydet(degisiklik);
-            if(Number(kayitli.magicpassGunlukMesaiEsikDakika)!==mesai||Number(kayitli.magicpassMukerrerBasimDakika)!==mukerrer||String(kayitli.magicpassCihazsizDurumMetni||'')!==durum)throw new Error('Kaydedilen değerler doğrulanamadı.');
+            if(Number(kayitli.magicpassGunlukMesaiEsikDakika)!==mesai||Number(kayitli.magicpassMukerrerBasimDakika)!==mukerrer||String(kayitli.magicpassCihazsizDurumMetni||'')!==durum||Object.entries(sablonDegerleri).some(([anahtar,deger])=>String(kayitli[anahtar]||'')!==deger))throw new Error('Kaydedilen değerler doğrulanamadı.');
             magicpassGunlukRaporAyarlariniDoldur();if(typeof magicpassGunlukRaporuCiz==='function')magicpassGunlukRaporuCiz();showToast('Günlük rapor ve kart okuma ayarları kaydedildi.','success');
         }catch(error){showToast('Rapor ayarları kaydedilemedi: '+(error.message||error),'error');}
         finally{hideGlobalOverlay();if(buton){buton.disabled=false;buton.innerHTML=eskiYazi;}}
