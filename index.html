@@ -150,6 +150,11 @@
         .portal-account-menu.acik{display:block}
         .portal-account-menu #btnKendiSifre{display:flex!important;width:100%;justify-content:flex-start;margin:0;padding:9px 11px;border:0;border-radius:7px;background:#fff;color:#334155;box-shadow:none}
         .portal-account-menu-name{padding:8px 10px;margin-bottom:5px;border-bottom:1px solid #eef2f7;color:#0f172a;font-size:.76rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .btn-push-permission{display:none;align-items:center;gap:5px;min-height:32px;padding:6px 9px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#0369a1;cursor:pointer;font-size:.72rem;font-weight:800}
+        .btn-push-permission.enabled{border-color:#bbf7d0;background:#f0fdf4;color:#047857}
+        .push-compose-note{margin:0 0 14px;padding:11px 12px;border:1px solid #bae6fd;border-radius:10px;background:#f0f9ff;color:#075985;font-size:.8rem;line-height:1.5}
+        .push-compose-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border-radius:9px;background:#f8fafc;color:#475569;font-size:.77rem}
+        .push-compose-status strong{color:#0f172a}
 
         /* UYGULAMA SEKME CUBUGU */
         .fd-app-tabs{display:none;align-items:flex-end;gap:3px;min-height:37px;padding:5px 16px 0;overflow-x:auto;overflow-y:hidden;background:#edf3f8;border-bottom:1px solid #c5d2dd;box-shadow:0 2px 6px rgba(15,23,42,.035);scrollbar-width:thin}
@@ -1294,6 +1299,7 @@
         <span id="userBadgeSpan" class="badge badge-user">Kullanıcı</span>
         <span id="activeCompanySpan" class="badge" style="display:none; background:#0f766e; color:#fff;"></span>
         <span>👤 <strong id="activeUserSpan">Admin</strong></span>
+        <button id="fdBildirimIzinBtn" type="button" class="btn-push-permission" onclick="fdBildirimleriAc()" title="Bu telefonda bildirimleri aç">🔔 Bildirimleri Aç</button>
         <button id="btnKendiSifre" class="btn-back-hub" style="display:inline-flex;" onclick="kendiSifreModaliniGoster()" title="Kendi &#351;ifrenizi de&#287;i&#351;tirin">&#128273; &#350;ifrem</button>
         <button class="btn-logout" onclick="logout()">Çıkış Yap 🚪</button>
     </div>
@@ -1358,6 +1364,11 @@
             <span class="workspace-card-icon" style="background:linear-gradient(135deg,#475569,#0f172a);" aria-hidden="true">⚙️</span>
             <span><strong>Ayarlar</strong><small>Prim, puantaj, izin, hatırlatma ve belge ayarları</small></span>
             <b style="color:#334155;">Ayarları aç →</b>
+        </button>
+        <button type="button" class="workspace-card workspace-admin-action" style="display:none; margin-top:14px;" onclick="openBildirimModal()">
+            <span class="workspace-card-icon" style="background:linear-gradient(135deg,#0284c7,#7c3aed);" aria-hidden="true">🔔</span>
+            <span><strong>Bildirim Gönder</strong><small>Telefon uygulamasını kullanan personele anlık duyuru gönderin</small></span>
+            <b style="color:#0369a1;">Mesaj yaz →</b>
         </button>
     </div>
     <section id="adminSessionPanel" class="dashboard-panel admin-session-panel">
@@ -1437,6 +1448,19 @@
                 <div class="app-action-text" style="color:#b91c1c;">Yönetim Paneli ➔</div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="modalBildirimGonder" class="modal-overlay">
+    <div class="modal-card" style="max-width:620px;">
+        <div class="modal-header"><div><h3>🔔 Bildirim Gönder</h3><small>Telefon uygulamasında bildirimleri açan kullanıcılara gönderilir.</small></div><button type="button" class="modal-close" onclick="modalKapat('modalBildirimGonder')">✕</button></div>
+        <form class="modal-body" onsubmit="fdBildirimGonder(event)">
+            <div class="push-compose-note">Mesaj bu şirkete bağlı ve telefonunda bildirim izni veren tüm kullanıcılara gider.</div>
+            <div class="form-group"><label>Başlık</label><input id="fdBildirimBaslik" maxlength="80" value="FD YAZILIM" data-case-preserve="true" required></div>
+            <div class="form-group"><label>Mesaj</label><textarea id="fdBildirimMesaj" rows="5" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz bildirimi yazın..." required></textarea></div>
+            <div class="push-compose-status"><span>Kayıtlı bildirim cihazı</span><strong id="fdBildirimCihazSayisi">Kontrol ediliyor...</strong></div>
+            <button id="fdBildirimGonderBtn" class="btn-submit" type="submit">🔔 Bildirimi Gönder</button>
+        </form>
     </div>
 </div>
 
@@ -19859,6 +19883,74 @@ document.addEventListener('click',function(e){
     window.bordroBelgeleriAyiDegisti=function(){yukle(false)};
     const eskiCiz=window.renderPuantajMatrisi;window.renderPuantajMatrisi=function(){const r=eskiCiz.apply(this,arguments);Promise.resolve().then(()=>yukle(false));return r};
     function kur(){modalKur();panelCiz();if(document.getElementById('puantajApp')?.style.display==='block')yukle(false)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',kur);else kur();
+})();
+</script>
+
+<script id="fdBildirimSistemi">
+(function(){
+    const FONKSIYON='push-notification';
+    function destekleniyor(){return 'Notification' in window&&'serviceWorker' in navigator&&'PushManager' in window}
+    function mobilUygulamaOrtami(){return location.hostname==='kanalmermer.github.io'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
+    function hataMesaji(error,varsayilan='İşlem tamamlanamadı.'){
+        let mesaj=error?.message||varsayilan;
+        try{const govde=error?.context?.body;if(govde&&typeof govde==='object')mesaj=govde.message||mesaj}catch(_){}
+        return mesaj;
+    }
+    async function cagir(body){
+        if(!SUPABASE_MODE||!supabaseClient)throw new Error('Bildirim sistemi için güvenli oturum gerekli.');
+        const{data,error}=await supabaseClient.functions.invoke(FONKSIYON,{body});
+        if(error)throw error;if(!data?.success)throw new Error(data?.message||'Bildirim işlemi tamamlanamadı.');return data;
+    }
+    function base64UrlDizisi(deger){
+        const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
+        for(let i=0;i<ham.length;i++)sonuc[i]=ham.charCodeAt(i);return sonuc;
+    }
+    async function aboneligiKaydet(registration,config){
+        let subscription=await registration.pushManager.getSubscription();
+        if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlDizisi(config.publicKey)});
+        await cagir({action:'subscribe',subscription:subscription.toJSON(),userAgent:navigator.userAgent});
+        return subscription;
+    }
+    function izinDugmesiniGuncelle(){
+        const dugme=document.getElementById('fdBildirimIzinBtn');if(!dugme)return;
+        const goster=Boolean(activeUser)&&destekleniyor()&&mobilUygulamaOrtami();dugme.style.display=goster?'inline-flex':'none';
+        if(!goster)return;
+        const acik=Notification.permission==='granted';dugme.classList.toggle('enabled',acik);dugme.textContent=acik?'🔔 Bildirim Açık':'🔔 Bildirimleri Aç';
+    }
+    window.fdBildirimleriAc=async function(){
+        if(!mobilUygulamaOrtami())return showToast('Bildirimleri telefona yüklediğiniz uygulama içinden açın.','warning');
+        if(!destekleniyor())return showToast('Bu cihaz bildirim özelliğini desteklemiyor.','warning');
+        try{
+            if(Notification.permission==='denied')throw new Error('Bildirim izni engellenmiş. Telefonun site/uygulama ayarlarından bildirime izin verin.');
+            const izin=Notification.permission==='granted'?'granted':await Notification.requestPermission();
+            if(izin!=='granted')throw new Error('Bildirim izni verilmedi.');
+            showGlobalOverlay?.('Bildirimler açılıyor','Bu telefon hesabınıza bağlanıyor...');
+            const config=await cagir({action:'config'}),registration=await navigator.serviceWorker.ready;
+            await aboneligiKaydet(registration,config);izinDugmesiniGuncelle();showToast('Bildirimler bu telefonda açıldı.','success');
+        }catch(error){showToast(hataMesaji(error,'Bildirimler açılamadı.'),'error')}finally{hideGlobalOverlay?.()}
+    };
+    async function sessizEsitle(){
+        izinDugmesiniGuncelle();
+        if(!activeUser||!destekleniyor()||!mobilUygulamaOrtami()||Notification.permission!=='granted')return;
+        try{const registration=await navigator.serviceWorker.ready,mevcut=await registration.pushManager.getSubscription();if(!mevcut)return;await cagir({action:'subscribe',subscription:mevcut.toJSON(),userAgent:navigator.userAgent})}catch(error){console.warn('Bildirim aboneliği yenilenemedi:',error)}
+    }
+    window.openBildirimModal=async function(){
+        if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
+        const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi');modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
+        try{const sonuc=await cagir({action:'config'});sayac.textContent=sonuc.companySubscriptionCount+' cihaz'}catch(error){sayac.textContent='Alınamadı';showToast(hataMesaji(error),'error')}
+    };
+    window.fdBildirimGonder=async function(event){
+        event.preventDefault();if(!isManagerUser())return;
+        const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn');
+        if(!mesaj)return showToast('Gönderilecek mesajı yazın.','warning');
+        if(!await fdYuzerOnaySor('Bildirim, bu şirkette izin vermiş tüm telefonlara gönderilsin mi?','Bildirimi Gönder','Gönder'))return;
+        dugme.disabled=true;showGlobalOverlay?.('Bildirim gönderiliyor','Kayıtlı telefonlara ulaştırılıyor...');
+        try{const sonuc=await cagir({action:'send',title:baslik,message:mesaj});showToast(sonuc.sent?sonuc.sent+' cihaza bildirim gönderildi.':'Bildirim izni verilmiş kayıtlı cihaz bulunamadı.',sonuc.sent?'success':'warning');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimCihazSayisi').textContent=sonuc.total+' cihaz'}
+        catch(error){showToast(hataMesaji(error,'Bildirim gönderilemedi.'),'error')}finally{dugme.disabled=false;hideGlobalOverlay?.()}
+    };
+    const eskiShowHub=window.showHub;
+    if(typeof eskiShowHub==='function')window.showHub=function(){const sonuc=eskiShowHub.apply(this,arguments);setTimeout(sessizEsitle,500);return sonuc};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',izinDugmesiniGuncelle);else izinDugmesiniGuncelle();
 })();
 </script>
 
