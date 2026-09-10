@@ -19783,14 +19783,16 @@ document.addEventListener('click',function(e){
     const pusulaCache=new Map();
     let yuklenenAnahtar='',pusulaYuklenenAnahtar='',onizlenen=null,islemde=false;
     function donem(){const yil=Number(document.getElementById('puanYilSec')?.value||new Date().getFullYear()),ay=Number(document.getElementById('puanAySec')?.value||new Date().getMonth());return{yil,ay,anahtar:yil+'_'+String(ay+1).padStart(2,'0'),etiket:aylar[ay]+' '+yil,ayar:'bordro_belgeleri_'+yil+'_'+String(ay+1).padStart(2,'0')}}
+    function bordroOnbellekAnahtari(d=donem()){return String(aktifSirketId()||'sirket-yok')+'|'+d.anahtar}
+    function pusulaOnbellekAnahtari(d=donem()){return bordroOnbellekAnahtari(d)+'|'+(isPersonelUser()?('personel:'+String(activeUser?.tcNo||'')):'yonetim')}
     function yonetebilir(){return typeof isManagerUser==='function'&&isManagerUser()&&!isPersonelUser()}
     function esc(v){return typeof fdEsc==='function'?fdEsc(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-    function kayit(d){return cache.get(d.anahtar)||{ay:d.anahtar,belgeler:{}}}
+    function kayit(d){return cache.get(bordroOnbellekAnahtari(d))||{ay:d.anahtar,belgeler:{}}}
     function belge(kod){return kayit(donem()).belgeler?.[kod]||null}
     function tarih(v){if(!v)return 'Yüklendi';try{return new Date(v).toLocaleString('tr-TR',{dateStyle:'short',timeStyle:'short'})}catch(_){return 'Yüklendi'}}
     function bordroMetinAnahtari(v){return String(v||'').replace(/ı/g,'i').replace(/İ/g,'I').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
     function bordroDosyaAnahtari(v){return bordroMetinAnahtari(v).replace(/\s+/g,'_').replace(/[^A-Z0-9_]/g,'').slice(0,80)||'PERSONEL'}
-    function pusulaHaritasi(d=donem()){return pusulaCache.get(d.anahtar)||new Map()}
+    function pusulaHaritasi(d=donem()){return pusulaCache.get(pusulaOnbellekAnahtari(d))||new Map()}
     function bordroIlerlet(btn,yuzde,metin){const oran=Math.max(0,Math.min(100,Math.round(yuzde)));btn.style.setProperty('--p',oran+'%');btn.textContent=metin||('Yükleniyor %'+oran)}
     function bordroPdfSatirlari(items){
         const satirlar=[];
@@ -19847,16 +19849,17 @@ document.addEventListener('click',function(e){
     }
     async function pusulaKayitlariniYukle(d=donem(),force=false){
         if(!SUPABASE_MODE||!supabaseClient||!activeUser?.sirketId)return new Map();
-        if(!force&&pusulaCache.has(d.anahtar))return pusulaHaritasi(d);
-        if(pusulaYuklenenAnahtar===d.anahtar)return pusulaHaritasi(d);
-        pusulaYuklenenAnahtar=d.anahtar;
+        const onbellekAnahtari=pusulaOnbellekAnahtari(d);
+        if(!force&&pusulaCache.has(onbellekAnahtari))return pusulaHaritasi(d);
+        if(pusulaYuklenenAnahtar===onbellekAnahtari)return pusulaHaritasi(d);
+        pusulaYuklenenAnahtar=onbellekAnahtari;
         try{
             let sorgu=supabaseClient.from('portal_records').select('legacy_id,employee_legacy_id,data,record_year').eq('company_id',aktifSirketId()).eq('module','bordropusulalari').eq('record_year',d.yil);
             if(isPersonelUser())sorgu=sorgu.eq('employee_legacy_id',String(activeUser.tcNo||''));
             const{data,error}=await sorgu;if(error)throw error;
             const harita=new Map();
             (data||[]).forEach(satir=>{const k=satir.data||{},tc=String(satir.employee_legacy_id||k.pId||'');if(k.ay===d.anahtar&&tc)harita.set(tc,{...k,id:String(k.id||satir.legacy_id),pId:tc})});
-            pusulaCache.set(d.anahtar,harita);return harita;
+            pusulaCache.set(onbellekAnahtari,harita);return harita;
         }finally{pusulaYuklenenAnahtar=''}
     }
     async function pusulaKayitlariniKaydet(ayrilan,d,kaynakDosya,btn){
@@ -19877,13 +19880,13 @@ document.addEventListener('click',function(e){
             const{error}=await supabaseClient.from('portal_records').delete().eq('company_id',aktifSirketId()).eq('module','bordropusulalari').eq('legacy_id',String(eski.id||d.anahtar+'_'+tc));if(error)throw error;
             if(eski?.dosya?.id){try{await fdYazilimDriveDosyaSil(eski.dosya.id,KLASOR)}catch(hata){console.warn('Eski personel pusulası silinemedi:',hata)}}
         }
-        pusulaCache.set(d.anahtar,yeniler);return yeniler;
+        pusulaCache.set(pusulaOnbellekAnahtari(d),yeniler);return yeniler;
     }
     async function pusulaKayitlariniSil(d){
         const harita=await pusulaKayitlariniYukle(d,true),kimlikler=[...harita.values()].map(k=>String(k.id||'')).filter(Boolean);
         if(kimlikler.length){const{error}=await supabaseClient.from('portal_records').delete().eq('company_id',aktifSirketId()).eq('module','bordropusulalari').in('legacy_id',kimlikler);if(error)throw error}
         for(const kayit of harita.values())if(kayit?.dosya?.id){try{await fdYazilimDriveDosyaSil(kayit.dosya.id,KLASOR)}catch(hata){console.warn('Personel pusulası silinemedi:',hata)}}
-        pusulaCache.set(d.anahtar,new Map());
+        pusulaCache.set(pusulaOnbellekAnahtari(d),new Map());
     }
     function panelCiz(){
         const panel=document.getElementById('bordroBelgeleriPanel'),alan=document.getElementById('bordroBelgeleriKartlari'),etiket=document.getElementById('bordroBelgeleriAyEtiketi'),baslik=panel?.querySelector('.bordro-belgeleri-head strong'),toolbar=panel?.querySelector('.bordro-belgeleri-toolbar');
@@ -19905,18 +19908,19 @@ document.addEventListener('click',function(e){
         const panel=document.getElementById('bordroBelgeleriPanel');if(!panel)return;
         const yetkili=yonetebilir()||isPersonelUser(),d=donem(),puantajMi=String(window.puantajGorunumu||puantajGorunumu||'puantaj')==='puantaj';
         panel.style.display=yetkili&&puantajMi?'block':'none';if(!yetkili||!puantajMi)return;
-        if(!force&&pusulaCache.has(d.anahtar)&&(isPersonelUser()||cache.has(d.anahtar))){panelCiz();return}
+        const bordroAnahtari=bordroOnbellekAnahtari(d),pusulaAnahtari=pusulaOnbellekAnahtari(d);
+        if(!force&&pusulaCache.has(pusulaAnahtari)&&(isPersonelUser()||cache.has(bordroAnahtari))){panelCiz();return}
         document.getElementById('bordroBelgeleriKartlari').innerHTML='<div style="padding:12px;color:#64748b">Belgeler yükleniyor...</div>';
         try{
             await pusulaKayitlariniYukle(d,force);
-            if(yonetebilir()&&(!cache.has(d.anahtar)||force)){
-                if(yuklenenAnahtar===d.anahtar)return;yuklenenAnahtar=d.anahtar;
+            if(yonetebilir()&&(!cache.has(bordroAnahtari)||force)){
+                if(yuklenenAnahtar===bordroAnahtari)return;yuklenenAnahtar=bordroAnahtari;
                 const{data,error}=await supabaseClient.from('portal_settings').select('value').eq('company_id',aktifSirketId()).eq('setting_key',d.ayar).maybeSingle();if(error)throw error;
-                const value=data?.value&&typeof data.value==='object'?data.value:{ay:d.anahtar,belgeler:{}};cache.set(d.anahtar,{ay:d.anahtar,belgeler:value.belgeler&&typeof value.belgeler==='object'?value.belgeler:{}});
+                const value=data?.value&&typeof data.value==='object'?data.value:{ay:d.anahtar,belgeler:{}};cache.set(bordroAnahtari,{ay:d.anahtar,belgeler:value.belgeler&&typeof value.belgeler==='object'?value.belgeler:{}});
             }
-        }catch(e){console.error('Bordro belgeleri okunamadı:',e);if(yonetebilir()&&!cache.has(d.anahtar))cache.set(d.anahtar,{ay:d.anahtar,belgeler:{}});showToast?.('Bordro belgeleri alınamadı.','warning')}finally{yuklenenAnahtar='';panelCiz()}
+        }catch(e){console.error('Bordro belgeleri okunamadı:',e);if(yonetebilir()&&!cache.has(bordroAnahtari))cache.set(bordroAnahtari,{ay:d.anahtar,belgeler:{}});showToast?.('Bordro belgeleri alınamadı.','warning')}finally{yuklenenAnahtar='';panelCiz()}
     }
-    async function ayariKaydet(d,k){const value={ay:d.anahtar,belgeler:k.belgeler||{},guncellemeTarihi:new Date().toISOString()},{error}=await supabaseClient.from('portal_settings').upsert({company_id:aktifSirketId(),setting_key:d.ayar,value},{onConflict:'company_id,setting_key'});if(error)throw error;cache.set(d.anahtar,value)}
+    async function ayariKaydet(d,k){const value={ay:d.anahtar,belgeler:k.belgeler||{},guncellemeTarihi:new Date().toISOString()},{error}=await supabaseClient.from('portal_settings').upsert({company_id:aktifSirketId(),setting_key:d.ayar,value},{onConflict:'company_id,setting_key'});if(error)throw error;cache.set(bordroOnbellekAnahtari(d),value)}
     function modalKur(){if(document.getElementById('bordroBelgeleriModal'))return;const m=document.createElement('div');m.id='bordroBelgeleriModal';m.className='modal-overlay';m.style.zIndex='10060';m.innerHTML='<div class="modal-card bordro-yukleme-kart"><div class="modal-header"><h3>📁 Bordro Belgeleri</h3><button class="modal-close" onclick="modalKapat(\'bordroBelgeleriModal\')">✕</button></div><div class="modal-body"><p class="bordro-yukleme-aciklama"><strong id="bordroModalAy">—</strong> için yüklemek istediğiniz belgeleri seçin. Seçmediğiniz mevcut belgeler korunur.</p><div id="bordroYuklemeListesi" class="bordro-yukleme-listesi"></div><div class="bordro-yukleme-alt"><button type="button" class="btn-modern" onclick="modalKapat(\'bordroBelgeleriModal\')">Vazgeç</button><button type="button" id="bordroTopluKaydet" class="bordro-yukle-kaydet" onclick="bordroBelgeleriniTopluKaydet()">Seçilen Belgeleri Yükle</button></div></div></div>';document.body.appendChild(m);const p=document.createElement('div');p.id='bordroBelgeOnizleme';p.className='modal-overlay';p.style.zIndex='10070';p.innerHTML='<div class="modal-card bordro-onizleme-kart"><div class="modal-header"><h3 id="bordroOnizlemeBaslik">Belge Önizleme</h3><div style="display:flex;gap:7px"><button type="button" class="btn-modern btn-detail-modern" onclick="bordroOnizlenenBelgeIndir()">⬇ İndir</button><button class="modal-close" onclick="bordroBelgeOnizlemeKapat()">✕</button></div></div><div class="modal-body"><iframe id="bordroOnizlemeFrame" title="Bordro belgesi önizleme"></iframe></div></div>';document.body.appendChild(p)}
     window.bordroBelgeleriYuklemeAc=function(odak=''){if(!yonetebilir())return;modalKur();const d=donem(),k=kayit(d);document.getElementById('bordroModalAy').textContent=d.etiket;document.getElementById('bordroYuklemeListesi').innerHTML=TURLER.map(t=>'<div class="bordro-yukleme-satir"><label><span>'+esc(t.ad)+'</span><small>'+(k.belgeler?.[t.kod]?'Mevcut belge var':'')+'</small></label><input id="bordroDosya_'+t.kod+'" type="file" accept=".pdf,.xls,.xlsx,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></div>').join('');const btn=document.getElementById('bordroTopluKaydet');btn.disabled=false;btn.classList.remove('yukleniyor');btn.style.setProperty('--p','0%');btn.textContent='Seçilen Belgeleri Yükle';document.getElementById('bordroBelgeleriModal').style.display='flex';if(odak)setTimeout(()=>document.getElementById('bordroDosya_'+odak)?.click(),120)};
     function uzanti(f){const u=String(f.name||'').toLowerCase();return u.endsWith('.pdf')?'pdf':u.endsWith('.xlsx')?'xlsx':u.endsWith('.xls')?'xls':''}
