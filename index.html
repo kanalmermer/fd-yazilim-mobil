@@ -15661,6 +15661,7 @@
         return null;
     }
 
+    let izinMTopluAtamaSayaci = 0;
     let izinMTopluDurum = { pId:'', ay:'', mGunleri:[], secili:new Set(), atamalar:new Map() };
 
     function izinMTopluPersonelDegisti(pId) {
@@ -15736,8 +15737,19 @@
 
     function izinMTopluGunSec(tarih) {
         if (!izinMTopluDurum.mGunleri.includes(tarih)) return;
-        if (izinMTopluDurum.secili.has(tarih)) izinMTopluDurum.secili.delete(tarih);
-        else izinMTopluDurum.secili.add(tarih);
+        const kaldirilacak = izinMTopluDurum.secili.has(tarih);
+        const adaylar = (kaldirilacak ? [...izinMTopluDurum.secili].filter(gun => gun !== tarih) : [...izinMTopluDurum.secili, tarih]).sort();
+        const kesintisiz = adaylar.every((gun,index) => {
+            if (!index) return true;
+            const onceki = new Date(adaylar[index-1] + 'T00:00:00');
+            onceki.setDate(onceki.getDate() + 1);
+            return magicpassTarihAnahtari(onceki) === gun;
+        });
+        if (!kesintisiz) {
+            showToast(kaldirilacak ? 'Arada boşluk oluşmaması için önce seçimin uç günlerinden kaldırın.' : 'Aynı grupta yalnızca birbirini takip eden günleri seçebilirsiniz. Bu günü ayrı bir işlem olarak ekleyin.', 'warning');
+            return;
+        }
+        if (kaldirilacak) izinMTopluDurum.secili.delete(tarih); else izinMTopluDurum.secili.add(tarih);
         izinMTopluCiz();
     }
 
@@ -15769,7 +15781,9 @@
         const tur = document.getElementById('izinMTopluTur').value;
         const donem = tur === 'Yıllık İzin' ? document.getElementById('izinMTopluDonem').value : '-';
         if (tur === 'Yıllık İzin' && !donem) { showToast('Yıllık izin için hakediş dönemini seçin.', 'warning'); return; }
-        tarihler.forEach(tarih => izinMTopluDurum.atamalar.set(tarih, { tur, donem }));
+        const sira = ++izinMTopluAtamaSayaci;
+        const grupId = `${Date.now().toString(36)}-${sira}`;
+        tarihler.forEach(tarih => izinMTopluDurum.atamalar.set(tarih, { tur, donem, grupId, sira }));
         izinMTopluDurum.secili.clear();
         izinMTopluDonemleriDoldur();
         izinMTopluCiz();
@@ -15778,17 +15792,19 @@
     function izinMTopluGrupListesi() {
         const gruplar = new Map();
         [...izinMTopluDurum.atamalar.entries()].sort((a,b) => a[0].localeCompare(b[0])).forEach(([tarih,atama]) => {
-            const anahtar = atama.tur + '|' + atama.donem;
+            const anahtar = atama.grupId || (atama.tur + '|' + atama.donem);
             if (!gruplar.has(anahtar)) gruplar.set(anahtar, { anahtar, ...atama, tarihler:[] });
             gruplar.get(anahtar).tarihler.push(tarih);
         });
-        return [...gruplar.values()];
+        return [...gruplar.values()].sort((a,b) => Number(a.sira || 0) - Number(b.sira || 0));
     }
 
     function izinMTopluAtamayiSil(kodluAnahtar) {
         const anahtar = decodeURIComponent(kodluAnahtar);
-        const [tur, donem] = anahtar.split('|');
-        [...izinMTopluDurum.atamalar.entries()].forEach(([tarih,atama]) => { if (atama.tur === tur && atama.donem === donem) izinMTopluDurum.atamalar.delete(tarih); });
+        [...izinMTopluDurum.atamalar.entries()].forEach(([tarih,atama]) => {
+            const atamaAnahtari = atama.grupId || (atama.tur + '|' + atama.donem);
+            if (atamaAnahtari === anahtar) izinMTopluDurum.atamalar.delete(tarih);
+        });
         izinMTopluDonemleriDoldur();
         izinMTopluCiz();
     }
@@ -20445,16 +20461,17 @@ document.addEventListener('click',function(e){
     window.fdKvkkErisimKontrolu=async function(zorla=false){
         if(!activeUser||!SUPABASE_MODE){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
         if(kontrolSozu&&!zorla)return kontrolSozu;
-        modalHazirla();
         kontrolSozu=(async()=>{
             try{
                 const sonuc=await cagir({action:'get-active'});aktifBelge=sonuc.document;
                 if(sonuc.acknowledged){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
+                modalHazirla();
                 document.getElementById('kvkkModalYukleniyor').style.display='none';
                 const icerik=document.getElementById('kvkkModalIcerik');icerik.textContent=aktifBelge.content||'';icerik.style.display='block';
                 document.getElementById('kvkkModalSurum').textContent=(aktifBelge.title||'KVKK Aydınlatma Metni')+' · Sürüm '+(aktifBelge.version||'-');
                 document.getElementById('kvkkOnaySatiri').style.display='flex';return false;
             }catch(error){
+                modalHazirla();
                 document.getElementById('kvkkModalYukleniyor').style.display='none';const alan=document.getElementById('kvkkModalHata');alan.innerHTML=escapeDashboardText(hataMetni(error,'Aydınlatma metni alınamadı.'))+'<br><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px" onclick="fdKvkkErisimKontrolu(true)">Yeniden Dene</button>';alan.style.display='block';return false;
             }finally{kontrolSozu=null}
         })();return kontrolSozu;
