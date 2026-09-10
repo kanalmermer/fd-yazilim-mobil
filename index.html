@@ -15877,6 +15877,18 @@
             if (azami && gun > azami) throw new Error(`${aralik.tur} en fazla ${azami} gün olabilir.`);
             return { id:Date.now()+index, sirketId:aktifSirketId(), pId, tur:aralik.tur, donem:aralik.donem, gun, baslangic:aralik.baslangic, bitis:aralik.bitis, iseBaslama:izinTopluIseBaslamaHesapla(aralik.bitis, aralik.tur), sebep:aralik.tur === 'Yıllık İzin' ? '' : varsayilanIzinSebebi(), sahitler:[], raporBilgisi:'' };
         });
+        for (let bas=0; bas<kayitlar.length;) {
+            let son=bas;
+            while (son+1 < kayitlar.length) {
+                const ertesi = new Date(kayitlar[son].bitis + 'T00:00:00');
+                ertesi.setDate(ertesi.getDate() + 1);
+                if (magicpassTarihAnahtari(ertesi) !== kayitlar[son+1].baslangic) break;
+                son++;
+            }
+            const ortakIseBaslama = izinTopluIseBaslamaHesapla(kayitlar[son].bitis, 'Ücretsiz İzin');
+            for (let index=bas; index<=son; index++) kayitlar[index].iseBaslama = ortakIseBaslama;
+            bas = son + 1;
+        }
         return kayitlar;
     }
 
