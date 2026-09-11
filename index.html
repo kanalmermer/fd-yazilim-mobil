@@ -15892,6 +15892,27 @@
         return kayitlar;
     }
 
+    function izinMTopluKayitSonrasiSifirla(kayitlar) {
+        const kaydedilenGunler = new Set();
+        (kayitlar || []).forEach(kayit => {
+            const baslangic = new Date(String(kayit.baslangic).slice(0,10) + 'T00:00:00');
+            const bitis = new Date(String(kayit.bitis).slice(0,10) + 'T00:00:00');
+            for (const gun = new Date(baslangic); gun <= bitis; gun.setDate(gun.getDate() + 1)) kaydedilenGunler.add(magicpassTarihAnahtari(gun));
+        });
+        izinMTopluDurum.mGunleri = izinMTopluDurum.mGunleri.filter(tarih => !kaydedilenGunler.has(tarih));
+        izinMTopluDurum.secili.clear();
+        izinMTopluDurum.atamalar.clear();
+        const kalan = izinMTopluDurum.mGunleri.length;
+        const bilgi = document.getElementById('izinMTopluBilgi');
+        if (bilgi) bilgi.textContent = kalan ? `${kalan} işlem yapılmamış M günü kaldı.` : 'Seçilen aydaki M günlerinin izin kayıtları tamamlandı.';
+        const atama = document.getElementById('izinMTopluAtama');
+        if (atama) atama.style.display = kalan ? 'block' : 'none';
+        const tur = document.getElementById('izinMTopluTur');
+        if (tur) tur.value = 'Ücretsiz İzin';
+        izinMTopluTurDegisti();
+        izinMTopluCiz();
+    }
+
     async function izinMTopluKaydetVeYazdir() {
         if (!isManagerUser() || izinIslemde) return;
         let yeniIzinler;
@@ -15914,6 +15935,7 @@
             initUI();
             document.getElementById('izinPersonelSelect').value = pId;
             personelSecildi(pId);
+            izinMTopluKayitSonrasiSifirla(yeniIzinler);
             izinMTopluDilekceleriAc(yeniIzinler);
             showToast(`${yeniIzinler.length} izin kaydedildi; dilekçeler toplu hazırlandı.`);
         } catch (error) {
