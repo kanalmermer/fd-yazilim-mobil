@@ -16674,6 +16674,7 @@
         event.preventDefault();
         const yeni = document.getElementById('zorunluYeniSifre').value;
         const tekrar = document.getElementById('zorunluYeniSifreTekrar').value;
+        const zorunluDegisiklik = sifreDegistirmeZorunluMu;
         if (!yeni.length) return showToast('Yeni şifre boş bırakılamaz.','warning');
         if (yeni.length < 6) return showToast('Yeni şifre en az 6 karakter olmalıdır.','warning');
         if (yeni !== tekrar) return showToast('Yazdığınız yeni şifreler aynı değil.','warning');
@@ -16683,10 +16684,24 @@
             const { data, error } = await supabaseClient.functions.invoke('manage-user', { body:{ action:'change-own-password', password:yeni, companyId:aktifSirketId() } });
             if (error) throw error;
             if (!data?.success) throw new Error(data?.message || 'Şifre değiştirilemedi.');
+            const kullaniciAdi = String(activeUser?.yetkiKullaniciAdi || activeUser?.tcNo || '').trim();
+            let yeniOturum = null, sonOturumHatasi = null;
+            for (const email of supabaseKullaniciEpostalari(kullaniciAdi)) {
+                const sonuc = await supabaseClient.auth.signInWithPassword({ email, password:yeni });
+                if (!sonuc.error && sonuc.data?.user) { yeniOturum = sonuc.data; break; }
+                sonOturumHatasi = sonuc.error;
+            }
+            if (!yeniOturum?.user) throw sonOturumHatasi || new Error('Yeni şifreyle güvenli oturum yenilenemedi.');
+            if (activeUser?.supabaseUserId && String(yeniOturum.user.id) !== String(activeUser.supabaseUserId)) {
+                await supabaseClient.auth.signOut();
+                throw new Error('Yenilenen oturum mevcut kullanıcıyla eşleşmedi.');
+            }
             activeUser.sifreDegismeli = false;
             sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
+            await girisParolasiniGuvenliKaydet(kullaniciAdi, yeni);
             document.getElementById('modalZorunluSifre').style.display = 'none';
             showToast('Şifreniz değiştirildi. Uygulamayı kullanmaya devam edebilirsiniz.');
+            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 80);
         } catch (error) {
             let mesaj = error?.message || String(error);
             try {
@@ -20592,6 +20607,7 @@ document.addEventListener('click',function(e){
     }
     window.fdKvkkErisimKontrolu=async function(zorla=false){
         if(!activeUser||!SUPABASE_MODE){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
+        if(activeUser.rol==='Personel'&&activeUser.sifreDegismeli){document.getElementById('modalKvkkAydinlatma').style.display='none';return false}
         if(kontrolSozu&&!zorla)return kontrolSozu;
         kontrolSozu=(async()=>{
             try{
@@ -20635,8 +20651,8 @@ document.addEventListener('click',function(e){
         catch(error){alan.innerHTML='<span style="color:#b91c1c;">'+escapeDashboardText(hataMetni(error,'Onay kaydı alınamadı.'))+'</span>'}
     };
     const oncekiShowHub=window.showHub;
-    if(typeof oncekiShowHub==='function')window.showHub=function(){const sonuc=oncekiShowHub.apply(this,arguments);fdKvkkErisimKontrolu();return sonuc};
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{if(activeUser)fdKvkkErisimKontrolu()});else if(activeUser)fdKvkkErisimKontrolu();
+    if(typeof oncekiShowHub==='function')window.showHub=function(){const sonuc=oncekiShowHub.apply(this,arguments);if(!(activeUser?.rol==='Personel'&&activeUser?.sifreDegismeli))fdKvkkErisimKontrolu();return sonuc};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu()});else if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu();
 })();
 </script>
 
