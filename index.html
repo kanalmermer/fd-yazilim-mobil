@@ -1294,7 +1294,9 @@
                 </div>
                 <div class="form-group" id="loginCompanyGroup">
                     <label for="loginCompany">Şirket</label>
-                    <select id="loginCompany"><option value="">Şirket bilgileri yükleniyor...</option></select>
+                    <select id="loginCompany">
+                        <option value="6f04d1b9-95c9-4504-95d0-3392163a8e96" selected>KANAL MERMER</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="loginPass">Şifre</label>
@@ -1939,14 +1941,17 @@
                     <div style="display:flex;justify-content:flex-end;"><button id="ayarKvkkYayinlaBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="kvkkMetniniYayinla(this)">📜 Yeni Sürümü Yayımla</button></div>
                     <small style="display:block;margin-top:10px;color:#9a3412;">Bu alan aydınlatma metnidir; açık rıza beyanı değildir. Yayımlamadan önce şirketinizin hukuk/KVKK danışmanına kontrol ettirmeniz önerilir.</small>
                 </div></details>
-                <details class="profile-section" id="ayarOtomatikBildirimBolumu"><summary>🔔 Saat 12 Otomatik Personel Bildirimleri</summary><div>
-                    <p style="margin:0 0 12px;color:#64748b;line-height:1.55;">Her gün saat 12.00'de; dünün giriş-çıkış kayıtları ile bugünün doğum günü ve yıllık izin hak edişleri kontrol edilir. Aşağıdaki metinleri değiştirebilirsiniz.</p>
+                <details class="profile-section" id="ayarOtomatikBildirimBolumu"><summary>🔔 Otomatik Personel Bildirimleri</summary><div>
+                    <p style="margin:0 0 12px;color:#64748b;line-height:1.55;">Avans ve icra ilk kez kaydedildiğinde anlık bildirim gönderilir. Her gün saat 12.00'de giriş-çıkış, doğum günü ve yıllık izin; her ayın 15'inde açık icra bakiyeleri kontrol edilir. Metinleri aşağıdan değiştirebilirsiniz.</p>
                     <div class="form-group"><label>İşe Gelmeme Bildirimi</label><textarea id="ayarMagicBildirimGelmedi" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Giriş Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimGirisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Çıkış Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimCikisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Doğum Günü Bildirimi</label><textarea id="ayarMagicBildirimDogumGunu" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Yıllık İzin Hak Edişi Bildirimi</label><textarea id="ayarMagicBildirimYillikIzin" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
-                    <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Kullanılabilir alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>; yıllık izin mesajında ayrıca <strong>{YIL}</strong>.</div>
+                    <div class="form-group"><label>Yeni Avans Kaydı Bildirimi</label><textarea id="ayarMagicBildirimAvansKayit" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {TUTAR}, {TAKSİT}, {TAKSİT_BİLGİSİ}</small></div>
+                    <div class="form-group"><label>Yeni İcra Kaydı Bildirimi</label><textarea id="ayarMagicBildirimIcraKayit" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {DOSYA_NO}, {ALACAKLI}, {TUTAR}</small></div>
+                    <div class="form-group"><label>Ayın 15'i İcra Bakiye Bildirimi</label><textarea id="ayarMagicBildirimIcraAylik" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {DOSYA_NO}, {ALACAKLI}, {TOPLAM}, {ÖDENEN}, {KALAN}</small></div>
+                    <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Ortak alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>. Yıllık izin mesajında ayrıca <strong>{YIL}</strong> ve <strong>{GÜN}</strong> kullanılabilir.</div>
                     <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button id="ayarOtomatikBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">💾 Bildirim Metinlerini Kaydet</button></div>
                 </div></details>
                 <details class="profile-section"><summary>Günlük Rapor ve Kart Okuma Ayarları</summary><div>
@@ -3666,7 +3671,10 @@
         magicpassBildirimGirisYokMetni: '{AD}, {TARİH} tarihli giriş kaydınız bulunmuyor. Lütfen kaydınızı düzelttiriniz.',
         magicpassBildirimCikisYokMetni: '{AD}, {TARİH} tarihli çıkış kaydınız bulunmuyor. Lütfen kaydınızı düzelttiriniz.',
         magicpassBildirimDogumGunuMetni: '{AD}, doğum gününüz kutlu olsun. Sağlıklı ve mutlu yıllar dileriz.',
-        magicpassBildirimYillikIzinMetni: '{AD}, bugün {YIL}. çalışma yılınızı tamamladınız ve yıllık izin hakkı kazandınız.',
+        magicpassBildirimYillikIzinMetni: '{AD}, bugün {YIL}. çalışma yılınızı tamamladınız ve {GÜN} gün yıllık izin hakkı kazandınız.',
+        magicpassBildirimAvansKayitMetni: '{AD}, {TUTAR} tutarında avans kaydınız oluşturuldu. Kesinti {TAKSİT_BİLGİSİ} yapılacaktır.',
+        magicpassBildirimIcraKayitMetni: '{AD}, {DOSYA_NO} dosya numaralı, {ALACAKLI} alacaklı kurumuna ait {TUTAR} tutarındaki icra kaydınız oluşturuldu.',
+        magicpassBildirimIcraAylikMetni: '{AD}, {DOSYA_NO} numaralı icra dosyanızdan bugüne kadar {ÖDENEN} ödendi. Kalan tutar {KALAN}.',
         vardiyaAciklamalar: 'HERKES GÖREVİ NEREDE YAZIYORSA ORADA ÇALIŞACAK.\nHERKES ÇALIŞTIĞI BÖLGEYİ AKŞAM TEMİZLEYECEK.\nGİRİŞ VE ÇIKIŞLARDA HERKES KARTINI MAKİNAYA OKUTACAK.',
         yedekleme: {
             aktif: false,
@@ -4641,14 +4649,30 @@
 
     async function supabaseGirisSirketleriniYukle() {
         if (!SUPABASE_MODE) return;
+        // Giriş, şirket liste servisi yavaşladığında veya tarayıcı isteği
+        // engellediğinde beklemesin. Bu kurulumun doğrulanmış şirketi anında
+        // gösterilir; RPC yanıtı geldiğinde liste yine sunucudan yenilenir.
+        const varsayilanSirket = {
+            id: '6f04d1b9-95c9-4504-95d0-3392163a8e96',
+            kisaAd: 'KANAL MERMER',
+            unvan: 'KANAL MERMER MAD.NAK.İNŞ.GD.TAR.HAYV.SAN.TİC.LTD.ŞTİ.'
+        };
+        if (!sirketler.some(item => String(item.id || '') === varsayilanSirket.id)) {
+            sirketler = [varsayilanSirket, ...sirketler.filter(item => String(item.id || '') !== varsayilanSirket.id)];
+            localStorage.setItem('loginSirketOnbellegi', JSON.stringify(sirketler));
+            populateLoginCompanySelect();
+        }
         try {
             const { data, error } = await supabaseClient.rpc('portal_login_companies');
             if (error) throw error;
-            sirketler = (data || []).map(item => ({
+            const sunucudakiSirketler = (data || []).map(item => ({
                 id: item.id,
                 kisaAd: item.short_name || item.title || '',
                 unvan: item.title || item.short_name || ''
             }));
+            // Geçici ağ/RPC sorunu boş dizi döndürürse girişteki doğrulanmış
+            // şirket seçeneğini silme. Dolu yanıt geldiğinde normal listeyi kullan.
+            if (sunucudakiSirketler.length) sirketler = sunucudakiSirketler;
             localStorage.setItem('loginSirketOnbellegi', JSON.stringify(sirketler));
             populateLoginCompanySelect();
         } catch (error) {
@@ -9130,6 +9154,19 @@
         return Number(tutar || 0).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 2 });
     }
 
+    function personelBildirimSablonunuDoldur(ayarAnahtari, alanlar = {}) {
+        const sablon = String(uygulamaAyarlari?.[ayarAnahtari] || VARSAYILAN_UYGULAMA_AYARLARI?.[ayarAnahtari] || '');
+        return Object.entries(alanlar).reduce((metin, [anahtar, deger]) =>
+            metin.replaceAll(`{${anahtar}}`, String(deger ?? '')), sablon
+        ).slice(0, 500);
+    }
+
+    async function personelKayitBildirimiGonder(personelId, baslik, mesaj) {
+        if (!SUPABASE_MODE || !supabaseClient || !activeUser?.sirketId) return { atlandi:true };
+        if (typeof window.fdPersonelOtomatikBildirimGonder !== 'function') throw new Error('Bildirim sistemi hazır değil.');
+        return window.fdPersonelOtomatikBildirimGonder(String(personelId || ''), baslik, mesaj);
+    }
+
     function avansSirketIdBul(personel) {
         const tekSirket = sirketler.length === 1 ? sirketler[0].id : '';
         return String(aktifSirketId() || personel?.sirketId || localStorage.getItem('lastSelectedCompanyId') || tekSirket || '');
@@ -9265,6 +9302,19 @@
                 veriOnbelleginiKaydet();
             } else {
                 await verileriKaydet();
+            }
+            if (!mevcutAvans) {
+                const taksitBilgisi = taksitSayisi === 1 ? 'tek seferde' : `${taksitSayisi} taksit halinde`;
+                const mesaj = personelBildirimSablonunuDoldur('magicpassBildirimAvansKayitMetni', {
+                    AD: personel.ad || 'Personel', TUTAR: paraFormatla(tutar), TAKSİT: taksitSayisi,
+                    TAKSIT: taksitSayisi, 'TAKSİT_BİLGİSİ': taksitBilgisi, TAKSIT_BILGISI: taksitBilgisi
+                });
+                try {
+                    await personelKayitBildirimiGonder(personel.id, 'Avans Kaydı', mesaj);
+                } catch (bildirimHatasi) {
+                    console.warn('Avans kaydedildi ancak personel bildirimi gönderilemedi:', bildirimHatasi);
+                    showToast?.('Avans kaydedildi; personel bildirimi gönderilemedi.', 'warning');
+                }
             }
             avansFormReset();
             avansSekmeDegistir('kayitlar', document.getElementById('btnAvansKayitlarSekme'));
@@ -10073,6 +10123,18 @@
             kayit.pdfBase64 = '';
             kayit.bitisPdfBase64 = '';
             await driveVerileriniYukleBaslangicta('icra');
+            if (!mevcutKayit) {
+                const mesaj = personelBildirimSablonunuDoldur('magicpassBildirimIcraKayitMetni', {
+                    AD: personel.ad || 'Personel', DOSYA_NO: kayit.dosyaNo,
+                    ALACAKLI: kayit.alacakli, TUTAR: paraFormatla(kayit.toplamBorc)
+                });
+                try {
+                    await personelKayitBildirimiGonder(personel.id, 'İcra Kaydı', mesaj);
+                } catch (bildirimHatasi) {
+                    console.warn('İcra kaydedildi ancak personel bildirimi gönderilemedi:', bildirimHatasi);
+                    showToast?.('İcra kaydedildi; personel bildirimi gönderilemedi.', 'warning');
+                }
+            }
             event.currentTarget.reset();
             document.getElementById('icraBaslangicAy').value = new Date().toISOString().slice(0, 7);
             icraYeniKayitKapat();
@@ -17767,11 +17829,11 @@
     function magicpassGunlukRaporAyarlariniDoldur(){
         const mesai=document.getElementById('ayarMagicGunlukMesaiEsik'),mukerrer=document.getElementById('ayarMagicMukerrerDakika'),durum=document.getElementById('ayarMagicCihazsizDurum');
         if(mesai)mesai.value=magicpassGunlukMesaiEsigi();if(mukerrer)mukerrer.value=Math.min(30,Math.max(0,Number(uygulamaAyarlari.magicpassMukerrerBasimDakika??3)));if(durum)durum.value=String(uygulamaAyarlari.magicpassCihazsizDurumMetni||'Kayıt Yok');
-        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
+        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni',ayarMagicBildirimAvansKayit:'magicpassBildirimAvansKayitMetni',ayarMagicBildirimIcraKayit:'magicpassBildirimIcraKayitMetni',ayarMagicBildirimIcraAylik:'magicpassBildirimIcraAylikMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
     }
 
     function otomatikBildirimSablonDegerleriniOku(varsayılanKullan=false){
-        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin'};
+        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin',magicpassBildirimAvansKayitMetni:'ayarMagicBildirimAvansKayit',magicpassBildirimIcraKayitMetni:'ayarMagicBildirimIcraKayit',magicpassBildirimIcraAylikMetni:'ayarMagicBildirimIcraAylik'};
         return Object.fromEntries(Object.entries(alanlar).map(([anahtar,id])=>{
             const girilen=String(document.getElementById(id)?.value||'').trim();
             const deger=varsayılanKullan?(girilen||String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')):girilen;
@@ -17785,12 +17847,12 @@
         if(Object.values(sablonlar).some(metin=>!metin))return showToast('Otomatik bildirim mesajlarının tamamını doldurun.','warning');
         const eskiYazi=buton?.innerHTML||'';
         if(buton){buton.disabled=true;buton.innerHTML='⏳ Kaydediliyor...';}
-        showGlobalOverlay('Bildirim metinleri kaydediliyor','Saat 12 otomatik bildirimlerinde kullanılacak mesajlar güncelleniyor...');
+        showGlobalOverlay('Bildirim metinleri kaydediliyor','Otomatik ve kayıt bildirimlerinde kullanılacak mesajlar güncelleniyor...');
         try{
             const kayitli=await sirketUygulamaAyarParcasiKaydet(sablonlar);
             if(Object.entries(sablonlar).some(([anahtar,deger])=>String(kayitli[anahtar]||'')!==deger))throw new Error('Kaydedilen bildirim metinleri doğrulanamadı.');
             magicpassGunlukRaporAyarlariniDoldur();
-            showToast('Saat 12 otomatik bildirim metinleri kaydedildi.','success');
+            showToast('Personel bildirim metinleri kaydedildi.','success');
         }catch(error){showToast('Bildirim metinleri kaydedilemedi: '+(error.message||error),'error');}
         finally{hideGlobalOverlay();if(buton){buton.disabled=false;buton.innerHTML=eskiYazi;}}
     }
@@ -20447,6 +20509,11 @@ document.addEventListener('click',function(e){
         if(!activeUser||!destekleniyor()||!mobilUygulamaOrtami()||Notification.permission!=='granted')return;
         try{const registration=await navigator.serviceWorker.ready,config=await cagir({action:'config'});await aboneligiKaydet(registration,config);izinDugmesiniGuncelle()}catch(error){console.warn('Bildirim aboneliği yenilenemedi:',error)}
     }
+    window.fdPersonelOtomatikBildirimGonder=async function(personelId,baslik,mesaj){
+        const hedef=String(personelId||'').trim();
+        if(!hedef)throw new Error('Bildirim gönderilecek personel bulunamadı.');
+        return cagir({action:'send',title:String(baslik||'Bilgilendirme'),message:String(mesaj||''),targetMode:'selection',targetEmployeeIds:[hedef]});
+    };
     window.openBildirimModal=async function(){
         if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
         const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi');fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
