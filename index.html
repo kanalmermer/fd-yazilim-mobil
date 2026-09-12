@@ -499,7 +499,7 @@
         #izinTakipApp #izinTabloGecmis th:nth-child(7), #izinTakipApp #izinTabloGecmis td:nth-child(7) { width:225px; min-width:225px; }
         #izinTakipApp #izinTabloGecmis .action-btns { display:flex; flex-wrap:nowrap; align-items:center; gap:4px; }
         #izinTakipApp #izinTabloGecmis .action-btns button { flex:0 0 auto; width:auto; margin:0; padding:6px 7px; font-size:.68rem; white-space:nowrap; }
-        .izin-personel-kapsam{display:flex;gap:5px;margin:0 0 7px}.izin-personel-kapsam button{flex:1;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#64748b;padding:7px 9px;cursor:pointer;font-size:.69rem;font-weight:800}.izin-personel-kapsam button.active{border-color:#0284c7;background:#e0f2fe;color:#0369a1}.izin-personel-kapsam button[data-kapsam="ayrilan"].active{border-color:#fca5a5;background:#fef2f2;color:#b91c1c}
+        .izin-ayrilan-liste{display:none;margin-top:8px;padding:8px;border:1px solid #fecaca;border-radius:10px;background:#fff7f7;max-height:245px;overflow:auto}.izin-ayrilan-liste-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;padding:2px 3px 7px;border-bottom:1px solid #fee2e2}.izin-ayrilan-liste-head strong{color:#991b1b;font-size:.73rem}.izin-ayrilan-liste-head button{border:0;background:transparent;color:#64748b;cursor:pointer;font-size:.7rem}.izin-ayrilan-kart{display:flex;align-items:center;justify-content:space-between;gap:9px;width:100%;margin-top:5px;padding:9px 10px;border:1px solid #fecaca;border-radius:8px;background:#fff;color:#334155;text-align:left;cursor:pointer}.izin-ayrilan-kart:hover{border-color:#f87171;background:#fef2f2}.izin-ayrilan-kart strong,.izin-ayrilan-kart small{display:block}.izin-ayrilan-kart strong{font-size:.73rem}.izin-ayrilan-kart small{margin-top:3px;color:#64748b;font-size:.65rem}.izin-ayrilan-kart>span:last-child{color:#b91c1c;font-weight:900}
         .izin-m-toplu-gunler { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:7px; margin-top:10px; }
         .izin-m-toplu-gun { border:1px solid #fecaca; border-radius:9px; padding:8px 5px; background:#fff7ed; color:#9a3412; cursor:pointer; text-align:center; font-weight:800; line-height:1.25; }
         .izin-m-toplu-gun small { display:block; margin-top:2px; color:#64748b; font-size:.62rem; font-weight:650; }
@@ -2349,9 +2349,9 @@
                             <input type="hidden" id="iEditId" value="">
                             <div class="form-group">
                                 <label>Personel Seçin</label>
-                                <div class="izin-personel-kapsam"><button id="izinAktifPersonelBtn" type="button" class="active" data-kapsam="aktif" onclick="izinPersonelKapsaminiDegistir('aktif')">Aktif Personeller</button><button id="izinAyrilanPersonelBtn" type="button" data-kapsam="ayrilan" onclick="izinPersonelKapsaminiDegistir('ayrilan')">Ayrılan Personeller</button></div>
                                 <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;"><input type="text" id="izinPersonelSecimKutusu" list="izinPersonelDatalist" autocomplete="off" required placeholder="Ad, T.C. veya şube yazın" oninput="izinPersonelAramaliSecimYap(false)" onchange="izinPersonelAramaliSecimYap(true)" onfocus="this.select()"><button type="button" class="btn-modern btn-detail-modern" title="Başka personel seç" aria-label="Başka personel seç" onclick="izinPersonelSeciminiTemizle()" style="padding:9px 11px;">↻</button></div>
                                 <datalist id="izinPersonelDatalist"></datalist>
+                                <div id="izinAyrilanPersonelListesi" class="izin-ayrilan-liste"></div>
                                 <select id="izinPersonelSelect" onchange="personelSecildi(this.value)" style="display:none;">
                                     <option value="">-- Personel Seçiniz --</option>
                                 </select>
@@ -15192,14 +15192,6 @@
         document.getElementById('modalPersonel').style.display = 'flex';
     }
 
-    let izinPersonelListeKapsami='aktif';
-    function izinPersonelKapsaminiDegistir(kapsam) {
-        izinPersonelListeKapsami=kapsam==='ayrilan'?'ayrilan':'aktif';
-        document.querySelectorAll('.izin-personel-kapsam button').forEach(btn=>btn.classList.toggle('active',btn.dataset.kapsam===izinPersonelListeKapsami));
-        izinPersonelSeciminiTemizle();
-        personelSelectDoldur();
-        const kutu=document.getElementById('izinPersonelSecimKutusu');if(kutu)kutu.placeholder=izinPersonelListeKapsami==='ayrilan'?'Ayrılan personelin adını, T.C. veya şubesini yazın':'Ad, T.C. veya şube yazın';
-    }
     function personelSelectDoldur() {
         const select = document.getElementById('izinPersonelSelect');
         const datalist = document.getElementById('izinPersonelDatalist');
@@ -15209,15 +15201,14 @@
         personeller
             .filter(p => {
                 const ayrildi=Boolean(tarihInputDegeri(p.cikisTarihi));
-                return aktifSirketeAit(p) && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo)) && (isPersonelUser()||(izinPersonelListeKapsami==='ayrilan'?ayrildi:!ayrildi));
+                return aktifSirketeAit(p) && !ayrildi && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo));
             })
             .sort((a, b) => {
                 const subeSirasi = String(a.sube || 'Merkez').localeCompare(String(b.sube || 'Merkez'), 'tr', { sensitivity: 'base' });
                 return subeSirasi || String(a.ad || '').localeCompare(String(b.ad || ''), 'tr', { sensitivity: 'base' });
             })
             .forEach(p => {
-                const cikis=tarihInputDegeri(p.cikisTarihi),cikisBilgisi=cikis?` · Çıkış: ${tarihFormati(cikis)}`:'';
-                const etiket = `${p.ad || 'İsimsiz Personel'} · ${p.sube || 'Merkez'}${cikisBilgisi} · ${p.id}`;
+                const etiket = `${p.ad || 'İsimsiz Personel'} · ${p.sube || 'Merkez'} · ${p.id}`;
                 const option = document.createElement('option');
                 option.value = String(p.id);
                 option.textContent = etiket;
@@ -15229,8 +15220,19 @@
                 aramaOption.dataset.personelId = String(p.id);
                 datalist.appendChild(aramaOption);
             });
+        if(!isPersonelUser()){
+            const ayrilanOption=document.createElement('option');ayrilanOption.value='__ayrilan__';ayrilanOption.textContent='Ayrılan Personeller';ayrilanOption.dataset.etiket='Ayrılan Personeller · Geçmiş izinlerini görüntüle';select.appendChild(ayrilanOption);
+            const ayrilanArama=document.createElement('option');ayrilanArama.value='Ayrılan Personeller · Geçmiş izinlerini görüntüle';ayrilanArama.dataset.personelId='__ayrilan__';datalist.appendChild(ayrilanArama);
+        }
         if ([...select.options].some(option => option.value === mevcutSecim)) select.value = mevcutSecim;
     }
+
+    function izinAyrilanPersonelListesiniKapat(){const alan=document.getElementById('izinAyrilanPersonelListesi');if(alan)alan.style.display='none'}
+    function izinAyrilanPersonelListesiniAc(){
+        const alan=document.getElementById('izinAyrilanPersonelListesi');if(!alan)return;const liste=personeller.filter(p=>aktifSirketeAit(p)&&Boolean(tarihInputDegeri(p.cikisTarihi))).sort((a,b)=>String(b.cikisTarihi||'').localeCompare(String(a.cikisTarihi||''))||String(a.ad||'').localeCompare(String(b.ad||''),'tr'));
+        alan.innerHTML='<div class="izin-ayrilan-liste-head"><strong>🔴 Ayrılan Personeller ('+liste.length+')</strong><button type="button" onclick="izinAyrilanPersonelListesiniKapat()">Kapat ✕</button></div>'+(liste.length?liste.map(p=>'<button type="button" class="izin-ayrilan-kart" onclick="izinAyrilanPersonelSec(\''+String(p.id).replace(/'/g,'')+'\')"><span><strong>'+escapeDashboardText(p.ad||'İsimsiz Personel')+'</strong><small>'+escapeDashboardText(p.sube||'Merkez')+' · Çıkış: '+escapeDashboardText(tarihFormati(p.cikisTarihi))+'</small></span><span>›</span></button>').join(''):'<div class="dashboard-empty">Ayrılan personel bulunmuyor.</div>');alan.style.display='block';
+    }
+    function izinAyrilanPersonelSec(pId){const p=personeller.find(x=>String(x.id)===String(pId));if(!p)return;const select=document.getElementById('izinPersonelSelect'),kutu=document.getElementById('izinPersonelSecimKutusu');let option=[...select.options].find(x=>String(x.value)===String(pId));if(!option){option=document.createElement('option');option.value=String(p.id);option.dataset.geciciAyrilan='1';option.dataset.etiket=(p.ad||'İsimsiz Personel')+' · '+(p.sube||'Merkez')+' · Çıkış: '+tarihFormati(p.cikisTarihi)+' · '+p.id;option.textContent=option.dataset.etiket;select.appendChild(option)}select.value=String(p.id);if(kutu)kutu.value=option.dataset.etiket;izinAyrilanPersonelListesiniKapat();personelSecildi(String(p.id))}
 
     function izinPersonelAramaliSecimYap(secimiTamamla = false) {
         const select = document.getElementById('izinPersonelSelect');
@@ -15321,6 +15323,10 @@
     function personelSecildi(pId) {
         const secimKutusu = document.getElementById('izinPersonelSecimKutusu');
         const gizliSelect = document.getElementById('izinPersonelSelect');
+        if(String(pId)==='__ayrilan__'){
+            gizliSelect.value='__ayrilan__';if(secimKutusu)secimKutusu.value='Ayrılan Personeller';document.getElementById('personelOzetCard').style.display='none';izinMTopluPersonelDegisti('');document.getElementById('seciliPersonelGecmisBaslik').innerText='Ayrılan Personeller';document.querySelector('#izinTabloGecmis tbody').innerHTML='<tr><td colspan="7" style="text-align:center;color:#64748b;">Aşağıdaki listeden bir personel seçin.</td></tr>';izinPersonelNotunuFormaYukle('');izinAyrilanPersonelListesiniAc();return;
+        }
+        izinAyrilanPersonelListesiniKapat();
         if (pId) {
             gizliSelect.value = String(pId);
             const option = [...gizliSelect.options].find(item => String(item.value) === String(pId));
@@ -16442,7 +16448,7 @@
         const editIdVal = document.getElementById('iEditId').value;
         const editIzinId = editIdVal ? parseInt(editIdVal) : null;
 
-        if (!pId || hesaplananNetGun <= 0) { alert("Lütfen geçerli personel ve tarih aralığı seçin."); return; }
+        if (!pId || pId==='__ayrilan__' || hesaplananNetGun <= 0) { alert("Lütfen geçerli personel ve tarih aralığı seçin."); return; }
         const seciliPersonel=personeller.find(p=>String(p.id)===String(pId)),iseGiris=tarihInputDegeri(seciliPersonel?.girisTarihi),istenCikis=tarihInputDegeri(seciliPersonel?.cikisTarihi);
         if(iseGiris&&baslangic<iseGiris){alert('İzin başlangıcı personelin işe giriş tarihinden önce olamaz.');return}
         if(istenCikis&&(baslangic>istenCikis||bitis>istenCikis)){alert('Ayrılan personele işten çıkış tarihinden sonrası için izin kaydedilemez.\n\nİşten çıkış: '+tarihFormati(istenCikis));return}
@@ -16506,8 +16512,8 @@
             if (tur !== 'Sağlık / Rapor') dilekceHazirla(kaydedilenIzin);
             izinFormReset();
             personelSelectDoldur();
-            document.getElementById('izinPersonelSelect').value = String(pId);
-            personelSecildi(String(pId));
+            const kayitPersoneli=personeller.find(p=>String(p.id)===String(pId));
+            if(tarihInputDegeri(kayitPersoneli?.cikisTarihi))izinAyrilanPersonelSec(String(pId));else{document.getElementById('izinPersonelSelect').value=String(pId);personelSecildi(String(pId))}
         } finally {
             submitButton.disabled = false;
             izinIslemde = false;
@@ -19502,7 +19508,7 @@ tapuCksArayuzunuKur();
     // FD toplu sağlamlaştırma: belge yükleme, izin, PDF, puantaj renkleri, kira ve pazar hesabı.
     function izinPersonelSeciminiTemizle(){
         const kutu=document.getElementById('izinPersonelSecimKutusu'),select=document.getElementById('izinPersonelSelect');
-        if(kutu)kutu.value='';if(select)select.value='';personelSecildi('');
+        izinAyrilanPersonelListesiniKapat();if(kutu)kutu.value='';if(select){select.querySelectorAll('option[data-gecici-ayrilan]').forEach(x=>x.remove());select.value=''}personelSecildi('');
         setTimeout(()=>{kutu?.focus();kutu?._fdPersonelListesiniAc?.();},200);
     }
     const fdPersonelOzetToplamOncesi=personelOzetKutusunuGuncelle;
@@ -20726,10 +20732,12 @@ function fdAuditModulAdi(value){return({personeller:'Personel',personel:'Persone
 function fdAuditIslemAdi(value){return({insert:'Eklendi',update:'Güncellendi',delete:'Silindi',restore:'Geri alındı'})[value]||value||'-'}
 function fdAuditYapanAdi(item){const actor=item?.actor||{},personel=personeller.find(p=>String(p.id)===String(actor.employee_legacy_id||''));return actor.full_name||personel?.ad||(item?.actor_id?'Artık kayıtlı olmayan kullanıcı':'Sistem / otomatik işlem')}
 function fdAuditPersonelAdi(data){const id=String(data?.pId||data?.personelId||data?.employee_legacy_id||'');return String(data?.personelAd||data?.personelAdi||personeller.find(p=>String(p.id)===id)?.ad||'').trim()}
-function fdAuditKayitOzeti(item){const d=item.new_data||item.old_data||{},m=String(item.module||'').toLocaleLowerCase('tr-TR'),p=fdAuditPersonelAdi(d),parca=[];if(p)parca.push(p);if(m.includes('irsaliye'))parca.push(d.irsaliyeNo||d.belgeNo||d.seriNo||d.firma||d.musteri);else if(m.includes('izin'))parca.push(d.tur||'İzin',d.baslangic&&d.bitis?tarihFormati(d.baslangic)+' – '+tarihFormati(d.bitis):d.baslangic);else if(m.includes('avans'))parca.push(d.avansNo||'',Number(d.tutar||0)>0?Number(d.tutar).toLocaleString('tr-TR',{style:'currency',currency:'TRY'}):'');else if(m.includes('icra'))parca.push(d.dosyaNo||'',d.alacakli||d.alacakliKurum||'');else if(m.includes('arac'))parca.push(d.plaka||d.aracPlaka||'');else if(m.includes('police'))parca.push(d.policeNo||d.hedefAdi||d.sirket||'');else if(m.includes('kira'))parca.push(d.kisaAd||d.kiraciAd||d.adres||'');else if(m.includes('personel'))parca.push(d.ad||d.adSoyad||'');else if(m.includes('vardiya')||m.includes('puantaj'))parca.push(d.tarih?tarihFormati(d.tarih):'',d.giris||d.durum||'');else parca.push(d.ad||d.baslik||d.aciklama||'');return parca.map(x=>String(x||'').trim()).filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i).join(' · ')||fdAuditModulAdi(item.module)+' kaydı'}
+function fdAuditVardiyaIslemAdi(data){return({vardiyaAtama:'Vardiya ataması',magicpassDuzeltme:'Giriş–çıkış düzeltmesi',magicpassHareket:'Cihaz hareketi',vardiyaAyar:'Vardiya ayarı'})[String(data?.kayitTipi||'')]||(data?.giris||data?.cikis?'Giriş–çıkış kaydı':'Vardiya kaydı')}
+function fdAuditKayitOzeti(item){const d=item.new_data||item.old_data||{},m=String(item.module||'').toLocaleLowerCase('tr-TR'),p=fdAuditPersonelAdi(d),parca=[];if(p)parca.push(p);if(m.includes('irsaliye'))parca.push(d.irsaliyeNo||d.belgeNo||d.seriNo||d.firma||d.musteri);else if(m.includes('izin'))parca.push(d.tur||'İzin',d.baslangic&&d.bitis?tarihFormati(d.baslangic)+' – '+tarihFormati(d.bitis):d.baslangic);else if(m.includes('avans'))parca.push(d.avansNo||'',Number(d.tutar||0)>0?Number(d.tutar).toLocaleString('tr-TR',{style:'currency',currency:'TRY'}):'');else if(m.includes('icra'))parca.push(d.dosyaNo||'',d.alacakli||d.alacakliKurum||'');else if(m.includes('arac'))parca.push(d.plaka||d.aracPlaka||'');else if(m.includes('police'))parca.push(d.policeNo||d.hedefAdi||d.sirket||'');else if(m.includes('kira'))parca.push(d.kisaAd||d.kiraciAd||d.adres||'');else if(m.includes('personel'))parca.push(d.ad||d.adSoyad||'');else if(m.includes('vardiya')||m.includes('puantaj'))parca.push(fdAuditVardiyaIslemAdi(d),d.tarih?tarihFormati(d.tarih):'',d.vardiya?(typeof magicpassVardiyaAdi==='function'?magicpassVardiyaAdi(d.vardiya):d.vardiya):'',d.giris?'Giriş '+d.giris:'',d.cikis?'Çıkış '+d.cikis:'');else parca.push(d.ad||d.baslik||d.aciklama||'');return parca.map(x=>String(x||'').trim()).filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i).join(' · ')||fdAuditModulAdi(item.module)+' kaydı'}
 function fdAuditDeger(value){if(value===null||value===undefined||value==='')return'—';if(typeof value==='boolean')return value?'Evet':'Hayır';if(typeof value==='object'){try{return JSON.stringify(value)}catch(_){return String(value)}}return String(value)}
-function fdAuditAlanAdi(value){return({ad:'Ad / Unvan',pId:'Personel',personelAd:'Personel',tarih:'Tarih',baslangic:'Başlangıç',bitis:'Bitiş',tur:'Tür',durum:'Durum',tutar:'Tutar',taksitSayisi:'Taksit',baslangicAy:'Başlangıç ayı',dosyaNo:'Dosya numarası',alacakli:'Alacaklı kurum',alacakliKurum:'Alacaklı kurum',toplamBorc:'Toplam tutar',irsaliyeNo:'İrsaliye numarası',firma:'Firma',plaka:'Plaka',giris:'Giriş',cikis:'Çıkış',aciklama:'Açıklama',sube:'Şube'})[value]||String(value).replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toLocaleUpperCase('tr-TR'))}
-function fdAuditAlanDegeri(alan,value){if(value===null||value===undefined||value==='')return'—';if(['pId','personelId'].includes(alan)){const p=personeller.find(x=>String(x.id)===String(value));return p?(p.ad+' · '+value):String(value)}if(/tarih|baslangic|bitis/i.test(alan)&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return tarihFormati(value);if(/tutar|borc|ucret|maas|kesinti/i.test(alan)&&Number.isFinite(Number(value)))return Number(value).toLocaleString('tr-TR',{style:'currency',currency:'TRY'});if(Array.isArray(value))return value.length+' kayıt';if(typeof value==='object')return Object.keys(value).length+' bilgi';const metin=fdAuditDeger(value);return metin.length>240?metin.slice(0,237)+'...':metin}
+function fdAuditAlanAdi(value){return({ad:'Ad / Unvan',pId:'Personel',personelAd:'Personel',tarih:'Tarih',baslangic:'Başlangıç',bitis:'Bitiş',tur:'Tür',durum:'Durum',tutar:'Tutar',taksitSayisi:'Taksit',baslangicAy:'Başlangıç ayı',dosyaNo:'Dosya numarası',alacakli:'Alacaklı kurum',alacakliKurum:'Alacaklı kurum',toplamBorc:'Toplam tutar',irsaliyeNo:'İrsaliye numarası',firma:'Firma',plaka:'Plaka',giris:'Giriş saati',cikis:'Çıkış saati',girisZamani:'Giriş zamanı',cikisZamani:'Çıkış zamanı',vardiya:'Vardiya',kayitTipi:'Kayıt türü',aciklama:'Açıklama',sube:'Şube'})[value]||String(value).replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toLocaleUpperCase('tr-TR'))}
+function fdAuditAlanDegeri(alan,value){if(value===null||value===undefined||value==='')return'—';if(['pId','personelId'].includes(alan)){const p=personeller.find(x=>String(x.id)===String(value));return p?(p.ad+' · '+value):String(value)}if(alan==='kayitTipi')return fdAuditVardiyaIslemAdi({kayitTipi:value});if(alan==='vardiya'&&typeof magicpassVardiyaAdi==='function')return magicpassVardiyaAdi(value);if(/tarih|baslangic|bitis/i.test(alan)&&/^\d{4}-\d{2}-\d{2}/.test(String(value)))return tarihFormati(value)+(String(value).includes('T')?' · '+new Date(value).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}):'');if(/tutar|borc|ucret|maas|kesinti/i.test(alan)&&Number.isFinite(Number(value)))return Number(value).toLocaleString('tr-TR',{style:'currency',currency:'TRY'});if(Array.isArray(value))return value.length+' kayıt';if(typeof value==='object')return Object.keys(value).length+' bilgi';const metin=fdAuditDeger(value);return metin.length>240?metin.slice(0,237)+'...':metin}
+function fdAuditTemelBilgiler(item){const d=item.new_data||item.old_data||{},m=String(item.module||'').toLocaleLowerCase('tr-TR'),alanlar=[];const ekle=(ad,deger)=>{if(deger!==null&&deger!==undefined&&String(deger)!=='')alanlar.push({ad,deger})};if(m.includes('vardiya')||m.includes('puantaj')){ekle('Personel',fdAuditPersonelAdi(d));ekle('Yapılan işlem',fdAuditVardiyaIslemAdi(d));ekle('Tarih',d.tarih?tarihFormati(d.tarih):'');ekle('Vardiya',d.vardiya?(typeof magicpassVardiyaAdi==='function'?magicpassVardiyaAdi(d.vardiya):d.vardiya):'');ekle('Giriş saati',d.giris);ekle('Çıkış saati',d.cikis);ekle('Açıklama',d.aciklama)}else if(m.includes('izin')){ekle('Personel',fdAuditPersonelAdi(d));ekle('İzin türü',d.tur);ekle('Tarih aralığı',d.baslangic&&d.bitis?tarihFormati(d.baslangic)+' – '+tarihFormati(d.bitis):'');ekle('Gün',d.gun)}else if(m.includes('irsaliye')){ekle('İrsaliye numarası',d.irsaliyeNo||d.belgeNo);ekle('Firma',d.firma||d.musteri);ekle('Tarih',d.tarih?tarihFormati(d.tarih):'');ekle('Plaka',d.plaka)}else if(m.includes('avans')){ekle('Personel',fdAuditPersonelAdi(d));ekle('Tutar',fdAuditAlanDegeri('tutar',d.tutar));ekle('Taksit',d.taksitSayisi);ekle('Başlangıç ayı',d.baslangicAy)}else if(m.includes('icra')){ekle('Personel',fdAuditPersonelAdi(d));ekle('Dosya numarası',d.dosyaNo);ekle('Alacaklı kurum',d.alacakli||d.alacakliKurum);ekle('Toplam tutar',fdAuditAlanDegeri('toplamBorc',d.toplamBorc))}else{ekle('Kayıt',fdAuditKayitOzeti(item));ekle('Tarih',d.tarih?tarihFormati(d.tarih):'');ekle('Durum',d.durum)}return alanlar.slice(0,8)}
 function fdDenetimGecmisiniCiz(){
     const alan=document.getElementById('fdAuditList');if(!alan)return;const arama=String(document.getElementById('fdAuditSearch')?.value||'').toLocaleLowerCase('tr-TR'),modul=document.getElementById('fdAuditModule')?.value||'',islem=document.getElementById('fdAuditOperation')?.value||'';
     const liste=fdAuditItems.filter(x=>(!modul||x.module===modul)&&(!islem||x.operation===islem)&&(!arama||[fdAuditModulAdi(x.module),fdAuditIslemAdi(x.operation),fdAuditKayitOzeti(x),fdAuditYapanAdi(x),x.actor?.role].join(' ').toLocaleLowerCase('tr-TR').includes(arama)));
@@ -20739,8 +20747,8 @@ async function fdDenetimGecmisiniYukle(){const alan=document.getElementById('fdA
 window.fdAuditDetayAc=function(id){
     const x=fdAuditItems.find(k=>Number(k.id)===Number(id));if(!x)return;const eski=x.old_data||{},yeni=x.new_data||{},yapan=fdAuditYapanAdi(x),modul=fdAuditModulAdi(x.module),islem=fdAuditIslemAdi(x.operation),ozet=fdAuditKayitOzeti(x),ikon=({insert:'＋',update:'✎',delete:'−',restore:'↶'})[x.operation]||'•',teknikAlanlar=['sirketId','id','guncellemeTarihi','updatedAt','createdAt','zaman','kaynak'];
     const alanlar=x.operation==='update'?[...new Set([...Object.keys(eski),...Object.keys(yeni)])].filter(k=>!teknikAlanlar.includes(k)&&fdAuditDeger(eski[k])!==fdAuditDeger(yeni[k])).slice(0,30):[];
-    const degisimler=alanlar.map(k=>'<div class="fd-audit-change-clean"><strong>'+escapeDashboardText(fdAuditAlanAdi(k))+'</strong><div class="fd-audit-arrow"><div><b>Önce</b>'+escapeDashboardText(fdAuditAlanDegeri(k,eski[k]))+'</div><span>→</span><div><b>Sonra</b>'+escapeDashboardText(fdAuditAlanDegeri(k,yeni[k]))+'</div></div></div>').join('');
-    const sonuc=x.operation==='update'?('<h4 style="margin:0 0 8px;color:#0f172a">Değişen alanlar'+(alanlar.length?' ('+alanlar.length+')':'')+'</h4><div class="fd-audit-changes">'+(degisimler||'<div class="push-compose-note">Kayıt güncellendi ancak görünen alanlarda bir fark bulunmuyor.</div>')+'</div>'):'<div class="push-compose-note" style="margin:0">'+escapeDashboardText(x.operation==='insert'?'Bu kayıt sisteme yeni eklendi.':x.operation==='delete'?'Bu kayıt sistemden silindi.':'Kayıt önceki hâline geri alındı.')+'</div>';
+    const degisimler=alanlar.map(k=>'<div class="fd-audit-change-clean"><strong>'+escapeDashboardText(fdAuditAlanAdi(k))+'</strong><div class="fd-audit-arrow"><div><b>Önce</b>'+escapeDashboardText(fdAuditAlanDegeri(k,eski[k]))+'</div><span>→</span><div><b>Sonra</b>'+escapeDashboardText(fdAuditAlanDegeri(k,yeni[k]))+'</div></div></div>').join(''),temel=fdAuditTemelBilgiler(x),temelHtml=temel.map(k=>'<div class="fd-audit-field"><span>'+escapeDashboardText(k.ad)+'</span><strong>'+escapeDashboardText(k.deger)+'</strong></div>').join('');
+    const sonuc=x.operation==='update'?('<h4 style="margin:0 0 8px;color:#0f172a">Değişen alanlar'+(alanlar.length?' ('+alanlar.length+')':'')+'</h4><div class="fd-audit-changes">'+(degisimler||'<div class="push-compose-note">Kayıt güncellendi ancak görünen alanlarda bir fark bulunmuyor.</div>')+'</div>'):x.operation==='restore'?'<div class="push-compose-note" style="margin:0">Kayıt önceki hâline geri alındı.</div>':'<h4 style="margin:0 0 8px;color:#0f172a">'+(x.operation==='insert'?'Eklenen kaydın özeti':'Silinen kaydın özeti')+'</h4><div class="fd-audit-simple-list">'+(temelHtml||'<div class="push-compose-note">'+escapeDashboardText(ozet)+'</div>')+'</div>';
     document.getElementById('fdAuditDetailTitle').textContent=modul+' · '+islem;document.getElementById('fdAuditDetailSubtitle').textContent=ozet;document.getElementById('fdAuditDetailBody').innerHTML='<div class="fd-audit-hero"><span class="fd-audit-hero-icon">'+ikon+'</span><div><strong>'+escapeDashboardText(modul+' kaydı '+islem.toLocaleLowerCase('tr-TR'))+'</strong><small>'+escapeDashboardText(ozet)+'</small></div></div><div class="fd-audit-detail-grid"><div><span>İşlemi yapan</span><strong>'+escapeDashboardText(yapan)+'</strong></div><div><span>İşlem zamanı</span><strong>'+escapeDashboardText(fdOpsTarihSaat(x.created_at))+'</strong></div></div>'+sonuc+'<details class="fd-audit-tech"><summary>Teknik kayıt bilgisi</summary><small>'+escapeDashboardText(x.legacy_id)+'</small></details>';document.getElementById('modalFdAuditDetay').style.display='flex'
 };
 window.fdDenetimKaydiniGeriAl=async function(id){if(!await fdYuzerOnaySor('Kayıt önceki hâline döndürülsün mü? Bu işlem de geçmişe kaydedilecektir.','Değişikliği Geri Al','Geri Al'))return;try{await fdOpsCall({action:'audit-restore',id});await fdDenetimGecmisiniYukle();showToast('Kayıt önceki hâline döndürüldü.','success')}catch(e){showToast(e.message||e,'error')}};
