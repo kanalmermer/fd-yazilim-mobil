@@ -20905,13 +20905,45 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     function hataMetni(error,varsayilan='İşlem tamamlanamadı.'){
         return String(error?.message||error?.context?.body?.message||varsayilan);
     }
+    const bekle=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+    async function guncelOturumuAl(zorlaYenile=false){
+        if(zorlaYenile){
+            const {data,error}=await supabaseClient.auth.refreshSession();
+            if(error)throw error;
+            if(data?.session?.access_token)return data.session;
+        }
+        const {data,error}=await supabaseClient.auth.getSession();
+        if(error)throw error;
+        if(data?.session?.access_token)return data.session;
+        const yenilenen=await supabaseClient.auth.refreshSession();
+        if(yenilenen.error)throw yenilenen.error;
+        return yenilenen.data?.session||null;
+    }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('KVKK kaydı için güvenli oturum gerekli.');
-        const {data:oturum,error:oturumHatasi}=await supabaseClient.auth.getSession();if(oturumHatasi)throw oturumHatasi;
-        const token=oturum?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
-        const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
-        let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
-        if(!response.ok||!data?.success)throw new Error(data?.message||('KVKK sunucusu hatası: '+response.status));return data;
+        let sonHata=null;
+        for(let deneme=0;deneme<3;deneme++){
+            try{
+                const oturum=await guncelOturumuAl(deneme>0),token=oturum?.access_token;
+                if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
+                // Şifre değişiminin hemen ardından sunucunun yeni oturumu tanımasını bekle.
+                const kullaniciKontrolu=await supabaseClient.auth.getUser(token);
+                if(kullaniciKontrolu.error||!kullaniciKontrolu.data?.user)throw kullaniciKontrolu.error||new Error('Oturum doğrulanamadı.');
+                const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
+                let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
+                if(response.ok&&data?.success)return data;
+                const hata=new Error(data?.message||('KVKK sunucusu hatası: '+response.status));
+                hata.status=response.status;
+                if(response.status!==401)throw hata;
+                sonHata=hata;
+            }catch(error){
+                sonHata=error;
+                const oturumHatasi=Number(error?.status)===401||/oturum|session|jwt|token/i.test(String(error?.message||''));
+                if(!oturumHatasi||deneme===2)throw error;
+            }
+            await bekle(350*(deneme+1));
+        }
+        throw sonHata||new Error('Oturum doğrulanamadı.');
     }
     function modalHazirla(){
         const modal=document.getElementById('modalKvkkAydinlatma');if(!modal)return null;
