@@ -1407,7 +1407,7 @@
             <span><strong>Bildirim Gönder</strong><small>Telefon uygulamasını kullanan personele anlık duyuru gönderin</small></span>
             <b style="color:#0369a1;">Mesaj yaz →</b>
         </button>
-        <button type="button" class="workspace-card workspace-admin-action" style="display:none; margin-top:14px;" onclick="fdIslemMerkeziAc('talepler')">
+        <button type="button" class="workspace-card workspace-admin-action" style="display:none; margin-top:14px;" onclick="fdIslemMerkeziAc('ozet')">
             <span class="workspace-card-icon" style="background:linear-gradient(135deg,#0369a1,#14b8a6);" aria-hidden="true">🧭</span>
             <span><strong>İşlem Merkezi</strong><small>Personel talepleri, aylık kapanış, veri kontrolü, planlı bildirimler ve değişiklik geçmişi</small></span>
             <b style="color:#0369a1;">İşlem merkezini aç →</b>
@@ -1437,11 +1437,7 @@
             <article class="dashboard-stat" style="--stat-color:#f59e0b;"><div class="dashboard-stat-label">Şube sayısı</div><strong class="dashboard-stat-value" id="dashSubeSayisi">0</strong><span class="dashboard-stat-note">Aktif şube dağılımı</span></article>
         </section>
 
-        <section id="fdOperationsOverview" class="fd-control-grid" style="display:none;">
-            <article class="fd-control-panel">
-                <div class="fd-control-head"><div><h3>📌 Bugün Yapılacaklar</h3><small>Eksik ve yaklaşan işlemler tek listede</small></div><div class="fd-control-actions"><button type="button" onclick="fdIslemMerkeziAc('kontrol')">Ayrıntılı kontrol</button><button type="button" onclick="fdOperasyonOzetiniYukle(true)">↻ Yenile</button></div></div>
-                <div id="fdTodayTaskList" class="fd-task-list"><div class="dashboard-empty">Kontroller hazırlanıyor...</div></div>
-            </article>
+        <section id="fdPdksOverview" class="fd-control-grid" style="grid-template-columns:minmax(280px,420px);justify-content:end;">
             <article class="fd-control-panel">
                 <div class="fd-control-head"><div><h3>🕒 PDKS Aktarım Durumu</h3><small>08:30 · 12:00 · 17:30 · 23:30</small></div><div class="fd-control-actions"><button type="button" onclick="openMagicpassApp()">Giriş–Çıkış</button></div></div>
                 <div id="fdPdksStatusBody" class="fd-pdks-body"><div class="dashboard-empty">Durum alınıyor...</div></div>
@@ -1528,6 +1524,7 @@
     <div class="modal-card" style="width:min(980px,96vw);max-width:980px;max-height:92vh;">
         <div class="modal-header"><div><h3>🧭 İşlem Merkezi</h3><small>Bekleyen işler, dönem kapanışı, planlı bildirimler ve değişiklik geçmişi</small></div><button type="button" class="modal-close" onclick="modalKapat('modalFdIslemMerkezi')">✕</button></div>
         <div class="fd-ops-tabs">
+            <button type="button" data-fd-ops-tab="ozet" onclick="fdIslemMerkeziSekme('ozet',this)">Özet</button>
             <button type="button" data-fd-ops-tab="talepler" onclick="fdIslemMerkeziSekme('talepler',this)">Personel Talepleri</button>
             <button type="button" data-fd-ops-tab="kapanis" onclick="fdIslemMerkeziSekme('kapanis',this)">Aylık Kapanış</button>
             <button type="button" data-fd-ops-tab="kontrol" onclick="fdIslemMerkeziSekme('kontrol',this)">Veri Kontrolü</button>
@@ -1535,6 +1532,14 @@
             <button type="button" data-fd-ops-tab="gecmis" onclick="fdIslemMerkeziSekme('gecmis',this)">Değişiklik Geçmişi</button>
         </div>
         <div class="modal-body" style="overflow:auto;">
+            <section id="fdOpsOzet" class="fd-ops-pane">
+                <div id="fdOperationsOverview" class="fd-control-grid" style="grid-template-columns:1fr;">
+                    <article class="fd-control-panel">
+                        <div class="fd-control-head"><div><h3>📌 Bugün Yapılacaklar</h3><small>Eksik ve yaklaşan işlemler tek listede</small></div><div class="fd-control-actions"><button type="button" onclick="fdIslemMerkeziSekme('kontrol',document.querySelector('[data-fd-ops-tab=&quot;kontrol&quot;]'))">Ayrıntılı kontrol</button><button type="button" onclick="fdOperasyonOzetiniYukle(true)">↻ Yenile</button></div></div>
+                        <div id="fdTodayTaskList" class="fd-task-list"><div class="dashboard-empty">Kontroller hazırlanıyor...</div></div>
+                    </article>
+                </div>
+            </section>
             <section id="fdOpsTalepler" class="fd-ops-pane"><div id="fdOpsRequestList" class="fd-ops-list"><div class="dashboard-empty">Talepler yükleniyor...</div></div></section>
             <section id="fdOpsKapanis" class="fd-ops-pane">
                 <div class="push-compose-note">Bir dönem kapatıldığında o aya ait puantaj, izin, avans, icra ve giriş–çıkış kayıtları yeniden açılmadan değiştirilemez.</div>
@@ -5738,6 +5743,7 @@
         initUI();
         renderDashboard();
         renderPersonelDashboardEkleri();
+        fdPdksDurumunuYukle();
         driveVerileriniYukleBaslangicta('izin').then(() => {
             initUI();
             renderDashboard();
@@ -5878,7 +5884,6 @@
         document.getElementById('ihracatApp').style.display = 'none';
         document.getElementById('evrakTakipApp').style.display = 'none';
         renderDashboard();
-        fdOperasyonOzetiniYukle(false);
         kullaniciOturumPaneliniYukle(false);
         yillikPersonelBelgeButonunuGuncelle();
         setTimeout(()=>gunlukHatirlatmalariGoster(), 250);
@@ -20594,7 +20599,7 @@ async function fdPdksDurumunuYukle(){
     try{
         const sonuc=await fdOpsCall({action:'pdks-status'}),r=sonuc.run,bugun=bugununYerelTarihi();
         if(!r){alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light"></span><strong>Henüz çalışma kaydı yok</strong></div><div class="fd-pdks-meta"><div><span>Sonraki aktarım</span><b>'+fdOpsSonrakiAktarim()+'</b></div><div><span>WhatsApp raporu</span><b>08:35</b></div></div>';return}
-        const bugunMu=String(r.run_date)===bugun,ok=r.status==='success'&&bugunMu,baslik=ok?'Bugünkü aktarım başarılı':(r.status==='error'?'Son aktarım hatalı':'Bugün henüz aktarım yok');
+        const bugunMu=String(r.run_date)===bugun,ok=r.status==='success'&&bugunMu,baslik=ok?'08:30 aktarımı başarılı':(r.status==='error'?'Son aktarım hatalı':'Bugün henüz aktarım yok');
         alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light '+(ok?'ok':(r.status==='error'?'error':''))+'"></span><strong>'+escapeDashboardText(baslik)+'</strong></div><div class="fd-pdks-meta"><div><span>Son başarılı</span><b>'+escapeDashboardText(fdOpsTarihSaat(r.last_success_at))+'</b></div><div><span>Kayıt</span><b>'+Number(r.record_count||0).toLocaleString('tr-TR')+'</b></div><div><span>Sonraki aktarım</span><b>'+escapeDashboardText(fdOpsSonrakiAktarim())+'</b></div><div><span>Bilgisayar</span><b>'+escapeDashboardText(r.machine_name||'-')+'</b></div></div>'+(r.message?'<small style="display:block;margin-top:9px;color:'+(r.status==='error'?'#b91c1c':'#64748b')+'">'+escapeDashboardText(r.message)+'</small>':'');
     }catch(error){alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light error"></span><strong>Durum alınamadı</strong></div><small style="color:#b91c1c">'+escapeDashboardText(error.message||error)+'</small>'}
 }
@@ -20621,7 +20626,7 @@ function fdBugunGorevleriniHesapla(){
 }
 function fdBugunGorevleriniCiz(){const alan=document.getElementById('fdTodayTaskList');if(!alan)return;const liste=fdBugunGorevleriniHesapla(),oncelikli=liste.filter(x=>x.adet),goster=oncelikli.length?oncelikli:liste.slice(0,2);alan.innerHTML=goster.map(x=>'<button type="button" class="fd-task-item" onclick="fdOpsModulAc(\''+x.modul+'\')"><span class="fd-task-icon">'+x.ikon+'</span><span class="fd-task-text"><strong>'+escapeDashboardText(x.ad)+'</strong><small>'+escapeDashboardText(x.detay)+'</small></span><span class="fd-task-count" style="'+(x.adet?'':'background:#dcfce7;color:#166534')+'">'+(x.adet||'Tamam')+'</span></button>').join('')}
 async function fdOperasyonOzetiniYukle(bildirim=false){
-    const panel=document.getElementById('fdOperationsOverview');if(!panel||!activeUser||!isManagerUser()){if(panel)panel.style.display='none';return}panel.style.display='grid';
+    const panel=document.getElementById('fdOperationsOverview');if(!panel||!activeUser||!isManagerUser())return;
     document.getElementById('fdTodayTaskList').innerHTML='<div class="dashboard-empty">Kayıtlar kontrol ediliyor...</div>';
     await Promise.allSettled([supabaseVerileriniYukle('personel'),supabaseVerileriniYukle('arac'),supabaseVerileriniYukle('police'),supabaseVerileriniYukle('irsaliye'),supabaseVerileriniYukle('kira'),fdPdksDurumunuYukle()]);
     fdBugunGorevleriniCiz();if(bildirim)showToast('İşlem merkezi yenilendi.','success');
@@ -20638,8 +20643,8 @@ function fdVeriKontrolleriniCiz(){
     const alan=document.getElementById('fdDataCheckBody');if(!alan)return;const s=fdVeriKontrolleriniHesapla(),gruplar=new Map();s.forEach(x=>gruplar.set(x.tur,(gruplar.get(x.tur)||0)+1));
     alan.innerHTML='<div class="fd-data-check-summary"><div><span>Toplam sorun</span><strong style="color:'+(s.length?'#b91c1c':'#15803d')+'">'+s.length+'</strong></div><div><span>Kontrol edilen personel</span><strong>'+fdOpsAktifPersoneller(bugununYerelTarihi()).length+'</strong></div><div><span>Kontrol zamanı</span><strong style="font-size:.82rem">'+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})+'</strong></div></div>'+(s.length?'<div class="fd-ops-list">'+s.slice(0,100).map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(x.tur)+' · '+escapeDashboardText(x.ad)+'</strong><small>'+escapeDashboardText(x.detay)+'</small></div><button type="button" class="fd-op-soft" onclick="fdOpsModulAc(\''+x.modul+'\')">Kaydı Aç</button></div></div>').join('')+'</div>':'<div class="push-compose-note" style="border-color:#bbf7d0;background:#f0fdf4;color:#166534">✓ Kontrol edilen kayıtlarda tutarsızlık bulunmadı.</div>');
 }
-window.fdIslemMerkeziAc=async function(sekme='talepler'){if(!isManagerUser())return;document.getElementById('modalFdIslemMerkezi').style.display='flex';const b=document.querySelector('[data-fd-ops-tab="'+sekme+'"]');fdIslemMerkeziSekme(sekme,b)};
-window.fdIslemMerkeziSekme=function(sekme,button){document.querySelectorAll('.fd-ops-pane').forEach(x=>x.classList.remove('active'));document.querySelectorAll('[data-fd-ops-tab]').forEach(x=>x.classList.remove('active'));document.getElementById('fdOps'+sekme.charAt(0).toLocaleUpperCase('tr-TR')+sekme.slice(1))?.classList.add('active');button?.classList.add('active');if(sekme==='talepler')fdYoneticiTalepleriniYukle();if(sekme==='kapanis')fdAylikKapanislariYukle();if(sekme==='kontrol')fdVeriKontrolleriniCiz();if(sekme==='planli')fdPlanliBildirimleriYukle();if(sekme==='gecmis')fdDenetimGecmisiniYukle()};
+window.fdIslemMerkeziAc=async function(sekme='ozet'){if(!isManagerUser())return;document.getElementById('modalFdIslemMerkezi').style.display='flex';const b=document.querySelector('[data-fd-ops-tab="'+sekme+'"]');fdIslemMerkeziSekme(sekme,b)};
+window.fdIslemMerkeziSekme=function(sekme,button){document.querySelectorAll('.fd-ops-pane').forEach(x=>x.classList.remove('active'));document.querySelectorAll('[data-fd-ops-tab]').forEach(x=>x.classList.remove('active'));document.getElementById('fdOps'+sekme.charAt(0).toLocaleUpperCase('tr-TR')+sekme.slice(1))?.classList.add('active');button?.classList.add('active');if(sekme==='ozet')fdOperasyonOzetiniYukle(false);if(sekme==='talepler')fdYoneticiTalepleriniYukle();if(sekme==='kapanis')fdAylikKapanislariYukle();if(sekme==='kontrol')fdVeriKontrolleriniCiz();if(sekme==='planli')fdPlanliBildirimleriYukle();if(sekme==='gecmis')fdDenetimGecmisiniYukle()};
 
 window.fdTalepAlanlariniGuncelle=function(){const tur=document.getElementById('fdRequestType')?.value,alan=document.getElementById('fdRequestDynamicFields');if(!alan)return;if(tur==='leave')alan.innerHTML='<div class="form-group wide"><label>İzin Türü</label><select id="fdReqLeaveType"><option>Yıllık İzin</option><option>Mazeret İzni</option><option>Ücretsiz İzin</option><option>Sağlık Raporu</option></select></div><div class="form-group"><label>Başlangıç</label><input id="fdReqStart" type="date" required></div><div class="form-group"><label>Bitiş</label><input id="fdReqEnd" type="date" required></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3"></textarea></div>';else if(tur==='advance')alan.innerHTML='<div class="form-group"><label>Tutar</label><input id="fdReqAmount" type="number" min="1" step="0.01" required></div><div class="form-group"><label>Taksit</label><input id="fdReqInstallments" type="number" min="1" max="24" value="1" required></div><div class="form-group wide"><label>Kesinti Başlangıç Ayı</label><input id="fdReqStartMonth" type="month" required></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3"></textarea></div>';else alan.innerHTML='<div class="form-group wide"><label>Tarih</label><input id="fdReqDate" type="date" required></div><div class="form-group"><label>Giriş Saati</label><input id="fdReqEntry" type="time"></div><div class="form-group"><label>Çıkış Saati</label><input id="fdReqExit" type="time"></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3" required placeholder="Düzeltme nedenini yazın"></textarea></div>';
     const bugun=bugununYerelTarihi();['fdReqStart','fdReqEnd','fdReqDate'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=bugun});const ay=document.getElementById('fdReqStartMonth');if(ay)ay.value=bugun.slice(0,7)};
