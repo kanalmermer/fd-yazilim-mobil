@@ -193,6 +193,16 @@
         .dashboard-person small { color: #94a3b8; font-size: .74rem; }
         .dashboard-tag { flex-shrink: 0; padding: 5px 8px; border-radius: 999px; background: #ecfeff; color: #0e7490; font-size: .7rem; font-weight: 750; }
         .dashboard-empty { padding: 34px 16px; color: #94a3b8; text-align: center; font-size: .83rem; }
+        .fd-control-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:16px;margin:16px 0}
+        .fd-control-panel{overflow:hidden;border:1px solid #dbe5ef;border-radius:17px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.045)}
+        .fd-control-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid #eef2f7;background:linear-gradient(135deg,#f8fafc,#fff)}
+        .fd-control-head h3{margin:0;color:#0f172a;font-size:.9rem}.fd-control-head small{display:block;margin-top:3px;color:#64748b;font-size:.7rem}
+        .fd-control-actions{display:flex;gap:6px;flex-wrap:wrap}.fd-control-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:7px 9px;cursor:pointer;font-size:.7rem;font-weight:800}
+        .fd-task-list{display:grid;gap:7px;padding:11px}.fd-task-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#334155;text-align:left;cursor:pointer}
+        .fd-task-item:hover{border-color:#7dd3fc;background:#f0f9ff}.fd-task-icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#f1f5f9;font-size:1rem}.fd-task-text{min-width:0;flex:1}.fd-task-text strong,.fd-task-text small{display:block}.fd-task-text strong{font-size:.77rem;color:#0f172a}.fd-task-text small{margin-top:3px;color:#64748b;font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fd-task-count{flex:0 0 auto;padding:4px 7px;border-radius:999px;background:#fff7ed;color:#b45309;font-size:.68rem;font-weight:850}
+        .fd-pdks-body{padding:14px 16px}.fd-pdks-state{display:flex;align-items:center;gap:9px;margin-bottom:12px}.fd-pdks-light{width:12px;height:12px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 5px #f1f5f9}.fd-pdks-light.ok{background:#22c55e;box-shadow:0 0 0 5px #dcfce7}.fd-pdks-light.error{background:#ef4444;box-shadow:0 0 0 5px #fee2e2}.fd-pdks-state strong{font-size:.84rem}.fd-pdks-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px}.fd-pdks-meta div{padding:8px 9px;border-radius:8px;background:#f8fafc}.fd-pdks-meta span,.fd-pdks-meta b{display:block}.fd-pdks-meta span{color:#64748b;font-size:.64rem}.fd-pdks-meta b{margin-top:3px;color:#0f172a;font-size:.72rem}
+        .fd-ops-tabs{display:flex;gap:5px;padding:9px;overflow:auto;border-bottom:1px solid #e2e8f0;background:#f8fafc}.fd-ops-tabs button{flex:0 0 auto;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#475569;padding:8px 10px;cursor:pointer;font-size:.7rem;font-weight:800}.fd-ops-tabs button.active{border-color:#0284c7;background:#e0f2fe;color:#0369a1}.fd-ops-pane{display:none}.fd-ops-pane.active{display:block}.fd-ops-list{display:grid;gap:8px}.fd-ops-row{padding:11px 12px;border:1px solid #e2e8f0;border-radius:10px;background:#fff}.fd-ops-row-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.fd-ops-row strong{color:#0f172a;font-size:.78rem}.fd-ops-row small{display:block;margin-top:4px;color:#64748b;font-size:.68rem;line-height:1.45}.fd-ops-row-actions{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}.fd-ops-row-actions button{border:0;border-radius:7px;padding:7px 9px;cursor:pointer;font-size:.68rem;font-weight:800}.fd-op-ok{background:#dcfce7;color:#166534}.fd-op-no{background:#fee2e2;color:#b91c1c}.fd-op-soft{background:#e0f2fe;color:#075985}.fd-request-form{display:grid;gap:10px}.fd-request-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.fd-request-fields .wide{grid-column:1/-1}.fd-data-check-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.fd-data-check-summary div{padding:12px;border-radius:10px;text-align:center;background:#f8fafc}.fd-data-check-summary strong{display:block;font-size:1.2rem}.fd-timeline{display:grid;gap:0;position:relative}.fd-timeline:before{content:"";position:absolute;left:13px;top:12px;bottom:12px;width:2px;background:#e2e8f0}.fd-timeline-item{position:relative;padding:0 0 14px 38px}.fd-timeline-dot{position:absolute;left:6px;top:3px;width:16px;height:16px;border:3px solid #fff;border-radius:50%;background:#0284c7;box-shadow:0 0 0 2px #bae6fd}.fd-timeline-item strong{display:block;font-size:.78rem;color:#0f172a}.fd-timeline-item small{display:block;margin-top:3px;color:#64748b;font-size:.68rem;line-height:1.45}
+        @media(max-width:760px){.fd-control-grid{grid-template-columns:1fr}.fd-request-fields,.fd-data-check-summary{grid-template-columns:1fr}.fd-request-fields .wide{grid-column:auto}}
         .admin-session-panel { display:none; max-width:1180px; margin:22px auto 0; overflow:hidden; }
         .admin-session-panel > summary { list-style:none; cursor:pointer; user-select:none; }
         .admin-session-panel > summary::-webkit-details-marker { display:none; }
@@ -1422,6 +1432,17 @@
             <article class="dashboard-stat" style="--stat-color:#f59e0b;"><div class="dashboard-stat-label">Şube sayısı</div><strong class="dashboard-stat-value" id="dashSubeSayisi">0</strong><span class="dashboard-stat-note">Aktif şube dağılımı</span></article>
         </section>
 
+        <section id="fdOperationsOverview" class="fd-control-grid" style="display:none;">
+            <article class="fd-control-panel">
+                <div class="fd-control-head"><div><h3>📌 Bugün Yapılacaklar</h3><small>Eksik ve yaklaşan işlemler tek listede</small></div><div class="fd-control-actions"><button type="button" onclick="fdIslemMerkeziAc('kontrol')">Ayrıntılı kontrol</button><button type="button" onclick="fdOperasyonOzetiniYukle(true)">↻ Yenile</button></div></div>
+                <div id="fdTodayTaskList" class="fd-task-list"><div class="dashboard-empty">Kontroller hazırlanıyor...</div></div>
+            </article>
+            <article class="fd-control-panel">
+                <div class="fd-control-head"><div><h3>🕒 PDKS Aktarım Durumu</h3><small>08:30 · 12:00 · 17:30 · 23:30</small></div><div class="fd-control-actions"><button type="button" onclick="openMagicpassApp()">Giriş–Çıkış</button></div></div>
+                <div id="fdPdksStatusBody" class="fd-pdks-body"><div class="dashboard-empty">Durum alınıyor...</div></div>
+            </article>
+        </section>
+
         <div class="dashboard-layout">
             <section class="dashboard-panel">
                 <div class="dashboard-panel-head"><div><h3>Güncel izinler</h3><span>Bugün izinli olan çalışanlar</span></div><span id="dashIzinAdet">0 kayıt</span></div>
@@ -1487,12 +1508,64 @@
                 <div class="form-group"><label>Şube</label><select id="fdBildirimSube" onchange="fdBildirimPersonelleriniDoldur()"><option value="">Tüm Şubeler</option></select></div>
                 <div class="form-group"><label>Personeller <small>(birden fazla seçilebilir)</small></label><div class="push-personel-tools"><button type="button" onclick="fdBildirimTumPersonelleriSec(true)">Tümünü Seç</button><button type="button" onclick="fdBildirimTumPersonelleriSec(false)">Temizle</button></div><div id="fdBildirimPersonelListesi" class="push-personel-list"><div class="push-personel-empty">Personeller yükleniyor...</div></div></div>
             </div>
+            <div class="form-group"><label>Hazır Metin</label><select id="fdBildirimHazirMetin" onchange="fdBildirimHazirMetinUygula(this.value)"><option value="">Hazır metin seçin...</option><option value="duyuru">Genel duyuru</option><option value="hatirlatma">Hatırlatma</option><option value="acil">Önemli bilgilendirme</option></select></div>
             <div class="form-group"><label>Başlık</label><input id="fdBildirimBaslik" maxlength="80" value="" data-case-preserve="true" required></div>
             <div class="form-group"><label>Mesaj</label><textarea id="fdBildirimMesaj" rows="5" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz bildirimi yazın..." required></textarea></div>
+            <div class="form-group"><label>Gönderim Zamanı <small>(boş bırakırsanız şimdi gönderilir)</small></label><input id="fdBildirimPlanZamani" type="datetime-local"></div>
             <div class="push-compose-status"><span>Kayıtlı bildirim cihazı</span><strong id="fdBildirimCihazSayisi">Kontrol ediliyor...</strong></div>
             <button id="fdBildirimGonderBtn" class="btn-submit" type="submit">🔔 Bildirimi Gönder</button>
             <details class="push-history" ontoggle="if(this.open)fdBildirimGecmisiniYukle()"><summary>📋 Son 1 Yıllık Bildirim Geçmişi</summary><div id="fdBildirimGecmisi" class="push-history-list"><div class="push-personel-empty">Geçmişi görmek için bölümü açın.</div></div></details>
         </form>
+    </div>
+</div>
+
+<div id="modalFdIslemMerkezi" class="modal-overlay" style="z-index:10055;">
+    <div class="modal-card" style="width:min(980px,96vw);max-width:980px;max-height:92vh;">
+        <div class="modal-header"><div><h3>🧭 İşlem Merkezi</h3><small>Bekleyen işler, dönem kapanışı, planlı bildirimler ve değişiklik geçmişi</small></div><button type="button" class="modal-close" onclick="modalKapat('modalFdIslemMerkezi')">✕</button></div>
+        <div class="fd-ops-tabs">
+            <button type="button" data-fd-ops-tab="talepler" onclick="fdIslemMerkeziSekme('talepler',this)">Personel Talepleri</button>
+            <button type="button" data-fd-ops-tab="kapanis" onclick="fdIslemMerkeziSekme('kapanis',this)">Aylık Kapanış</button>
+            <button type="button" data-fd-ops-tab="kontrol" onclick="fdIslemMerkeziSekme('kontrol',this)">Veri Kontrolü</button>
+            <button type="button" data-fd-ops-tab="planli" onclick="fdIslemMerkeziSekme('planli',this)">Planlı Bildirimler</button>
+            <button type="button" data-fd-ops-tab="gecmis" onclick="fdIslemMerkeziSekme('gecmis',this)">Değişiklik Geçmişi</button>
+        </div>
+        <div class="modal-body" style="overflow:auto;">
+            <section id="fdOpsTalepler" class="fd-ops-pane"><div id="fdOpsRequestList" class="fd-ops-list"><div class="dashboard-empty">Talepler yükleniyor...</div></div></section>
+            <section id="fdOpsKapanis" class="fd-ops-pane">
+                <div class="push-compose-note">Bir dönem kapatıldığında o aya ait puantaj, izin, avans, icra ve giriş–çıkış kayıtları yeniden açılmadan değiştirilemez.</div>
+                <div class="fd-request-fields" style="margin-bottom:12px;"><div class="form-group"><label>Dönem</label><input id="fdClosureMonth" type="month"></div><div class="form-group"><label>&nbsp;</label><button type="button" class="btn-submit" style="margin:0" onclick="fdAylikKapanisKontrolEt()">Dönemi Kontrol Et</button></div></div>
+                <div id="fdClosureCheck"><div class="dashboard-empty">Kontrol etmek istediğiniz ayı seçin.</div></div>
+                <div id="fdClosureList" class="fd-ops-list" style="margin-top:12px;"></div>
+            </section>
+            <section id="fdOpsKontrol" class="fd-ops-pane"><div id="fdDataCheckBody"><div class="dashboard-empty">Veriler kontrol ediliyor...</div></div></section>
+            <section id="fdOpsPlanli" class="fd-ops-pane">
+                <div class="push-compose-note">Bildirimi hazırlarken ileri bir tarih seçerseniz burada görünür ve zamanı geldiğinde sunucu tarafından gönderilir.</div>
+                <div id="fdScheduledList" class="fd-ops-list"><div class="dashboard-empty">Planlı bildirimler yükleniyor...</div></div>
+            </section>
+            <section id="fdOpsGecmis" class="fd-ops-pane"><div id="fdAuditList" class="fd-ops-list"><div class="dashboard-empty">Değişiklik geçmişi yükleniyor...</div></div></section>
+        </div>
+    </div>
+</div>
+
+<div id="modalFdPersonelTalep" class="modal-overlay" style="z-index:10060;">
+    <div class="modal-card" style="max-width:620px;max-height:92vh;">
+        <div class="modal-header"><div><h3>📝 Taleplerim</h3><small>İzin, avans veya eksik giriş–çıkış açıklaması gönderin</small></div><button type="button" class="modal-close" onclick="modalKapat('modalFdPersonelTalep')">✕</button></div>
+        <div class="modal-body" style="overflow:auto;">
+            <form id="fdRequestForm" class="fd-request-form" onsubmit="fdPersonelTalebiGonder(event)">
+                <div class="form-group"><label>Talep Türü</label><select id="fdRequestType" onchange="fdTalepAlanlariniGuncelle()"><option value="leave">İzin Talebi</option><option value="advance">Avans Talebi</option><option value="attendance">Giriş–Çıkış Düzeltme Talebi</option></select></div>
+                <div id="fdRequestDynamicFields" class="fd-request-fields"></div>
+                <button type="submit" class="btn-submit">Talebi Gönder</button>
+            </form>
+            <h4 style="margin:18px 0 9px;color:#0f172a;">Önceki Taleplerim</h4>
+            <div id="fdMyRequestList" class="fd-ops-list"><div class="dashboard-empty">Talepler yükleniyor...</div></div>
+        </div>
+    </div>
+</div>
+
+<div id="modalFdPersonelZamanCizelgesi" class="modal-overlay" style="z-index:10058;">
+    <div class="modal-card" style="max-width:720px;max-height:92vh;">
+        <div class="modal-header"><div><h3 id="fdTimelineTitle">Personel Geçmişi</h3><small>İzin, avans, icra, prim, bildirim ve giriş–çıkış hareketleri</small></div><button type="button" class="modal-close" onclick="modalKapat('modalFdPersonelZamanCizelgesi')">✕</button></div>
+        <div class="modal-body" style="overflow:auto;"><div id="fdTimelineBody" class="fd-timeline"><div class="dashboard-empty">Geçmiş hazırlanıyor...</div></div></div>
     </div>
 </div>
 
@@ -3210,6 +3283,7 @@
                 <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-kkd', this)">🦺 KKD Teslimleri</button>
                 <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-vardiya', this)">🕘 Vardiya</button>
                 <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-giriscikis', this)">🪪 Giriş–Çıkış</button>
+                <button class="detay-tab-btn" onclick="fdPersonelZamanCizelgesiAc(document.getElementById('modalPersonelDetay').dataset.personelId)">🕘 Tüm Geçmiş</button>
             </div>
             <div id="detay-tab-ozluk" class="detay-tab-content active">
                 <div id="detayModalBody" style="font-size: 0.9rem; line-height: 1.6;"></div>
@@ -4971,6 +5045,7 @@
         if(!isPersonelUser())return;
         if(anaPersonelKarti)anaPersonelKarti.style.display='none';
         const kartlar=[
+            ['📝','Taleplerim','İzin, avans veya giriş–çıkış talebi gönderin','fdPersonelTalepModaliniAc','linear-gradient(135deg,#7c3aed,#0ea5e9)'],
             ['👤','Personel Bilgilerim','Kendi personel kartınızı görüntüleyin','openPersonelApp','linear-gradient(135deg,#0369a1,#0ea5e9)'],
             ['🏖️','İzinlerim','İzin kayıtlarınızı görüntüleyin','openIzinTakipApp','linear-gradient(135deg,#047857,#10b981)'],
             ['📅','Puantajım','Aylık puantajınızı görüntüleyin','openPuantajApp','linear-gradient(135deg,#b45309,#f59e0b)'],
@@ -5798,6 +5873,7 @@
         document.getElementById('ihracatApp').style.display = 'none';
         document.getElementById('evrakTakipApp').style.display = 'none';
         renderDashboard();
+        fdOperasyonOzetiniYukle(false);
         kullaniciOturumPaneliniYukle(false);
         yillikPersonelBelgeButonunuGuncelle();
         setTimeout(()=>gunlukHatirlatmalariGoster(), 250);
@@ -6556,7 +6632,7 @@
         return sonuc;
     }
 
-    function magicpassGunHesapla(personel, tarihKey) {
+    function magicpassGunHesaplaLegacy(personel, tarihKey) {
         if (!String(personel?.cihazPersonelNo || '').trim()) return { tarih:tarihKey, vardiya:'', durum:'Cihaz No Tanımsız', seviye:'hata', normal:0, gec:0, erken:0, mesai:0, uyarilar:['Personel kartına cihaz numarası girin'] };
         const vardiya = magicpassGunVardiyasi(personel, tarihKey);
         const izin = izinler.find(i => aktifSirketeAit(i) && String(i.pId) === String(personel.id) && tarihKey >= i.baslangic && tarihKey <= i.bitis);
@@ -13914,6 +13990,7 @@
         if (kullaniciRolAnahtari() === 'personel' && String(id) !== String(activeUser?.tcNo || '')) return;
         const p = personeller.find(item => String(item.id) === String(id));
         if (!p) return;
+        document.getElementById('modalPersonelDetay').dataset.personelId=String(id);
         const detayBasligi = document.querySelector('#modalPersonelDetay .modal-header h3');
         if (detayBasligi) detayBasligi.textContent = isPersonelUser() ? '👤 Personel Bilgilerim' : '👤 Personel Detay Kartı';
 
@@ -17407,7 +17484,7 @@
     function magicpassTamDakika(zaman){if(!zaman)return null;const d=new Date(zaman);if(Number.isNaN(d.getTime()))return null;d.setSeconds(0,0);return d;}
     function magicpassFarkDakika(son,ilk){return son&&ilk?Math.max(0,Math.floor((son-ilk)/60000)):0;}
 
-    magicpassGunHesapla=function(personel,tarihKey){
+    function fdMagicpassGunHesaplaTemel(personel,tarihKey){
         const vardiya=magicpassGunVardiyasi(personel,tarihKey),saatler=magicpassVardiyaSaatleri(vardiya,tarihKey),izin=izinler.find(i=>aktifSirketeAit(i)&&String(i.pId)===String(personel.id)&&String(tarihKey)>=String(i.baslangic)&&String(tarihKey)<=String(i.bitis));
         const duzeltme=magicpassKayitlari('magicpassDuzeltme').filter(k=>String(k.pId)===String(personel.id)&&String(k.tarih)===String(tarihKey)).sort((a,b)=>Number(b.zaman||0)-Number(a.zaman||0))[0],gunTuru=magicpassGunTuruBul(personel,tarihKey),tatilAdi=gunTuru==='pazar'?'Pazar / Hafta Tatili':gunTuru==='resmiTatil'?magicpassResmiTatilAdi(tarihKey):'',bos={tarih:tarihKey,vardiya,giris:null,cikis:null,normal:0,gec:0,erken:0,brutMesai:0,mesai:0,uyarilar:[],hareketler:[],duzeltme,gunTuru,tatilAdi};
         if(izin)return{...bos,izin,izinAdi:izin.tur||'İzinli',durum:izin.tur||'İzinli',seviye:'tamam',uyarilar:izin.aciklama?[String(izin.aciklama)]:[]};
@@ -17550,7 +17627,7 @@
         return magicpassTarihAnahtari(tarih);
     }
 
-    const fdMagicpassGunHesaplaPazarOncesi = magicpassGunHesapla;
+    const fdMagicpassGunHesaplaPazarOncesi = fdMagicpassGunHesaplaTemel;
 
     function fdMagicpassBeklenenCalismaGunu(sonuc) {
         return Boolean(sonuc) &&
@@ -17612,7 +17689,7 @@
         return { hakEtti:true, neden:'' };
     }
 
-    magicpassGunHesapla = function(personel, tarihKey) {
+    function fdMagicpassGunHesaplaPazarli(personel, tarihKey) {
         const sonuc = fdMagicpassGunHesaplaPazarOncesi(personel, tarihKey);
         if (sonuc.gunTuru !== 'pazar' || sonuc.giris || sonuc.cikis) return sonuc;
         const kontrol = fdMagicpassPazarHakkiKontrolEt(personel, tarihKey);
@@ -18113,8 +18190,8 @@
     function fdPuantajManuelGunKaydi(personel,tarihKey){
         return puantajVerileri.find(k=>aktifSirketeAit(k)&&!k.kayitTipi&&String(k.pId)===String(personel?.id)&&String(k.tarih)===String(tarihKey))||null;
     }
-    const fdMagicpassPuantajEsitlemeOncesi=magicpassGunHesapla;
-    magicpassGunHesapla=function(personel,tarihKey){
+    const fdMagicpassPuantajEsitlemeOncesi=fdMagicpassGunHesaplaPazarli;
+    function magicpassGunHesapla(personel,tarihKey){
         const temel=fdMagicpassPuantajEsitlemeOncesi(personel,tarihKey);
         const manuel=fdPuantajManuelGunKaydi(personel,tarihKey);if(!manuel?.durum)return temel;
         const kod=String(manuel.durum).toUpperCase(),izinAdlari={Y:'Yıllık İzin',R:'Sağlık / Rapor',Z:'Ücretsiz İzin','Ü':'Ücretli İzin'};
@@ -20483,6 +20560,106 @@ document.addEventListener('click',function(e){
 })();
 </script>
 
+<script id="fdOperationsCenter">
+const FD_OPS_FUNCTION='operations-center';
+let fdOpsLastChecks=null,fdOpsLastClosureSummary=null;
+
+async function fdOpsCall(body){
+    if(!SUPABASE_MODE||!supabaseClient)throw new Error('İşlem merkezi için güvenli oturum gerekli.');
+    const{data,error}=await supabaseClient.auth.getSession();if(error)throw error;
+    const token=data?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
+    const response=await fetch(SUPABASE_URL+'/functions/v1/'+FD_OPS_FUNCTION,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
+    let sonuc={};try{sonuc=await response.json()}catch(_){throw new Error('İşlem merkezi geçerli yanıt vermedi. ('+response.status+')')}
+    if(!response.ok||!sonuc?.success)throw new Error(sonuc?.message||'İşlem tamamlanamadı.');return sonuc;
+}
+function fdOpsTarihSaat(value){if(!value)return'-';const d=new Date(value);return Number.isNaN(d.getTime())?'-':d.toLocaleString('tr-TR',{dateStyle:'short',timeStyle:'short'})}
+function fdOpsDurumMetni(value){return({pending:'Bekliyor',approved:'Onaylandı',rejected:'Reddedildi',cancelled:'İptal edildi',locked:'Kapalı',open:'Açık',sent:'Gönderildi',failed:'Hata',processing:'İşleniyor'})[value]||value||'-'}
+function fdOpsAyEtiketi(value){if(!/^20\d{2}-\d{2}$/.test(String(value||'')))return String(value||'-');return new Date(value+'-01T12:00:00').toLocaleDateString('tr-TR',{month:'long',year:'numeric'})}
+function fdOpsAktifPersoneller(tarih=''){return personeller.filter(p=>aktifSirketeAit(p)&&(!p.girisTarihi||!tarih||String(p.girisTarihi).slice(0,10)<=tarih)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null'||!tarih||String(p.cikisTarihi).slice(0,10)>=tarih))}
+function fdOpsModulAc(anahtar){
+    const eylemler={giriscikis:openMagicpassApp,izin:openIzinTakipApp,avans:openAvansApp,icra:openIcraApp,arac:openAracTakipApp,police:openPoliceTakipApp,irsaliye:openIrsaliyeTakipApp,kira:openKiraTakipApp,personel:openPersonelApp};
+    modalKapat('modalFdIslemMerkezi');const fn=eylemler[anahtar];if(typeof fn==='function')fn();
+}
+function fdOpsSonrakiAktarim(){
+    const now=new Date(),saatler=[[8,30],[12,0],[17,30],[23,30]];for(const[h,m]of saatler){const d=new Date(now);d.setHours(h,m,0,0);if(d>now)return d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}
+    return'Yarın 08:30';
+}
+async function fdPdksDurumunuYukle(){
+    const alan=document.getElementById('fdPdksStatusBody');if(!alan)return;
+    try{
+        const sonuc=await fdOpsCall({action:'pdks-status'}),r=sonuc.run,bugun=bugununYerelTarihi();
+        if(!r){alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light"></span><strong>Henüz çalışma kaydı yok</strong></div><div class="fd-pdks-meta"><div><span>Sonraki aktarım</span><b>'+fdOpsSonrakiAktarim()+'</b></div><div><span>WhatsApp raporu</span><b>08:35</b></div></div>';return}
+        const bugunMu=String(r.run_date)===bugun,ok=r.status==='success'&&bugunMu,baslik=ok?'Bugünkü aktarım başarılı':(r.status==='error'?'Son aktarım hatalı':'Bugün henüz aktarım yok');
+        alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light '+(ok?'ok':(r.status==='error'?'error':''))+'"></span><strong>'+escapeDashboardText(baslik)+'</strong></div><div class="fd-pdks-meta"><div><span>Son başarılı</span><b>'+escapeDashboardText(fdOpsTarihSaat(r.last_success_at))+'</b></div><div><span>Kayıt</span><b>'+Number(r.record_count||0).toLocaleString('tr-TR')+'</b></div><div><span>Sonraki aktarım</span><b>'+escapeDashboardText(fdOpsSonrakiAktarim())+'</b></div><div><span>Bilgisayar</span><b>'+escapeDashboardText(r.machine_name||'-')+'</b></div></div>'+(r.message?'<small style="display:block;margin-top:9px;color:'+(r.status==='error'?'#b91c1c':'#64748b')+'">'+escapeDashboardText(r.message)+'</small>':'');
+    }catch(error){alan.innerHTML='<div class="fd-pdks-state"><span class="fd-pdks-light error"></span><strong>Durum alınamadı</strong></div><small style="color:#b91c1c">'+escapeDashboardText(error.message||error)+'</small>'}
+}
+function fdOpsGunFarki(tarih,bugun){const a=new Date(String(tarih).slice(0,10)+'T12:00:00'),b=new Date(bugun+'T12:00:00');return Math.ceil((a-b)/86400000)}
+function fdBugunGorevleriniHesapla(){
+    const bugun=bugununYerelTarihi(),dunDate=new Date(bugun+'T12:00:00');dunDate.setDate(dunDate.getDate()-1);const dun=[dunDate.getFullYear(),String(dunDate.getMonth()+1).padStart(2,'0'),String(dunDate.getDate()).padStart(2,'0')].join('-');
+    const aktif=fdOpsAktifPersoneller(bugun),dunAktif=fdOpsAktifPersoneller(dun);
+    const eksikHareket=dunAktif.filter(p=>{try{return['Giriş Yok','Çıkış Yok'].includes(String(magicpassGunHesapla(p,dun)?.durum||''))}catch(_){return false}});
+    const izinli=izinler.filter(i=>aktifSirketeAit(i)&&String(i.baslangic||'')<=bugun&&bugun<=String(i.bitis||''));
+    const personelTarihleri=[];aktif.forEach(p=>[['Sertifika',p.sertifikaBitis],['Tecil',p.tecilBitis]].forEach(([tur,t])=>{const gun=t?fdOpsGunFarki(t,bugun):999;if(gun>=0&&gun<=30)personelTarihleri.push({tur,p,gun})}));
+    const gecikenIrsaliyeler=typeof irsaliyeGeciktiMi==='function'?tasimaIrsaliyeleri.filter(k=>aktifSirketeAit(k)&&irsaliyeGeciktiMi(k)):[];
+    const riskliPoliceler=typeof policeTumKayitlar==='function'?policeTumKayitlar().filter(p=>{const d=policeDurumu(p);return d.tur==='gecen'||d.tur==='yaklasan'}):[];
+    const aracUyarilari=[];araclar.filter(a=>aktifSirketeAit(a)&&String(a.durum||'').toLocaleLowerCase('tr-TR')!=='satıldı').forEach(a=>[['Muayene',a.muayeneBitis],['Egzoz',a.egzozMuayeneBitis]].forEach(([tur,t])=>{const gun=t?fdOpsGunFarki(t,bugun):999;if(gun<=30)aracUyarilari.push({tur,a,gun})}));
+    let kiraBekleyen=0;try{const ay=bugun.slice(0,7);kiraDaireler().forEach(d=>{const s=kiraAktifSozlesme(d.id);if(s&&!kiraOdemeler().some(o=>o.sozlesmeId===s.id&&o.ay===ay))kiraBekleyen++})}catch(_){}
+    return[
+        {ikon:'↔️',ad:'Dünün eksik giriş–çıkışları',detay:eksikHareket.slice(0,4).map(p=>p.ad).join(', ')||'Eksik kayıt yok',adet:eksikHareket.length,modul:'giriscikis'},
+        {ikon:'🏖️',ad:'Bugün izinli personel',detay:izinli.slice(0,4).map(i=>personeller.find(p=>String(p.id)===String(i.pId))?.ad).filter(Boolean).join(', ')||'İzinli personel yok',adet:izinli.length,modul:'izin'},
+        {ikon:'⚠️',ad:'Yaklaşan personel tarihleri',detay:personelTarihleri.slice(0,4).map(x=>x.p.ad+' · '+x.tur).join(', ')||'Yaklaşan tarih yok',adet:personelTarihleri.length,modul:'personel'},
+        {ikon:'🧾',ad:'Geciken taşıma irsaliyeleri',detay:gecikenIrsaliyeler.slice(0,3).map(k=>k.irsaliyeNo||k.firma).join(', ')||'Geciken irsaliye yok',adet:gecikenIrsaliyeler.length,modul:'irsaliye'},
+        {ikon:'🛡️',ad:'Poliçe uyarıları',detay:riskliPoliceler.slice(0,3).map(p=>p.hedefAdi||p.tur).join(', ')||'Poliçe uyarısı yok',adet:riskliPoliceler.length,modul:'police'},
+        {ikon:'🚘',ad:'Araç tarihleri',detay:aracUyarilari.slice(0,3).map(x=>(x.a.plaka||'-')+' · '+x.tur).join(', ')||'Araç uyarısı yok',adet:aracUyarilari.length,modul:'arac'},
+        {ikon:'🏠',ad:'Bu ay kira kaydı bekleyenler',detay:kiraBekleyen?'Ödeme kaydı bulunmayan kiralamalar var':'Bekleyen kira kaydı yok',adet:kiraBekleyen,modul:'kira'}
+    ];
+}
+function fdBugunGorevleriniCiz(){const alan=document.getElementById('fdTodayTaskList');if(!alan)return;const liste=fdBugunGorevleriniHesapla(),oncelikli=liste.filter(x=>x.adet),goster=oncelikli.length?oncelikli:liste.slice(0,2);alan.innerHTML=goster.map(x=>'<button type="button" class="fd-task-item" onclick="fdOpsModulAc(\''+x.modul+'\')"><span class="fd-task-icon">'+x.ikon+'</span><span class="fd-task-text"><strong>'+escapeDashboardText(x.ad)+'</strong><small>'+escapeDashboardText(x.detay)+'</small></span><span class="fd-task-count" style="'+(x.adet?'':'background:#dcfce7;color:#166534')+'">'+(x.adet||'Tamam')+'</span></button>').join('')}
+async function fdOperasyonOzetiniYukle(bildirim=false){
+    const panel=document.getElementById('fdOperationsOverview');if(!panel||!activeUser||!isManagerUser()){if(panel)panel.style.display='none';return}panel.style.display='grid';
+    document.getElementById('fdTodayTaskList').innerHTML='<div class="dashboard-empty">Kayıtlar kontrol ediliyor...</div>';
+    await Promise.allSettled([supabaseVerileriniYukle('personel'),supabaseVerileriniYukle('arac'),supabaseVerileriniYukle('police'),supabaseVerileriniYukle('irsaliye'),supabaseVerileriniYukle('kira'),fdPdksDurumunuYukle()]);
+    fdBugunGorevleriniCiz();if(bildirim)showToast('İşlem merkezi yenilendi.','success');
+}
+function fdVeriKontrolleriniHesapla(){
+    const sorunlar=[],aktif=fdOpsAktifPersoneller(bugununYerelTarihi()),cihaz=new Map();
+    aktif.forEach(p=>{const no=String(p.cihazPersonelNo||'').trim();if(!no)sorunlar.push({tur:'Cihaz numarası yok',ad:p.ad,detay:p.sube||'Merkez',modul:'personel'});else{if(cihaz.has(no))sorunlar.push({tur:'Mükerrer cihaz numarası',ad:p.ad,detay:no+' · '+cihaz.get(no),modul:'personel'});else cihaz.set(no,p.ad)}});
+    const izinSirali=izinler.filter(aktifSirketeAit).slice().sort((a,b)=>String(a.baslangic).localeCompare(String(b.baslangic)));for(let i=0;i<izinSirali.length;i++)for(let j=i+1;j<izinSirali.length;j++){const a=izinSirali[i],b=izinSirali[j];if(String(a.pId)!==String(b.pId)||String(b.baslangic)>String(a.bitis))continue;const p=personeller.find(x=>String(x.id)===String(a.pId));sorunlar.push({tur:'Çakışan izin',ad:p?.ad||a.pId,detay:tarihFormati(a.baslangic)+' / '+tarihFormati(b.baslangic),modul:'izin'});break}
+    avanslar.filter(a=>aktifSirketeAit(a)&&(Number(a.tutar||0)<=0||Number(a.taksitSayisi||0)<1||!a.baslangicAy)).forEach(a=>sorunlar.push({tur:'Hatalı avans planı',ad:a.personelAd||a.pId,detay:a.avansNo||'-',modul:'avans'}));
+    icralar.filter(i=>aktifSirketeAit(i)&&(Number(i.toplamBorc||0)<=0||!i.dosyaNo||icraKalanBorc(i)<0)).forEach(i=>sorunlar.push({tur:'Hatalı icra kaydı',ad:i.personelAd||i.pId,detay:i.dosyaNo||'Dosya no yok',modul:'icra'}));
+    fdOpsLastChecks=sorunlar;return sorunlar;
+}
+function fdVeriKontrolleriniCiz(){
+    const alan=document.getElementById('fdDataCheckBody');if(!alan)return;const s=fdVeriKontrolleriniHesapla(),gruplar=new Map();s.forEach(x=>gruplar.set(x.tur,(gruplar.get(x.tur)||0)+1));
+    alan.innerHTML='<div class="fd-data-check-summary"><div><span>Toplam sorun</span><strong style="color:'+(s.length?'#b91c1c':'#15803d')+'">'+s.length+'</strong></div><div><span>Kontrol edilen personel</span><strong>'+fdOpsAktifPersoneller(bugununYerelTarihi()).length+'</strong></div><div><span>Kontrol zamanı</span><strong style="font-size:.82rem">'+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})+'</strong></div></div>'+(s.length?'<div class="fd-ops-list">'+s.slice(0,100).map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(x.tur)+' · '+escapeDashboardText(x.ad)+'</strong><small>'+escapeDashboardText(x.detay)+'</small></div><button type="button" class="fd-op-soft" onclick="fdOpsModulAc(\''+x.modul+'\')">Kaydı Aç</button></div></div>').join('')+'</div>':'<div class="push-compose-note" style="border-color:#bbf7d0;background:#f0fdf4;color:#166534">✓ Kontrol edilen kayıtlarda tutarsızlık bulunmadı.</div>');
+}
+window.fdIslemMerkeziAc=async function(sekme='talepler'){if(!isManagerUser())return;document.getElementById('modalFdIslemMerkezi').style.display='flex';const b=document.querySelector('[data-fd-ops-tab="'+sekme+'"]');fdIslemMerkeziSekme(sekme,b)};
+window.fdIslemMerkeziSekme=function(sekme,button){document.querySelectorAll('.fd-ops-pane').forEach(x=>x.classList.remove('active'));document.querySelectorAll('[data-fd-ops-tab]').forEach(x=>x.classList.remove('active'));document.getElementById('fdOps'+sekme.charAt(0).toLocaleUpperCase('tr-TR')+sekme.slice(1))?.classList.add('active');button?.classList.add('active');if(sekme==='talepler')fdYoneticiTalepleriniYukle();if(sekme==='kapanis')fdAylikKapanislariYukle();if(sekme==='kontrol')fdVeriKontrolleriniCiz();if(sekme==='planli')fdPlanliBildirimleriYukle();if(sekme==='gecmis')fdDenetimGecmisiniYukle()};
+
+window.fdTalepAlanlariniGuncelle=function(){const tur=document.getElementById('fdRequestType')?.value,alan=document.getElementById('fdRequestDynamicFields');if(!alan)return;if(tur==='leave')alan.innerHTML='<div class="form-group wide"><label>İzin Türü</label><select id="fdReqLeaveType"><option>Yıllık İzin</option><option>Mazeret İzni</option><option>Ücretsiz İzin</option><option>Sağlık Raporu</option></select></div><div class="form-group"><label>Başlangıç</label><input id="fdReqStart" type="date" required></div><div class="form-group"><label>Bitiş</label><input id="fdReqEnd" type="date" required></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3"></textarea></div>';else if(tur==='advance')alan.innerHTML='<div class="form-group"><label>Tutar</label><input id="fdReqAmount" type="number" min="1" step="0.01" required></div><div class="form-group"><label>Taksit</label><input id="fdReqInstallments" type="number" min="1" max="24" value="1" required></div><div class="form-group wide"><label>Kesinti Başlangıç Ayı</label><input id="fdReqStartMonth" type="month" required></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3"></textarea></div>';else alan.innerHTML='<div class="form-group wide"><label>Tarih</label><input id="fdReqDate" type="date" required></div><div class="form-group"><label>Giriş Saati</label><input id="fdReqEntry" type="time"></div><div class="form-group"><label>Çıkış Saati</label><input id="fdReqExit" type="time"></div><div class="form-group wide"><label>Açıklama</label><textarea id="fdReqNote" rows="3" required placeholder="Düzeltme nedenini yazın"></textarea></div>';
+    const bugun=bugununYerelTarihi();['fdReqStart','fdReqEnd','fdReqDate'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=bugun});const ay=document.getElementById('fdReqStartMonth');if(ay)ay.value=bugun.slice(0,7)};
+window.fdPersonelTalepModaliniAc=async function(){document.getElementById('modalFdPersonelTalep').style.display='flex';fdTalepAlanlariniGuncelle();await fdKendiTalepleriniYukle()};
+window.fdPersonelTalebiGonder=async function(event){event.preventDefault();const tur=document.getElementById('fdRequestType').value,d={note:String(document.getElementById('fdReqNote')?.value||'').trim()};if(tur==='leave')Object.assign(d,{leaveType:document.getElementById('fdReqLeaveType').value,start:document.getElementById('fdReqStart').value,end:document.getElementById('fdReqEnd').value});else if(tur==='advance')Object.assign(d,{amount:Number(document.getElementById('fdReqAmount').value),installments:Number(document.getElementById('fdReqInstallments').value),startMonth:document.getElementById('fdReqStartMonth').value});else Object.assign(d,{date:document.getElementById('fdReqDate').value,entry:document.getElementById('fdReqEntry').value,exit:document.getElementById('fdReqExit').value});showGlobalOverlay('Talep gönderiliyor','Yönetici onayına iletiliyor...');try{await fdOpsCall({action:'request-create',requestType:tur,requestData:d});showToast('Talebiniz yöneticiye gönderildi.','success');event.currentTarget.reset();fdTalepAlanlariniGuncelle();await fdKendiTalepleriniYukle()}catch(e){showToast(e.message||e,'error')}finally{hideGlobalOverlay()}};
+function fdTalepOzet(r){const d=r.request_data||{};if(r.request_type==='leave')return(d.leaveType||'İzin')+' · '+tarihFormati(d.start)+' – '+tarihFormati(d.end);if(r.request_type==='advance')return Number(d.amount||0).toLocaleString('tr-TR',{style:'currency',currency:'TRY'})+' · '+Number(d.installments||1)+' taksit';return tarihFormati(d.date)+' · '+(d.entry||'-')+' / '+(d.exit||'-')}
+function fdTalepTurAdi(t){return({leave:'İzin talebi',advance:'Avans talebi',attendance:'Giriş–çıkış düzeltmesi'})[t]||t}
+async function fdKendiTalepleriniYukle(){const alan=document.getElementById('fdMyRequestList');try{const r=await fdOpsCall({action:'request-list'}),liste=r.requests||[];alan.innerHTML=liste.length?liste.map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(fdTalepTurAdi(x.request_type))+'</strong><small>'+escapeDashboardText(fdTalepOzet(x))+' · '+fdOpsTarihSaat(x.created_at)+'</small></div><span class="badge">'+escapeDashboardText(fdOpsDurumMetni(x.status))+'</span></div>'+(x.manager_note?'<small>Yönetici notu: '+escapeDashboardText(x.manager_note)+'</small>':'')+(x.status==='pending'?'<div class="fd-ops-row-actions"><button class="fd-op-no" onclick="fdPersonelTalebiIptal(\''+x.id+'\')">Talebi İptal Et</button></div>':'')+'</div>').join(''):'<div class="dashboard-empty">Henüz talebiniz bulunmuyor.</div>'}catch(e){alan.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">'+escapeDashboardText(e.message||e)+'</div>'}}
+window.fdPersonelTalebiIptal=async function(id){if(!await fdYuzerOnaySor('Bekleyen talep iptal edilsin mi?','Talebi İptal Et','İptal Et'))return;try{await fdOpsCall({action:'request-cancel',id});await fdKendiTalepleriniYukle();showToast('Talep iptal edildi.','success')}catch(e){showToast(e.message||e,'error')}};
+async function fdYoneticiTalepleriniYukle(){const alan=document.getElementById('fdOpsRequestList');alan.innerHTML='<div class="dashboard-empty">Talepler yükleniyor...</div>';try{const r=await fdOpsCall({action:'request-list'}),liste=r.requests||[];alan.innerHTML=liste.length?liste.map(x=>{const p=personeller.find(p=>String(p.id)===String(x.employee_legacy_id));return'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(p?.ad||x.employee_legacy_id)+' · '+escapeDashboardText(fdTalepTurAdi(x.request_type))+'</strong><small>'+escapeDashboardText(fdTalepOzet(x))+' · '+fdOpsTarihSaat(x.created_at)+'</small></div><span class="badge">'+escapeDashboardText(fdOpsDurumMetni(x.status))+'</span></div>'+((x.request_data||{}).note?'<small>Açıklama: '+escapeDashboardText(x.request_data.note)+'</small>':'')+(x.status==='pending'?'<div class="fd-ops-row-actions"><button class="fd-op-ok" onclick="fdPersonelTalebiIncele(\''+x.id+'\',\'approved\')">Onayla ve İşle</button><button class="fd-op-no" onclick="fdPersonelTalebiIncele(\''+x.id+'\',\'rejected\')">Reddet</button></div>':'')+'</div>'}).join(''):'<div class="dashboard-empty">Personel talebi bulunmuyor.</div>'}catch(e){alan.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">'+escapeDashboardText(e.message||e)+'</div>'}}
+window.fdPersonelTalebiIncele=async function(id,decision){const onay=decision==='approved',metin=onay?'Talep onaylanıp ilgili kayda işlensin mi?':'Talep reddedilsin mi?';if(!await fdYuzerOnaySor(metin,onay?'Talebi Onayla':'Talebi Reddet',onay?'Onayla':'Reddet'))return;showGlobalOverlay('Talep işleniyor',onay?'Kayıt oluşturuluyor...':'Talep kapatılıyor...');try{await fdOpsCall({action:'request-review',id,decision});await supabaseVerileriniYukle('personel');await fdYoneticiTalepleriniYukle();fdBugunGorevleriniCiz();showToast(onay?'Talep onaylandı ve kayda işlendi.':'Talep reddedildi.','success')}catch(e){showToast(e.message||e,'error')}finally{hideGlobalOverlay()}};
+
+function fdAylikKontrolHesapla(ay){const sonGun=new Date(Number(ay.slice(0,4)),Number(ay.slice(5,7)),0).getDate(),bugun=bugununYerelTarihi(),bitis=ay===bugun.slice(0,7)?Math.min(sonGun,Number(bugun.slice(8))):sonGun;let eksik=0;const personelIdleri=new Set();for(let g=1;g<=bitis;g++){const t=ay+'-'+String(g).padStart(2,'0');fdOpsAktifPersoneller(t).forEach(p=>{personelIdleri.add(String(p.id));try{const h=magicpassGunHesapla(p,t);if(['Giriş Yok','Çıkış Yok'].includes(String(h?.durum||'')))eksik++}catch(_){}})}const checks=fdVeriKontrolleriniHesapla(),aySorun=checks.filter(x=>['Çakışan izin','Hatalı avans planı','Hatalı icra kaydı'].includes(x.tur)).length;return{month:ay,missingAttendance:eksik,dataIssues:aySorun,personnelCount:personelIdleri.size,checkedAt:new Date().toISOString(),totalIssues:eksik+aySorun}}
+window.fdAylikKapanisKontrolEt=function(){const ay=document.getElementById('fdClosureMonth').value;if(!ay)return showToast('Kontrol edilecek dönemi seçin.','warning');fdOpsLastClosureSummary=fdAylikKontrolHesapla(ay);const s=fdOpsLastClosureSummary,alan=document.getElementById('fdClosureCheck');alan.innerHTML='<div class="fd-data-check-summary"><div><span>Eksik giriş–çıkış</span><strong>'+s.missingAttendance+'</strong></div><div><span>Veri sorunu</span><strong>'+s.dataIssues+'</strong></div><div><span>Personel</span><strong>'+s.personnelCount+'</strong></div></div>'+(s.totalIssues?'<div class="push-compose-note" style="border-color:#fed7aa;background:#fff7ed;color:#9a3412">Dönem kapatılmadan önce '+s.totalIssues+' sorun düzeltilmelidir.</div>':'<button type="button" class="btn-submit" onclick="fdAylikKapanisDegistir(\'locked\')">🔒 Kontrol Tamam — Dönemi Kapat</button>')};
+async function fdAylikKapanislariYukle(){const alan=document.getElementById('fdClosureList');document.getElementById('fdClosureMonth').value=new Date().toISOString().slice(0,7);try{const r=await fdOpsCall({action:'closure-list'}),liste=r.closures||[];alan.innerHTML=liste.length?liste.map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(fdOpsAyEtiketi(x.month_key))+'</strong><small>'+fdOpsTarihSaat(x.locked_at||x.reopened_at)+'</small></div><span class="badge">'+fdOpsDurumMetni(x.status)+'</span></div><div class="fd-ops-row-actions"><button class="'+(x.status==='locked'?'fd-op-no':'fd-op-ok')+'" onclick="fdAylikKapanisDegistir(\''+(x.status==='locked'?'open':'locked')+'\',\''+x.month_key+'\')">'+(x.status==='locked'?'Dönemi Yeniden Aç':'Dönemi Kapat')+'</button></div></div>').join(''):'<div class="dashboard-empty">Henüz kapatılmış dönem bulunmuyor.</div>'}catch(e){alan.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">'+escapeDashboardText(e.message||e)+'</div>'}}
+window.fdAylikKapanisDegistir=async function(status,month=''){const ay=month||document.getElementById('fdClosureMonth').value;if(status==='locked'&&(!fdOpsLastClosureSummary||fdOpsLastClosureSummary.month!==ay)){document.getElementById('fdClosureMonth').value=ay;fdAylikKapanisKontrolEt();return}if(status==='locked'&&fdOpsLastClosureSummary.totalIssues)return showToast('Sorun bulunan dönem kapatılamaz.','warning');const mesaj=status==='locked'?fdOpsAyEtiketi(ay)+' dönemi değişikliklere kapatılsın mı?':fdOpsAyEtiketi(ay)+' dönemi yeniden düzenlemeye açılsın mı?';if(!await fdYuzerOnaySor(mesaj,'Aylık Kapanış',status==='locked'?'Kapat':'Yeniden Aç'))return;try{await fdOpsCall({action:'closure-set',month:ay,status,summary:fdOpsLastClosureSummary||{}});fdOpsLastClosureSummary=null;document.getElementById('fdClosureCheck').innerHTML='<div class="dashboard-empty">Dönem durumu güncellendi.</div>';await fdAylikKapanislariYukle();showToast('Dönem durumu güncellendi.','success')}catch(e){showToast(e.message||e,'error')}};
+
+async function fdPlanliBildirimleriYukle(){const alan=document.getElementById('fdScheduledList');try{const r=await fdOpsCall({action:'schedule-list'}),liste=r.items||[];alan.innerHTML=liste.length?liste.map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(x.title)+'</strong><small>'+escapeDashboardText(x.message)+' · '+fdOpsTarihSaat(x.scheduled_for)+'</small></div><span class="badge">'+fdOpsDurumMetni(x.status)+'</span></div>'+(x.status==='pending'?'<div class="fd-ops-row-actions"><button class="fd-op-no" onclick="fdPlanliBildirimiIptal(\''+x.id+'\')">İptal Et</button></div>':'')+'</div>').join(''):'<div class="dashboard-empty">Planlanmış bildirim bulunmuyor.</div>'}catch(e){alan.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">'+escapeDashboardText(e.message||e)+'</div>'}}
+window.fdPlanliBildirimiIptal=async function(id){if(!await fdYuzerOnaySor('Planlı bildirim iptal edilsin mi?','Planı İptal Et','İptal Et'))return;try{await fdOpsCall({action:'schedule-cancel',id});await fdPlanliBildirimleriYukle();showToast('Planlı bildirim iptal edildi.','success')}catch(e){showToast(e.message||e,'error')}};
+async function fdDenetimGecmisiniYukle(){const alan=document.getElementById('fdAuditList');try{const r=await fdOpsCall({action:'audit-list'}),liste=r.items||[],adlar={insert:'Eklendi',update:'Değiştirildi',delete:'Silindi',restore:'Geri alındı'};alan.innerHTML=liste.length?liste.map(x=>'<div class="fd-ops-row"><div class="fd-ops-row-head"><div><strong>'+escapeDashboardText(x.module)+' · '+escapeDashboardText(adlar[x.operation]||x.operation)+'</strong><small>'+escapeDashboardText(x.legacy_id)+' · '+fdOpsTarihSaat(x.created_at)+'</small></div></div>'+(['update','delete'].includes(x.operation)?'<div class="fd-ops-row-actions"><button class="fd-op-soft" onclick="fdDenetimKaydiniGeriAl('+x.id+')">Bu Değişikliği Geri Al</button></div>':'')+'</div>').join(''):'<div class="dashboard-empty">Değişiklik geçmişi bulunmuyor.</div>'}catch(e){alan.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">'+escapeDashboardText(e.message||e)+'</div>'}}
+window.fdDenetimKaydiniGeriAl=async function(id){if(!await fdYuzerOnaySor('Kayıt önceki hâline döndürülsün mü? Bu işlem de geçmişe kaydedilecektir.','Değişikliği Geri Al','Geri Al'))return;try{await fdOpsCall({action:'audit-restore',id});await fdDenetimGecmisiniYukle();showToast('Kayıt önceki hâline döndürüldü.','success')}catch(e){showToast(e.message||e,'error')}};
+
+window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller.find(x=>String(x.id)===String(personelId));if(!p)return;document.getElementById('fdTimelineTitle').textContent='🕘 '+(p.ad||'Personel')+' · Tüm Geçmiş';document.getElementById('modalFdPersonelZamanCizelgesi').style.display='flex';const alan=document.getElementById('fdTimelineBody');alan.innerHTML='<div class="dashboard-empty">Kayıtlar hazırlanıyor...</div>';await Promise.allSettled([supabaseVerileriniYukle('personel'),supabaseVerileriniYukle('ekodeme')]);const olay=[];const ekle=(tarih,baslik,detay,renk='#0284c7')=>{if(tarih)olay.push({tarih:String(tarih),baslik,detay,renk})};ekle(p.girisTarihi,'İşe giriş',p.sube||'Merkez','#16a34a');ekle(p.cikisTarihi,'İşten çıkış',p.sube||'Merkez','#dc2626');izinler.filter(x=>String(x.pId)===String(personelId)).forEach(x=>ekle(x.baslangic,x.tur||'İzin',tarihFormati(x.baslangic)+' – '+tarihFormati(x.bitis)+' · '+Number(x.gun||0)+' gün','#10b981'));avanslar.filter(x=>String(x.pId)===String(personelId)).forEach(x=>ekle(x.kayitTarihi||x.baslangicAy,'Avans kaydı',Number(x.tutar||0).toLocaleString('tr-TR',{style:'currency',currency:'TRY'})+' · '+Number(x.taksitSayisi||1)+' taksit','#0f766e'));icralar.filter(x=>String(x.pId)===String(personelId)).forEach(x=>{ekle(x.baslangicAy,'İcra dosyası',String(x.dosyaNo||'-')+' · '+String(x.alacakli||'-'),'#7c3aed');(x.kesintiler||[]).forEach(k=>ekle(k.tarih||k.ay,'İcra kesintisi',Number(k.tutar||0).toLocaleString('tr-TR',{style:'currency',currency:'TRY'})+' · '+String(x.dosyaNo||'-'),'#9333ea'))});ekOdemeler.filter(x=>String(x.pId)===String(personelId)).forEach(x=>ekle(x.ay||x.tarih,x.kalem||'Ek ödeme',Number(x.tutar||0).toLocaleString('tr-TR',{style:'currency',currency:'TRY'}),'#f59e0b'));kkdKayitlari.filter(x=>String(x.pId)===String(personelId)).forEach(x=>ekle(x.tarih,'KKD teslimi',x.urun||x.malzeme||'Ekipman','#be123c'));magicpassKayitlari('magicpassHareket').filter(x=>String(x.pId)===String(personelId)).sort((a,b)=>String(b.zamanDamgasi).localeCompare(String(a.zamanDamgasi))).slice(0,40).forEach(x=>ekle(x.zamanDamgasi,'Cihaz hareketi',new Date(x.zamanDamgasi).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),'#0369a1'));olay.sort((a,b)=>String(b.tarih).localeCompare(String(a.tarih)));alan.innerHTML=olay.length?olay.slice(0,250).map(x=>'<div class="fd-timeline-item"><span class="fd-timeline-dot" style="background:'+x.renk+'"></span><strong>'+escapeDashboardText(x.baslik)+'</strong><small>'+escapeDashboardText(fdOpsTarihSaat(x.tarih.length===7?x.tarih+'-01':x.tarih))+' · '+escapeDashboardText(x.detay)+'</small></div>').join(''):'<div class="dashboard-empty">Bu personele ait geçmiş kaydı bulunmuyor.</div>'};
+</script>
+
 <script id="fdBildirimSistemi">
 (function(){
     const FONKSIYON='push-notification';
@@ -20568,9 +20745,10 @@ document.addEventListener('click',function(e){
     };
     window.openBildirimModal=async function(){
         if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
-        const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi'),baslik=document.getElementById('fdBildirimBaslik');if(baslik)baslik.value='';fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
+        const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi'),baslik=document.getElementById('fdBildirimBaslik'),plan=document.getElementById('fdBildirimPlanZamani');if(baslik)baslik.value='';if(plan)plan.value='';fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
         try{const sonuc=await cagir({action:'config'});sayac.textContent=sonuc.companySubscriptionCount+' cihaz'}catch(error){sayac.textContent='Alınamadı';showToast(hataMesaji(error),'error')}
     };
+    window.fdBildirimHazirMetinUygula=function(tur){const baslik=document.getElementById('fdBildirimBaslik'),mesaj=document.getElementById('fdBildirimMesaj'),metinler={duyuru:['Duyuru','Değerli çalışma arkadaşlarımız,\n\n'],hatirlatma:['Hatırlatma','Değerli çalışma arkadaşlarımız, lütfen aşağıdaki hatırlatmayı dikkate alınız:\n\n'],acil:['Önemli Bilgilendirme','Önemli: Lütfen aşağıdaki bilgilendirmeyi dikkatle okuyunuz.\n\n']};if(!metinler[tur])return;if(baslik)baslik.value=metinler[tur][0];if(mesaj){mesaj.value=metinler[tur][1];mesaj.focus();mesaj.setSelectionRange(mesaj.value.length,mesaj.value.length)}};
     window.fdBildirimHedefleriniDoldur=function(){
         const secim=document.getElementById('fdBildirimSube');if(!secim)return;
         const onceki=secim.value,aktifler=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null'));
@@ -20608,10 +20786,11 @@ document.addEventListener('click',function(e){
     };
     window.fdBildirimGonder=async function(event){
         event.preventDefault();if(!isManagerUser())return;
-        const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn'),sube=String(document.getElementById('fdBildirimSube')?.value||''),seciliPersoneller=fdBildirimSeciliPersonelIds();
+        const baslik=document.getElementById('fdBildirimBaslik').value.trim(),mesaj=document.getElementById('fdBildirimMesaj').value.trim(),dugme=document.getElementById('fdBildirimGonderBtn'),sube=String(document.getElementById('fdBildirimSube')?.value||''),seciliPersoneller=fdBildirimSeciliPersonelIds(),planDegeri=String(document.getElementById('fdBildirimPlanZamani')?.value||'');
         if(!mesaj)return showToast('Gönderilecek mesajı yazın.','warning');
         const hedefPersoneller=seciliPersoneller.length?seciliPersoneller:(sube?(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')&&String(p.sube||'Merkez')===sube).map(p=>String(p.id)):[]),hedefModu=(seciliPersoneller.length||sube)?'selection':'all';
         const hedefMetni=seciliPersoneller.length?(seciliPersoneller.length+' seçili personel'):(sube?sube+' şubesi':'tüm şirket');
+        if(planDegeri){const planTarihi=new Date(planDegeri);if(Number.isNaN(planTarihi.getTime())||planTarihi.getTime()<Date.now()+30000)return showToast('Planlanan zaman en az 30 saniye ileride olmalıdır.','warning');if(!await fdYuzerOnaySor('Bildirim '+fdOpsTarihSaat(planTarihi)+' tarihinde '+hedefMetni+' hedefine gönderilsin mi?','Bildirimi Planla','Planla'))return;dugme.disabled=true;showGlobalOverlay?.('Bildirim planlanıyor','Gönderim zamanı kaydediliyor...');try{await fdOpsCall({action:'schedule-create',title:baslik,message:mesaj,targetEmployeeIds:hedefPersoneller,scheduledFor:planTarihi.toISOString()});showToast('Bildirim '+fdOpsTarihSaat(planTarihi)+' için planlandı.','success');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimPlanZamani').value='';modalKapat('modalBildirimGonder')}catch(error){showToast(hataMesaji(error,'Bildirim planlanamadı.'),'error')}finally{dugme.disabled=false;hideGlobalOverlay?.()}return}
         if(!await fdYuzerOnaySor('Bildirim '+hedefMetni+' hedefine gönderilsin mi?','Bildirimi Gönder','Gönder'))return;
         dugme.disabled=true;showGlobalOverlay?.('Bildirim gönderiliyor','Kayıtlı telefonlara ulaştırılıyor...');
         try{const sonuc=await cagir({action:'send',title:baslik,message:mesaj,targetMode:hedefModu,targetEmployeeIds:hedefPersoneller});showToast(sonuc.sent?sonuc.sent+' cihaza bildirim gönderildi.':'Seçilen hedefte bildirim izni verilmiş cihaz bulunamadı.',sonuc.sent?'success':'warning');document.getElementById('fdBildirimMesaj').value='';document.getElementById('fdBildirimCihazSayisi').textContent=sonuc.total+' hedef cihaz';const gecmis=document.getElementById('fdBildirimGecmisi');if(gecmis){gecmis.innerHTML='';fdBildirimGecmisiniYukle()}}
