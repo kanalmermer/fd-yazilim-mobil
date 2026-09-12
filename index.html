@@ -4276,7 +4276,6 @@
         initUI();
         setTimeout(()=>window.fdBekleyenBildirimiGoster?.(),350);
         if (activeUser.rol === 'Personel' && activeUser.sifreDegismeli) setTimeout(zorunluSifreModaliniGoster, 50);
-        else setTimeout(()=>window.fdKvkkErisimKontrolu?.(false),350);
     }
 
     async function supabaseKayitliOturumuGeriYukle() {
@@ -4883,7 +4882,6 @@
                 document.getElementById('loginAlert').textContent = error.message || 'Giriş yapılamadı.';
                 document.getElementById('loginAlert').style.display = 'block';
             } finally {
-                supabaseManuelGirisBaslatildi = false;
                 loginButton.disabled = false;
                 loginButton.textContent = 'Güvenli giriş yap';
             }
@@ -16830,7 +16828,7 @@
             await girisParolasiniGuvenliKaydet(kullaniciAdi, yeni);
             document.getElementById('modalZorunluSifre').style.display = 'none';
             showToast('Şifreniz değiştirildi. Uygulamayı kullanmaya devam edebilirsiniz.');
-            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(false), 300);
+            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 80);
         } catch (error) {
             let mesaj = error?.message || String(error);
             try {
@@ -20909,14 +20907,11 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('KVKK kaydı için güvenli oturum gerekli.');
-        const {data,error}=await supabaseClient.functions.invoke(FONKSIYON,{body});
-        if(error){
-            let mesaj=error.message||'KVKK sunucusuna ulaşılamadı.';
-            try{const detay=await error.context?.clone?.().json();mesaj=detay?.message||mesaj}catch(_){}
-            throw new Error(mesaj);
-        }
-        if(!data?.success)throw new Error(data?.message||'KVKK işlemi tamamlanamadı.');
-        return data;
+        const {data:oturum,error:oturumHatasi}=await supabaseClient.auth.getSession();if(oturumHatasi)throw oturumHatasi;
+        const token=oturum?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
+        const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
+        let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
+        if(!response.ok||!data?.success)throw new Error(data?.message||('KVKK sunucusu hatası: '+response.status));return data;
     }
     function modalHazirla(){
         const modal=document.getElementById('modalKvkkAydinlatma');if(!modal)return null;
@@ -20967,6 +20962,9 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
         try{const sonuc=await cagir({action:'employee-status',employeeId:String(employeeId||'')}),durum=sonuc.status;if(!durum){alan.innerHTML='<span style="color:#b45309;font-weight:800;">Yürürlükte bir aydınlatma metni bulunmuyor.</span>';return}if(durum.acknowledged){alan.innerHTML='<span class="badge" style="background:#dcfce7;color:#166534;">✓ Teyit Edildi</span><div style="margin-top:7px;"><strong>Sürüm '+escapeDashboardText(durum.version||'-')+'</strong> · '+new Date(durum.acceptedAt).toLocaleString('tr-TR')+'</div>'}else alan.innerHTML='<span class="badge" style="background:#fee2e2;color:#b91c1c;">Teyit Edilmedi</span><div style="margin-top:7px;">Personel, yürürlükteki '+escapeDashboardText(durum.version||'-')+' sürümünü henüz teyit etmedi.</div>'}
         catch(error){alan.innerHTML='<span style="color:#b91c1c;">'+escapeDashboardText(hataMetni(error,'Onay kaydı alınamadı.'))+'</span>'}
     };
+    const oncekiShowHub=window.showHub;
+    if(typeof oncekiShowHub==='function')window.showHub=function(){const sonuc=oncekiShowHub.apply(this,arguments);if(!(activeUser?.rol==='Personel'&&activeUser?.sifreDegismeli))fdKvkkErisimKontrolu();return sonuc};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu()});else if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu();
 })();
 </script>
 
