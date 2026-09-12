@@ -3695,6 +3695,133 @@
     });
     let supabaseManuelGirisBaslatildi = false;
     let supabaseAktifOturum = null;
+    let supabaseOturumYenilemeSozu = null;
+    let supabaseOturumUyarisiGosterildi = false;
+
+    function supabaseOturumGecerliMi(oturum, paySaniye = 20) {
+        if (!oturum?.access_token || !oturum?.user?.id) return false;
+        return !oturum.expires_at || Number(oturum.expires_at) > Math.floor(Date.now() / 1000) + paySaniye;
+    }
+
+    async function supabaseGecerliOturumuAl(zorlaYenile = false) {
+        if (supabaseOturumYenilemeSozu) return supabaseOturumYenilemeSozu;
+        supabaseOturumYenilemeSozu = (async () => {
+            let mevcut = null;
+            const okunan = await supabaseClient.auth.getSession();
+            if (okunan.error && !/auth session missing/i.test(String(okunan.error.message || ''))) throw okunan.error;
+            mevcut = okunan.data?.session || null;
+            if (!zorlaYenile && supabaseOturumGecerliMi(mevcut)) {
+                supabaseAktifOturum = mevcut;
+                return mevcut;
+            }
+            const aday = mevcut || supabaseAktifOturum;
+            if (aday?.access_token && aday?.refresh_token) {
+                const kayit = await supabaseClient.auth.setSession({ access_token:aday.access_token, refresh_token:aday.refresh_token });
+                if (!kayit.error && supabaseOturumGecerliMi(kayit.data?.session, 0)) {
+                    supabaseAktifOturum = kayit.data.session;
+                    if (!zorlaYenile && supabaseOturumGecerliMi(kayit.data.session)) return kayit.data.session;
+                }
+                const yenileme = await supabaseClient.auth.refreshSession(kayit.data?.session || aday);
+                if (!yenileme.error && supabaseOturumGecerliMi(yenileme.data?.session, 0)) {
+                    supabaseAktifOturum = yenileme.data.session;
+                    return yenileme.data.session;
+                }
+            }
+            for (let deneme = 0; deneme < 8; deneme++) {
+                await new Promise(resolve => setTimeout(resolve, 250));
+                const tekrar = await supabaseClient.auth.getSession();
+                if (!tekrar.error && supabaseOturumGecerliMi(tekrar.data?.session, 0)) {
+                    supabaseAktifOturum = tekrar.data.session;
+                    return tekrar.data.session;
+                }
+            }
+            return null;
+        })();
+        try { return await supabaseOturumYenilemeSozu; }
+        finally { supabaseOturumYenilemeSozu = null; }
+    }
+
+    function supabaseOturumYoksaGirisEkraninaDon() {
+        if (supabaseOturumUyarisiGosterildi || supabaseManuelGirisBaslatildi) return;
+        supabaseOturumUyarisiGosterildi = true;
+        supabaseAktifOturum = null;
+        sessionStorage.removeItem('loggedInUser');
+        activeUser = null;
+        supabaseProfile = null;
+        document.querySelectorAll('.modal-overlay').forEach(modal => modal.style.display = 'none');
+        showHub();
+        const uyari = document.getElementById('loginAlert');
+        if (uyari) { uyari.textContent = 'Güvenli oturum sona erdi. Lütfen yeniden giriş yapın.'; uyari.style.display = 'block'; }
+    }
+
+    async function supabaseGuvenliFonksiyonCagir(fonksiyon, govde) {
+        let sonHata = null;
+        for (let deneme = 0; deneme < 2; deneme++) {
+            const oturum = await supabaseGecerliOturumuAl(deneme > 0);
+            if (!oturum?.access_token) break;
+            const yanit = await fetch(SUPABASE_URL + '/functions/v1/' + fonksiyon, {
+                method:'POST',
+                headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + oturum.access_token, 'apikey':SUPABASE_PUBLISHABLE_KEY },
+                body:JSON.stringify(govde)
+            });
+            let veri = {};
+            try { veri = await yanit.json(); }
+            catch (_) { throw new Error('Sunucudan geçerli yanıt alınamadı. (' + yanit.status + ')'); }
+            if (yanit.ok && veri?.success) return veri;
+            sonHata = new Error(veri?.message || ('Sunucu işlemi tamamlanamadı. (' + yanit.status + ')'));
+            sonHata.status = yanit.status;
+            if (yanit.status !== 401) throw sonHata;
+        }
+        supabaseOturumYoksaGirisEkraninaDon();
+        throw sonHata || new Error('Güvenli oturum sona erdi. Lütfen yeniden giriş yapın.');
+    }
+
+    async function supabaseOturumZorunlu() {
+        const oturum = await supabaseGecerliOturumuAl(false);
+        if (oturum?.access_token) return oturum;
+        supabaseOturumYoksaGirisEkraninaDon();
+        throw new Error('Güvenli oturum sona erdi. Lütfen yeniden giriş yapın.');
+    }
+
+    const supabaseOrijinalFonksiyonCagir = supabaseClient.functions.invoke.bind(supabaseClient.functions);
+    supabaseClient.functions.invoke = async function(fonksiyon, secenekler = {}) {
+        const oturum = await supabaseOturumZorunlu();
+        return supabaseOrijinalFonksiyonCagir(fonksiyon, {
+            ...secenekler,
+            headers:{ ...(secenekler.headers || {}), Authorization:'Bearer ' + oturum.access_token }
+        });
+    };
+
+    function supabase401YenileyiciKur(istemci) {
+        if (!istemci || typeof istemci.fetch !== 'function' || istemci.__fdOturumYenileyici) return;
+        const orijinalFetch = istemci.fetch.bind(istemci);
+        istemci.__fdOturumYenileyici = true;
+        istemci.fetch = async function(girdi, secenekler) {
+            let yanit = await orijinalFetch(girdi, secenekler);
+            if (yanit?.status !== 401 || !activeUser || supabaseManuelGirisBaslatildi) return yanit;
+            const oturum = await supabaseGecerliOturumuAl(true);
+            if (!oturum?.access_token) {
+                supabaseOturumYoksaGirisEkraninaDon();
+                return yanit;
+            }
+            yanit = await orijinalFetch(girdi, secenekler);
+            if (yanit?.status === 401) supabaseOturumYoksaGirisEkraninaDon();
+            return yanit;
+        };
+    }
+    supabase401YenileyiciKur(supabaseClient.rest);
+    supabase401YenileyiciKur(supabaseClient.storage);
+
+    supabaseClient.auth.onAuthStateChange((olay, oturum) => {
+        if (oturum?.access_token) {
+            supabaseAktifOturum = oturum;
+            supabaseOturumUyarisiGosterildi = false;
+            return;
+        }
+        if (olay === 'SIGNED_OUT' && activeUser && !supabaseManuelGirisBaslatildi) {
+            setTimeout(supabaseOturumYoksaGirisEkraninaDon, 0);
+        }
+    });
 
     // İş verileri yalnızca E-Tablo'dan okunur; tarayıcıda veri önbelleği tutulmaz.
     ['pData', 'iData', 'kData', 'puanData', 'avansData', 'sirketData', 'subeData'].forEach(key => localStorage.removeItem(key));
@@ -3933,6 +4060,7 @@
 
     async function supabaseSirketiYukle() {
         if (!activeUser?.sirketId) return;
+        await supabaseOturumZorunlu();
         const { data, error } = await supabaseClient.from('companies').select('*').eq('id', activeUser.sirketId).maybeSingle();
         if (error) throw error;
         const sirket = data ? { ...(data.data || {}), id: data.id, kisaAd: data.short_name || data.data?.kisaAd || '', unvan: data.title || data.data?.unvan || '' } : null;
@@ -3963,6 +4091,7 @@
             kullanicilar = [];
             return;
         }
+        await supabaseOturumZorunlu();
         const tumKayitlar = [];
         const paketBoyutu = 1000;
         for (let baslangic = 0; ; baslangic += paketBoyutu) {
@@ -3987,6 +4116,7 @@
         }));
     }
     async function supabasePortalModulKayitlariniTumunuGetir(anahtar, yil) {
+        await supabaseOturumZorunlu();
         const tumKayitlar = [];
         const paketBoyutu = 1000;
         for (let baslangic = 0; ; baslangic += paketBoyutu) {
@@ -4014,6 +4144,7 @@
     }
     async function supabaseVerileriniYukle(modul = 'giris', kayitYili = '') {
         if (!activeUser?.sirketId) return;
+        await supabaseOturumZorunlu();
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
         await supabaseSirketiYukle();
@@ -4029,6 +4160,7 @@
 
     async function supabaseVerileriKaydet() {
         if (!activeUser?.sirketId) throw new Error('Şirket oturumu bulunamadı.');
+        await supabaseOturumZorunlu();
         if (activeUser?.rol === 'Personel') {
             veriOnbelleginiKaydet();
             return;
@@ -4080,6 +4212,7 @@
 
     async function kullaniciOturumKalpAtisi() {
         if (!SUPABASE_MODE || !supabaseClient || !activeUser?.supabaseUserId || !aktifKullaniciOturumId) return;
+        await supabaseOturumZorunlu();
         const { error } = await supabaseClient.from('portal_user_sessions').update({ last_seen_at:new Date().toISOString(), signed_out_at:null })
             .eq('id', aktifKullaniciOturumId).eq('user_id', activeUser.supabaseUserId);
         if (error) throw error;
@@ -4097,6 +4230,7 @@
     async function kullaniciOturumunuBaslat() {
         if (!SUPABASE_MODE || !supabaseClient || !activeUser?.supabaseUserId || !activeUser?.sirketId) return;
         try {
+            await supabaseOturumZorunlu();
             let oturum = null;
             try { oturum = JSON.parse(sessionStorage.getItem(KULLANICI_OTURUM_ANAHTARI) || 'null'); } catch (_) {}
             if (!oturum?.id || String(oturum.userId || '') !== String(activeUser.supabaseUserId)) {
@@ -4152,6 +4286,7 @@
             body.innerHTML = '<div class="dashboard-empty">Oturum bilgileri yenileniyor...</div>';
         }
         try {
+            await supabaseOturumZorunlu();
             const simdi = new Date();
             const birAyOnce = new Date(simdi);
             birAyOnce.setDate(birAyOnce.getDate() - 30);
@@ -4253,6 +4388,7 @@
             throw new Error('Güvenli oturum tamamlanamadı. Lütfen yeniden giriş yapın.');
         }
         supabaseAktifOturum = oturumKontrolu.data.session;
+        supabaseOturumUyarisiGosterildi = false;
         const { data: profil, error } = await supabaseClient.from('profiles').select('*').eq('id', kullanici.id).maybeSingle();
         if (error) throw error;
         if (!profil?.company_id) throw new Error('Bu kullanıcı henüz bir şirkete bağlanmamış. Yönetici tarafından kullanıcı yönetiminden tanımlanmalıdır.');
@@ -4301,6 +4437,7 @@
                 return false;
             }
             supabaseAktifOturum = data.session;
+            supabaseOturumUyarisiGosterildi = false;
             await supabaseOturumuAc(data.session.user, '');
             return true;
         } catch (error) {
@@ -18998,7 +19135,7 @@
     async function fdAiGercekYaniti(soru){
         if(!SUPABASE_MODE||!supabaseClient||!activeUser)throw new Error('Uygulama oturumu bulunamad\u0131.');
         await fdAiGerekliVerileriYukle(soru);
-        const oturumSonucu=await supabaseClient.auth.getSession(),erisimAnahtari=oturumSonucu?.data?.session?.access_token;if(oturumSonucu?.error)throw oturumSonucu.error;if(!erisimAnahtari)throw new Error('Kullan\u0131c\u0131 oturumu do\u011frulanamad\u0131. Uygulamadan \u00e7\u0131k\u0131p yeniden girin.');const paket=fdAiTakmaAdliPaketOlustur(soru),sonuc=await supabaseClient.functions.invoke('fd-ai-assistant',{headers:{Authorization:'Bearer '+erisimAnahtari},body:{question:paket.soru,context:paket.baglam,messages:paket.mesajlar}});
+        const oturum=await supabaseOturumZorunlu(),erisimAnahtari=oturum.access_token,paket=fdAiTakmaAdliPaketOlustur(soru),sonuc=await supabaseClient.functions.invoke('fd-ai-assistant',{headers:{Authorization:'Bearer '+erisimAnahtari},body:{question:paket.soru,context:paket.baglam,messages:paket.mesajlar}});
         if(sonuc.error){let mesaj=sonuc.error.message||String(sonuc.error);try{const detay=await sonuc.error.context?.json();if(detay?.error||detay?.message)mesaj=detay.error||detay.message;}catch(_){}throw new Error(mesaj);}
         if(!sonuc.data?.answer)throw new Error('Yapay zek\u00e2 servisi bo\u015f cevap verdi.');
         return fdAiYanitiTemizle(paket.cevabiAc(sonuc.data.answer));
@@ -20635,11 +20772,7 @@ let fdOpsLastChecks=null,fdOpsLastClosureSummary=null,fdOpsPendingRequests=[],fd
 
 async function fdOpsCall(body){
     if(!SUPABASE_MODE||!supabaseClient)throw new Error('İşlem merkezi için güvenli oturum gerekli.');
-    const{data,error}=await supabaseClient.auth.getSession();if(error)throw error;
-    const token=data?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
-    const response=await fetch(SUPABASE_URL+'/functions/v1/'+FD_OPS_FUNCTION,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
-    let sonuc={};try{sonuc=await response.json()}catch(_){throw new Error('İşlem merkezi geçerli yanıt vermedi. ('+response.status+')')}
-    if(!response.ok||!sonuc?.success)throw new Error(sonuc?.message||'İşlem tamamlanamadı.');return sonuc;
+    return supabaseGuvenliFonksiyonCagir(FD_OPS_FUNCTION,body);
 }
 function fdOpsTarihSaat(value){if(!value)return'-';const d=new Date(value);return Number.isNaN(d.getTime())?'-':d.toLocaleString('tr-TR',{dateStyle:'short',timeStyle:'short'})}
 function fdOpsDurumMetni(value){return({pending:'Bekliyor',approved:'Onaylandı',rejected:'Reddedildi',cancelled:'İptal edildi',locked:'Kapalı',open:'Açık',sent:'Gönderildi',failed:'Hata',processing:'İşleniyor'})[value]||value||'-'}
@@ -20794,11 +20927,7 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('Bildirim sistemi için güvenli oturum gerekli.');
-        const{data:oturumVerisi,error:oturumHatasi}=await supabaseClient.auth.getSession();if(oturumHatasi)throw oturumHatasi;
-        const token=oturumVerisi?.session?.access_token;if(!token)throw new Error('Oturum süresi dolmuş. Çıkış yapıp yeniden giriş yapın.');
-        const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
-        let data={};try{data=await response.json()}catch(_){throw new Error('Bildirim sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
-        if(!response.ok||!data?.success)throw new Error(data?.message||('Bildirim sunucusu hatası: '+response.status));return data;
+        return supabaseGuvenliFonksiyonCagir(FONKSIYON,body);
     }
     function base64UrlDizisi(deger){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
@@ -20930,52 +21059,9 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     function hataMetni(error,varsayilan='İşlem tamamlanamadı.'){
         return String(error?.message||error?.context?.body?.message||varsayilan);
     }
-    const bekle=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-    async function guncelOturumuAl(zorlaYenile=false){
-        const bellekteki=supabaseAktifOturum;
-        if(zorlaYenile){
-            const mevcut=await supabaseClient.auth.getSession();
-            if(mevcut.error&&!/auth session missing/i.test(String(mevcut.error.message||'')))throw mevcut.error;
-            const yenilenecek=mevcut.data?.session||bellekteki;
-            if(yenilenecek?.access_token&&yenilenecek?.refresh_token){
-                const onceKaydet=await supabaseClient.auth.setSession({access_token:yenilenecek.access_token,refresh_token:yenilenecek.refresh_token});
-                if(!onceKaydet.error&&onceKaydet.data?.session)supabaseAktifOturum=onceKaydet.data.session;
-                const yenilenen=await supabaseClient.auth.refreshSession(onceKaydet.data?.session||yenilenecek);
-                if(!yenilenen.error&&yenilenen.data?.session?.access_token){supabaseAktifOturum=yenilenen.data.session;return yenilenen.data.session}
-            }
-        }
-        const kontrolSayisi=zorlaYenile?2:12;
-        for(let kontrol=0;kontrol<kontrolSayisi;kontrol++){
-            const {data,error}=await supabaseClient.auth.getSession();
-            if(error&&!/auth session missing/i.test(String(error.message||'')))throw error;
-            if(data?.session?.access_token){supabaseAktifOturum=data.session;return data.session}
-            if(bellekteki?.access_token)return bellekteki;
-            await bekle(250);
-        }
-        return null;
-    }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('KVKK kaydı için güvenli oturum gerekli.');
-        let sonHata=null;
-        for(let deneme=0;deneme<3;deneme++){
-            try{
-                const oturum=await guncelOturumuAl(deneme>0),token=oturum?.access_token;
-                if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
-                const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
-                let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
-                if(response.ok&&data?.success)return data;
-                const hata=new Error(data?.message||('KVKK sunucusu hatası: '+response.status));
-                hata.status=response.status;
-                if(response.status!==401)throw hata;
-                sonHata=hata;
-            }catch(error){
-                sonHata=error;
-                const oturumHatasi=Number(error?.status)===401||/oturum|session|jwt|token/i.test(String(error?.message||''));
-                if(!oturumHatasi||deneme===2)throw error;
-            }
-            await bekle(350*(deneme+1));
-        }
-        throw sonHata||new Error('Oturum doğrulanamadı.');
+        return supabaseGuvenliFonksiyonCagir(FONKSIYON,body);
     }
     function modalHazirla(){
         const modal=document.getElementById('modalKvkkAydinlatma');if(!modal)return null;
