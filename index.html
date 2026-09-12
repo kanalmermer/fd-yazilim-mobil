@@ -3900,6 +3900,13 @@
     }
 
     function supabaseDiziAta(anahtar, kayitlar) {
+        const mevcutKayitlar = veriDizisiniGetir(anahtar);
+        if (Array.isArray(kayitlar) && kayitlar.length === 0 && mevcutKayitlar.length > 0) {
+            console.warn('Sunucu boş yanıt verdi; yerel '+anahtar+' kayıtları korunuyor.');
+            yuklenenVeriler.add(anahtar);
+            veriKayitGoruntusunuYenile(anahtar);
+            return;
+        }
         if (anahtar === 'personeller') personeller = kayitlar.map(item => ({ ...item, id: String(item.id) }));
         if (anahtar === 'izinler') {
             const sunucuIdleri = new Set(kayitlar.map(item => String(item.id)));
@@ -4464,9 +4471,23 @@
 
     function veriOnbelleginiYukle() {
         try {
-            const ham = localStorage.getItem(VERI_ONBELLEK_ANAHTARI) || sessionStorage.getItem(VERI_ONBELLEK_ANAHTARI) || localStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI) || sessionStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI);
-            if (!ham) return;
-            const veri = JSON.parse(ham);
+            const hamlar = [
+                localStorage.getItem(VERI_ONBELLEK_ANAHTARI),
+                sessionStorage.getItem(VERI_ONBELLEK_ANAHTARI),
+                localStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI),
+                sessionStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI)
+            ].filter(Boolean);
+            if (!hamlar.length) return;
+            const adaylar = hamlar.map(ham => { try { return JSON.parse(ham); } catch (_) { return null; } }).filter(Boolean);
+            const diziAlanlari = ['personeller','izinler','puantaj','avanslar','ekOdemeler','kkd','vardiya','irsaliyeler','kiratakip','ihracat','icralar','araclar','akaryakit','sirketler','subeler'];
+            const veri = {};
+            diziAlanlari.forEach(alan => {
+                const aday = adaylar.find(item => Array.isArray(item[alan]) && item[alan].length > 0) || adaylar.find(item => Array.isArray(item[alan]));
+                if (aday) veri[alan] = aday[alan];
+            });
+            const zamanAdayi = adaylar.find(item => Number(item.zaman) > 0);
+            if (zamanAdayi) veri.zaman = zamanAdayi.zaman;
+            const ham = JSON.stringify(veri);
             if (!localStorage.getItem(VERI_ONBELLEK_ANAHTARI)) {
                 try { localStorage.setItem(VERI_ONBELLEK_ANAHTARI, ham); } catch (e) { sessionStorage.setItem(VERI_ONBELLEK_ANAHTARI, ham); }
             }
