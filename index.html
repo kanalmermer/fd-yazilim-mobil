@@ -1487,7 +1487,7 @@
                 <div class="form-group"><label>Şube</label><select id="fdBildirimSube" onchange="fdBildirimPersonelleriniDoldur()"><option value="">Tüm Şubeler</option></select></div>
                 <div class="form-group"><label>Personeller <small>(birden fazla seçilebilir)</small></label><div class="push-personel-tools"><button type="button" onclick="fdBildirimTumPersonelleriSec(true)">Tümünü Seç</button><button type="button" onclick="fdBildirimTumPersonelleriSec(false)">Temizle</button></div><div id="fdBildirimPersonelListesi" class="push-personel-list"><div class="push-personel-empty">Personeller yükleniyor...</div></div></div>
             </div>
-            <div class="form-group"><label>Başlık</label><input id="fdBildirimBaslik" maxlength="80" value="FD YAZILIM" data-case-preserve="true" required></div>
+            <div class="form-group"><label>Başlık</label><input id="fdBildirimBaslik" maxlength="80" value="" data-case-preserve="true" required></div>
             <div class="form-group"><label>Mesaj</label><textarea id="fdBildirimMesaj" rows="5" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz bildirimi yazın..." required></textarea></div>
             <div class="push-compose-status"><span>Kayıtlı bildirim cihazı</span><strong id="fdBildirimCihazSayisi">Kontrol ediliyor...</strong></div>
             <button id="fdBildirimGonderBtn" class="btn-submit" type="submit">🔔 Bildirimi Gönder</button>
@@ -19499,16 +19499,16 @@ tapuCksArayuzunuKur();
     }
     window.fdOturumKullanicilariniFiltrele=function(){
         const q=String(document.getElementById('fdOturumKullaniciAra')?.value||'').toLocaleLowerCase('tr-TR');
-        fdOturumKartlariniCiz(fdOturumKullaniciListesi.filter(s=>!q||String([s.ad,s.sube,s.rol,s.username].join(' ')).toLocaleLowerCase('tr-TR').includes(q)));
+        fdOturumKartlariniCiz(fdOturumKullaniciListesi.filter(s=>!q||String([s.ad,s.sube].join(' ')).toLocaleLowerCase('tr-TR').includes(q)));
     };
     function fdOturumKartlariniCiz(liste){
         const alan=document.getElementById('fdOturumKullaniciKartlari');if(!alan)return;
-        alan.innerHTML=liste.length?liste.map(s=>'<div class="fd-active-user '+(s.aktif?'active':'offline')+'"><button type="button" class="fd-active-user-main" data-user="'+fdEsc(s.user_id)+'" data-ad="'+fdEsc(s.ad)+'" onclick="fdAktifKullaniciGecmisi(this.dataset.user,this.dataset.ad)"><span class="fd-active-dot"></span><span><strong>'+fdEsc(s.ad)+'</strong><small><b>Durum:</b> '+(s.aktif?'Çevrimiçi':'Çevrimdışı')+' · '+fdEsc([s.sube,s.rol].filter(Boolean).join(' · '))+'</small><small><b>Son giriş:</b> '+kullaniciOturumTarihSaat(s.signed_in_at)+'</small><small><b>'+(s.aktif?'Son görülme':'Çıkış / son görülme')+':</b> '+kullaniciOturumTarihSaat(s.signed_out_at||s.last_seen_at)+'</small></span></button><button type="button" class="fd-session-notify" title="Bu kişiye bildirim gönder" data-personel="'+fdEsc(s.personelTc||'')+'" data-ad="'+fdEsc(s.ad)+'" onclick="fdOturumKullanicisinaBildirim(this)" '+(!s.personelTc?'disabled':'')+'>🔔</button></div>').join(''):'<div class="dashboard-empty">Aramaya uygun kullanıcı bulunamadı.</div>';
+        alan.innerHTML=liste.length?liste.map(s=>'<div class="fd-active-user '+(s.aktif?'active':'offline')+'"><button type="button" class="fd-active-user-main" title="Giriş–çıkış geçmişini göster" data-user="'+fdEsc(s.user_id)+'" data-ad="'+fdEsc(s.ad)+'" onclick="fdAktifKullaniciGecmisi(this.dataset.user,this.dataset.ad)"><span class="fd-active-dot"></span><span><strong>'+fdEsc(s.ad)+'</strong><small>'+fdEsc(s.sube||'Şube belirtilmemiş')+'</small></span></button><button type="button" class="fd-session-notify" title="Bu kişiye bildirim gönder" data-personel="'+fdEsc(s.personelTc||'')+'" data-ad="'+fdEsc(s.ad)+'" onclick="fdOturumKullanicisinaBildirim(this)" '+(!s.personelTc?'disabled':'')+'>🔔</button></div>').join(''):'<div class="dashboard-empty">Aramaya uygun kullanıcı bulunamadı.</div>';
     }
     window.fdOturumKullanicisinaBildirim=async function(dugme){
         const personelId=String(dugme?.dataset?.personel||''),ad=String(dugme?.dataset?.ad||'Kullanıcı');if(!personelId)return showToast('Bu kullanıcı personel kaydıyla eşleşmiyor.','warning');
         await openBildirimModal();fdBildirimTumPersonelleriSec(false);const kutu=[...document.querySelectorAll('#fdBildirimPersonelListesi .fd-bildirim-personel-sec')].find(x=>String(x.value)===personelId);
-        if(!kutu){return showToast(ad+' aktif personel listesinde bulunamadı.','warning')}kutu.checked=true;fdBildirimHedefOzetiniGuncelle();document.getElementById('fdBildirimBaslik').value='FD YAZILIM';document.getElementById('fdBildirimMesaj')?.focus();
+        if(!kutu){return showToast(ad+' aktif personel listesinde bulunamadı.','warning')}kutu.checked=true;fdBildirimHedefOzetiniGuncelle();document.getElementById('fdBildirimBaslik').value='';document.getElementById('fdBildirimMesaj')?.focus();
     };
     kullaniciOturumPaneliniYukle=async function(bildirimGoster=false){
         const panel=document.getElementById('adminSessionPanel'),body=document.getElementById('adminSessionBody');if(!panel||!body)return;const adminMi=activeUser?.rol==='Admin';panel.style.display=adminMi?'block':'none';if(!adminMi||!SUPABASE_MODE||!supabaseClient)return;if(bildirimGoster)body.innerHTML='<div class="dashboard-empty">Kullanıcılar yenileniyor...</div>';
@@ -19517,7 +19517,7 @@ tapuCksArayuzunuKur();
             kayitlar.forEach(s=>{const id=String(s.user_id);if(!tekil.has(id))tekil.set(id,s)});
             fdOturumKullaniciListesi=[...tekil.values()].map(s=>{const tc=String(s.employee_legacy_id||''),hesap=kullanicilar.find(k=>String(k.supabaseUserId||k.id||'')===String(s.user_id)||(tc&&String(k.tcNo||'')===tc)),personelTc=tc||String(hesap?.tcNo||''),p=personeller.find(x=>String(x.id)===personelTc&&aktifSirketeAit(x)),son=new Date(s.last_seen_at||s.signed_in_at).getTime(),aktif=!s.signed_out_at&&Number.isFinite(son)&&simdi.getTime()-son<=120000;return{...s,personelTc,ad:p?.ad||hesap?.ad||s.username||'Kullanıcı',sube:p?.sube||'',rol:s.role==='Yonetici'?'Kullanıcı':(s.role||'-'),aktif}}).sort((a,b)=>Number(b.aktif)-Number(a.aktif)||String(b.last_seen_at||b.signed_in_at).localeCompare(String(a.last_seen_at||a.signed_in_at)));
             const aktif=fdOturumKullaniciListesi.filter(s=>s.aktif).length,cevrimdisi=fdOturumKullaniciListesi.length-aktif;document.getElementById('adminSessionActiveCount').textContent=aktif+' aktif';document.getElementById('adminSessionOfflineCount').textContent=cevrimdisi+' çevrimdışı';document.getElementById('adminSessionTotalCount').textContent=fdOturumKullaniciListesi.length+' kullanıcı';
-            body.innerHTML=fdOturumKullaniciListesi.length?'<div class="fd-session-toolbar"><input id="fdOturumKullaniciAra" placeholder="Kullanıcı, şube veya rol ara..." oninput="fdOturumKullanicilariniFiltrele()"><small style="margin-left:auto;color:#64748b">Karta tıklayın: giriş geçmişi · 🔔: kişiye bildirim</small></div><div id="fdOturumKullaniciKartlari" class="fd-active-user-grid"></div>':'<div class="dashboard-empty">Henüz giriş yapmış kullanıcı bulunmuyor.</div>';fdOturumKartlariniCiz(fdOturumKullaniciListesi);if(bildirimGoster)showToast('Kullanıcı oturumları yenilendi.');
+            body.innerHTML=fdOturumKullaniciListesi.length?'<div class="fd-session-toolbar"><input id="fdOturumKullaniciAra" placeholder="İsim veya şube ara..." oninput="fdOturumKullanicilariniFiltrele()"><small style="margin-left:auto;color:#64748b">Karta tıklayın: giriş geçmişi · 🔔: kişiye bildirim</small></div><div id="fdOturumKullaniciKartlari" class="fd-active-user-grid"></div>':'<div class="dashboard-empty">Henüz giriş yapmış kullanıcı bulunmuyor.</div>';fdOturumKartlariniCiz(fdOturumKullaniciListesi);if(bildirimGoster)showToast('Kullanıcı oturumları yenilendi.');
         }catch(e){console.warn(e);body.innerHTML='<div class="dashboard-empty" style="color:#b45309">Kullanıcı oturumları alınamadı.</div>';}
     };
 
@@ -20568,7 +20568,7 @@ document.addEventListener('click',function(e){
     };
     window.openBildirimModal=async function(){
         if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
-        const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi');fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
+        const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi'),baslik=document.getElementById('fdBildirimBaslik');if(baslik)baslik.value='';fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';
         try{const sonuc=await cagir({action:'config'});sayac.textContent=sonuc.companySubscriptionCount+' cihaz'}catch(error){sayac.textContent='Alınamadı';showToast(hataMesaji(error),'error')}
     };
     window.fdBildirimHedefleriniDoldur=function(){
