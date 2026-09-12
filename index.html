@@ -499,6 +499,7 @@
         #izinTakipApp #izinTabloGecmis th:nth-child(7), #izinTakipApp #izinTabloGecmis td:nth-child(7) { width:225px; min-width:225px; }
         #izinTakipApp #izinTabloGecmis .action-btns { display:flex; flex-wrap:nowrap; align-items:center; gap:4px; }
         #izinTakipApp #izinTabloGecmis .action-btns button { flex:0 0 auto; width:auto; margin:0; padding:6px 7px; font-size:.68rem; white-space:nowrap; }
+        .izin-personel-kapsam{display:flex;gap:5px;margin:0 0 7px}.izin-personel-kapsam button{flex:1;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#64748b;padding:7px 9px;cursor:pointer;font-size:.69rem;font-weight:800}.izin-personel-kapsam button.active{border-color:#0284c7;background:#e0f2fe;color:#0369a1}.izin-personel-kapsam button[data-kapsam="ayrilan"].active{border-color:#fca5a5;background:#fef2f2;color:#b91c1c}
         .izin-m-toplu-gunler { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:7px; margin-top:10px; }
         .izin-m-toplu-gun { border:1px solid #fecaca; border-radius:9px; padding:8px 5px; background:#fff7ed; color:#9a3412; cursor:pointer; text-align:center; font-weight:800; line-height:1.25; }
         .izin-m-toplu-gun small { display:block; margin-top:2px; color:#64748b; font-size:.62rem; font-weight:650; }
@@ -2347,7 +2348,8 @@
                         <form id="izinForm">
                             <input type="hidden" id="iEditId" value="">
                             <div class="form-group">
-                                <label>Personel Seçin <small style="color:#64748b;">(aktif ve ayrılanlar)</small></label>
+                                <label>Personel Seçin</label>
+                                <div class="izin-personel-kapsam"><button id="izinAktifPersonelBtn" type="button" class="active" data-kapsam="aktif" onclick="izinPersonelKapsaminiDegistir('aktif')">Aktif Personeller</button><button id="izinAyrilanPersonelBtn" type="button" data-kapsam="ayrilan" onclick="izinPersonelKapsaminiDegistir('ayrilan')">Ayrılan Personeller</button></div>
                                 <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;"><input type="text" id="izinPersonelSecimKutusu" list="izinPersonelDatalist" autocomplete="off" required placeholder="Ad, T.C. veya şube yazın" oninput="izinPersonelAramaliSecimYap(false)" onchange="izinPersonelAramaliSecimYap(true)" onfocus="this.select()"><button type="button" class="btn-modern btn-detail-modern" title="Başka personel seç" aria-label="Başka personel seç" onclick="izinPersonelSeciminiTemizle()" style="padding:9px 11px;">↻</button></div>
                                 <datalist id="izinPersonelDatalist"></datalist>
                                 <select id="izinPersonelSelect" onchange="personelSecildi(this.value)" style="display:none;">
@@ -15190,6 +15192,14 @@
         document.getElementById('modalPersonel').style.display = 'flex';
     }
 
+    let izinPersonelListeKapsami='aktif';
+    function izinPersonelKapsaminiDegistir(kapsam) {
+        izinPersonelListeKapsami=kapsam==='ayrilan'?'ayrilan':'aktif';
+        document.querySelectorAll('.izin-personel-kapsam button').forEach(btn=>btn.classList.toggle('active',btn.dataset.kapsam===izinPersonelListeKapsami));
+        izinPersonelSeciminiTemizle();
+        personelSelectDoldur();
+        const kutu=document.getElementById('izinPersonelSecimKutusu');if(kutu)kutu.placeholder=izinPersonelListeKapsami==='ayrilan'?'Ayrılan personelin adını, T.C. veya şubesini yazın':'Ad, T.C. veya şube yazın';
+    }
     function personelSelectDoldur() {
         const select = document.getElementById('izinPersonelSelect');
         const datalist = document.getElementById('izinPersonelDatalist');
@@ -15198,17 +15208,16 @@
         datalist.innerHTML = '';
         personeller
             .filter(p => {
-                return aktifSirketeAit(p) && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo));
+                const ayrildi=Boolean(tarihInputDegeri(p.cikisTarihi));
+                return aktifSirketeAit(p) && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo)) && (isPersonelUser()||(izinPersonelListeKapsami==='ayrilan'?ayrildi:!ayrildi));
             })
             .sort((a, b) => {
-                const aAyrildi=Boolean(tarihInputDegeri(a.cikisTarihi)),bAyrildi=Boolean(tarihInputDegeri(b.cikisTarihi));
-                if(aAyrildi!==bAyrildi)return aAyrildi?1:-1;
                 const subeSirasi = String(a.sube || 'Merkez').localeCompare(String(b.sube || 'Merkez'), 'tr', { sensitivity: 'base' });
                 return subeSirasi || String(a.ad || '').localeCompare(String(b.ad || ''), 'tr', { sensitivity: 'base' });
             })
             .forEach(p => {
-                const cikis=tarihInputDegeri(p.cikisTarihi),durum=cikis?`AYRILDI: ${tarihFormati(cikis)}`:'AKTİF';
-                const etiket = `${durum} · ${p.ad || 'İsimsiz Personel'} · ${p.sube || 'Merkez'} · ${p.id}`;
+                const cikis=tarihInputDegeri(p.cikisTarihi),cikisBilgisi=cikis?` · Çıkış: ${tarihFormati(cikis)}`:'';
+                const etiket = `${p.ad || 'İsimsiz Personel'} · ${p.sube || 'Merkez'}${cikisBilgisi} · ${p.id}`;
                 const option = document.createElement('option');
                 option.value = String(p.id);
                 option.textContent = etiket;
