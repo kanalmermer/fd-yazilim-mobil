@@ -15241,8 +15241,8 @@
 
     function hesaplaIzinHakki(yil, yas) {
         if (yil < 1) return 0;
-        let h = (yil <= 5) ? 14 : (yil <= 15 ? 20 : 24);
-        if (yas >= 50 && h < 20) h = 20;
+        let h = (yil <= 5) ? 14 : (yil < 15 ? 20 : 26);
+        if ((yas <= 18 || yas >= 50) && h < 20) h = 20;
         return h;
     }
 
