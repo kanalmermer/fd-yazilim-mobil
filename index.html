@@ -3694,6 +3694,7 @@
         auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
     let supabaseManuelGirisBaslatildi = false;
+    let supabaseAktifOturum = null;
 
     // İş verileri yalnızca E-Tablo'dan okunur; tarayıcıda veri önbelleği tutulmaz.
     ['pData', 'iData', 'kData', 'puanData', 'avansData', 'sirketData', 'subeData'].forEach(key => localStorage.removeItem(key));
@@ -4246,6 +4247,12 @@
     setInterval(()=>fdUzakKayitlariOtomatikEsitle(false),30000);
 
     async function supabaseOturumuAc(kullanici, secilenSirketId = '') {
+        const oturumKontrolu = await supabaseClient.auth.getSession();
+        if (oturumKontrolu.error) throw oturumKontrolu.error;
+        if (!oturumKontrolu.data?.session?.access_token || String(oturumKontrolu.data.session.user?.id || '') !== String(kullanici?.id || '')) {
+            throw new Error('Güvenli oturum tamamlanamadı. Lütfen yeniden giriş yapın.');
+        }
+        supabaseAktifOturum = oturumKontrolu.data.session;
         const { data: profil, error } = await supabaseClient.from('profiles').select('*').eq('id', kullanici.id).maybeSingle();
         if (error) throw error;
         if (!profil?.company_id) throw new Error('Bu kullanıcı henüz bir şirkete bağlanmamış. Yönetici tarafından kullanıcı yönetiminden tanımlanmalıdır.');
@@ -4276,6 +4283,7 @@
         initUI();
         setTimeout(()=>window.fdBekleyenBildirimiGoster?.(),350);
         if (activeUser.rol === 'Personel' && activeUser.sifreDegismeli) setTimeout(zorunluSifreModaliniGoster, 50);
+        else setTimeout(()=>window.fdKvkkErisimKontrolu?.(false),350);
     }
 
     async function supabaseKayitliOturumuGeriYukle() {
@@ -4286,15 +4294,18 @@
             // olarak ekranı açmasına izin verme. Parola sonucu tek belirleyici olsun.
             if (supabaseManuelGirisBaslatildi) return false;
             if (!data?.session?.user) {
+                supabaseAktifOturum = null;
                 sessionStorage.removeItem('loggedInUser');
                 activeUser = null;
                 showHub();
                 return false;
             }
+            supabaseAktifOturum = data.session;
             await supabaseOturumuAc(data.session.user, '');
             return true;
         } catch (error) {
             console.warn('Kayıtlı oturum geri yüklenemedi:', error);
+            supabaseAktifOturum = null;
             sessionStorage.removeItem('loggedInUser');
             activeUser = null;
             showHub();
@@ -4852,9 +4863,10 @@
                 // Giriş ekranından yapılan her deneme bağımsız doğrulanır. Tarayıcıda
                 // kalmış geçerli bir oturum yanlış parolayı örtemez.
                 await supabaseClient.auth.signOut();
-                sessionStorage.removeItem('loggedInUser');
-                activeUser = null;
-                supabaseProfile = null;
+            sessionStorage.removeItem('loggedInUser');
+            activeUser = null;
+            supabaseProfile = null;
+            supabaseAktifOturum = null;
                 let data = null;
                 let sonGirisHatasi = null;
                 for (const email of supabaseKullaniciEpostalari(kullaniciAdi)) {
@@ -4863,6 +4875,7 @@
                     sonGirisHatasi = sonuc.error;
                 }
                 if (!data?.user) throw sonGirisHatasi || new Error('Giriş yapılamadı.');
+                supabaseAktifOturum = data.session || null;
                 if (data.session?.access_token && data.session?.refresh_token) {
                     const oturumKaydi = await supabaseClient.auth.setSession({ access_token:data.session.access_token, refresh_token:data.session.refresh_token });
                     if (oturumKaydi.error) throw oturumKaydi.error;
@@ -4883,6 +4896,7 @@
                 document.getElementById('loginAlert').style.display = 'none';
             } catch (error) {
                 await supabaseClient.auth.signOut();
+                supabaseAktifOturum = null;
                 document.getElementById('loginAlert').textContent = error.message || 'Giriş yapılamadı.';
                 document.getElementById('loginAlert').style.display = 'block';
             } finally {
@@ -5992,6 +6006,7 @@
     async function logout() {
         await kullaniciOturumunuKapat();
         if (SUPABASE_MODE) await supabaseClient.auth.signOut();
+        supabaseAktifOturum = null;
         sessionStorage.removeItem('loggedInUser');
         activeUser = null;
         supabaseProfile = null;
@@ -16831,13 +16846,14 @@
             if (yeniOturum.session?.access_token && yeniOturum.session?.refresh_token) {
                 const oturumKaydi = await supabaseClient.auth.setSession({ access_token:yeniOturum.session.access_token, refresh_token:yeniOturum.session.refresh_token });
                 if (oturumKaydi.error) throw oturumKaydi.error;
+                supabaseAktifOturum = oturumKaydi.data?.session || yeniOturum.session;
             }
             activeUser.sifreDegismeli = false;
             sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
             await girisParolasiniGuvenliKaydet(kullaniciAdi, yeni);
             document.getElementById('modalZorunluSifre').style.display = 'none';
             showToast('Şifreniz değiştirildi. Uygulamayı kullanmaya devam edebilirsiniz.');
-            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 300);
+            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(false), 300);
         } catch (error) {
             let mesaj = error?.message || String(error);
             try {
@@ -20916,21 +20932,24 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     }
     const bekle=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     async function guncelOturumuAl(zorlaYenile=false){
+        const bellekteki=supabaseAktifOturum;
         if(zorlaYenile){
             const mevcut=await supabaseClient.auth.getSession();
-            if(mevcut.error)throw mevcut.error;
-            if(mevcut.data?.session?.refresh_token){
-                const yenilenen=await supabaseClient.auth.refreshSession(mevcut.data.session);
-                if(!yenilenen.error&&yenilenen.data?.session?.access_token)return yenilenen.data.session;
+            if(mevcut.error&&!/auth session missing/i.test(String(mevcut.error.message||'')))throw mevcut.error;
+            const yenilenecek=mevcut.data?.session||bellekteki;
+            if(yenilenecek?.access_token&&yenilenecek?.refresh_token){
+                const onceKaydet=await supabaseClient.auth.setSession({access_token:yenilenecek.access_token,refresh_token:yenilenecek.refresh_token});
+                if(!onceKaydet.error&&onceKaydet.data?.session)supabaseAktifOturum=onceKaydet.data.session;
+                const yenilenen=await supabaseClient.auth.refreshSession(onceKaydet.data?.session||yenilenecek);
+                if(!yenilenen.error&&yenilenen.data?.session?.access_token){supabaseAktifOturum=yenilenen.data.session;return yenilenen.data.session}
             }
         }
-        // Sayfa açılışında Supabase yerel oturumu eşzamansız geri yükleyebilir.
-        // Eski ekran bilgisini gerçek oturum sanıp hemen hata göstermek yerine bekle.
-        const kontrolSayisi=zorlaYenile?4:24;
+        const kontrolSayisi=zorlaYenile?2:12;
         for(let kontrol=0;kontrol<kontrolSayisi;kontrol++){
             const {data,error}=await supabaseClient.auth.getSession();
             if(error&&!/auth session missing/i.test(String(error.message||'')))throw error;
-            if(data?.session?.access_token)return data.session;
+            if(data?.session?.access_token){supabaseAktifOturum=data.session;return data.session}
+            if(bellekteki?.access_token)return bellekteki;
             await bekle(250);
         }
         return null;
@@ -21007,9 +21026,6 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
         try{const sonuc=await cagir({action:'employee-status',employeeId:String(employeeId||'')}),durum=sonuc.status;if(!durum){alan.innerHTML='<span style="color:#b45309;font-weight:800;">Yürürlükte bir aydınlatma metni bulunmuyor.</span>';return}if(durum.acknowledged){alan.innerHTML='<span class="badge" style="background:#dcfce7;color:#166534;">✓ Teyit Edildi</span><div style="margin-top:7px;"><strong>Sürüm '+escapeDashboardText(durum.version||'-')+'</strong> · '+new Date(durum.acceptedAt).toLocaleString('tr-TR')+'</div>'}else alan.innerHTML='<span class="badge" style="background:#fee2e2;color:#b91c1c;">Teyit Edilmedi</span><div style="margin-top:7px;">Personel, yürürlükteki '+escapeDashboardText(durum.version||'-')+' sürümünü henüz teyit etmedi.</div>'}
         catch(error){alan.innerHTML='<span style="color:#b91c1c;">'+escapeDashboardText(hataMetni(error,'Onay kaydı alınamadı.'))+'</span>'}
     };
-    const oncekiShowHub=window.showHub;
-    if(typeof oncekiShowHub==='function')window.showHub=function(){const sonuc=oncekiShowHub.apply(this,arguments);if(!(activeUser?.rol==='Personel'&&activeUser?.sifreDegismeli))fdKvkkErisimKontrolu();return sonuc};
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu()});else if(activeUser&&!(activeUser.rol==='Personel'&&activeUser.sifreDegismeli))fdKvkkErisimKontrolu();
 })();
 </script>
 
