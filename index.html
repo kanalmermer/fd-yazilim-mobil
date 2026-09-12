@@ -4863,6 +4863,10 @@
                     sonGirisHatasi = sonuc.error;
                 }
                 if (!data?.user) throw sonGirisHatasi || new Error('Giriş yapılamadı.');
+                if (data.session?.access_token && data.session?.refresh_token) {
+                    const oturumKaydi = await supabaseClient.auth.setSession({ access_token:data.session.access_token, refresh_token:data.session.refresh_token });
+                    if (oturumKaydi.error) throw oturumKaydi.error;
+                }
                 await supabaseOturumuAc(data.user, secilenSirketId);
                 await girisParolasiniGuvenliKaydet(kullaniciAdi, password);
                 localStorage.setItem('lastSelectedCompanyId', secilenSirketId);
@@ -4882,6 +4886,7 @@
                 document.getElementById('loginAlert').textContent = error.message || 'Giriş yapılamadı.';
                 document.getElementById('loginAlert').style.display = 'block';
             } finally {
+                supabaseManuelGirisBaslatildi = false;
                 loginButton.disabled = false;
                 loginButton.textContent = 'Güvenli giriş yap';
             }
@@ -16823,12 +16828,16 @@
                 await supabaseClient.auth.signOut();
                 throw new Error('Yenilenen oturum mevcut kullanıcıyla eşleşmedi.');
             }
+            if (yeniOturum.session?.access_token && yeniOturum.session?.refresh_token) {
+                const oturumKaydi = await supabaseClient.auth.setSession({ access_token:yeniOturum.session.access_token, refresh_token:yeniOturum.session.refresh_token });
+                if (oturumKaydi.error) throw oturumKaydi.error;
+            }
             activeUser.sifreDegismeli = false;
             sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
             await girisParolasiniGuvenliKaydet(kullaniciAdi, yeni);
             document.getElementById('modalZorunluSifre').style.display = 'none';
             showToast('Şifreniz değiştirildi. Uygulamayı kullanmaya devam edebilirsiniz.');
-            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 80);
+            if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 300);
         } catch (error) {
             let mesaj = error?.message || String(error);
             try {
@@ -20908,16 +20917,23 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
     const bekle=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     async function guncelOturumuAl(zorlaYenile=false){
         if(zorlaYenile){
-            const {data,error}=await supabaseClient.auth.refreshSession();
-            if(error)throw error;
-            if(data?.session?.access_token)return data.session;
+            const mevcut=await supabaseClient.auth.getSession();
+            if(mevcut.error)throw mevcut.error;
+            if(mevcut.data?.session?.refresh_token){
+                const yenilenen=await supabaseClient.auth.refreshSession(mevcut.data.session);
+                if(!yenilenen.error&&yenilenen.data?.session?.access_token)return yenilenen.data.session;
+            }
         }
-        const {data,error}=await supabaseClient.auth.getSession();
-        if(error)throw error;
-        if(data?.session?.access_token)return data.session;
-        const yenilenen=await supabaseClient.auth.refreshSession();
-        if(yenilenen.error)throw yenilenen.error;
-        return yenilenen.data?.session||null;
+        // Sayfa açılışında Supabase yerel oturumu eşzamansız geri yükleyebilir.
+        // Eski ekran bilgisini gerçek oturum sanıp hemen hata göstermek yerine bekle.
+        const kontrolSayisi=zorlaYenile?4:24;
+        for(let kontrol=0;kontrol<kontrolSayisi;kontrol++){
+            const {data,error}=await supabaseClient.auth.getSession();
+            if(error&&!/auth session missing/i.test(String(error.message||'')))throw error;
+            if(data?.session?.access_token)return data.session;
+            await bekle(250);
+        }
+        return null;
     }
     async function cagir(body){
         if(!SUPABASE_MODE||!supabaseClient)throw new Error('KVKK kaydı için güvenli oturum gerekli.');
@@ -20926,9 +20942,6 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
             try{
                 const oturum=await guncelOturumuAl(deneme>0),token=oturum?.access_token;
                 if(!token)throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
-                // Şifre değişiminin hemen ardından sunucunun yeni oturumu tanımasını bekle.
-                const kullaniciKontrolu=await supabaseClient.auth.getUser(token);
-                if(kullaniciKontrolu.error||!kullaniciKontrolu.data?.user)throw kullaniciKontrolu.error||new Error('Oturum doğrulanamadı.');
                 const response=await fetch(SUPABASE_URL+'/functions/v1/'+FONKSIYON,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body)});
                 let data={};try{data=await response.json()}catch(_){throw new Error('KVKK sunucusundan geçerli yanıt alınamadı. ('+response.status+')')}
                 if(response.ok&&data?.success)return data;
