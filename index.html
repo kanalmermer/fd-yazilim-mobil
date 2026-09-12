@@ -20918,6 +20918,7 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
         modal.style.display='flex';document.getElementById('kvkkModalYukleniyor').style.display='block';document.getElementById('kvkkModalIcerik').style.display='none';document.getElementById('kvkkModalHata').style.display='none';document.getElementById('kvkkOnaySatiri').style.display='none';document.getElementById('kvkkOkudum').checked=false;document.getElementById('kvkkOnaylaBtn').disabled=true;return modal;
     }
     window.fdKvkkErisimKontrolu=async function(zorla=false){
+        const erisimModali=document.getElementById('modalKvkkAydinlatma');if(erisimModali)erisimModali.style.display='none';return true;
         if(!activeUser||!SUPABASE_MODE){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
         if(activeUser.rol==='Personel'&&activeUser.sifreDegismeli){document.getElementById('modalKvkkAydinlatma').style.display='none';return false}
         if(kontrolSozu&&!zorla)return kontrolSozu;
