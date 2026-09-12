@@ -20693,6 +20693,298 @@ document.addEventListener('click',function(e){
 })();
 </script>
 
+<style id="fdxWorkCenterStyles">
+    .fdx-overlay{display:none;z-index:10250}.fdx-overlay .modal-card{width:min(1080px,96vw);max-width:1080px;max-height:94vh}.fdx-overlay .modal-body{padding:16px;overflow:auto}
+    .fdx-tabs{display:flex;gap:7px;padding:10px 14px;border-bottom:1px solid #dbe4ee;background:#f8fafc;overflow-x:auto}.fdx-tabs button{border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#475569;padding:8px 11px;font-size:.77rem;font-weight:850;white-space:nowrap;cursor:pointer}.fdx-tabs button.active{background:#e0f2fe;border-color:#38bdf8;color:#0369a1}
+    .fdx-panel{display:none}.fdx-panel.active{display:block}.fdx-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px}.fdx-toolbar h4{margin:0;color:#0f172a}.fdx-toolbar p{margin:3px 0 0;color:#64748b;font-size:.78rem}.fdx-toolbar-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+    .fdx-btn{border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;padding:8px 11px;font-weight:850;cursor:pointer}.fdx-btn:hover{background:#f1f5f9}.fdx-btn.primary{border-color:#0284c7;background:#0284c7;color:#fff}.fdx-btn.success{border-color:#10b981;background:#10b981;color:#fff}.fdx-btn.danger{border-color:#ef4444;background:#fff1f2;color:#b91c1c}.fdx-btn:disabled{opacity:.55;cursor:not-allowed}
+    .fdx-state{border:1px solid #dbe4ee;border-radius:11px;background:#f8fafc;padding:13px;color:#475569;line-height:1.5}.fdx-state.error{border-color:#fecaca;background:#fff1f2;color:#b91c1c}.fdx-state.success{border-color:#bbf7d0;background:#f0fdf4;color:#166534}.fdx-empty{text-align:center;padding:28px 14px;color:#64748b;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc}
+    .fdx-list{display:grid;gap:9px}.fdx-item{border:1px solid #dbe4ee;border-radius:12px;background:#fff;padding:12px}.fdx-item-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.fdx-item-title{min-width:0}.fdx-item-title strong{display:block;color:#0f172a}.fdx-item-title small{display:block;margin-top:4px;color:#64748b;line-height:1.45}.fdx-item-detail{margin-top:9px;color:#334155;font-size:.82rem;line-height:1.5;white-space:pre-line}.fdx-item-actions{display:flex;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin-top:10px}
+    .fdx-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:.68rem;font-weight:900;background:#e2e8f0;color:#475569;white-space:nowrap}.fdx-badge.pending{background:#fef3c7;color:#92400e}.fdx-badge.approved,.fdx-badge.sent,.fdx-badge.locked{background:#dcfce7;color:#166534}.fdx-badge.rejected,.fdx-badge.failed{background:#fee2e2;color:#991b1b}.fdx-badge.cancelled,.fdx-badge.open{background:#e2e8f0;color:#475569}.fdx-badge.processing{background:#dbeafe;color:#1d4ed8}
+    .fdx-form{display:grid;gap:12px}.fdx-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.fdx-form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.fdx-field{display:grid;gap:5px}.fdx-field.full{grid-column:1/-1}.fdx-field label{font-size:.76rem;font-weight:850;color:#334155}.fdx-field input,.fdx-field select,.fdx-field textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;background:#fff;padding:9px 10px;font:inherit;color:#0f172a;box-sizing:border-box}.fdx-field textarea{resize:vertical;min-height:85px}
+    .fdx-request-fields{display:none}.fdx-request-fields.active{display:contents}.fdx-person-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px;max-height:220px;overflow:auto;border:1px solid #dbe4ee;border-radius:10px;padding:9px;background:#f8fafc}.fdx-person-grid label{display:flex;align-items:center;gap:7px;padding:7px;border-radius:8px;background:#fff;border:1px solid #e2e8f0;font-size:.76rem;color:#334155;cursor:pointer}.fdx-person-grid input{width:auto}.fdx-person-tools{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px}.fdx-person-tools button{border:1px solid #cbd5e1;border-radius:7px;background:#fff;padding:5px 8px;font-size:.7rem;font-weight:800;cursor:pointer}
+    .fdx-close-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}.fdx-metric{border:1px solid #dbe4ee;border-radius:10px;background:#f8fafc;padding:11px}.fdx-metric span{display:block;color:#64748b;font-size:.7rem}.fdx-metric strong{display:block;margin-top:4px;color:#0f172a;font-size:1rem}.fdx-issue{display:grid;grid-template-columns:minmax(150px,1fr) minmax(110px,.6fr) minmax(180px,1.4fr);gap:8px;border-bottom:1px solid #e2e8f0;padding:9px 4px;font-size:.78rem}.fdx-issue:last-child{border-bottom:0}.fdx-issue strong{color:#0f172a}.fdx-issue span{color:#475569}
+    .fdx-audit-row{width:100%;text-align:left;border:1px solid #dbe4ee;border-radius:11px;background:#fff;padding:11px;cursor:pointer}.fdx-audit-row:hover{border-color:#7dd3fc;background:#f8fdff}.fdx-audit-row-top{display:flex;justify-content:space-between;gap:10px}.fdx-audit-row strong{color:#0f172a}.fdx-audit-row small{display:block;margin-top:4px;color:#64748b}.fdx-audit-summary{margin-top:7px;color:#334155;font-size:.76rem;line-height:1.45}.fdx-change-list{display:grid;gap:8px}.fdx-change{display:grid;grid-template-columns:minmax(130px,.7fr) minmax(0,1fr) 22px minmax(0,1fr);align-items:start;gap:8px;border:1px solid #dbe4ee;border-radius:10px;padding:10px;background:#f8fafc}.fdx-change-label{font-weight:850;color:#334155}.fdx-change-old{color:#991b1b;word-break:break-word}.fdx-change-new{color:#166534;font-weight:750;word-break:break-word}.fdx-change-arrow{text-align:center;color:#64748b}
+    .fdx-section-note{border:1px solid #bae6fd;border-radius:10px;background:#f0f9ff;color:#075985;padding:10px 12px;font-size:.78rem;line-height:1.5;margin-bottom:12px}.fdx-review-box{border:1px solid #dbe4ee;border-radius:11px;padding:12px;background:#f8fafc;color:#334155;line-height:1.55}
+    @media(max-width:720px){.fdx-form-grid,.fdx-form-grid.three{grid-template-columns:1fr}.fdx-close-summary{grid-template-columns:1fr}.fdx-issue{grid-template-columns:1fr;gap:3px}.fdx-change{grid-template-columns:1fr}.fdx-change-arrow{transform:rotate(90deg)}.fdx-overlay .modal-card{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;margin:6px!important}}
+</style>
+
+<script id="fdxWorkCenterFreshV1">
+(function(){
+    'use strict';
+    const FDX_ENDPOINT='work-center-v2';
+    const fdxState={tab:'requests',requests:[],myRequests:[],closures:[],schedules:[],audit:[],closureCheck:null,reviewId:'',auditId:''};
+    const fdxStatus={pending:'Bekliyor',approved:'Onaylandı',rejected:'Reddedildi',cancelled:'İptal Edildi',processing:'Gönderiliyor',sent:'Gönderildi',failed:'Başarısız',locked:'Kapalı',open:'Açık'};
+    const fdxRequestTypes={leave:'İzin',advance:'Avans',attendance:'Giriş–Çıkış Düzeltme'};
+    const fdxModules={personeller:'Personel',izinler:'İzin',puantaj:'Puantaj',avanslar:'Avans',icralar:'İcra',vardiya:'Giriş–Çıkış / Vardiya',ekodemeler:'Ek Ödeme',kkd:'KKD',araclar:'Araç',policeler:'Poliçe',irsaliyeler:'İrsaliye',kiratakip:'Kira',tapu:'Tapu',evrak:'Evrak',ihracat:'İhracat',subeler:'Şube'};
+    const fdxFieldLabels={pId:'Personel',personelId:'Personel',employeeId:'Personel',ad:'Ad Soyad',personelAd:'Personel',sube:'Şube',departman:'Departman',gorev:'Görev',tarih:'Tarih',baslangic:'Başlangıç',bitis:'Bitiş',iseBaslama:'İşe Başlama',tur:'Tür',donem:'Dönem',gun:'Gün',durum:'Durum',aciklama:'Açıklama',giris:'Giriş Saati',cikis:'Çıkış Saati',girisZamani:'Giriş Zamanı',cikisZamani:'Çıkış Zamanı',tutar:'Tutar',taksitSayisi:'Taksit Sayısı',baslangicAy:'Başlangıç Ayı',dosyaNo:'Dosya Numarası',alacakliKurum:'Alacaklı Kurum',toplamBorc:'Toplam Borç',kesintiTutari:'Kesinti Tutarı',telefon:'Telefon',email:'E-posta',cikisTarihi:'İşten Çıkış Tarihi',girisTarihi:'İşe Giriş Tarihi'};
+
+    function fdxEsc(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+    function fdxManager(){try{return typeof isManagerUser==='function'&&isManagerUser()}catch(_){return false}}
+    function fdxPersonel(){try{return Boolean(activeUser&&activeUser.rol==='Personel')}catch(_){return false}}
+    function fdxAktifPersoneller(){try{return (Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&(!p.cikisTarihi||String(p.cikisTarihi)==='null')).sort((a,b)=>String(a.ad||'').localeCompare(String(b.ad||''),'tr'))}catch(_){return []}}
+    function fdxTarihSaat(value){if(!value)return '-';const date=new Date(value);return Number.isNaN(date.getTime())?fdxEsc(value):date.toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+    function fdxTarih(value){if(!value)return '-';try{return typeof tarihFormati==='function'?tarihFormati(value):new Date(value+'T00:00:00').toLocaleDateString('tr-TR')}catch(_){return String(value)}}
+    function fdxPara(value){const number=Number(value||0);return Number.isFinite(number)?number.toLocaleString('tr-TR',{minimumFractionDigits:0,maximumFractionDigits:2})+' TL':'-'}
+    function fdxDurum(status){const key=String(status||'');return '<span class="fdx-badge '+fdxEsc(key)+'">'+fdxEsc(fdxStatus[key]||key||'-')+'</span>'}
+    function fdxHata(error,varsayilan='İşlem tamamlanamadı.'){return String(error?.message||varsayilan)}
+    function fdxYerelHata(hedef,error){const alan=typeof hedef==='string'?document.getElementById(hedef):hedef;if(alan)alan.innerHTML='<div class="fdx-state error">'+fdxEsc(fdxHata(error))+'</div>'}
+    async function fdxOnay(mesaj,baslik='İşlemi Onayla',buton='Onayla'){try{if(typeof fdYuzerOnaySor==='function')return await fdYuzerOnaySor(mesaj,baslik,buton)}catch(_){}return window.confirm(mesaj)}
+
+    async function fdxApi(body){
+        if(!window.supabase||typeof supabaseClient==='undefined')throw new Error('İş Merkezi bağlantısı kullanılamıyor. Ana kayıtlarınız etkilenmedi.');
+        let sessionResult;
+        try{sessionResult=await supabaseClient.auth.getSession()}catch(_){throw new Error('İş Merkezi bağlantısı doğrulanamadı. Ana program açık kalır ve kayıtlarınız etkilenmez.');}
+        const token=sessionResult?.data?.session?.access_token;
+        if(sessionResult?.error||!token)throw new Error('İş Merkezi bağlantısı doğrulanamadı. Ana program açık kalır ve kayıtlarınız etkilenmez.');
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),25000);
+        try{
+            const response=await fetch(SUPABASE_URL+'/functions/v1/'+FDX_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify(body||{}),signal:controller.signal});
+            let data={};try{data=await response.json()}catch(_){throw new Error('İş Merkezi sunucusundan geçerli yanıt alınamadı.');}
+            if(!response.ok||!data?.success){if(response.status===401)throw new Error('İş Merkezi bağlantısı doğrulanamadı. Ana ekran ve kayıtlar etkilenmedi.');throw new Error(data?.message||'İşlem tamamlanamadı.');}
+            return data;
+        }catch(error){if(error?.name==='AbortError')throw new Error('İş Merkezi yanıt vermedi. Ana program ve kayıtlar etkilenmedi.');throw error}finally{clearTimeout(timer)}
+    }
+
+    function fdxKur(){
+        if(document.getElementById('fdxWorkCenterModal'))return;
+        const launcher=document.querySelector('#appHub .workspace-launcher');
+        if(launcher){
+            const managerCard=document.createElement('button');managerCard.type='button';managerCard.id='fdxWorkCenterCard';managerCard.className='workspace-card';managerCard.style.display='none';managerCard.onclick=()=>fdxIsMerkeziAc();managerCard.innerHTML='<span class="workspace-card-icon" style="background:linear-gradient(135deg,#0f766e,#06b6d4)" aria-hidden="true">🎯</span><span><strong>İş Merkezi</strong><small>Personel talepleri, dönem kapanışı, planlı bildirimler ve değişiklik geçmişi</small></span><b style="color:#0f766e">İşleri aç →</b>';launcher.appendChild(managerCard);
+            const requestCard=document.createElement('button');requestCard.type='button';requestCard.id='fdxMyRequestsCard';requestCard.className='workspace-card fdx-personel-card';requestCard.style.display='none';requestCard.onclick=()=>fdxTaleplerimAc();requestCard.innerHTML='<span class="workspace-card-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)" aria-hidden="true">📝</span><span><strong>Taleplerim</strong><small>İzin, avans veya giriş–çıkış düzeltme talebi oluşturun</small></span><b style="color:#7c3aed">Talep oluştur →</b>';launcher.appendChild(requestCard);
+        }
+        document.body.insertAdjacentHTML('beforeend',fdxModalHtml());
+        const oncekiAy=new Date();oncekiAy.setDate(1);oncekiAy.setMonth(oncekiAy.getMonth()-1);const ayKey=oncekiAy.getFullYear()+'-'+String(oncekiAy.getMonth()+1).padStart(2,'0');
+        const monthInput=document.getElementById('fdxClosureMonth');if(monthInput)monthInput.value=ayKey;
+        fdxPlanVarsayilanZaman();fdxTalepTuruDegisti();fdxGorunumuGuncelle();
+        const hub=document.getElementById('appHub');if(hub)new MutationObserver(()=>fdxGorunumuGuncelle()).observe(hub,{attributes:true,attributeFilter:['style','class']});
+    }
+
+    function fdxGorunumuGuncelle(){
+        const managerCard=document.getElementById('fdxWorkCenterCard'),requestCard=document.getElementById('fdxMyRequestsCard'),launcher=document.querySelector('#appHub .workspace-launcher');
+        if(managerCard){managerCard.style.display=fdxManager()?'grid':'none';if(fdxManager()&&launcher)launcher.appendChild(managerCard)}
+        if(requestCard){requestCard.style.display=fdxPersonel()?'grid':'none';if(fdxPersonel()&&launcher)launcher.appendChild(requestCard)}
+        if(!fdxManager()&&!fdxPersonel()){
+            ['fdxWorkCenterModal','fdxMyRequestsModal','fdxReviewModal','fdxAuditDetailModal'].forEach(id=>{const modal=document.getElementById(id);if(modal)modal.style.display='none'});
+            fdxState.requests=[];fdxState.myRequests=[];fdxState.closures=[];fdxState.schedules=[];fdxState.audit=[];fdxState.closureCheck=null;fdxState.reviewId='';fdxState.auditId='';
+        }
+    }
+
+    function fdxModalHtml(){return `
+        <div id="fdxWorkCenterModal" class="modal-overlay fdx-overlay"><div class="modal-card">
+            <div class="modal-header"><div><h3>🎯 İş Merkezi</h3><small>Bu bölüm ana programdan bağımsız çalışır; kayıt listelerini değiştirmez.</small></div><button type="button" class="modal-close" onclick="fdxKapat('fdxWorkCenterModal')">✕</button></div>
+            <nav class="fdx-tabs"><button type="button" data-fdx-tab="requests" onclick="fdxSekmeAc('requests',this)">📝 Personel Talepleri</button><button type="button" data-fdx-tab="closure" onclick="fdxSekmeAc('closure',this)">📅 Aylık Kapanış</button><button type="button" data-fdx-tab="schedule" onclick="fdxSekmeAc('schedule',this)">🔔 Planlı Bildirimler</button><button type="button" data-fdx-tab="audit" onclick="fdxSekmeAc('audit',this)">🕘 Değişiklik Geçmişi</button></nav>
+            <div class="modal-body">
+                <section id="fdxPanelRequests" class="fdx-panel"><div class="fdx-toolbar"><div><h4>Personel Talepleri</h4><p>Personelin gönderdiği talepleri inceleyip sonuçlandırın.</p></div><div class="fdx-toolbar-actions"><select id="fdxRequestStatus" onchange="fdxTalepleriCiz()"><option value="">Tüm durumlar</option><option value="pending">Bekleyenler</option><option value="approved">Onaylananlar</option><option value="rejected">Reddedilenler</option><option value="cancelled">İptal edilenler</option></select><button type="button" class="fdx-btn" onclick="fdxTalepleriYukle()">↻ Yenile</button></div></div><div class="fdx-section-note">Talep onayı ilgili kaydı otomatik değiştirmez. Önce talebi onaylayın, ardından gerekli kaydı kendi ekranından kontrollü biçimde oluşturun.</div><div id="fdxManagerRequests" class="fdx-list"><div class="fdx-empty">Talepler yüklenmedi.</div></div></section>
+                <section id="fdxPanelClosure" class="fdx-panel"><div class="fdx-toolbar"><div><h4>Aylık Kapanış</h4><p>Giriş–çıkış eksiklerini ve belgesiz puantaj kodlarını kontrol edin.</p></div><button type="button" class="fdx-btn" onclick="fdxKapanislariYukle()">↻ Durumu Yenile</button></div><div class="fdx-section-note">Cihaz numarası eksik personel burada hata olarak gösterilmez. Kontrol yalnızca ekrandaki mevcut kayıtları okur; hiçbir kaydı değiştirmez.</div><div class="fdx-form-grid"><div class="fdx-field"><label>Dönem</label><input id="fdxClosureMonth" type="month" onchange="fdxKapanisAyDegisti()"></div><div class="fdx-field" style="align-self:end"><button type="button" class="fdx-btn primary" onclick="fdxAylikKontrol()">Dönemi Kontrol Et</button></div></div><div id="fdxClosureContent" style="margin-top:13px"><div class="fdx-empty">Kontrol etmek istediğiniz ayı seçin.</div></div></section>
+                <section id="fdxPanelSchedule" class="fdx-panel"><div class="fdx-toolbar"><div><h4>Planlı Bildirimler</h4><p>Mesajı seçtiğiniz gün ve saatte telefonlara gönderin.</p></div><button type="button" class="fdx-btn" onclick="fdxPlanlariYukle()">↻ Listeyi Yenile</button></div><form class="fdx-form" onsubmit="fdxPlanOlustur(event)"><div class="fdx-form-grid"><div class="fdx-field"><label>Başlık <small>(isteğe bağlı)</small></label><input id="fdxScheduleTitle" maxlength="80" value="" data-case-preserve="true" placeholder="Boş bırakabilirsiniz"></div><div class="fdx-field"><label>Gönderim zamanı</label><input id="fdxScheduleAt" type="datetime-local" required></div><div class="fdx-field full"><label>Mesaj</label><textarea id="fdxScheduleMessage" maxlength="500" data-case-preserve="true" required></textarea></div><div class="fdx-field"><label>Hedef</label><select id="fdxScheduleAudience" onchange="fdxPlanHedefTuruDegisti()"><option value="selection">Seçili personeller</option><option value="all">Tüm şirket</option></select></div><div class="fdx-field"><label>Şube filtresi</label><select id="fdxScheduleBranch" onchange="fdxPlanPersonelleriniDoldur()"><option value="">Tüm şubeler</option></select></div><div class="fdx-field full" id="fdxSchedulePeopleWrap"><div class="fdx-person-tools"><button type="button" onclick="fdxPlanTumunuSec(true)">Listelenenlerin Tümünü Seç</button><button type="button" onclick="fdxPlanTumunuSec(false)">Temizle</button></div><div id="fdxSchedulePeople" class="fdx-person-grid"></div></div></div><button id="fdxScheduleSubmit" type="submit" class="fdx-btn success">Bildirimi Planla</button></form><div style="height:16px"></div><div id="fdxScheduleList" class="fdx-list"><div class="fdx-empty">Planlar yüklenmedi.</div></div></section>
+                <section id="fdxPanelAudit" class="fdx-panel"><div class="fdx-toolbar"><div><h4>Değişiklik Geçmişi</h4><p>Kimin, hangi kayıtta, hangi alanı değiştirdiğini görün.</p></div><div class="fdx-toolbar-actions"><select id="fdxAuditModule" onchange="fdxAuditCiz()"><option value="">Tüm bölümler</option></select><select id="fdxAuditOperation" onchange="fdxAuditCiz()"><option value="">Tüm işlemler</option><option value="insert">Eklenenler</option><option value="update">Güncellenenler</option><option value="delete">Silinenler</option></select><button type="button" class="fdx-btn" onclick="fdxAuditYukle()">↻ Yenile</button></div></div><div id="fdxAuditList" class="fdx-list"><div class="fdx-empty">Geçmiş yüklenmedi.</div></div></section>
+            </div>
+        </div></div>
+        <div id="fdxMyRequestsModal" class="modal-overlay fdx-overlay"><div class="modal-card" style="max-width:850px"><div class="modal-header"><div><h3>📝 Taleplerim</h3><small>Talebiniz yöneticilere iletilir ve sonuçlandığında bildirim alırsınız.</small></div><button type="button" class="modal-close" onclick="fdxKapat('fdxMyRequestsModal')">✕</button></div><div class="modal-body"><form class="fdx-form" onsubmit="fdxTalepGonder(event)"><div class="fdx-form-grid"><div class="fdx-field full"><label>Talep türü</label><select id="fdxRequestType" onchange="fdxTalepTuruDegisti()"><option value="leave">İzin Talebi</option><option value="advance">Avans Talebi</option><option value="attendance">Giriş–Çıkış Düzeltme</option></select></div><div class="fdx-request-fields" data-fdx-request="leave"><div class="fdx-field"><label>İzin türü</label><select id="fdxLeaveType"><option>Yıllık İzin</option><option>Ücretli İzin</option><option>Ücretsiz İzin</option><option>Sağlık / Rapor</option><option>Mazeretsiz İzin</option><option>Doğum İzni</option><option>Evlenme İzni</option><option>Ölüm İzni</option></select></div><div class="fdx-field"><label>Başlangıç</label><input id="fdxLeaveStart" type="date"></div><div class="fdx-field"><label>Bitiş</label><input id="fdxLeaveEnd" type="date"></div></div><div class="fdx-request-fields" data-fdx-request="advance"><div class="fdx-field"><label>Avans tutarı</label><input id="fdxAdvanceAmount" type="number" min="1" step="0.01"></div><div class="fdx-field"><label>Taksit sayısı</label><input id="fdxAdvanceInstallments" type="number" min="1" max="24" value="1"></div><div class="fdx-field"><label>Başlangıç ayı</label><input id="fdxAdvanceStartMonth" type="month"></div></div><div class="fdx-request-fields" data-fdx-request="attendance"><div class="fdx-field"><label>Tarih</label><input id="fdxAttendanceDate" type="date"></div><div class="fdx-field"><label>Doğru giriş saati</label><input id="fdxAttendanceEntry" type="time"></div><div class="fdx-field"><label>Doğru çıkış saati</label><input id="fdxAttendanceExit" type="time"></div></div><div class="fdx-field full"><label>Açıklama</label><textarea id="fdxRequestNote" maxlength="500" data-case-preserve="true" placeholder="Talebinizle ilgili kısa açıklama yazın..."></textarea></div></div><button id="fdxRequestSubmit" type="submit" class="fdx-btn success">Talebi Gönder</button></form><div style="height:18px"></div><div class="fdx-toolbar"><h4>Önceki Taleplerim</h4><button type="button" class="fdx-btn" onclick="fdxTaleplerimiYukle()">↻ Yenile</button></div><div id="fdxMyRequests" class="fdx-list"><div class="fdx-empty">Talepler yüklenmedi.</div></div></div></div></div>
+        <div id="fdxReviewModal" class="modal-overlay fdx-overlay"><div class="modal-card" style="max-width:650px"><div class="modal-header"><div><h3>Talebi İncele</h3><small id="fdxReviewSubtitle"></small></div><button type="button" class="modal-close" onclick="fdxKapat('fdxReviewModal')">✕</button></div><div class="modal-body"><div id="fdxReviewSummary" class="fdx-review-box"></div><div class="fdx-field" style="margin-top:12px"><label>Yönetici notu <small>(isteğe bağlı)</small></label><textarea id="fdxReviewNote" maxlength="500" data-case-preserve="true"></textarea></div><div class="fdx-item-actions"><button type="button" class="fdx-btn danger" onclick="fdxTalepKarari('rejected')">Talebi Reddet</button><button type="button" class="fdx-btn success" onclick="fdxTalepKarari('approved')">Talebi Onayla</button></div></div></div></div>
+        <div id="fdxAuditDetailModal" class="modal-overlay fdx-overlay"><div class="modal-card" style="max-width:820px"><div class="modal-header"><div><h3 id="fdxAuditDetailTitle">Değişiklik Detayı</h3><small id="fdxAuditDetailSubtitle"></small></div><button type="button" class="modal-close" onclick="fdxKapat('fdxAuditDetailModal')">✕</button></div><div class="modal-body"><div id="fdxAuditDetailMeta" class="fdx-section-note"></div><div id="fdxAuditChanges" class="fdx-change-list"></div></div></div></div>`}
+
+    window.fdxKapat=function(id){const modal=document.getElementById(id);if(modal)modal.style.display='none'};
+    window.fdxIsMerkeziAc=function(){if(!fdxManager())return showToast?.('Bu bölüm için yönetici yetkisi gerekli.','warning');document.getElementById('fdxWorkCenterModal').style.display='flex';fdxSekmeAc(fdxState.tab||'requests')};
+    window.fdxTaleplerimAc=function(){if(!fdxPersonel())return showToast?.('Talep ekranı personel hesabı içindir.','warning');document.getElementById('fdxMyRequestsModal').style.display='flex';fdxTaleplerimiYukle()};
+    window.fdxSekmeAc=function(tab,button){fdxState.tab=tab;document.querySelectorAll('#fdxWorkCenterModal .fdx-panel').forEach(el=>el.classList.remove('active'));document.querySelectorAll('#fdxWorkCenterModal [data-fdx-tab]').forEach(el=>el.classList.toggle('active',el.dataset.fdxTab===tab));document.getElementById('fdxPanel'+tab.charAt(0).toUpperCase()+tab.slice(1))?.classList.add('active');if(tab==='requests')fdxTalepleriYukle();if(tab==='closure')fdxKapanislariYukle();if(tab==='schedule'){fdxPlanHedefleriniDoldur();fdxPlanlariYukle()}if(tab==='audit')fdxAuditYukle()};
+
+    function fdxPersonelBul(id){try{return (Array.isArray(personeller)?personeller:[]).find(p=>String(p.id)===String(id))||null}catch(_){return null}}
+    function fdxTalepOzeti(item){
+        const data=item?.request_data||{},type=String(item?.request_type||'');
+        if(type==='leave')return (data.leaveType||'İzin')+' · '+fdxTarih(data.start)+' – '+fdxTarih(data.end)+(data.note?'\n'+data.note:'');
+        if(type==='advance')return fdxPara(data.amount)+' · '+(Number(data.installments||1)===1?'Tek seferde':Number(data.installments||1)+' taksit')+' · Başlangıç '+String(data.startMonth||'-')+(data.note?'\n'+data.note:'');
+        if(type==='attendance')return fdxTarih(data.date)+' · Giriş '+String(data.entry||'-')+' / Çıkış '+String(data.exit||'-')+(data.note?'\n'+data.note:'');
+        return 'Talep ayrıntısı bulunamadı.';
+    }
+
+    window.fdxTalepTuruDegisti=function(){
+        const type=String(document.getElementById('fdxRequestType')?.value||'leave');
+        document.querySelectorAll('#fdxMyRequestsModal .fdx-request-fields').forEach(group=>group.classList.toggle('active',group.dataset.fdxRequest===type));
+        const required={fdxLeaveType:type==='leave',fdxLeaveStart:type==='leave',fdxLeaveEnd:type==='leave',fdxAdvanceAmount:type==='advance',fdxAdvanceInstallments:type==='advance',fdxAdvanceStartMonth:type==='advance',fdxAttendanceDate:type==='attendance'};
+        Object.entries(required).forEach(([id,value])=>{const input=document.getElementById(id);if(input)input.required=value});
+        const note=document.getElementById('fdxRequestNote');if(note)note.required=type==='attendance';
+        const today=new Date(),dateKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0'),monthKey=dateKey.slice(0,7);
+        if(!document.getElementById('fdxLeaveStart')?.value)document.getElementById('fdxLeaveStart').value=dateKey;
+        if(!document.getElementById('fdxLeaveEnd')?.value)document.getElementById('fdxLeaveEnd').value=dateKey;
+        if(!document.getElementById('fdxAdvanceStartMonth')?.value)document.getElementById('fdxAdvanceStartMonth').value=monthKey;
+        if(!document.getElementById('fdxAttendanceDate')?.value)document.getElementById('fdxAttendanceDate').value=dateKey;
+    };
+
+    window.fdxTalepGonder=async function(event){
+        event.preventDefault();if(!fdxPersonel())return;
+        const type=String(document.getElementById('fdxRequestType').value),note=document.getElementById('fdxRequestNote').value.trim();let data={note};
+        if(type==='leave')data={leaveType:document.getElementById('fdxLeaveType').value,start:document.getElementById('fdxLeaveStart').value,end:document.getElementById('fdxLeaveEnd').value,note};
+        if(type==='advance')data={amount:Number(document.getElementById('fdxAdvanceAmount').value),installments:Number(document.getElementById('fdxAdvanceInstallments').value),startMonth:document.getElementById('fdxAdvanceStartMonth').value,note};
+        if(type==='attendance')data={date:document.getElementById('fdxAttendanceDate').value,entry:document.getElementById('fdxAttendanceEntry').value,exit:document.getElementById('fdxAttendanceExit').value,note};
+        const button=document.getElementById('fdxRequestSubmit');button.disabled=true;button.textContent='Gönderiliyor...';
+        try{
+            await fdxApi({action:'request-create',requestType:type,requestData:data});
+            showToast?.('Talebiniz yöneticilere iletildi.','success');document.getElementById('fdxRequestNote').value='';
+            if(type==='advance')document.getElementById('fdxAdvanceAmount').value='';
+            if(type==='attendance'){document.getElementById('fdxAttendanceEntry').value='';document.getElementById('fdxAttendanceExit').value=''}
+            await fdxTaleplerimiYukle();
+        }catch(error){fdxYerelHata('fdxMyRequests',error)}finally{button.disabled=false;button.textContent='Talebi Gönder'}
+    };
+
+    window.fdxTaleplerimiYukle=async function(){
+        const area=document.getElementById('fdxMyRequests');if(!area||!fdxPersonel())return;area.innerHTML='<div class="fdx-empty">Talepler yükleniyor...</div>';
+        try{const result=await fdxApi({action:'request-list'});fdxState.myRequests=Array.isArray(result.requests)?result.requests:[];fdxTaleplerimiCiz()}catch(error){fdxYerelHata(area,error)}
+    };
+    function fdxTaleplerimiCiz(){
+        const area=document.getElementById('fdxMyRequests'),items=fdxState.myRequests;if(!area)return;
+        area.innerHTML=items.length?items.map(item=>'<article class="fdx-item"><div class="fdx-item-head"><div class="fdx-item-title"><strong>'+fdxEsc(fdxRequestTypes[item.request_type]||'Talep')+'</strong><small>'+fdxTarihSaat(item.created_at)+'</small></div>'+fdxDurum(item.status)+'</div><div class="fdx-item-detail">'+fdxEsc(fdxTalepOzeti(item))+'</div>'+(item.manager_note?'<div class="fdx-state" style="margin-top:9px"><strong>Yönetici notu:</strong> '+fdxEsc(item.manager_note)+'</div>':'')+(item.status==='pending'?'<div class="fdx-item-actions"><button type="button" class="fdx-btn danger" onclick="fdxTalepIptal(\''+fdxEsc(item.id)+'\')">Talebi İptal Et</button></div>':'')+'</article>').join(''):'<div class="fdx-empty">Henüz talebiniz bulunmuyor.</div>';
+    }
+    window.fdxTalepIptal=async function(id){
+        if(!await fdxOnay('Bekleyen talebiniz iptal edilsin mi?','Talebi İptal Et','İptal Et'))return;
+        try{await fdxApi({action:'request-cancel',id});showToast?.('Talebiniz iptal edildi.','success');await fdxTaleplerimiYukle()}catch(error){fdxYerelHata('fdxMyRequests',error)}
+    };
+
+    window.fdxTalepleriYukle=async function(){
+        const area=document.getElementById('fdxManagerRequests');if(!area||!fdxManager())return;area.innerHTML='<div class="fdx-empty">Talepler yükleniyor...</div>';
+        try{const result=await fdxApi({action:'request-list'});fdxState.requests=Array.isArray(result.requests)?result.requests:[];fdxTalepleriCiz()}catch(error){fdxYerelHata(area,error)}
+    };
+    window.fdxTalepleriCiz=function(){
+        const area=document.getElementById('fdxManagerRequests');if(!area)return;const filter=String(document.getElementById('fdxRequestStatus')?.value||'');const items=fdxState.requests.filter(item=>!filter||item.status===filter);
+        area.innerHTML=items.length?items.map(item=>{const person=fdxPersonelBul(item.employee_legacy_id),name=person?.ad||('Personel '+String(item.employee_legacy_id||'').slice(-4)),branch=person?.sube||'';return '<article class="fdx-item"><div class="fdx-item-head"><div class="fdx-item-title"><strong>'+fdxEsc(name)+' · '+fdxEsc(fdxRequestTypes[item.request_type]||'Talep')+'</strong><small>'+fdxEsc(branch)+(branch?' · ':'')+fdxTarihSaat(item.created_at)+'</small></div>'+fdxDurum(item.status)+'</div><div class="fdx-item-detail">'+fdxEsc(fdxTalepOzeti(item))+'</div>'+(item.manager_note?'<div class="fdx-state" style="margin-top:9px"><strong>Yönetici notu:</strong> '+fdxEsc(item.manager_note)+'</div>':'')+(item.status==='pending'?'<div class="fdx-item-actions"><button type="button" class="fdx-btn primary" onclick="fdxTalepIncele(\''+fdxEsc(item.id)+'\')">Talebi İncele</button></div>':'')+'</article>'}).join(''):'<div class="fdx-empty">Bu filtrede talep bulunmuyor.</div>';
+    };
+    window.fdxTalepIncele=function(id){
+        const item=fdxState.requests.find(row=>String(row.id)===String(id));if(!item)return;fdxState.reviewId=String(id);const person=fdxPersonelBul(item.employee_legacy_id);document.getElementById('fdxReviewSubtitle').textContent=(person?.ad||'Personel')+' · '+(fdxRequestTypes[item.request_type]||'Talep');document.getElementById('fdxReviewSummary').textContent=fdxTalepOzeti(item);document.getElementById('fdxReviewNote').value='';document.getElementById('fdxReviewModal').style.display='flex';
+    };
+    window.fdxTalepKarari=async function(decision){
+        const id=fdxState.reviewId;if(!id)return;const approved=decision==='approved',message=approved?'Talep onaylansın mı? Onay, ana kaydı otomatik oluşturmayacak.':'Talep reddedilsin mi?';
+        if(!await fdxOnay(message,approved?'Talebi Onayla':'Talebi Reddet',approved?'Onayla':'Reddet'))return;
+        const note=document.getElementById('fdxReviewNote').value.trim();
+        try{await fdxApi({action:'request-review',id,decision,note});fdxKapat('fdxReviewModal');showToast?.(approved?'Talep onaylandı. İlgili kaydı kendi ekranından oluşturabilirsiniz.':'Talep reddedildi.','success');await fdxTalepleriYukle()}catch(error){fdxYerelHata('fdxReviewSummary',error)}
+    };
+
+    function fdxDateKey(value){try{return typeof tarihInputDegeri==='function'?String(tarihInputDegeri(value)||''):String(value||'').slice(0,10)}catch(_){return String(value||'').slice(0,10)}}
+    function fdxAyGunleri(month){const parts=String(month||'').split('-').map(Number),year=parts[0],monthIndex=parts[1]-1;if(!year||monthIndex<0||monthIndex>11)return[];const count=new Date(year,monthIndex+1,0).getDate(),days=[];for(let day=1;day<=count;day++)days.push(year+'-'+String(monthIndex+1).padStart(2,'0')+'-'+String(day).padStart(2,'0'));return days}
+    function fdxPuantajKoduAciklamasi(code){return ({M:'M yazılmış ancak izin kaydı/dilekçesi yok',R:'Rapor yazılmış ancak izin/rapor kaydı yok',Z:'Ücretsiz izin yazılmış ancak izin kaydı yok',Y:'Yıllık izin yazılmış ancak izin kaydı yok','Ü':'Ücretli izin yazılmış ancak izin kaydı yok'}[code]||'Puantaj kodunun bağlı kaydı yok')}
+    function fdxAylikSorunlariBul(month){
+        const issues=[],counts={girisEksik:0,cikisEksik:0,tamEksik:0,belgesizKod:0},today=fdxDateKey(new Date()),days=fdxAyGunleri(month);
+        let staff=[];try{staff=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p))}catch(_){staff=[]}
+        for(const person of staff){
+            const employmentStart=fdxDateKey(person.girisTarihi),employmentEnd=fdxDateKey(person.cikisTarihi);
+            for(const date of days){
+                if(date>today||(employmentStart&&date<employmentStart)||(employmentEnd&&employmentEnd!=='null'&&date>employmentEnd))continue;
+                let leave=null;try{leave=(Array.isArray(izinler)?izinler:[]).find(row=>aktifSirketeAit(row)&&String(row.pId)===String(person.id)&&date>=String(row.baslangic||'')&&date<=String(row.bitis||''))||null}catch(_){}
+                let manual=null;try{manual=(Array.isArray(puantajVerileri)?puantajVerileri:[]).find(row=>aktifSirketeAit(row)&&!row.kayitTipi&&String(row.pId)===String(person.id)&&String(row.tarih)===date)||null}catch(_){}
+                const code=String(manual?.durum||'').trim().toLocaleUpperCase('tr-TR');
+                if(!leave&&['M','R','Z','Y','Ü'].includes(code)){
+                    issues.push({personId:String(person.id),name:person.ad||'Personel',branch:person.sube||'',date,type:'Belgesiz puantaj kodu',detail:fdxPuantajKoduAciklamasi(code)});counts.belgesizKod++;continue;
+                }
+                if(leave)continue;
+                let result=null;try{if(typeof magicpassGunHesapla==='function')result=magicpassGunHesapla(person,date)}catch(_){}
+                if(!result||result.durum==='Cihaz No Tanımsız')continue;
+                if(['Giriş Eksik','Giriş Yok'].includes(result.durum)){issues.push({personId:String(person.id),name:person.ad||'Personel',branch:person.sube||'',date,type:'Giriş eksik',detail:'Giriş kaydı bulunmuyor'});counts.girisEksik++}
+                else if(['Çıkış Eksik','Çıkış Yok'].includes(result.durum)){issues.push({personId:String(person.id),name:person.ad||'Personel',branch:person.sube||'',date,type:'Çıkış eksik',detail:'Çıkış kaydı bulunmuyor'});counts.cikisEksik++}
+                else if(result.durum==='Gelmedi'){issues.push({personId:String(person.id),name:person.ad||'Personel',branch:person.sube||'',date,type:'Giriş ve çıkış eksik',detail:'Bu çalışma gününde giriş ve çıkış kaydı bulunmuyor'});counts.tamEksik++}
+            }
+        }
+        return {month,issues,counts,checkedAt:new Date().toISOString()};
+    }
+
+    window.fdxKapanislariYukle=async function(){
+        const area=document.getElementById('fdxClosureContent');if(!area||!fdxManager())return;area.innerHTML='<div class="fdx-empty">Dönem durumu yükleniyor...</div>';
+        try{const result=await fdxApi({action:'closure-list'});fdxState.closures=Array.isArray(result.closures)?result.closures:[];fdxKapanisCiz()}catch(error){fdxYerelHata(area,error)}
+    };
+    window.fdxKapanisAyDegisti=function(){fdxState.closureCheck=null;fdxKapanisCiz()};
+    window.fdxAylikKontrol=function(){
+        const month=String(document.getElementById('fdxClosureMonth')?.value||''),area=document.getElementById('fdxClosureContent');if(!/^20\d{2}-(0[1-9]|1[0-2])$/.test(month)){if(area)area.innerHTML='<div class="fdx-state error">Geçerli bir dönem seçin.</div>';return}
+        if(area)area.innerHTML='<div class="fdx-empty">Mevcut kayıtlar kontrol ediliyor...</div>';
+        setTimeout(()=>{try{fdxState.closureCheck=fdxAylikSorunlariBul(month);fdxKapanisCiz()}catch(error){fdxYerelHata(area,error)}},30);
+    };
+    function fdxKapanisCiz(){
+        const area=document.getElementById('fdxClosureContent');if(!area)return;const month=String(document.getElementById('fdxClosureMonth')?.value||''),closure=fdxState.closures.find(item=>String(item.month_key)===month),check=fdxState.closureCheck?.month===month?fdxState.closureCheck:null,status=closure?.status||'open';
+        let html='<div class="fdx-toolbar"><div><strong>'+fdxEsc(month||'Dönem')+'</strong><div style="margin-top:5px">'+fdxDurum(status)+'</div></div><div class="fdx-toolbar-actions">';
+        if(status==='locked')html+='<button type="button" class="fdx-btn danger" onclick="fdxKapanisDurumDegistir(\'open\')">Dönemi Yeniden Aç</button>';
+        else if(check&&check.issues.length===0)html+='<button type="button" class="fdx-btn success" onclick="fdxKapanisDurumDegistir(\'locked\')">Sorun Yok · Dönemi Kapat</button>';
+        html+='</div></div>';
+        if(!check){html+='<div class="fdx-empty">Bu dönem henüz mevcut ekran kayıtlarıyla kontrol edilmedi.</div>';area.innerHTML=html;return}
+        html+='<div class="fdx-close-summary"><div class="fdx-metric"><span>Toplam sorun</span><strong>'+check.issues.length+'</strong></div><div class="fdx-metric"><span>Giriş / çıkış eksikleri</span><strong>'+(check.counts.girisEksik+check.counts.cikisEksik+check.counts.tamEksik)+'</strong></div><div class="fdx-metric"><span>İzin kaydı olmayan kodlar</span><strong>'+check.counts.belgesizKod+'</strong></div></div>';
+        if(!check.issues.length)html+='<div class="fdx-state success">Kontrol tamamlandı. Eksik giriş–çıkış veya belgesiz puantaj kodu bulunmadı.</div>';
+        else html+='<div class="fdx-item"><div style="font-weight:900;color:#991b1b;margin-bottom:6px">Dönem kapatılmadan önce düzeltilmesi gerekenler</div>'+check.issues.slice(0,300).map(issue=>'<div class="fdx-issue"><strong>'+fdxEsc(issue.name)+(issue.branch?' · '+fdxEsc(issue.branch):'')+'</strong><span>'+fdxTarih(issue.date)+'</span><span><b>'+fdxEsc(issue.type)+':</b> '+fdxEsc(issue.detail)+'</span></div>').join('')+(check.issues.length>300?'<div class="fdx-state">İlk 300 sorun gösteriliyor. Toplam '+check.issues.length+' sorun var.</div>':'')+'</div>';
+        area.innerHTML=html;
+    }
+    window.fdxKapanisDurumDegistir=async function(status){
+        const month=String(document.getElementById('fdxClosureMonth')?.value||''),check=fdxState.closureCheck?.month===month?fdxState.closureCheck:null;
+        if(status==='locked'&&(!check||check.issues.length))return showToast?.('Dönemi kapatmadan önce kontrolü tamamlayın ve sorunları düzeltin.','warning');
+        const message=status==='locked'?month+' dönemi kapatılsın mı? Bu aya ait kayıtlar yeniden açılana kadar değiştirilemez.':month+' dönemi yeniden açılsın mı?';
+        if(!await fdxOnay(message,status==='locked'?'Dönemi Kapat':'Dönemi Aç',status==='locked'?'Kapat':'Aç'))return;
+        const area=document.getElementById('fdxClosureContent');if(area)area.innerHTML='<div class="fdx-empty">Dönem durumu kaydediliyor...</div>';
+        try{await fdxApi({action:'closure-set',month,status,issueCount:check?.issues.length||0,checkedAt:check?.checkedAt||new Date().toISOString(),summary:{counts:check?.counts||{}}});showToast?.(status==='locked'?'Dönem kapatıldı.':'Dönem yeniden açıldı.','success');await fdxKapanislariYukle()}catch(error){fdxYerelHata(area,error)}
+    };
+
+    function fdxPlanVarsayilanZaman(){const input=document.getElementById('fdxScheduleAt');if(!input||input.value)return;const date=new Date(Date.now()+60*60*1000);date.setMinutes(Math.ceil(date.getMinutes()/5)*5,0,0);input.value=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')+'T'+String(date.getHours()).padStart(2,'0')+':'+String(date.getMinutes()).padStart(2,'0')}
+    function fdxPlanHedefleriniDoldur(){
+        const branch=document.getElementById('fdxScheduleBranch');if(!branch)return;const previous=branch.value,branches=[...new Set(fdxAktifPersoneller().map(p=>String(p.sube||'Merkez').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));branch.innerHTML='<option value="">Tüm şubeler</option>'+branches.map(name=>'<option value="'+fdxEsc(name)+'">'+fdxEsc(name)+'</option>').join('');if(branches.includes(previous))branch.value=previous;fdxPlanPersonelleriniDoldur();fdxPlanHedefTuruDegisti();fdxPlanVarsayilanZaman();
+    }
+    window.fdxPlanPersonelleriniDoldur=function(){
+        const area=document.getElementById('fdxSchedulePeople');if(!area)return;const branch=String(document.getElementById('fdxScheduleBranch')?.value||''),selected=new Set([...area.querySelectorAll('input:checked')].map(input=>String(input.value))),people=fdxAktifPersoneller().filter(p=>!branch||String(p.sube||'Merkez')===branch);
+        area.innerHTML=people.length?people.map(person=>'<label><input type="checkbox" class="fdx-plan-person" value="'+fdxEsc(String(person.id))+'" '+(selected.has(String(person.id))?'checked':'')+'><span>'+fdxEsc(person.ad||'-')+'<small style="display:block;color:#64748b">'+fdxEsc(person.sube||'Merkez')+'</small></span></label>').join(''):'<div class="fdx-empty" style="grid-column:1/-1">Bu şubede aktif personel bulunamadı.</div>';
+    };
+    window.fdxPlanTumunuSec=function(selected){document.querySelectorAll('#fdxSchedulePeople .fdx-plan-person').forEach(input=>input.checked=selected)};
+    window.fdxPlanHedefTuruDegisti=function(){const all=document.getElementById('fdxScheduleAudience')?.value==='all',wrap=document.getElementById('fdxSchedulePeopleWrap'),branch=document.getElementById('fdxScheduleBranch');if(wrap)wrap.style.display=all?'none':'grid';if(branch)branch.disabled=all};
+    function fdxPlanSeciliIds(){return [...document.querySelectorAll('#fdxSchedulePeople .fdx-plan-person:checked')].map(input=>String(input.value))}
+    window.fdxPlanOlustur=async function(event){
+        event.preventDefault();const title=document.getElementById('fdxScheduleTitle').value.trim(),message=document.getElementById('fdxScheduleMessage').value.trim(),localTime=document.getElementById('fdxScheduleAt').value,audienceMode=document.getElementById('fdxScheduleAudience').value,targetEmployeeIds=audienceMode==='all'?[]:fdxPlanSeciliIds();
+        if(audienceMode!=='all'&&!targetEmployeeIds.length)return showToast?.('En az bir personel seçin veya hedefi Tüm şirket yapın.','warning');
+        const when=new Date(localTime);if(!localTime||Number.isNaN(when.getTime())||when.getTime()<Date.now()+30000)return showToast?.('Gelecekte bir gönderim zamanı seçin.','warning');
+        const targetText=audienceMode==='all'?'tüm şirkete':targetEmployeeIds.length+' seçili personele';if(!await fdxOnay('Bildirim '+fdxTarihSaat(when.toISOString())+' tarihinde '+targetText+' gönderilmek üzere planlansın mı?','Bildirimi Planla','Planla'))return;
+        const button=document.getElementById('fdxScheduleSubmit');button.disabled=true;button.textContent='Planlanıyor...';
+        try{const result=await fdxApi({action:'schedule-create',title,message,scheduledFor:when.toISOString(),audienceMode,targetEmployeeIds});showToast?.(result.ignoredTargetCount?('Bildirim planlandı. Uygulama hesabı olmayan '+result.ignoredTargetCount+' personel hedefe eklenmedi.'):'Bildirim planlandı.',result.ignoredTargetCount?'warning':'success');document.getElementById('fdxScheduleTitle').value='';document.getElementById('fdxScheduleMessage').value='';document.getElementById('fdxScheduleAt').value='';fdxPlanVarsayilanZaman();fdxPlanTumunuSec(false);await fdxPlanlariYukle()}catch(error){fdxYerelHata('fdxScheduleList',error)}finally{button.disabled=false;button.textContent='Bildirimi Planla'}
+    };
+    window.fdxPlanlariYukle=async function(){
+        const area=document.getElementById('fdxScheduleList');if(!area||!fdxManager())return;area.innerHTML='<div class="fdx-empty">Planlar yükleniyor...</div>';
+        try{const result=await fdxApi({action:'schedule-list'});fdxState.schedules=Array.isArray(result.items)?result.items:[];fdxPlanlariCiz()}catch(error){fdxYerelHata(area,error)}
+    };
+    function fdxPlanHedefMetni(item){const ids=Array.isArray(item.target_employee_ids)?item.target_employee_ids.map(String):[];if(!ids.length)return'Tüm şirket';const names=ids.map(id=>fdxPersonelBul(id)?.ad||('Personel '+id.slice(-4)));return names.length<=3?names.join(', '):names.slice(0,3).join(', ')+' ve '+(names.length-3)+' kişi daha'}
+    function fdxPlanlariCiz(){
+        const area=document.getElementById('fdxScheduleList'),items=fdxState.schedules;if(!area)return;area.innerHTML=items.length?items.map(item=>'<article class="fdx-item"><div class="fdx-item-head"><div class="fdx-item-title"><strong>'+fdxEsc(item.title||'Başlıksız bildirim')+'</strong><small>'+fdxTarihSaat(item.scheduled_for)+' · '+fdxEsc(fdxPlanHedefMetni(item))+'</small></div>'+fdxDurum(item.status)+'</div><div class="fdx-item-detail">'+fdxEsc(item.message||'')+'</div>'+(item.status==='sent'?'<div class="fdx-state success" style="margin-top:9px">'+Number(item.sent_count||0)+' cihaza gönderildi.</div>':'')+(item.error_message?'<div class="fdx-state error" style="margin-top:9px">'+fdxEsc(item.error_message)+'</div>':'')+(item.status==='pending'?'<div class="fdx-item-actions"><button type="button" class="fdx-btn danger" onclick="fdxPlanIptal(\''+fdxEsc(item.id)+'\')">Planı İptal Et</button></div>':'')+'</article>').join(''):'<div class="fdx-empty">Planlanmış bildirim bulunmuyor.</div>';
+    }
+    window.fdxPlanIptal=async function(id){if(!await fdxOnay('Bu planlı bildirim iptal edilsin mi?','Planı İptal Et','İptal Et'))return;try{await fdxApi({action:'schedule-cancel',id});showToast?.('Planlı bildirim iptal edildi.','success');await fdxPlanlariYukle()}catch(error){fdxYerelHata('fdxScheduleList',error)}};
+
+    function fdxModuleLabel(value){return fdxModules[value]||({employee_requests:'Personel Talebi',monthly_closures:'Aylık Kapanış',scheduled_push_notifications:'Planlı Bildirim'}[value])||String(value||'Kayıt')}
+    function fdxOperationLabel(value){return ({insert:'Eklendi',update:'Güncellendi',delete:'Silindi',restore:'Geri Alındı'}[value]||String(value||'İşlem'))}
+    function fdxActorName(item){return String(item?.actor?.full_name||item?.actor?.employee_legacy_id||'Sistem / eski kayıt')}
+    function fdxAuditPersonName(data){const id=String(data?.pId||data?.employee_legacy_id||data?.personelId||'');return data?.personelAd||data?.ad||fdxPersonelBul(id)?.ad||''}
+    function fdxAuditRecordName(item){const preview=item?.preview||{},person=fdxAuditPersonName(preview),date=preview.tarih||preview.baslangic||preview.scheduled_for||'';return [person,date?fdxTarih(String(date).slice(0,10)):'',item?.legacy_id?('#'+String(item.legacy_id).slice(-8)):''].filter(Boolean).join(' · ')}
+    function fdxFieldLabel(key){return fdxFieldLabels[key]||String(key||'Alan').replace(/_/g,' ').replace(/\b\w/g,char=>char.toLocaleUpperCase('tr-TR'))}
+    function fdxAuditListSummary(item){const keys=Array.isArray(item.changed_keys)?item.changed_keys:[];if(!keys.length)return fdxOperationLabel(item.operation)+' · Alan ayrıntısı için açın';const labels=keys.slice(0,4).map(fdxFieldLabel);return (item.operation==='update'?'Değişen alanlar: ':'İşlem alanları: ')+labels.join(', ')+(keys.length>4?' ve '+(keys.length-4)+' alan daha':'')}
+    window.fdxAuditYukle=async function(){
+        const area=document.getElementById('fdxAuditList');if(!area||!fdxManager())return;area.innerHTML='<div class="fdx-empty">Değişiklik geçmişi yükleniyor...</div>';
+        try{const result=await fdxApi({action:'audit-list'});fdxState.audit=Array.isArray(result.items)?result.items:[];const select=document.getElementById('fdxAuditModule'),previous=select?.value||'',modules=[...new Set(fdxState.audit.map(item=>String(item.module||'')).filter(Boolean))].sort((a,b)=>fdxModuleLabel(a).localeCompare(fdxModuleLabel(b),'tr'));if(select){select.innerHTML='<option value="">Tüm bölümler</option>'+modules.map(module=>'<option value="'+fdxEsc(module)+'">'+fdxEsc(fdxModuleLabel(module))+'</option>').join('');if(modules.includes(previous))select.value=previous}fdxAuditCiz()}catch(error){fdxYerelHata(area,error)}
+    };
+    window.fdxAuditCiz=function(){
+        const area=document.getElementById('fdxAuditList');if(!area)return;const module=String(document.getElementById('fdxAuditModule')?.value||''),operation=String(document.getElementById('fdxAuditOperation')?.value||''),items=fdxState.audit.filter(item=>(!module||item.module===module)&&(!operation||item.operation===operation));
+        area.innerHTML=items.length?items.map(item=>'<button type="button" class="fdx-audit-row" onclick="fdxAuditDetay(\''+fdxEsc(String(item.id))+'\')"><span class="fdx-audit-row-top"><span><strong>'+fdxEsc(fdxModuleLabel(item.module))+' · '+fdxEsc(fdxOperationLabel(item.operation))+'</strong><small>'+fdxEsc(fdxActorName(item))+' · '+fdxTarihSaat(item.created_at)+'</small></span>'+fdxDurum(item.operation==='insert'?'approved':item.operation==='delete'?'rejected':'processing')+'</span><span class="fdx-audit-summary">'+fdxEsc(fdxAuditRecordName(item)||'Kayıt')+'<br>'+fdxEsc(fdxAuditListSummary(item))+'</span></button>').join(''):'<div class="fdx-empty">Bu filtrede değişiklik kaydı bulunmuyor.</div>';
+    };
+    function fdxComparable(value){try{return JSON.stringify(value??null)}catch(_){return String(value??'')}}
+    function fdxChangedKeys(oldData,newData,operation='update'){const ignored=new Set(['sirketId','company_id','created_at','updated_at','sonGuncelleme','sonGuncelleyen']),oldRow=oldData&&typeof oldData==='object'?oldData:{},newRow=newData&&typeof newData==='object'?newData:{},all=[...new Set([...Object.keys(oldRow),...Object.keys(newRow)])].filter(key=>!ignored.has(key)&&fdxComparable(oldRow[key])!==fdxComparable(newRow[key]));if(operation==='update')return all;const source=operation==='delete'?oldRow:newRow,preferred=['pId','employee_legacy_id','personelAd','ad','tarih','baslangic','bitis','tur','durum','dosyaNo','sube','tutar','request_type','scheduled_for','status'];const compact=preferred.filter(key=>Object.prototype.hasOwnProperty.call(source,key)&&source[key]!==''&&source[key]!==null&&source[key]!==undefined);return (compact.length?compact:all.filter(key=>typeof source[key]!=='object')).slice(0,10)}
+    function fdxValue(value,key=''){
+        if(value===undefined||value===null||value==='')return '—';
+        if(['tarih','baslangic','bitis','girisTarihi','cikisTarihi','iseBaslama'].includes(key)&&/^20\d{2}-\d{2}-\d{2}/.test(String(value)))return fdxTarih(String(value).slice(0,10));
+        if(typeof value==='boolean')return value?'Evet':'Hayır';
+        if(Array.isArray(value))return value.length?value.map(item=>typeof item==='object'?fdxComparable(item):String(item)).join(', ').slice(0,500):'—';
+        if(typeof value==='object')return fdxComparable(value).slice(0,500);
+        const personKeys=['pId','personelId','employee_legacy_id'];if(personKeys.includes(key)){const person=fdxPersonelBul(value);return person?.ad?person.ad+' ('+value+')':String(value)}
+        return String(value);
+    }
+    window.fdxAuditDetay=async function(id){
+        fdxState.auditId=String(id);const modal=document.getElementById('fdxAuditDetailModal'),changes=document.getElementById('fdxAuditChanges');modal.style.display='flex';changes.innerHTML='<div class="fdx-empty">Değişiklik ayrıntısı yükleniyor...</div>';
+        try{
+            const result=await fdxApi({action:'audit-detail',id}),item=result.item||{},oldData=item.old_data&&typeof item.old_data==='object'?item.old_data:{},newData=item.new_data&&typeof item.new_data==='object'?item.new_data:{},keys=fdxChangedKeys(oldData,newData,item.operation);
+            document.getElementById('fdxAuditDetailTitle').textContent=fdxModuleLabel(item.module)+' · '+fdxOperationLabel(item.operation);document.getElementById('fdxAuditDetailSubtitle').textContent=fdxAuditRecordName({...item,preview:item.new_data||item.old_data||{}})||('Kayıt '+String(item.legacy_id||''));document.getElementById('fdxAuditDetailMeta').innerHTML='<strong>İşlemi yapan:</strong> '+fdxEsc(fdxActorName(item))+' &nbsp;·&nbsp; <strong>İşlem zamanı:</strong> '+fdxTarihSaat(item.created_at)+' &nbsp;·&nbsp; <strong>Kayıt:</strong> '+fdxEsc(String(item.legacy_id||'-'));
+            changes.innerHTML=keys.length?keys.map(key=>'<div class="fdx-change"><div class="fdx-change-label">'+fdxEsc(fdxFieldLabel(key))+'</div><div class="fdx-change-old">'+fdxEsc(fdxValue(oldData[key],key))+'</div><div class="fdx-change-arrow">→</div><div class="fdx-change-new">'+fdxEsc(fdxValue(newData[key],key))+'</div></div>').join(''):'<div class="fdx-empty">Gösterilebilecek alan değişikliği bulunmuyor.</div>';
+        }catch(error){fdxYerelHata(changes,error)}
+    };
+
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fdxKur);else fdxKur();
+})();
+</script>
+
 
 <script id="fdPwaKurulumScripti">
 (function(){
