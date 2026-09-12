@@ -20931,8 +20931,8 @@ window.fdPersonelZamanCizelgesiAc=async function(personelId){const p=personeller
                 document.getElementById('kvkkModalSurum').textContent=(aktifBelge.title||'KVKK Aydınlatma Metni')+' · Sürüm '+(aktifBelge.version||'-');
                 document.getElementById('kvkkOnaySatiri').style.display='flex';return false;
             }catch(error){
-                console.warn('KVKK metni alınamadı; uygulama erişimi engellenmedi:',error);
-                const modal=document.getElementById('modalKvkkAydinlatma');if(modal)modal.style.display='none';return true;
+                modalHazirla();
+                document.getElementById('kvkkModalYukleniyor').style.display='none';const alan=document.getElementById('kvkkModalHata');alan.innerHTML=escapeDashboardText(hataMetni(error,'Aydınlatma metni alınamadı.'))+'<br><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px" onclick="fdKvkkErisimKontrolu(true)">Yeniden Dene</button>';alan.style.display='block';return false;
             }finally{kontrolSozu=null}
         })();return kontrolSozu;
     };
