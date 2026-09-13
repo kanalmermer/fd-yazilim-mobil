@@ -13267,7 +13267,7 @@
 
                     const foundObj = puantajVerileri.find(item => aktifSirketeAit(item) && !item.kayitTipi && String(item.pId) === String(p.id) && String(item.tarih) === String(dateKey));
                     if (foundObj && foundObj.durum) harf = String(foundObj.durum).toUpperCase();
-                    if (primBugunTamamlanmadi) harf = '';
+                    if (primBugunTamamlanmadi && harf !== 'HS' && harf !== 'RT') harf = '';
                 }
 
                 if (harf === 'X') toplamX++;
@@ -20816,7 +20816,7 @@ document.addEventListener('click',function(e){
         <div id="fdxAuditDetailModal" class="modal-overlay fdx-overlay"><div class="modal-card" style="max-width:820px"><div class="modal-header"><div><h3 id="fdxAuditDetailTitle">Değişiklik Detayı</h3><small id="fdxAuditDetailSubtitle"></small></div><button type="button" class="modal-close" onclick="fdxKapat('fdxAuditDetailModal')">✕</button></div><div class="modal-body"><div id="fdxAuditDetailMeta" class="fdx-section-note"></div><div id="fdxAuditChanges" class="fdx-change-list"></div></div></div></div>`}
 
     window.fdxKapat=function(id){if(id==='fdxWorkCenterModal'||id==='workCenterApp'){if(typeof fdUygulamaSekmesineGec==='function')return fdUygulamaSekmesineGec('home');const root=document.getElementById('workCenterApp');if(root)root.style.display='none';return}const modal=document.getElementById(id);if(modal)modal.style.display='none'};
-    window.fdxIsMerkeziAc=function(){if(!fdxManager())return showToast?.('Bu bölüm için yönetici yetkisi gerekli.','warning');const root=document.getElementById('workCenterApp'),shell=document.getElementById('fdxWorkCenterModal');if(root)root.style.display='block';if(shell)shell.style.display='block';fdxSekmeAc(fdxState.tab||'requests')};
+    window.fdxIsMerkeziAc=function(){if(!fdxManager())return showToast?.('Bu bölüm için yönetici yetkisi gerekli.','warning');if(typeof fdTumUygulamaAlanlariniGizle==='function')fdTumUygulamaAlanlariniGizle();else{const hub=document.getElementById('appHub');if(hub)hub.style.display='none'}const root=document.getElementById('workCenterApp'),shell=document.getElementById('fdxWorkCenterModal');if(root)root.style.display='block';if(shell)shell.style.display='block';anaMenuDonusButonunuGoster?.();fdxSekmeAc(fdxState.tab||'requests')};
     window.fdxTaleplerimAc=function(){if(!fdxPersonel())return showToast?.('Talep ekranı personel hesabı içindir.','warning');document.getElementById('fdxMyRequestsModal').style.display='flex';fdxTaleplerimiYukle()};
     window.fdxSekmeAc=function(tab,button){fdxState.tab=tab;document.querySelectorAll('#fdxWorkCenterModal .fdx-panel').forEach(el=>el.classList.remove('active'));document.querySelectorAll('#fdxWorkCenterModal [data-fdx-tab]').forEach(el=>el.classList.toggle('active',el.dataset.fdxTab===tab));document.getElementById('fdxPanel'+tab.charAt(0).toUpperCase()+tab.slice(1))?.classList.add('active');if(tab==='requests')fdxTalepleriYukle();if(tab==='closure')fdxKapanislariYukle();if(tab==='schedule'){fdxPlanHedefleriniDoldur();fdxPlanlariYukle()}if(tab==='audit')fdxAuditYukle()};
 
