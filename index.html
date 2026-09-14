@@ -21063,20 +21063,24 @@ document.addEventListener('click',function(e){
         return [...preferred.filter(key=>usable.includes(key)),...usable.filter(key=>!preferred.includes(key))];
     }
     function fdxValue(value,key=''){
-        if(value===undefined||value===null||value==='')return '—';
         const simpleKey=String(key).split('.').pop();
-        if(['tarih','zamanDamgasi','haftaBaslangic','baslangic','bitis','girisTarihi','cikisTarihi','iseBaslama','scheduled_for'].includes(simpleKey)&&/^20\d{2}-\d{2}-\d{2}/.test(String(value)))return String(value).includes('T')?fdxTarihSaat(value):fdxTarih(String(value).slice(0,10));
+        if(value===undefined||value===null||value==='')return /Manuel$/.test(simpleKey)?'Otomatik hesaplandı':'—';
+        if((/tarih|baslangic|bitis|zaman/i.test(simpleKey)||simpleKey==='scheduled_for')&&/^20\d{2}-\d{2}-\d{2}/.test(String(value)))return String(value).includes('T')?fdxTarihSaat(value):fdxTarih(String(value).slice(0,10));
         const boolValue=typeof value==='boolean'?value:(['1','true','evet','yes'].includes(String(value).toLocaleLowerCase('tr-TR'))?true:(['0','false','hayır','hayir','no'].includes(String(value).toLocaleLowerCase('tr-TR'))?false:null));
         if(simpleKey==='primHakkiManuel'&&boolValue!==null)return boolValue?'Manuel belirlendi':'Otomatik hesaplandı';
         if(/Manuel$/.test(simpleKey)&&boolValue!==null)return boolValue?'Manuel girildi':'Otomatik hesaplandı';
         if(fdxAuditBooleanFields.has(simpleKey)&&boolValue!==null)return boolValue?'Evet':'Hayır';
         if(typeof value==='boolean')return value?'Evet':'Hayır';
         const personKeys=['pId','personelId','employeeId','employee_legacy_id'];if(personKeys.includes(simpleKey)){const person=fdxPersonelBul(value);return person?.ad||String(value)}
+        if(simpleKey==='target_employee_ids'&&Array.isArray(value))return value.map(id=>fdxPersonelBul(id)?.ad||('Personel '+String(id).slice(-4))).join(', ');
         if(simpleKey==='vardiya')return fdxVardiyaAdi(value);
+        if(simpleKey==='status')return fdxStatus[String(value)]||String(value);
+        if(simpleKey==='request_type')return fdxRequestTypes[String(value)]||String(value);
+        if(simpleKey==='audience_mode')return({all:'Tüm şirket',selected:'Seçili personeller'}[String(value)]||String(value));
         if(simpleKey==='primHakki')return String(value).toLocaleLowerCase('tr-TR')==='var'?'Prim var':String(value).toLocaleLowerCase('tr-TR')==='yok'?'Prim yok':String(value);
         if(simpleKey==='calisilmayanGun'||simpleKey==='gunSayisi'||simpleKey==='izinGunSayisi')return Number(value).toLocaleString('tr-TR',{maximumFractionDigits:2})+' gün';
         if(simpleKey==='durum'){const code=String(value).toLocaleUpperCase('tr-TR'),labels={PRIM_OZET:'Prim özeti',M:'Mazeretsiz gelmedi',R:'Sağlık / rapor',Z:'Ücretsiz izin',X:'Çalıştı',Y:'Yıllık izin',U:'Ücretli izin','Ü':'Ücretli izin'};if(labels[code])return labels[code]}
-        if(/tutar|borc|kesinti|ucret/i.test(simpleKey)&&Number.isFinite(Number(value)))return fdxPara(value);
+        if(/tutar|borc|kesinti|ucret|ücret|fiyat|maas|yevmiye/i.test(simpleKey)&&Number.isFinite(Number(value)))return fdxPara(value);
         if(Array.isArray(value)){if(!value.length)return'—';if(value.every(item=>typeof item!=='object'))return value.map(item=>fdxValue(item,key)).join(', ');return value.map((item,index)=>(index+1)+'. '+fdxValue(item,key)).join('\n')}
         if(typeof value==='object'){const entries=Object.entries(value).filter(([name,item])=>fdxAuditAlanGosterilir(name,item)&&!fdxAuditBosDeger(item));return entries.length?entries.map(([name,item])=>fdxFieldLabel(name)+': '+fdxValue(item,name)).join('\n'):'—'}
         return String(value);
