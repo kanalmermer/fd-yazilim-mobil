@@ -1514,7 +1514,7 @@
     </div>
 </div>
 
-<div id="modalGelenBildirim" class="modal-overlay" style="z-index:210000;background:rgba(15,23,42,.82);backdrop-filter:blur(5px);">
+<div id="modalGelenBildirim" class="modal-overlay" data-force-open="true" style="z-index:210000;background:rgba(15,23,42,.82);backdrop-filter:blur(5px);">
     <div class="modal-card" style="max-width:520px;">
         <div class="modal-header"><div><h3>🔔 Okunmamış Bildirim</h3><small>Devam etmek için bildirimi okuyup onaylayın.</small></div></div>
         <div class="modal-body">
@@ -7512,7 +7512,7 @@
         } catch(error) { alert('Vardiya görüntüsü alınamadı: '+(error.message||error)); }
     }
 
-    function modalKapat(id){const modal=document.getElementById(id);if(modal)modal.style.display='none';}
+    function modalKapat(id){const modal=document.getElementById(id);if(modal?.dataset?.forceOpen==='true')return;if(modal)modal.style.display='none';}
     const kiraTipi=tip=>kiraKayitlari.filter(k=>k.tip===tip&&aktifSirketeAit(k));
     const kiraYeniId=tip=>`${tip}_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
     const kiraSahipler=()=>kiraTipi('sahip');
@@ -20547,6 +20547,7 @@ document.addEventListener('click',function(e){
         try{
             if(aktifBildirim.notificationId)await cagir({action:'mark-read',notificationId:aktifBildirim.notificationId});
             aktifBildirim=null;document.getElementById('modalGelenBildirim').style.display='none';siradakiBildirimiGoster();
+            if(!aktifBildirim&&!bildirimKuyrugu.length)setTimeout(()=>okunmamisBildirimleriYukle(true),250);
         }catch(error){
             if(durum){durum.textContent=hataMesaji(error,'Okundu onayı kaydedilemedi. İnternet bağlantısını kontrol edip tekrar deneyin.');durum.style.display='block'}
             if(dugme){dugme.disabled=false;dugme.textContent='Tekrar Dene'}
