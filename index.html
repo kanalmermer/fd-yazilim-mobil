@@ -7861,11 +7861,12 @@
         if(typeof html2pdf!=='function')return alert('PDF bileşeni yüklenemedi.');const v=kiraDaireRaporVerisi(id),toplam=kiraDaireRaporToplamlari(v.satirlar),alan=document.createElement('div');alan.style.cssText='width:277mm;padding:10mm;background:#fff;color:#111;font:10px Arial';
         const basliklar=['Ay','Kiracı','Kira','Durum','Ödenen','DASK Payı','Konut Sigortası Payı','Masraf'],hucre='border:1px solid #bbb;padding:5px';
         alan.innerHTML='<h1 style="margin:0 0 4px">'+escapeDashboardText(v.d?.kisaAd||'Daire')+' · '+v.yil+' Kira Raporu</h1><p>'+escapeDashboardText(v.d?.adres||'')+'</p><table style="width:100%;border-collapse:collapse"><thead><tr>'+basliklar.map(x=>'<th style="border:1px solid #999;padding:5px;background:#e2e8f0">'+x+'</th>').join('')+'</tr></thead><tbody>'+v.satirlar.map(r=>'<tr><td style="'+hucre+'">'+r.ayAdi+'</td><td style="'+hucre+'">'+escapeDashboardText(r.kiraci)+'</td><td style="'+hucre+'">'+paraFormatla(r.kira)+'</td><td style="'+hucre+'">'+r.durum+'</td><td style="'+hucre+'">'+paraFormatla(r.odenen)+'</td><td style="'+hucre+'">'+paraFormatla(r.dask)+'</td><td style="'+hucre+'">'+paraFormatla(r.konut)+'</td><td style="'+hucre+'">'+paraFormatla(r.masraf)+'</td></tr>').join('')+'</tbody><tfoot><tr style="font-weight:900;background:#dbeafe"><td style="'+hucre+'">GENEL TOPLAM</td><td style="'+hucre+'"></td><td style="'+hucre+'">'+paraFormatla(toplam.kira)+'</td><td style="'+hucre+'"></td><td style="'+hucre+'">'+paraFormatla(toplam.odenen)+'</td><td style="'+hucre+'">'+paraFormatla(toplam.dask)+'</td><td style="'+hucre+'">'+paraFormatla(toplam.konut)+'</td><td style="'+hucre+'">'+paraFormatla(toplam.masraf)+'</td></tr></tfoot></table><h2>Poliçeler</h2><p>'+(v.policeler.map(p=>escapeDashboardText(p.tur)+' · '+escapeDashboardText(p.policeNo||'-')+' · '+tarihFormati(p.baslangic)+'–'+tarihFormati(p.bitis)+' · '+paraFormatla(p.tutar)).join('<br>')||'Poliçe yok.')+'</p><h2>Masraflar</h2><p>'+(v.masraflar.map(m=>escapeDashboardText(m.aciklama)+' · '+escapeDashboardText(m.baslangicAy)+' · '+m.aySayisi+' ay · '+paraFormatla(m.tutar)).join('<br>')||'Masraf yok.')+'</p>';
-        document.body.appendChild(alan);try{await html2pdf().set({margin:0,filename:'Kira_Raporu_'+String(v.d?.kisaAd||'Daire').replace(/[^p{L}p{N}]+/gu,'_')+'_'+v.yil+'.pdf',html2canvas:{scale:2,backgroundColor:'#fff'},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}}).from(alan).save();}finally{alan.remove();}
+        const dosyaAdi='Kira_Raporu_'+String(v.d?.kisaAd||'Daire').replace(/[^\p{L}\p{N}]+/gu,'_')+'_'+v.yil+'.pdf';
+        return window.fdPdfOnizlemeUret?.(alan,dosyaAdi,{yon:'landscape',altBaslik:v.d?.kisaAd||'Kira Raporu'});
     }
     function kiraDaireRaporExcel(id){
         if(typeof XLSX==='undefined')return alert('Excel bileşeni yüklenemedi.');const v=kiraDaireRaporVerisi(id),toplam=kiraDaireRaporToplamlari(v.satirlar),wb=XLSX.utils.book_new(),ozet=[['Ay','Kiracı','Kira Tutarı','Durum','Ödenen','DASK Payı','Konut Sigortası Payı','Masraf Payı'],...v.satirlar.map(r=>[r.ayAdi,r.kiraci,r.kira,r.durum,r.odenen,r.dask,r.konut,r.masraf]),['GENEL TOPLAM','',toplam.kira,'',toplam.odenen,toplam.dask,toplam.konut,toplam.masraf]],police=[['Tür','Poliçe No','Başlangıç','Bitiş','Toplam Prim'],...v.policeler.map(p=>[p.tur,p.policeNo||'',p.baslangic,p.bitis,Number(p.tutar||0)])],masraf=[['Açıklama','Fatura No','Başlangıç Ayı','Dağıtım Ayı','Daire Payı','Dağıtılan Toplam'],...v.masraflar.map(m=>[m.aciklama,m.faturaNo||'',m.baslangicAy,Number(m.aySayisi||0),Number(m.tutar||0),Number(m.toplamTutar||m.tutar||0)])];
-        [[ozet,'Aylık Özet',[16,28,16,14,16,16,18,16]],[police,'Poliçeler',[20,18,14,14,16]],[masraf,'Masraflar',[30,18,16,14,16,18]]].forEach(([veri,ad,enler])=>{const ws=XLSX.utils.aoa_to_sheet(veri);ws['!cols']=enler.map(w=>({wch:w}));ws['!freeze']={xSplit:0,ySplit:1};XLSX.utils.book_append_sheet(wb,ws,ad);});XLSX.writeFile(wb,'Kira_Raporu_'+String(v.d?.kisaAd||'Daire').replace(/[^p{L}p{N}]+/gu,'_')+'_'+v.yil+'.xlsx');
+        [[ozet,'Aylık Özet',[16,28,16,14,16,16,18,16]],[police,'Poliçeler',[20,18,14,14,16]],[masraf,'Masraflar',[30,18,16,14,16,18]]].forEach(([veri,ad,enler])=>{const ws=XLSX.utils.aoa_to_sheet(veri);ws['!cols']=enler.map(w=>({wch:w}));ws['!freeze']={xSplit:0,ySplit:1};XLSX.utils.book_append_sheet(wb,ws,ad);});XLSX.writeFile(wb,'Kira_Raporu_'+String(v.d?.kisaAd||'Daire').replace(/[^\p{L}\p{N}]+/gu,'_')+'_'+v.yil+'.xlsx');
     }
     function kiraRaporBasliginiDuzenle(){const h=document.querySelector('#kira-tab-raporlar .card-header h2');if(h&&!h.querySelector('small'))h.innerHTML='Daire Sahibi Gelir–Gider Raporu<small>Seçilen sahibin yıllık kira gelirlerini, poliçe paylarını ve masraflarını karşılaştırın.</small>';}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',kiraRaporBasliginiDuzenle);else kiraRaporBasliginiDuzenle();
@@ -11011,7 +11012,7 @@
         const liste=akaryakitFiltrelenmisListe(),satirlar=akaryakitRaporSatirlari(liste),basliklar=['TARİH','DEPO','PLAKA','İŞLEM','LİTRE','KM','ALAN','VEREN','100 KM TÜKETİM'],ay=document.getElementById('akaryakitAyFiltre')?.value||'TÜM DÖNEMLER',ad=`AKARYAKIT_RAPORU_${ay}`;
         if(!liste.length){alert('Raporlanacak kayıt bulunmuyor.');return;}
         if(tur==='excel'){const ws=XLSX.utils.aoa_to_sheet([basliklar,...satirlar]);ws['!cols']=[{wch:20},{wch:18},{wch:14},{wch:18},{wch:12},{wch:12},{wch:24},{wch:24},{wch:18}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Akaryakıt');XLSX.writeFile(wb,`${ad}.xlsx`);return;}
-        const giris=liste.filter(h=>h.tur==='giris').reduce((s,h)=>s+Number(h.litre||0),0),cikis=liste.filter(h=>h.tur==='cikis').reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.style.cssText='padding:18px;font-family:Arial;color:#0f172a;';alan.innerHTML=`<h2 style="margin:0 0 4px;">AKARYAKIT HAREKET RAPORU</h2><p style="margin:0 0 12px;color:#64748b;">Dönem: ${escapeDashboardText(ay)} · Kayıt: ${liste.length} · Giriş: ${giris.toLocaleString('tr-TR')} L · Araçlara Verilen: ${cikis.toLocaleString('tr-TR')} L</p><table style="width:100%;border-collapse:collapse;font-size:8px;"><thead><tr>${basliklar.map(b=>`<th style="padding:6px;border:1px solid #cbd5e1;background:#e2e8f0;">${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td style="padding:5px;border:1px solid #cbd5e1;">${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;document.body.appendChild(alan);html2pdf().set({margin:.25,filename:`${ad}.pdf`,html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'landscape'}}).from(alan).save().then(()=>alan.remove());
+        const giris=liste.filter(h=>h.tur==='giris').reduce((s,h)=>s+Number(h.litre||0),0),cikis=liste.filter(h=>h.tur==='cikis').reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.innerHTML=`<table><thead><tr>${basliklar.map(b=>`<th>${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td>${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;return window.fdTabloPdfOnizle?.(alan.querySelector('table'),'AKARYAKIT HAREKET RAPORU',`${ad}.pdf`,{donem:`${ay} · ${liste.length} kayıt · Giriş ${giris.toLocaleString('tr-TR')} L · Verilen ${cikis.toLocaleString('tr-TR')} L`,yon:'landscape',altBaslik:'Akaryakıt Hareket Raporu'});
     }
     async function akaryakitSil(id){if(!await fdYuzerOnaySor('Bu yakıt hareketi silinsin mi?'))return;const onceki=akaryakitKayitlari.slice();akaryakitKayitlari=akaryakitKayitlari.filter(k=>k.id!==id);yuklenenVeriler.add('akaryakit');try{await supabaseVerileriKaydet();akaryakitListesiniCiz();}catch(e){akaryakitKayitlari=onceki;alert('Kayıt silinemedi: '+e.message);}}
     function akaryakitTuketimNotuVerileri(id=''){
@@ -11081,7 +11082,7 @@
         const aralikBaslik=['ÖNCEKİ TARİH','SON TARİH','ÖNCEKİ KM','SON KM','YAPILAN KM','ALINAN LİTRE','100 KM TÜKETİM'],aralikSatir=araliklar.map(a=>[tarihFormati(a.oncekiTarih),tarihFormati(a.sonTarih),a.oncekiKm,a.sonKm,a.kmFarki,a.litre,Number(a.oran.toFixed(2))]);
         const ozetKaynagi=baslangic||bitis?araliklar:tumAraliklar,aylik=akaryakitTuketimDonemOzeti(ozetKaynagi.filter(a=>baslangic||bitis?true:String(a.sonTarih).startsWith(yil)),7),yillik=akaryakitTuketimDonemOzeti(ozetKaynagi,4),ozetBaslik=['DÖNEM','ALIM SAYISI','TOPLAM LİTRE','HESAPLANAN KM','ORTALAMA L/100 KM'],aylikSatir=aylik.map(o=>[o.donem,o.adet,o.litre,o.km,Number(o.ortalama.toFixed(2))]),yillikSatir=yillik.map(o=>[o.donem,o.adet,o.litre,o.km,Number(o.ortalama.toFixed(2))]),ad=`${arac.plaka}_YAKIT_RAPORU_${donemEtiketi}`.replaceAll(' ','_').replace(/[/:]/g,'-');
         if(tur==='excel'){const wb=XLSX.utils.book_new(),ekle=(ad,veri,genislik)=>{const ws=XLSX.utils.aoa_to_sheet(veri);ws['!cols']=genislik.map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,ad);};ekle('Yakıt Teslimleri',[[`${arac.plaka} YAKIT RAPORU`,donemEtiketi],teslimBaslik,...teslimSatir],[18,18,12,14,24,24,18]);ekle('İki Yakıt Arası',[aralikBaslik,...aralikSatir],[16,16,14,14,14,14,18]);ekle('Aylık Özet',[ozetBaslik,...aylikSatir],[16,14,16,18,20]);ekle('Yıllık Özet',[ozetBaslik,...yillikSatir],[16,14,16,18,20]);XLSX.writeFile(wb,`${ad}.xlsx`);return;}
-        const tablo=(basliklar,satirlar)=>`<table style="width:100%;border-collapse:collapse;font-size:8px;margin-bottom:16px;"><thead><tr>${basliklar.map(b=>`<th style="padding:6px;border:1px solid #cbd5e1;background:#e2e8f0;">${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td style="padding:5px;border:1px solid #cbd5e1;">${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`,toplam=liste.reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.style.cssText='padding:18px;font-family:Arial;color:#0f172a;';alan.innerHTML=`<h2 style="margin:0 0 4px;">${escapeDashboardText(arac.plaka)} ARAÇ YAKIT RAPORU</h2><p style="margin:0 0 14px;color:#64748b;">${escapeDashboardText(donemEtiketi)} · ${liste.length} kayıt · Toplam ${toplam.toLocaleString('tr-TR')} litre</p><h3>İki Yakıt Alımı Arasındaki Tüketim</h3>${tablo(aralikBaslik,aralikSatir)}<h3>Aylık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,aylikSatir)}<h3>Yıllık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,yillikSatir)}<h3>Yakıt Teslim Kayıtları</h3>${tablo(teslimBaslik,teslimSatir)}`;document.body.appendChild(alan);html2pdf().set({margin:.25,filename:`${ad}.pdf`,pagebreak:{mode:['css','legacy']},html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'landscape'}}).from(alan).save().then(()=>alan.remove());
+        const tablo=(basliklar,satirlar)=>`<table style="width:100%;border-collapse:collapse;font-size:8px;margin-bottom:16px;"><thead><tr>${basliklar.map(b=>`<th style="padding:6px;border:1px solid #cbd5e1;background:#e2e8f0;">${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td style="padding:5px;border:1px solid #cbd5e1;">${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`,toplam=liste.reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.style.cssText='padding:18px;font-family:Arial;color:#0f172a;';alan.innerHTML=`<h2 style="margin:0 0 4px;">${escapeDashboardText(arac.plaka)} ARAÇ YAKIT RAPORU</h2><p style="margin:0 0 14px;color:#64748b;">${escapeDashboardText(donemEtiketi)} · ${liste.length} kayıt · Toplam ${toplam.toLocaleString('tr-TR')} litre</p><h3>İki Yakıt Alımı Arasındaki Tüketim</h3>${tablo(aralikBaslik,aralikSatir)}<h3>Aylık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,aylikSatir)}<h3>Yıllık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,yillikSatir)}<h3>Yakıt Teslim Kayıtları</h3>${tablo(teslimBaslik,teslimSatir)}`;return window.fdPdfOnizlemeUret?.(alan,`${ad}.pdf`,{yon:'landscape',altBaslik:`${arac.plaka} Yakıt Raporu`});
     }
 
     function aracMtvTakipliMi(arac){return Boolean(arac) && arac.mtvTakip !== false && !aracYariRomorkMu(arac.tur);}
@@ -11677,9 +11678,9 @@
             const ws = XLSX.utils.aoa_to_sheet([alanlar.map(a=>a.label),...satirlar]); ws['!cols']=alanlar.map(a=>({wch:Math.max(14,a.label.length+3)}));
             const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Araçlar'); XLSX.writeFile(wb,`${listeAdi.replaceAll(' ','_')}.xlsx`); return;
         }
-        const alan=document.createElement('div'); alan.style.cssText='padding:18px;font-family:Arial,sans-serif;color:#0f172a;';
-        alan.innerHTML=`<h2 style="margin:0 0 5px;">${listeAdi}</h2><p style="margin:0 0 14px;color:#64748b;font-size:11px;">Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')}</p><table style="width:100%;border-collapse:collapse;font-size:9px;"><thead><tr>${alanlar.map(a=>`<th style="padding:6px;border:1px solid #cbd5e1;background:#f1f5f9;">${a.label}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td style="padding:6px;border:1px solid #cbd5e1;">${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-        document.body.appendChild(alan); html2pdf().set({margin:.25,filename:`${listeAdi.replaceAll(' ','_')}.pdf`,html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'landscape'}}).from(alan).save().then(()=>alan.remove());
+        if(!liste.length){alert('PDF için gösterilecek araç bulunmuyor.');return;}
+        const alan=document.createElement('div');alan.innerHTML=`<table><thead><tr>${alanlar.map(a=>`<th>${escapeDashboardText(a.label)}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td>${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+        return window.fdTabloPdfOnizle?.(alan.querySelector('table'),listeAdi,`${listeAdi.replaceAll(' ','_')}.pdf`,{yon:'landscape',format:alanlar.length>8?'a3':'a4',altBaslik:listeAdi});
     }
 
     function aracBakimModaliniAc(id) {
@@ -13650,10 +13651,13 @@
         const ay = document.getElementById('puanAySec').options[document.getElementById('puanAySec').selectedIndex].text;
         const yil = document.getElementById('puanYilSec').value;
         const table = document.getElementById('puantajTablosu');
+        if(!table||table.rows.length<2)return alert('PDF için gösterilecek puantaj kaydı bulunmuyor.');
         showGlobalOverlay('PDF hazırlanıyor', 'Çizelge tek sayfaya sığdırılıyor...');
         try {
             const cizelgeAdi = puantajGorunumu === 'prim' ? 'AYLIK PRİM HAKEDİŞ ÇİZELGESİ' : 'AYLIK PERSONEL PUANTAJ ÇİZELGESİ';
-            const canvas = await puantajCanvasOlustur(table, 1.5, `${cizelgeAdi} — ${String(ay).toLocaleUpperCase('tr-TR')} ${yil}`);
+            const tabloCanvas = await puantajCanvasOlustur(table, 1.5, '');
+            if(!tabloCanvas||tabloCanvas.width<2||tabloCanvas.height<2)throw new Error('Puantaj görüntüsü boş oluştu.');
+            const baslikYuksekligi=72,canvas=document.createElement('canvas');canvas.width=tabloCanvas.width;canvas.height=tabloCanvas.height+baslikYuksekligi;const baslikCtx=canvas.getContext('2d');baslikCtx.fillStyle='#fff';baslikCtx.fillRect(0,0,canvas.width,canvas.height);baslikCtx.fillStyle='#0f172a';baslikCtx.font='800 28px Arial';baslikCtx.textBaseline='middle';baslikCtx.textAlign='left';baslikCtx.fillText(cizelgeAdi,24,31,Math.max(100,canvas.width*.68));baslikCtx.fillStyle='#475569';baslikCtx.font='700 21px Arial';baslikCtx.textAlign='right';baslikCtx.fillText(`${String(ay).toLocaleUpperCase('tr-TR')} ${yil}`,canvas.width-24,31,Math.max(100,canvas.width*.28));baslikCtx.fillStyle='#0f766e';baslikCtx.fillRect(0,baslikYuksekligi-5,canvas.width,5);baslikCtx.drawImage(tabloCanvas,0,baslikYuksekligi);
             const JsPDF = window.jspdf?.jsPDF || window.jsPDF;
             if (!JsPDF) throw new Error('PDF kütüphanesi yüklenemedi.');
 
@@ -13675,7 +13679,7 @@
                 parca.height = parcaYuksekligi;
                 parca.getContext('2d').drawImage(canvas, 0, baslangicY, canvas.width, parcaYuksekligi, 0, 0, canvas.width, parcaYuksekligi);
                 if (sayfa > 0) pdf.addPage('a2', 'landscape');
-                pdf.addImage(parca, 'PNG', kenar, kenar, yazdirmaGenisligi, parcaYuksekligi * yazdirmaGenisligi / canvas.width);
+                pdf.addImage(parca.toDataURL('image/jpeg',.91), 'JPEG', kenar, kenar, yazdirmaGenisligi, parcaYuksekligi * yazdirmaGenisligi / canvas.width, undefined, 'FAST');
                 baslangicY += parcaYuksekligi;
                 sayfa++;
             }
@@ -14977,43 +14981,13 @@
             return;
         }
 
-        if (typeof html2pdf !== 'function') {
-            alert('PDF kütüphanesi yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
-            return;
-        }
         const wrapper = document.createElement('div');
-        wrapper.style.cssText = 'padding:20px; font-family:Arial,sans-serif; color:#0f172a; background:#fff;';
-        wrapper.innerHTML = `<h2 style="margin:0 0 5px; font-size:18px;">AKTİF PERSONEL LİSTESİ</h2><p style="margin:0 0 15px; color:#64748b; font-size:11px;">Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')}</p><table style="width:100%; border-collapse:collapse; font-size:10px;"><thead><tr>${fields.map(field => `<th style="padding:7px; border:1px solid #cbd5e1; background:#f1f5f9; text-align:left;">${escapeDashboardText(field.label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td style="padding:7px; border:1px solid #cbd5e1;">${escapeDashboardText(value)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-        document.body.appendChild(wrapper);
-        html2pdf().set({
-            margin: 0.35,
-            filename: 'Aktif_Personel_Listesi.pdf',
-            html2canvas: { scale: 2, backgroundColor: '#ffffff' },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-        }).from(wrapper).save().then(() => wrapper.remove()).catch(error => {
-            wrapper.remove();
-            console.error('Personel PDF oluşturma hatası:', error);
-            alert('PDF oluşturulamadı: ' + (error?.message || error));
-        });
+        wrapper.innerHTML = `<table><thead><tr>${fields.map(field => `<th>${escapeDashboardText(field.label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td>${escapeDashboardText(value)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+        return window.fdTabloPdfOnizle?.(wrapper.querySelector('table'),'AKTİF PERSONEL LİSTESİ','Aktif_Personel_Listesi.pdf',{yon:'landscape',format:fields.length>8?'a3':'a4',altBaslik:'Aktif Personel Listesi'});
     }
     function exportPersonelToPDF() {
-        const headerTitle = document.getElementById('pdfPersonelHeaderTitle');
-        document.getElementById('pdfPersonelRaporTarihi').innerText = new Date().toLocaleDateString('tr-TR');
-        headerTitle.style.display = 'block';
-
         const table = document.getElementById('tabloAktifPersonel');
-        const actionCols = table.querySelectorAll('th:nth-child(12), td:nth-child(12)');
-        actionCols.forEach(el => el.style.display = 'none');
-
-        html2pdf().set({ 
-            margin: 0.4, 
-            filename: 'Aktif_Personel_Listesi.pdf', 
-            html2canvas: { scale: 2, useCORS: true }, 
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' } 
-        }).from(document.getElementById('aktifPersonelPrintArea')).save().then(() => {
-            headerTitle.style.display = 'none';
-            actionCols.forEach(el => el.style.display = '');
-        });
+        return window.fdTabloPdfOnizle?.(table,'AKTİF PERSONEL LİSTESİ','Aktif_Personel_Listesi.pdf',{yon:'landscape',format:'a3',altBaslik:'Aktif Personel Listesi'});
     }
 
     function exportPersonelToExcel() {
@@ -17520,7 +17494,7 @@
             return '<tr style="background:'+arka+'"><td><strong>'+escapeDashboardText(tarihFormati(k.tarih))+'</strong></td><td>'+escapeDashboardText(gun)+'</td><td>'+escapeDashboardText(magicpassVardiyaSaatEtiketi(k.vardiya))+'</td><td>'+escapeDashboardText(magicpassSaatMetni(k.giris))+'</td><td>'+escapeDashboardText(magicpassSaatMetni(k.cikis))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(k.normal))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(k.gec))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(k.erken))+'</td><td><strong>'+escapeDashboardText(magicpassDakikaMetni(k.mesai))+'</strong></td><td style="text-align:left"><strong style="color:'+durumRenk+'">'+escapeDashboardText(k.durum||'-')+'</strong>'+(notlar.length?'<small>'+escapeDashboardText(notlar.join(' · '))+'</small>':'')+'</td></tr>';
         }).join('');
         const rapor=document.createElement('div');
-        rapor.style.cssText='position:fixed;left:-12000px;top:0;z-index:2147483000;width:1240px;box-sizing:border-box;padding:16px 18px 13px;font-family:Arial,sans-serif;color:#0f172a;background:#fff;';
+        rapor.style.cssText='position:fixed;left:0;top:0;z-index:2147483000;width:1240px;box-sizing:border-box;padding:16px 18px 13px;font-family:Arial,sans-serif;color:#0f172a;background:#fff;pointer-events:none;';
         rapor.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:9px;border-bottom:2px solid #0f766e;padding-bottom:8px"><div><div style="display:flex;align-items:center;gap:8px"><span style="width:5px;height:26px;border-radius:5px;background:#10b981"></span><h1 style="margin:0;font-size:20px;letter-spacing:.15px">AYLIK PERSONEL GİRİŞ–ÇIKIŞ RAPORU</h1></div><p style="margin:5px 0 0 13px;color:#475569;font-size:10.5px"><strong>'+escapeDashboardText(personel.ad||'-')+'</strong> · '+escapeDashboardText(personel.sube||'Merkez')+' · '+escapeDashboardText(personel.gorev||'-')+'</p></div><div style="min-width:150px;text-align:right"><span style="display:block;color:#64748b;font-size:8px;font-weight:800;text-transform:uppercase">Rapor Dönemi</span><strong style="display:block;margin-top:3px;font-size:13px">'+escapeDashboardText(donem)+'</strong></div></div>'+
         '<table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:9px"><colgroup><col style="width:10%"><col style="width:9%"><col style="width:12%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:8%"><col style="width:11%"><col style="width:17%"></colgroup><thead><tr><th>Tarih</th><th>Gün</th><th>Vardiya</th><th>Giriş</th><th>Çıkış</th><th>Normal</th><th>Geç</th><th>Erken</th><th>Fazla Mesai</th><th>Durum / Açıklama</th></tr></thead><tbody>'+satirlar+'<tr class="toplam"><td colspan="5" style="text-align:right">AYLIK TOPLAM</td><td>'+escapeDashboardText(magicpassDakikaMetni(normal))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(gec))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(erken))+'</td><td>'+escapeDashboardText(magicpassDakikaMetni(net))+'</td><td style="text-align:left">Brüt mesai: '+escapeDashboardText(magicpassDakikaMetni(brut))+'</td></tr></tbody></table>'+
         '<div style="display:flex;justify-content:space-between;margin-top:6px;color:#64748b;font-size:7px"><span>Rapor oluşturma: '+escapeDashboardText(new Date().toLocaleString('tr-TR'))+'</span><span>FD YAZILIM</span></div>';
@@ -17534,7 +17508,8 @@
         showGlobalOverlay('PDF hazırlanıyor','Aylık rapor okunaklı tek sayfa düzeninde oluşturuluyor...');
         try{
             if(document.fonts?.ready)await document.fonts.ready;
-            const canvas=await html2canvas(rapor,{scale:2,backgroundColor:'#fff',logging:false,width:rapor.scrollWidth,height:rapor.scrollHeight});
+            const canvas=await html2canvas(rapor,{scale:2,backgroundColor:'#fff',logging:false,scrollX:0,scrollY:0,width:rapor.scrollWidth,height:rapor.scrollHeight,windowWidth:Math.max(rapor.scrollWidth,1280),windowHeight:Math.max(rapor.scrollHeight,800)});
+            if(!canvas.width||!canvas.height)throw new Error('Rapor görüntüsü boş oluştu.');
             const pdf=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true}),pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),m=5,oran=Math.min((pw-m*2)/canvas.width,(ph-m*2)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;
             pdf.addImage(canvas.toDataURL('image/jpeg',.98),'JPEG',(pw-w)/2,m,w,h,undefined,'FAST');
             const ad=magicpassRaporDosyaAdi(personel,'pdf'),blob=pdf.output('blob');
@@ -17983,23 +17958,9 @@
     }
 
     async function magicpassGunlukPdfAl() {
-        if(typeof html2pdf!=='function')return showToast('PDF kütüphanesi yüklenemedi.','error');
         const kaynak=document.getElementById('magicpassGunlukTablo');if(!kaynak)return;
         const tarih=document.getElementById('magicpassGunlukTarih').value,sube=document.getElementById('magicpassGunlukSube').value||'Tüm Şubeler';
-        const rapor=document.createElement('div');rapor.className='magicpass-gunluk-pdf-rapor';rapor.style.cssText='position:fixed;left:-14000px;top:0;width:1120px;box-sizing:border-box;padding:18px 20px 14px;font-family:Arial,sans-serif;color:#0f172a;background:#fff;';
-        rapor.innerHTML=`<header style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin:0 0 10px;padding:0 0 8px;border-bottom:2px solid #0f766e"><div><h1 style="margin:0;font-size:19px;line-height:1.15">GÜNLÜK PERSONEL GİRİŞ–ÇIKIŞ RAPORU</h1><p style="margin:5px 0 0;color:#475569;font-size:10px"><strong>${escapeDashboardText(tarihFormati(tarih))}</strong> · ${escapeDashboardText(sube)}</p></div><div style="text-align:right;color:#64748b;font-size:8px;line-height:1.45">FD YAZILIM<br>${escapeDashboardText(new Date().toLocaleString('tr-TR'))}</div></header>`;
-        const tablo=kaynak.cloneNode(true);tablo.removeAttribute('id');tablo.style.cssText='width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0;font-size:8px;background:#fff;';
-        const genislikler=[4,17,11,13,10,7,7,7,7,10,7],colgroup=document.createElement('colgroup');genislikler.forEach(en=>{const col=document.createElement('col');col.style.width=en+'%';colgroup.appendChild(col);});tablo.insertBefore(colgroup,tablo.firstChild);
-        tablo.querySelectorAll('thead').forEach(alan=>alan.style.display='table-header-group');
-        tablo.querySelectorAll('th').forEach((hucre,index)=>{hucre.style.cssText='position:static;padding:5px 3px;border:1px solid #94a3b8;background:#334155;color:#fff;text-align:center;font-size:7.5px;font-weight:800;line-height:1.15;white-space:normal;vertical-align:middle;';});
-        tablo.querySelectorAll('tbody tr').forEach(satir=>{const zemin=satir.classList.contains('magicpass-gelmedi')?'#fef2f2':(satir.classList.contains('magicpass-uyari')?'#fffbeb':'#ffffff');satir.style.cssText='break-inside:avoid;page-break-inside:avoid;background:'+zemin+';';satir.querySelectorAll('td').forEach((hucre,index)=>{hucre.style.cssText='position:static;padding:4px 3px;border:1px solid #cbd5e1;background:'+zemin+';color:#0f172a;text-align:center;vertical-align:middle;font-size:7.5px;line-height:1.15;white-space:'+(index===1||index===2||index===3||index===10?'normal':'nowrap')+';overflow-wrap:anywhere;';});});
-        tablo.querySelectorAll('small').forEach(k=>{k.style.cssText='display:block;margin-top:2px;font-size:6.5px;line-height:1.15;color:#64748b;white-space:normal;';});
-        tablo.querySelectorAll('.magicpass-gunluk-durum').forEach(k=>{k.style.cssText+=';display:inline;font-size:7px;font-weight:800;padding:0;background:transparent;box-shadow:none;';});
-        rapor.appendChild(tablo);document.body.appendChild(rapor);
-        showGlobalOverlay('Günlük PDF hazırlanıyor','Tablo A4 yatay sayfaya yerleştiriliyor...');
-        try{await html2pdf().set({margin:[4,4,5,4],filename:magicpassGunlukRaporDosyaAdi('pdf'),image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0,windowWidth:1160},jsPDF:{unit:'mm',format:'a4',orientation:'landscape',compress:true},pagebreak:{mode:['css','legacy'],avoid:['tr']}}).from(rapor).save();showToast('Günlük personel raporu PDF olarak hazırlandı.');}
-        catch(error){showToast('Günlük PDF hazırlanamadı: '+(error.message||error),'error');}
-        finally{rapor.remove();hideGlobalOverlay();}
+        return window.fdTabloPdfOnizle?.(kaynak,'GÜNLÜK PERSONEL GİRİŞ–ÇIKIŞ RAPORU',magicpassGunlukRaporDosyaAdi('pdf'),{donem:tarihFormati(tarih)+' · '+sube.toLocaleUpperCase('tr-TR'),yon:'landscape',format:'a3',genislik:'400mm',satirSayisi:34,ilkKolonGenislik:'5%',altBaslik:'Günlük Personel Giriş–Çıkış Raporu'});
     }
     const fdMagicpassSekmeAcGunlukOncesi=magicpassSekmeAc;
     magicpassSekmeAc=function(tabId,button){fdMagicpassSekmeAcGunlukOncesi(tabId,button);if(tabId==='magicpass-tab-gunluk'){if(!document.getElementById('magicpassGunlukTarih').value)document.getElementById('magicpassGunlukTarih').value=magicpassTarihAnahtari(new Date());magicpassGunlukRaporSubeleriniHazirla();magicpassGunlukRaporuCiz();}};
@@ -18152,7 +18113,7 @@
     }
     function kiraMulkListesiSatirlari(){return kiraMulkFiltreliListe().map(d=>{const s=kiraAktifSozlesme(d.id);return[d.mulkTuru==='isyeri'?'İşyeri':'Daire',d.kisaAd,kiraDaireSahipleri(d),d.adres,d.elektrik||'',d.su||'',d.gaz||'',({kirada:'Kirada',bosta:'Boşta',kendisi:'Kendisi Kullanıyor'}[d.durum]||d.durum||''),s?.kiraciAd||'',Number(s?.aylikKira||0)];});}
     function kiraMulkListesiExcel(){if(typeof XLSX==='undefined')return alert('Excel bileşeni yüklenemedi.');const veri=[['Tür','Kısa Ad','Sahibi','Adres','Elektrik Abone No','Su Abone No','Doğalgaz Abone No','Durum','Kiracı','Aylık Kira'],...kiraMulkListesiSatirlari()],ws=XLSX.utils.aoa_to_sheet(veri),wb=XLSX.utils.book_new();ws['!cols']=[12,22,25,42,20,18,20,18,25,16].map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,'Daire ve İşyerleri');XLSX.writeFile(wb,'Daire_ve_Isyeri_Listesi.xlsx');}
-    async function kiraMulkListesiPdf(){if(typeof html2pdf!=='function')return alert('PDF bileşeni yüklenemedi.');const basliklar=['Tür','Kısa Ad','Sahibi','Adres','Elektrik','Su','Doğalgaz','Durum','Kiracı','Aylık Kira'],satirlar=kiraMulkListesiSatirlari(),alan=document.createElement('div'),hucre='border:1px solid #cbd5e1;padding:5px;font-size:8px';alan.style.cssText='width:277mm;padding:9mm;background:#fff;color:#0f172a;font-family:Arial';alan.innerHTML=`<h2 style="margin:0 0 12px">DAİRE / İŞYERİ LİSTESİ</h2><table style="width:100%;border-collapse:collapse"><thead><tr>${basliklar.map(x=>`<th style="${hucre};background:#e2e8f0">${x}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map((v,i)=>`<td style="${hucre}">${i===9?paraFormatla(v):escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;document.body.appendChild(alan);try{await html2pdf().set({margin:0,filename:'Daire_ve_Isyeri_Listesi.pdf',html2canvas:{scale:2,backgroundColor:'#fff'},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}}).from(alan).save();}finally{alan.remove();}}
+    async function kiraMulkListesiPdf(){const basliklar=['Tür','Kısa Ad','Sahibi','Adres','Elektrik','Su','Doğalgaz','Durum','Kiracı','Aylık Kira'],satirlar=kiraMulkListesiSatirlari();if(!satirlar.length)return alert('PDF için gösterilecek daire veya işyeri bulunmuyor.');const alan=document.createElement('div');alan.innerHTML=`<table><thead><tr>${basliklar.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map((v,i)=>`<td>${i===9?paraFormatla(v):escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;return window.fdTabloPdfOnizle?.(alan.querySelector('table'),'DAİRE / İŞYERİ LİSTESİ','Daire_ve_Isyeri_Listesi.pdf',{yon:'landscape',format:'a3',genislik:'400mm',ilkKolonGenislik:'9%',altBaslik:'Daire / İşyeri Listesi'});}
     function kiraDaireYilSatirlari(daireId,yil){
         const sozlesmeler=kiraSozlesmeler().filter(s=>String(s.daireId)===String(daireId)),odemeler=kiraOdemeler(),policeler=kiraPoliceler().filter(p=>String(p.daireId)===String(daireId)),masraflar=kiraMasraflar().filter(m=>String(m.daireId)===String(daireId)),bugunAy=new Date().toISOString().slice(0,7);
         return Array.from({length:12},(_,i)=>{const ay=String(yil)+'-'+String(i+1).padStart(2,'0'),ayBas=ay+'-01',aySon=kiraAySonu(ay),uygun=sozlesmeler.filter(s=>String(s.baslangic||'9999-12-31')<=aySon&&String(s.gercekBitis||s.bitis||'9999-12-31')>=ayBas).sort((a,b)=>String(b.baslangic).localeCompare(String(a.baslangic))),sozlesme=uygun[0]||null,sozlesmeIds=new Set(uygun.map(s=>String(s.id))),ayOdemeleri=odemeler.filter(o=>o.ay===ay&&(String(o.daireId)===String(daireId)||sozlesmeIds.has(String(o.sozlesmeId)))),odenen=ayOdemeleri.reduce((t,o)=>t+Number(o.tutar||0),0),kiracilar=[...new Set((ayOdemeleri.length?ayOdemeleri.map(o=>sozlesmeler.find(s=>String(s.id)===String(o.sozlesmeId))?.kiraciAd):uygun.map(s=>s.kiraciAd)).filter(Boolean))],kira=Number(sozlesme?.aylikKira||0),dask=policeler.filter(p=>aracRuhsatMetniniEsitle(p.tur).includes('DASK')).reduce((t,p)=>t+Number(kiraPoliceAyTutari(p,ay)||0),0),konut=policeler.filter(p=>aracRuhsatMetniniEsitle(p.tur).includes('KONUT')).reduce((t,p)=>t+Number(kiraPoliceAyTutari(p,ay)||0),0),police=dask+konut,masraf=masraflar.reduce((t,m)=>t+Number(kiraMasrafAyTutari(m,ay)||0),0);let durum='SÖZLEŞME YOK';if(sozlesme)durum=odenen>0?'ÖDENDİ':(ay<=bugunAy?'ÖDENMEDİ':'BEKLİYOR');return{ay,ayAdi:kiraAyAdi(ay),kiraci:kiracilar.join(' / ')||'-',kira,odenen,durum,dask,konut,police,masraf,net:odenen-police-masraf,sozlesmeId:sozlesme?.id||''};});
@@ -20059,7 +20020,15 @@ tapuCksArayuzunuKur();
         }
     }
     function pdfKaynaginiTemizle(kopya){
-        kopya.querySelectorAll('[data-html2canvas-ignore],button,input,select,textarea,.action-btns').forEach(x=>x.remove());
+        kopya.querySelectorAll('input,select,textarea').forEach(alan=>{
+            let deger='';
+            if(alan.tagName==='SELECT')deger=[...(alan.selectedOptions||[])].map(x=>x.textContent?.trim()).filter(Boolean).join(', ');
+            else if(alan.type==='checkbox'||alan.type==='radio')deger=alan.checked?'Evet':'Hayır';
+            else deger=alan.value||alan.getAttribute('value')||'';
+            const metin=kopya.ownerDocument.createElement('span');metin.className='fd-pdf-form-degeri';metin.textContent=String(deger||'-');
+            alan.replaceWith(metin);
+        });
+        kopya.querySelectorAll('[data-html2canvas-ignore],button,.action-btns').forEach(x=>x.remove());
         kopya.querySelectorAll('[contenteditable]').forEach(x=>x.removeAttribute('contenteditable'));
         kopya.querySelectorAll('.table-wrapper').forEach(x=>{x.style.overflow='visible';x.style.maxHeight='none';x.style.height='auto'});
         kopya.querySelectorAll('table').forEach(t=>{t.style.width='100%';t.style.maxWidth='100%';t.style.tableLayout='auto';t.style.borderCollapse='collapse'});
@@ -20067,34 +20036,77 @@ tapuCksArayuzunuKur();
         return kopya;
     }
     async function pdfOnizlemeUret(kaynak,dosyaAdi,sec={}){
-        if(typeof html2pdf!=='function')return alert('PDF bileşeni yüklenemedi.');
+        if(typeof html2canvas!=='function'||!window.jspdf?.jsPDF)return alert('PDF bileşenleri yüklenemedi.');
         if(!kaynak)return alert('PDF için içerik bulunamadı.');
         const yon=sec.yon||'landscape',format=sec.format||'a4',genislik=sec.genislik||((format==='a3'&&yon==='landscape')?'400mm':(yon==='landscape'?'277mm':'190mm')),modal=fdCiktiOnizlemeAc('pdf',dosyaAdi),icerik=modal.querySelector('[data-cikti-icerik]');
         icerik.innerHTML='';icerik.style.cssText+=';padding:16px;overflow:auto;background:#cbd5e1';
         const sahne=document.createElement('div');sahne.className='fd-v149-pdf-stage';sahne.style.width=genislik;
         const kopya=sec.kopyalama===false?kaynak:pdfKaynaginiTemizle(kaynak.cloneNode(true));
         if(sec.baslik){const ust=document.createElement('div');ust.innerHTML='<h2 style="margin:0 0 4px;font-size:18px">'+esc(sec.baslik)+'</h2><p style="margin:0 0 11px;color:#64748b;font-size:10px">Rapor Tarihi: '+new Date().toLocaleDateString('tr-TR')+'</p>';sahne.appendChild(ust)}
-        sahne.appendChild(kopya);icerik.appendChild(sahne);
+        sahne.appendChild(kopya);
+        const olcumAlani=document.createElement('div');olcumAlani.style.cssText='position:absolute;left:0;top:0;z-index:2147483000;width:'+genislik+';max-height:none;overflow:visible;background:#fff;pointer-events:none;';olcumAlani.appendChild(sahne);document.body.appendChild(olcumAlani);
         try{
             await document.fonts?.ready;await new Promise(requestAnimationFrame);await bekle(80);
-            const worker=html2pdf().set({margin:sec.margin||[12,10,15,10],filename:dosyaAdi,pagebreak:{mode:['css','legacy'],avoid:sec.avoid||['tr']},html2canvas:{scale:sec.scale||1.65,useCORS:true,backgroundColor:'#fff',scrollX:0,scrollY:0,windowWidth:Math.max(sahne.scrollWidth,1100),windowHeight:Math.max(sahne.scrollHeight,800)},jsPDF:{unit:'mm',format,orientation:yon,compress:true}}).from(sahne).toPdf();
-            const pdf=await worker.get('pdf');pdfSayfaNumarala(pdf,sec.altBaslik||'FD YAZILIM');const blob=await worker.outputPdf('blob');fdCiktiPdfOnizle(blob,dosyaAdi,modal);return blob;
+            if(!String(sahne.innerText||'').trim()&&!sahne.querySelector('img,canvas,svg,table'))throw new Error('PDF içeriği boş; çıktı oluşturulmadı.');
+            const canvas=await html2canvas(sahne,{scale:sec.scale||1.65,useCORS:true,backgroundColor:'#fff',logging:false,scrollX:0,scrollY:0,width:sahne.scrollWidth,height:sahne.scrollHeight,windowWidth:Math.max(sahne.scrollWidth,1100),windowHeight:Math.max(sahne.scrollHeight,800)});
+            if(pdfKanvasBosMu(canvas))throw new Error('PDF görüntüsü boş oluştu; çıktı kaydedilmedi.');
+            const pdf=new window.jspdf.jsPDF({unit:'mm',format,orientation:yon,compress:true}),pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=10,ust=10,alt=15,kullanilabilirW=pw-kenarX*2,kullanilabilirH=ph-ust-alt,kaynakParcaYuksekligi=Math.max(1,Math.floor(canvas.width*kullanilabilirH/kullanilabilirW));
+            let baslangicY=0,sayfaNo=0;
+            while(baslangicY<canvas.height){
+                const parcaYuksekligi=Math.min(kaynakParcaYuksekligi,canvas.height-baslangicY),parca=document.createElement('canvas');parca.width=canvas.width;parca.height=parcaYuksekligi;parca.getContext('2d').drawImage(canvas,0,baslangicY,canvas.width,parcaYuksekligi,0,0,canvas.width,parcaYuksekligi);if(sayfaNo++)pdf.addPage(format,yon);const h=kullanilabilirW*parcaYuksekligi/canvas.width;pdf.addImage(parca.toDataURL('image/jpeg',.91),'JPEG',kenarX,ust,kullanilabilirW,h,undefined,'FAST');baslangicY+=parcaYuksekligi;await bekle(0);
+            }
+            if(pdf.internal.getNumberOfPages()<1)throw new Error('PDF sayfası oluşturulamadı.');pdfSayfaNumarala(pdf,sec.altBaslik||'FD YAZILIM');const blob=pdf.output('blob');if(!blob||blob.size<1000)throw new Error('PDF dosyası boş oluştu.');fdCiktiPdfOnizle(blob,dosyaAdi,modal);return blob;
         }catch(e){modal.remove();console.error(e);alert('PDF hazırlanamadı: '+(e.message||e));}
+        finally{if(modal.isConnected)icerik.appendChild(sahne);olcumAlani.remove();}
     }
     window.fdPdfOnizlemeUret=pdfOnizlemeUret;
 
     function tabloHucreMetni(hucre){
         if(!hucre)return '';
-        const alan=hucre.querySelector?.('input:not([type="checkbox"]),select,textarea');
-        const metin=alan?(alan.tagName==='SELECT'?alan.selectedOptions?.[0]?.textContent:alan.value):hucre.innerText;
+        const alanlar=[...(hucre.querySelectorAll?.('input,select,textarea')||[])];
+        const alanMetinleri=alanlar.map(alan=>{
+            if(alan.tagName==='SELECT')return[...(alan.selectedOptions||[])].map(x=>x.textContent?.trim()).filter(Boolean).join(', ');
+            if(alan.type==='checkbox'||alan.type==='radio')return alan.checked?'Evet':'Hayır';
+            return alan.value||alan.getAttribute('value')||'';
+        }).filter(Boolean);
+        const metin=alanMetinleri.length?alanMetinleri.join(' · '):hucre.innerText;
         return String(metin||'').replace(/\s+/g,' ').trim();
+    }
+    function tabloSatirlariniMatriseCevir(satirlar,baslikMi=false){
+        const matris=[];
+        [...satirlar].forEach((tr,satirNo)=>{
+            matris[satirNo]||=[];let sutunNo=0;
+            [...tr.cells].forEach(hucre=>{
+                while(matris[satirNo][sutunNo]!==undefined)sutunNo++;
+                const metin=tabloHucreMetni(hucre),colspan=Math.max(1,Number(hucre.colSpan||1)),rowspan=Math.max(1,Number(hucre.rowSpan||1));
+                for(let dr=0;dr<rowspan;dr++){
+                    matris[satirNo+dr]||=[];
+                    for(let dc=0;dc<colspan;dc++)matris[satirNo+dr][sutunNo+dc]=(baslikMi||dr>0||dc===0)?metin:'';
+                }
+                sutunNo+=colspan;
+            });
+        });
+        return matris;
     }
     function tabloCiktiVerisi(kaynak){
         const tablo=kaynak?.matches?.('table')?kaynak:kaynak?.querySelector?.('table');if(!tablo)return null;
-        const baslikHucreleri=[...(tablo.querySelector('thead tr:last-child')?.cells||[])],kullanilan=baslikHucreleri.map((th,i)=>({i,ad:tabloHucreMetni(th)})).filter(x=>x.ad.toLocaleLowerCase('tr-TR')!=='işlem');
-        const satirlar=[...(tablo.tBodies?.[0]?.rows||[])].filter(tr=>!tr.querySelector('td[colspan]')).map(tr=>kullanilan.map(x=>tabloHucreMetni(tr.cells[x.i])));
-        const toplamlar=[];[...(tablo.tFoot?.rows||[])].forEach(tr=>{const acilmis=[];[...tr.cells].forEach(td=>{acilmis.push(tabloHucreMetni(td));for(let i=1;i<Number(td.colSpan||1);i++)acilmis.push('')});toplamlar.push(kullanilan.map(x=>acilmis[x.i]||''));});
+        const tumGovdeSatirlari=[...tablo.tBodies].flatMap(t=>[...t.rows]),baslikMatrisi=tabloSatirlariniMatriseCevir(tablo.tHead?.rows||[],true),kolonAdedi=Math.max(0,...baslikMatrisi.map(r=>r.length),...tumGovdeSatirlari.map(r=>[...r.cells].reduce((n,c)=>n+Math.max(1,Number(c.colSpan||1)),0)));
+        const kullanilan=Array.from({length:kolonAdedi},(_,i)=>{
+            const parcalar=baslikMatrisi.map(r=>String(r[i]||'').trim()).filter((v,n,a)=>v&&a.indexOf(v)===n),ad=parcalar.join(' / ')||('Sütun '+(i+1));return{i,ad};
+        }).filter(x=>!/^işlem(?:ler)?(?:\s*\/.*)?$/i.test(x.ad.toLocaleLowerCase('tr-TR')));
+        const govdeMatrisi=tabloSatirlariniMatriseCevir(tumGovdeSatirlari),satirlar=govdeMatrisi.filter((r,index)=>{
+            const tr=tumGovdeSatirlari[index],tekGenisHucre=tr?.cells?.length===1&&Number(tr.cells[0].colSpan||1)>=kolonAdedi;return !tekGenisHucre&&r.some(v=>String(v||'').trim());
+        }).map(r=>kullanilan.map(x=>String(r[x.i]??'')));
+        const toplamlar=tabloSatirlariniMatriseCevir(tablo.tFoot?.rows||[]).map(r=>kullanilan.map(x=>String(r[x.i]??'')));
         return{tablo,kolonlar:kullanilan.map(x=>x.ad),satirlar,toplamlar};
+    }
+    function pdfKanvasBosMu(canvas){
+        if(!canvas||canvas.width<2||canvas.height<2)return true;
+        try{
+            const ctx=canvas.getContext('2d'),adim=Math.max(1,Math.floor(Math.sqrt((canvas.width*canvas.height)/25000))),veri=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+            for(let y=0;y<canvas.height;y+=adim)for(let x=0;x<canvas.width;x+=adim){const i=(y*canvas.width+x)*4;if(veri[i+3]>10&&(veri[i]<245||veri[i+1]<245||veri[i+2]<245))return false;}
+            return true;
+        }catch(_){return false;}
     }
     async function tabloPdfOnizle(kaynak,baslik,dosyaAdi,sec={}){
         const veri=tabloCiktiVerisi(kaynak);if(!veri)return alert('PDF için tablo bulunamadı.');if(!veri.satirlar.length)return alert('PDF için gösterilecek kayıt bulunmuyor.');
@@ -20103,14 +20115,15 @@ tapuCksArayuzunuKur();
         for(let i=0;i<veri.satirlar.length;i+=satirSayisi)parcalar.push(veri.satirlar.slice(i,i+satirSayisi));
         const modal=fdCiktiOnizlemeAc('pdf',dosyaAdi),icerik=modal.querySelector('[data-cikti-icerik]');icerik.innerHTML='';icerik.style.cssText+=';padding:16px;overflow:auto;background:#cbd5e1';
         const sahne=document.createElement('div');sahne.style.cssText='display:grid;gap:16px;justify-content:center;width:max-content;min-width:100%;';
-        const hucre='padding:'+pad+';border:1px solid #cbd5e1;white-space:normal;vertical-align:middle;text-align:right;overflow-wrap:anywhere;',ilk='text-align:left;width:'+ilkGenislik+';';
-        parcalar.forEach((satirlar,sayfaNo)=>{const son=sayfaNo===parcalar.length-1,sayfa=document.createElement('section');sayfa.className='fd-v149-table-pdf-page';sayfa.style.cssText='width:'+genislik+';box-sizing:border-box;padding:7mm;background:#fff;color:#0f172a;font-family:Arial,sans-serif;';sayfa.innerHTML='<h2 style="margin:0 0 3px;font-size:18px">'+esc(tamBaslik)+'</h2><p style="margin:0 0 9px;color:#64748b;font-size:10px">Rapor Tarihi: '+new Date().toLocaleDateString('tr-TR')+' · '+(sayfaNo+1)+' / '+parcalar.length+'</p><table style="width:100%;border-collapse:collapse;font-size:'+font+';table-layout:'+(buyuk?'fixed':'auto')+'"><thead><tr>'+veri.kolonlar.map((v,i)=>'<th style="'+hucre+'background:#0f766e;color:#fff;font-weight:800;'+(i===0?ilk:'')+'">'+esc(v)+'</th>').join('')+'</tr></thead><tbody>'+satirlar.map(s=>'<tr>'+s.map((v,i)=>'<td style="'+hucre+'font-weight:400;'+(i===0?ilk:'')+'">'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody>'+(son&&veri.toplamlar.length?'<tfoot>'+veri.toplamlar.map(s=>'<tr>'+s.map((v,i)=>'<th style="'+hucre+'background:#d1fae5;color:#14532d;font-weight:800;'+(i===0?ilk:'')+'">'+esc(v)+'</th>').join('')+'</tr>').join('')+'</tfoot>':'')+'</table>';sahne.appendChild(sayfa)});
+        const hucre='position:static!important;left:auto!important;right:auto!important;top:auto!important;transform:none!important;padding:'+pad+';border:1px solid #cbd5e1;white-space:normal;vertical-align:middle;text-align:right;overflow-wrap:anywhere;',ilk='text-align:left;width:'+ilkGenislik+';';
+        parcalar.forEach((satirlar,sayfaNo)=>{const son=sayfaNo===parcalar.length-1,sayfa=document.createElement('section');sayfa.className='fd-v149-table-pdf-page';sayfa.style.cssText='position:relative;overflow:hidden;width:'+genislik+';box-sizing:border-box;padding:7mm;background:#fff;color:#0f172a;font-family:Arial,sans-serif;';sayfa.innerHTML='<h2 style="display:block!important;position:static!important;margin:0 0 3px;font-size:18px">'+esc(tamBaslik)+'</h2><p style="display:block!important;position:static!important;margin:0 0 9px;color:#64748b;font-size:10px">Rapor Tarihi: '+new Date().toLocaleDateString('tr-TR')+' · '+(sayfaNo+1)+' / '+parcalar.length+'</p><table style="position:static!important;width:100%;border-collapse:collapse;font-size:'+font+';table-layout:'+(buyuk?'fixed':'auto')+'"><thead><tr>'+veri.kolonlar.map((v,i)=>'<th style="'+hucre+'background:#0f766e;color:#fff;font-weight:800;'+(i===0?ilk:'')+'">'+esc(v)+'</th>').join('')+'</tr></thead><tbody>'+satirlar.map(s=>'<tr>'+s.map((v,i)=>'<td style="'+hucre+'font-weight:400;'+(i===0?ilk:'')+'">'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody>'+(son&&veri.toplamlar.length?'<tfoot>'+veri.toplamlar.map(s=>'<tr>'+s.map((v,i)=>'<th style="'+hucre+'background:#d1fae5;color:#14532d;font-weight:800;'+(i===0?ilk:'')+'">'+esc(v)+'</th>').join('')+'</tr>').join('')+'</tfoot>':'')+'</table>';sahne.appendChild(sayfa)});
         icerik.appendChild(sahne);
         try{
             await document.fonts?.ready;await new Promise(requestAnimationFrame);await bekle(80);let pdf=null;const sayfalar=[...sahne.children];
             for(let i=0;i<sayfalar.length;i++){
                 modal.querySelector('[data-cikti-ad]').textContent=dosyaAdi+' · '+(i+1)+' / '+sayfalar.length+' hazırlanıyor';
-                const sayfa=sayfalar[i],canvas=await html2canvas(sayfa,{scale:sec.scale||1.45,useCORS:true,backgroundColor:'#fff',logging:false,scrollX:0,scrollY:0,width:sayfa.scrollWidth,height:sayfa.scrollHeight,windowWidth:Math.max(sayfa.scrollWidth,1100),windowHeight:Math.max(sayfa.scrollHeight,800)});
+                icerik.scrollLeft=0;const sayfa=sayfalar[i],canvas=await html2canvas(sayfa,{scale:sec.scale||1.45,useCORS:true,backgroundColor:'#fff',logging:false,scrollX:0,scrollY:0,width:sayfa.scrollWidth,height:sayfa.scrollHeight,windowWidth:Math.max(sayfa.scrollWidth,1100),windowHeight:Math.max(sayfa.scrollHeight,800)});
+                if(pdfKanvasBosMu(canvas))throw new Error((i+1)+'. PDF sayfası boş oluştu; çıktı kaydedilmedi.');
                 if(!pdf)pdf=new window.jspdf.jsPDF({orientation:yon,unit:'mm',format,compress:true});else pdf.addPage(format,yon);
                 const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=7,ust=7,alt=14,oran=Math.min((pw-kenarX*2)/canvas.width,(ph-ust-alt)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;
                 pdf.addImage(canvas.toDataURL('image/jpeg',.91),'JPEG',(pw-w)/2,ust,w,h,undefined,'FAST');await bekle(0);
