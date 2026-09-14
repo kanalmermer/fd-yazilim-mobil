@@ -1,4 +1,4 @@
-const SURUM='fd-yazilim-mobil-v59';
+const SURUM='fd-yazilim-mobil-v60';
 const KABUK=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(SURUM).then(cache=>cache.addAll(KABUK)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==SURUM).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
@@ -9,10 +9,13 @@ self.addEventListener('fetch',event=>{
 self.addEventListener('push',event=>{
   let veri={title:'FD YAZILIM',body:'Yeni bir bildiriminiz var.',icon:'./icon-192.png',badge:'./icon-192.png',url:'./'};
   try{if(event.data)veri={...veri,...event.data.json()}}catch(_){if(event.data)veri.body=event.data.text()}
-  event.waitUntil(self.registration.showNotification(veri.title||'FD YAZILIM',{
-    body:veri.body||'',icon:veri.icon||'./icon-192.png',badge:veri.badge||'./icon-192.png',
-    data:{url:veri.url||'./',notificationId:veri.notificationId||'',title:veri.title||'FD YAZILIM',body:veri.body||''},tag:'fd-yazilim-duyuru-'+(veri.notificationId||Date.now()),renotify:true
-  }));
+  event.waitUntil(Promise.all([
+    self.registration.showNotification(veri.title||'FD YAZILIM',{
+      body:veri.body||'',icon:veri.icon||'./icon-192.png',badge:veri.badge||'./icon-192.png',
+      data:{url:veri.url||'./',notificationId:veri.notificationId||'',title:veri.title||'FD YAZILIM',body:veri.body||''},tag:'fd-yazilim-duyuru-'+(veri.notificationId||Date.now()),renotify:true
+    }),
+    clients.matchAll({type:'window',includeUncontrolled:true}).then(pencereler=>pencereler.forEach(pencere=>pencere.postMessage({type:'FD_PUSH_NOTIFICATION_RECEIVED',notificationId:veri.notificationId||'',title:veri.title||'Bildirim',body:veri.body||''})))
+  ]));
 });
 self.addEventListener('notificationclick',event=>{
   event.notification.close();

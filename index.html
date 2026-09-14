@@ -1514,12 +1514,13 @@
     </div>
 </div>
 
-<div id="modalGelenBildirim" class="modal-overlay" style="z-index:10100;">
+<div id="modalGelenBildirim" class="modal-overlay" style="z-index:210000;background:rgba(15,23,42,.82);backdrop-filter:blur(5px);">
     <div class="modal-card" style="max-width:520px;">
-        <div class="modal-header"><div><h3>🔔 Yeni Bildirim</h3><small>FD Yazılım</small></div><button type="button" class="modal-close" onclick="modalKapat('modalGelenBildirim')">✕</button></div>
+        <div class="modal-header"><div><h3>🔔 Okunmamış Bildirim</h3><small>Devam etmek için bildirimi okuyup onaylayın.</small></div></div>
         <div class="modal-body">
-            <div class="push-message-card"><h4 id="fdGelenBildirimBaslik">FD YAZILIM</h4><p id="fdGelenBildirimMesaj"></p></div>
-            <button type="button" class="btn-submit" onclick="modalKapat('modalGelenBildirim')">Okudum · Kapat</button>
+            <div class="push-message-card"><h4 id="fdGelenBildirimBaslik">Bildirim</h4><p id="fdGelenBildirimMesaj"></p></div>
+            <div id="fdGelenBildirimDurum" style="display:none;margin:10px 0;color:#b91c1c;font-weight:750;"></div>
+            <button id="fdGelenBildirimOnayBtn" type="button" class="btn-submit" onclick="fdGelenBildirimiOnayla()">Okudum, Devam Et</button>
         </div>
     </div>
 </div>
@@ -20497,6 +20498,8 @@ document.addEventListener('click',function(e){
 (function(){
     const FONKSIYON='push-notification';
     const BEKLEYEN_BILDIRIM_ANAHTARI='fd_pending_push_notification';
+    const bildirimKuyrugu=[];
+    let aktifBildirim=null,okunmamisKontrolEdiliyor=false,sonOkunmamisKontrolu=0;
     function destekleniyor(){return 'Notification' in window&&'serviceWorker' in navigator&&'PushManager' in window}
     function mobilUygulamaOrtami(){return location.hostname==='kanalmermer.github.io'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
     function hataMesaji(error,varsayilan='İşlem tamamlanamadı.'){
@@ -20516,23 +20519,58 @@ document.addEventListener('click',function(e){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
         for(let i=0;i<ham.length;i++)sonuc[i]=ham.charCodeAt(i);return sonuc;
     }
-    function bildirimiBeklet(baslik,mesaj,notificationId){try{sessionStorage.setItem(BEKLEYEN_BILDIRIM_ANAHTARI,JSON.stringify({baslik:String(baslik||'FD YAZILIM'),mesaj:String(mesaj||'Yeni bir bildiriminiz var.'),notificationId:String(notificationId||'')}))}catch(_){}}
+    function bildirimiBeklet(baslik,mesaj,notificationId){try{sessionStorage.setItem(BEKLEYEN_BILDIRIM_ANAHTARI,JSON.stringify({baslik:String(baslik||'Bildirim'),mesaj:String(mesaj||'Yeni bir bildiriminiz var.'),notificationId:String(notificationId||'')}))}catch(_){}}
+    function bildirimKuyrugunaEkle(bildirim){
+        const item={baslik:String(bildirim?.baslik||bildirim?.title||'Bildirim'),mesaj:String(bildirim?.mesaj||bildirim?.message||'Yeni bir bildiriminiz var.'),notificationId:String(bildirim?.notificationId||bildirim?.id||'')};
+        if(!item.mesaj)return;
+        if(item.notificationId&&((aktifBildirim&&aktifBildirim.notificationId===item.notificationId)||bildirimKuyrugu.some(row=>row.notificationId===item.notificationId)))return;
+        bildirimKuyrugu.push(item);siradakiBildirimiGoster();
+    }
+    function siradakiBildirimiGoster(){
+        if(!activeUser||aktifBildirim||!bildirimKuyrugu.length)return;
+        const modal=document.getElementById('modalGelenBildirim');if(!modal)return;
+        aktifBildirim=bildirimKuyrugu.shift();
+        document.getElementById('fdGelenBildirimBaslik').textContent=aktifBildirim.baslik;
+        document.getElementById('fdGelenBildirimMesaj').textContent=aktifBildirim.mesaj;
+        const durum=document.getElementById('fdGelenBildirimDurum'),dugme=document.getElementById('fdGelenBildirimOnayBtn');
+        if(durum){durum.style.display='none';durum.textContent=''}if(dugme){dugme.disabled=false;dugme.textContent='Okudum, Devam Et'}
+        modal.style.display='flex';
+    }
     window.fdGelenBildirimiGoster=function(baslik,mesaj,notificationId){
         if(!activeUser){bildirimiBeklet(baslik,mesaj,notificationId);return}
-        const modal=document.getElementById('modalGelenBildirim');if(!modal)return;
-        document.getElementById('fdGelenBildirimBaslik').textContent=String(baslik||'FD YAZILIM');
-        document.getElementById('fdGelenBildirimMesaj').textContent=String(mesaj||'Yeni bir bildiriminiz var.');modal.style.display='flex';try{sessionStorage.removeItem(BEKLEYEN_BILDIRIM_ANAHTARI)}catch(_){}
-        if(notificationId)cagir({action:'mark-read',notificationId:String(notificationId)}).catch(error=>console.warn('Bildirim okundu bilgisi kaydedilemedi:',error));
+        bildirimKuyrugunaEkle({baslik,mesaj,notificationId});try{sessionStorage.removeItem(BEKLEYEN_BILDIRIM_ANAHTARI)}catch(_){}
     };
+    window.fdGelenBildirimiOnayla=async function(){
+        if(!aktifBildirim)return;
+        const dugme=document.getElementById('fdGelenBildirimOnayBtn'),durum=document.getElementById('fdGelenBildirimDurum');
+        if(dugme){dugme.disabled=true;dugme.textContent='Onay kaydediliyor...'}if(durum)durum.style.display='none';
+        try{
+            if(aktifBildirim.notificationId)await cagir({action:'mark-read',notificationId:aktifBildirim.notificationId});
+            aktifBildirim=null;document.getElementById('modalGelenBildirim').style.display='none';siradakiBildirimiGoster();
+        }catch(error){
+            if(durum){durum.textContent=hataMesaji(error,'Okundu onayı kaydedilemedi. İnternet bağlantısını kontrol edip tekrar deneyin.');durum.style.display='block'}
+            if(dugme){dugme.disabled=false;dugme.textContent='Tekrar Dene'}
+        }
+    };
+    async function okunmamisBildirimleriYukle(zorla=false){
+        if(!activeUser||okunmamisKontrolEdiliyor)return;
+        const simdi=Date.now();if(!zorla&&simdi-sonOkunmamisKontrolu<10000)return;
+        okunmamisKontrolEdiliyor=true;sonOkunmamisKontrolu=simdi;
+        try{const sonuc=await cagir({action:'unread',limit:50});(Array.isArray(sonuc.notifications)?sonuc.notifications:[]).forEach(bildirimKuyrugunaEkle)}
+        catch(error){console.warn('Okunmamış bildirimler alınamadı:',error)}finally{okunmamisKontrolEdiliyor=false}
+    }
     window.fdBekleyenBildirimiGoster=function(){
         if(!activeUser)return;let bildirim=null;try{bildirim=JSON.parse(sessionStorage.getItem(BEKLEYEN_BILDIRIM_ANAHTARI)||'null')}catch(_){}
         if(bildirim?.mesaj)fdGelenBildirimiGoster(bildirim.baslik,bildirim.mesaj,bildirim.notificationId);
+        okunmamisBildirimleriYukle(true);
     };
     function urlBildirimiKontrolEt(){
         const params=new URLSearchParams(location.search),mesaj=params.get('fdPushMessage');if(!mesaj)return;
         const baslik=params.get('fdPushTitle')||'FD YAZILIM',notificationId=params.get('fdPushId')||'';bildirimiBeklet(baslik,mesaj,notificationId);params.delete('fdPushTitle');params.delete('fdPushMessage');params.delete('fdPushId');const yeni=location.pathname+(params.toString()?'?'+params.toString():'')+location.hash;history.replaceState(null,'',yeni);fdBekleyenBildirimiGoster();
     }
-    if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(event.data?.type==='FD_PUSH_NOTIFICATION_OPEN')fdGelenBildirimiGoster(event.data.title,event.data.body,event.data.notificationId)});
+    if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',event=>{if(['FD_PUSH_NOTIFICATION_OPEN','FD_PUSH_NOTIFICATION_RECEIVED'].includes(event.data?.type))fdGelenBildirimiGoster(event.data.title,event.data.body,event.data.notificationId)});
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')okunmamisBildirimleriYukle()});
+    window.addEventListener('focus',()=>okunmamisBildirimleriYukle());
     async function aboneligiKaydet(registration,config){
         let subscription=await registration.pushManager.getSubscription();
         if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlDizisi(config.publicKey)});
