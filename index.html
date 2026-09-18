@@ -3916,6 +3916,12 @@
         }));
     }
     const fdUzakVeriImzalari = new Map();
+    const fdUzakAnahtarYuklemeSozleri = new Map();
+    const fdUzakAnahtarSonYukleme = new Map();
+    const fdSirketYuklemeSozleri = new Map();
+    const fdSirketSonYukleme = new Map();
+    const FD_AYNI_VERI_YUKLEME_KORUMASI = 30 * 1000;
+    const FD_SIRKET_AYARI_ONBELLEK_SURESI = 5 * 60 * 1000;
     const FD_OTOMATIK_KONTROL_ARALIGI = 2 * 60 * 1000;
     const FD_ODAK_KONTROL_ARALIGI = 60 * 1000;
     function fdUzakImzaAnahtari(anahtar, yil) {
@@ -3984,14 +3990,35 @@
         if (!activeUser?.sirketId) return;
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
-        if (secenekler.sirketYukle !== false) await supabaseSirketiYukle();
+        const sirketOnbellekAnahtari = String(activeUser.sirketId);
+        const sirketYuklemeZamani = Number(fdSirketSonYukleme.get(sirketOnbellekAnahtari) || 0);
+        if (secenekler.sirketYukle !== false && (secenekler.onbellekKullan === false || Date.now() - sirketYuklemeZamani >= FD_SIRKET_AYARI_ONBELLEK_SURESI)) {
+            let sirketYuklemeSozu = fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari);
+            if (!sirketYuklemeSozu) {
+                sirketYuklemeSozu = supabaseSirketiYukle().then(() => fdSirketSonYukleme.set(sirketOnbellekAnahtari, Date.now()));
+                fdSirketYuklemeSozleri.set(sirketOnbellekAnahtari, sirketYuklemeSozu);
+            }
+            try { await sirketYuklemeSozu; }
+            finally { if (fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari) === sirketYuklemeSozu) fdSirketYuklemeSozleri.delete(sirketOnbellekAnahtari); }
+        }
         const anahtarlar = SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat();
         const benzersiz = [...new Set(anahtarlar)];
         await Promise.all(benzersiz.map(async anahtar => {
-            const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
-            const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
-            supabaseDiziAta(anahtar, kayitlar);
-            fdUzakImzayiSatirlardanKaydet(anahtar, yil, data);
+            const yuklemeAnahtari = fdUzakImzaAnahtari(anahtar, yil);
+            const devamEden = fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari);
+            if (devamEden) return devamEden;
+            const sonYukleme = Number(fdUzakAnahtarSonYukleme.get(yuklemeAnahtari) || 0);
+            if (secenekler.onbellekKullan !== false && yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI) return;
+            const yuklemeSozu = (async () => {
+                const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
+                const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
+                supabaseDiziAta(anahtar, kayitlar);
+                fdUzakImzayiSatirlardanKaydet(anahtar, yil, data);
+                fdUzakAnahtarSonYukleme.set(yuklemeAnahtari, Date.now());
+            })();
+            fdUzakAnahtarYuklemeSozleri.set(yuklemeAnahtari, yuklemeSozu);
+            try { await yuklemeSozu; }
+            finally { if (fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari) === yuklemeSozu) fdUzakAnahtarYuklemeSozleri.delete(yuklemeAnahtari); }
         }));
         veriOnbelleginiKaydet();
     }
@@ -4246,7 +4273,7 @@
             const yil=Number(kayitYiliniSeciliEkrandanBul(bilgi.modul)||new Date().getFullYear());
             if(!anahtarlar.length||!(await fdUzakModuldeDegisiklikVarMi(anahtarlar,yil)))return;
             const once=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
-            await supabaseVerileriniYukle(bilgi.modul,yil,{sirketYukle:false});
+            await supabaseVerileriniYukle(bilgi.modul,yil,{sirketYukle:false,onbellekKullan:false});
             const sonra=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
             if(once!==sonra){fdOtomatikEsitlemeEkraniniCiz(bilgi.id);showToast('Yeni kay\u0131tlar otomatik g\u00fcncellendi.','success');}
         }catch(error){console.warn('Otomatik veri e\u015fitleme:',error);}
