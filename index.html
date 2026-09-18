@@ -3764,7 +3764,7 @@
     }
 
     const SUPABASE_MODULLERI = {
-        giris: [], girizhizli: [],
+        giris: [], girizhizli: [], baslangic: ['personeller', 'izinler', 'subeler'],
         personel: ['personeller', 'izinler', 'puantaj', 'avanslar', 'icralar', 'ekOdemeler', 'kkd', 'vardiya', 'subeler'],
         izin: ['personeller', 'izinler', 'subeler'],
         puantaj: ['personeller', 'izinler', 'puantaj', 'avanslar', 'icralar', 'vardiya', 'subeler'],
@@ -3915,6 +3915,45 @@
             sirketId: activeUser.sirketId
         }));
     }
+    const fdUzakVeriImzalari = new Map();
+    const FD_OTOMATIK_KONTROL_ARALIGI = 2 * 60 * 1000;
+    const FD_ODAK_KONTROL_ARALIGI = 60 * 1000;
+    function fdUzakImzaAnahtari(anahtar, yil) {
+        const yilEki = (anahtar === 'puantaj' || anahtar === 'ekOdemeler') ? String(yil || '') : 'tum';
+        return `${String(activeUser?.sirketId || '')}|${anahtar}|${yilEki}`;
+    }
+    function fdUzakImzayiSatirlardanKaydet(anahtar, yil, satirlar) {
+        if (!Array.isArray(satirlar) || (satirlar.length && !satirlar.every(satir => satir?.updated_at))) return;
+        const sonGuncelleme = satirlar.reduce((son, satir) => String(satir?.updated_at || '') > son ? String(satir.updated_at) : son, '');
+        fdUzakVeriImzalari.set(fdUzakImzaAnahtari(anahtar, yil), `${satirlar.length}:${sonGuncelleme}`);
+    }
+    async function fdUzakAnahtarImzasiniGetir(anahtar, yil) {
+        let sorgu = supabaseClient.from('portal_records')
+            .select('updated_at', { count:'exact' })
+            .eq('company_id', activeUser.sirketId)
+            .eq('module', anahtar)
+            .order('updated_at', { ascending:false })
+            .limit(1);
+        if (anahtar === 'puantaj' || anahtar === 'ekOdemeler') sorgu = sorgu.eq('record_year', Number(yil));
+        const { data, error, count } = await sorgu;
+        if (error) throw error;
+        return `${Number(count || 0)}:${String(data?.[0]?.updated_at || '')}`;
+    }
+    async function fdUzakModuldeDegisiklikVarMi(anahtarlar, yil) {
+        const sonuclar = await Promise.all(anahtarlar.map(async anahtar => ({
+            anahtar,
+            imza:await fdUzakAnahtarImzasiniGetir(anahtar, yil)
+        })));
+        let degisti = false;
+        sonuclar.forEach(({ anahtar, imza }) => {
+            const imzaAnahtari = fdUzakImzaAnahtari(anahtar, yil);
+            const onceki = fdUzakVeriImzalari.get(imzaAnahtari);
+            if (onceki !== undefined && onceki !== imza) degisti = true;
+            fdUzakVeriImzalari.set(imzaAnahtari, imza);
+        });
+        return degisti;
+    }
+
     async function supabasePortalModulKayitlariniTumunuGetir(anahtar, yil) {
         const tumKayitlar = [];
         const paketBoyutu = 1000;
@@ -3926,7 +3965,7 @@
                     .range(baslangic, baslangic + paketBoyutu - 1);
             } else {
                 sorgu = supabaseClient.from('portal_records')
-                    .select('id,legacy_id,data,record_year')
+                    .select('id,legacy_id,data,record_year,updated_at')
                     .eq('company_id', activeUser.sirketId)
                     .eq('module', anahtar)
                     .order('id', { ascending:true })
@@ -3941,17 +3980,18 @@
         }
         return tumKayitlar;
     }
-    async function supabaseVerileriniYukle(modul = 'giris', kayitYili = '') {
+    async function supabaseVerileriniYukle(modul = 'giris', kayitYili = '', secenekler = {}) {
         if (!activeUser?.sirketId) return;
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
-        await supabaseSirketiYukle();
+        if (secenekler.sirketYukle !== false) await supabaseSirketiYukle();
         const anahtarlar = SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat();
         const benzersiz = [...new Set(anahtarlar)];
         await Promise.all(benzersiz.map(async anahtar => {
             const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
             const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
             supabaseDiziAta(anahtar, kayitlar);
+            fdUzakImzayiSatirlardanKaydet(anahtar, yil, data);
         }));
         veriOnbelleginiKaydet();
     }
@@ -4195,14 +4235,18 @@
             else if(id==='sirketApp')renderSirketYonetimi();
         }catch(error){console.warn('Otomatik ekran yenileme:',error);}
     }
-    async function fdUzakKayitlariOtomatikEsitle(zorla=false){
+    async function fdUzakKayitlariOtomatikEsitle(oncelikli=false){
         if(fdOtomatikEsitlemeCalisiyor||fdOtomatikEsitlemeEngelliMi())return;
-        const simdi=Date.now();if(!zorla&&simdi-fdOtomatikEsitlemeSon<25000)return;
+        const simdi=Date.now(),bekleme=oncelikli?FD_ODAK_KONTROL_ARALIGI:FD_OTOMATIK_KONTROL_ARALIGI;
+        if(simdi-fdOtomatikEsitlemeSon<bekleme)return;
         const bilgi=fdOtomatikEsitlemeBilgisi();if(!bilgi.modul)return;
         fdOtomatikEsitlemeCalisiyor=true;fdOtomatikEsitlemeSon=simdi;
         try{
-            const anahtarlar=SUPABASE_MODULLERI[bilgi.modul]||[],once=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
-            await supabaseVerileriniYukle(bilgi.modul);
+            const anahtarlar=[...new Set(SUPABASE_MODULLERI[bilgi.modul]||[])];
+            const yil=Number(kayitYiliniSeciliEkrandanBul(bilgi.modul)||new Date().getFullYear());
+            if(!anahtarlar.length||!(await fdUzakModuldeDegisiklikVarMi(anahtarlar,yil)))return;
+            const once=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
+            await supabaseVerileriniYukle(bilgi.modul,yil,{sirketYukle:false});
             const sonra=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
             if(once!==sonra){fdOtomatikEsitlemeEkraniniCiz(bilgi.id);showToast('Yeni kay\u0131tlar otomatik g\u00fcncellendi.','success');}
         }catch(error){console.warn('Otomatik veri e\u015fitleme:',error);}
@@ -4210,7 +4254,7 @@
     }
     window.addEventListener('focus',()=>setTimeout(()=>fdUzakKayitlariOtomatikEsitle(true),350));
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(()=>fdUzakKayitlariOtomatikEsitle(true),350);});
-    setInterval(()=>fdUzakKayitlariOtomatikEsitle(false),30000);
+    setInterval(()=>fdUzakKayitlariOtomatikEsitle(false),FD_OTOMATIK_KONTROL_ARALIGI);
 
     async function supabaseOturumuAc(kullanici, secilenSirketId = '') {
         const { data: profil, error } = await supabaseClient.from('profiles').select('*').eq('id', kullanici.id).maybeSingle();
@@ -4235,7 +4279,7 @@
         }
         sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
         await kullaniciOturumunuBaslat();
-        await supabaseVerileriniYukle('personel');
+        await supabaseVerileriniYukle('baslangic');
         await supabaseKullanicilariYukle();
         const acikModulKorunacak = typeof fdAktifUygulamaSekmesi !== 'undefined' && fdAktifUygulamaSekmesi !== 'home' && Boolean(fdGorunenUygulamaAlaniniBul());
         if (acikModulKorunacak) fdSekmeCubugunuGuncelle();
