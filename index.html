@@ -21760,7 +21760,23 @@ document.addEventListener('click',function(e){
     const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
     alert(ios?'Safari’de Paylaş düğmesine dokunun, ardından Ana Ekrana Ekle seçeneğini seçin.':'Chrome sağ üst menüsünden Uygulamayı yükle veya Ana ekrana ekle seçeneğini seçin.');
   });
-  if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(e){console.warn('Mobil kurulum hizmeti:',e)})});
+  if('serviceWorker' in navigator){
+    let surumYenileniyor=false;
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      if(surumYenileniyor)return;
+      surumYenileniyor=true;
+      const anahtar='fd-pwa-yenileme-v93';
+      if(sessionStorage.getItem(anahtar))return;
+      sessionStorage.setItem(anahtar,'1');
+      window.location.reload();
+    });
+    window.addEventListener('load',async function(){
+      try{
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=93',{updateViaCache:'none'});
+        await kayit.update();
+      }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
+    });
+  }
 })();
 </script>
 </body>
