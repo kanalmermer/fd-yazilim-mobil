@@ -5227,7 +5227,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!isPersonelUser())return;
         if(anaPersonelKarti)anaPersonelKarti.style.display='none';
         const kartlar=[
-            ['bilgiler','👤','Personel Bilgilerim','Kendi personel kartınızı görüntüleyin','openPersonelApp','linear-gradient(135deg,#0369a1,#0ea5e9)'],
+            ['giriscikis','↔️','Giriş–Çıkışım','Günlük giriş ve çıkışlarınızı görüntüleyin','openMagicpassApp','linear-gradient(135deg,#0369a1,#22d3ee)'],
             ['izin','🏖️','İzinlerim','İzin kayıtlarınızı görüntüleyin','openIzinTakipApp','linear-gradient(135deg,#047857,#10b981)'],
             ['puantaj','📅','Puantajım','Aylık puantajınızı görüntüleyin','openPuantajApp','linear-gradient(135deg,#b45309,#f59e0b)'],
             ['prim','💰','Primlerim','Prim listenizi görüntüleyin','openPrimApp','linear-gradient(135deg,#c2410c,#fb7185)'],
@@ -5235,7 +5235,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             ['icra','⚖️','İcra Takibim','İcra kayıtlarınızı görüntüleyin','openIcraApp','linear-gradient(135deg,#7c3aed,#a855f7)'],
             ['ekodeme','🧾','Ek Ödemelerim','Ek ödeme kayıtlarınızı görüntüleyin','openEkOdemeApp','linear-gradient(135deg,#4338ca,#6366f1)'],
             ['kkd','🦺','KKD Teslimlerim','Teslim edilen ekipmanları görüntüleyin','openKkdApp','linear-gradient(135deg,#be123c,#f43f5e)'],
-            ['giriscikis','↔️','Giriş–Çıkışım','Günlük giriş ve çıkışlarınızı görüntüleyin','openMagicpassApp','linear-gradient(135deg,#0369a1,#22d3ee)']
+            ['bilgiler','👤','Personel Bilgilerim','Kendi personel kartınızı görüntüleyin','openPersonelApp','linear-gradient(135deg,#0369a1,#0ea5e9)']
         ];
         kartlar.filter(([anahtar])=>anahtar!=='prim'||primMenusuAcik).forEach(([anahtar,ikon,ad,aciklama,fonksiyon,renk])=>{
             const kart=document.createElement('button');
@@ -5246,6 +5246,19 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             kart.innerHTML=`<span class="workspace-card-icon" style="background:${renk}" aria-hidden="true">${ikon}</span><span><strong>${ad}</strong><small>${aciklama}</small></span><b>Görüntüle →</b>`;
             baslatici.appendChild(kart);
         });
+        personelAnaMenuKartlariniSirala();
+    }
+
+    function personelAnaMenuKartlariniSirala(){
+        if(!isPersonelUser())return;
+        const baslatici=document.querySelector('#appHub .workspace-launcher');
+        if(!baslatici)return;
+        const sira=['talepler','giriscikis','izin','puantaj','prim','avans','icra','ekodeme','kkd','bilgiler'];
+        const kartlar=new Map();
+        const talepler=document.getElementById('fdxMyRequestsCard');
+        if(talepler){talepler.dataset.personelMenu='talepler';kartlar.set('talepler',talepler);}
+        baslatici.querySelectorAll('.personel-home-card[data-personel-menu]').forEach(kart=>kartlar.set(kart.dataset.personelMenu,kart));
+        sira.forEach(anahtar=>{const kart=kartlar.get(anahtar);if(kart)baslatici.appendChild(kart);});
     }
 
     function personelPrimMenusuAcikMi(){
@@ -21242,7 +21255,7 @@ document.addEventListener('click',function(e){
         if(document.getElementById('fdxWorkCenterModal'))return;
         const launcher=document.querySelector('#appHub .workspace-launcher');
         if(launcher&&!document.getElementById('fdxMyRequestsCard')){
-            const requestCard=document.createElement('button');requestCard.type='button';requestCard.id='fdxMyRequestsCard';requestCard.className='workspace-card fdx-personel-card';requestCard.style.display='none';requestCard.onclick=()=>fdxTaleplerimAc();requestCard.innerHTML='<span class="workspace-card-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)" aria-hidden="true">📝</span><span><strong>Taleplerim</strong><small>İzin, avans veya giriş–çıkış düzeltme talebi oluşturun</small></span><b style="color:#7c3aed">Talep oluştur →</b>';launcher.appendChild(requestCard);
+            const requestCard=document.createElement('button');requestCard.type='button';requestCard.id='fdxMyRequestsCard';requestCard.className='workspace-card fdx-personel-card';requestCard.dataset.personelMenu='talepler';requestCard.style.display='none';requestCard.onclick=()=>fdxTaleplerimAc();requestCard.innerHTML='<span class="workspace-card-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)" aria-hidden="true">📝</span><span><strong>Taleplerim</strong><small>İzin, avans veya giriş–çıkış düzeltme talebi oluşturun</small></span><b style="color:#7c3aed">Talep oluştur →</b>';launcher.appendChild(requestCard);
         }
         document.body.insertAdjacentHTML('beforeend',fdxModalHtml());
         const oncekiAy=new Date();oncekiAy.setDate(1);oncekiAy.setMonth(oncekiAy.getMonth()-1);const ayKey=oncekiAy.getFullYear()+'-'+String(oncekiAy.getMonth()+1).padStart(2,'0');
@@ -21254,7 +21267,7 @@ document.addEventListener('click',function(e){
     function fdxGorunumuGuncelle(){
         const managerCard=document.getElementById('fdxWorkCenterCard'),requestCard=document.getElementById('fdxMyRequestsCard'),launcher=document.querySelector('#appHub .workspace-launcher');
         if(managerCard){managerCard.style.display=fdxManager()?'grid':'none'}
-        if(requestCard){requestCard.style.display=fdxPersonel()?'grid':'none';if(fdxPersonel()&&launcher)launcher.appendChild(requestCard)}
+        if(requestCard){requestCard.style.display=fdxPersonel()?'grid':'none';if(fdxPersonel()&&launcher){if(typeof personelAnaMenuKartlariniSirala==='function')personelAnaMenuKartlariniSirala();else launcher.insertBefore(requestCard,launcher.firstElementChild)}}
         if(!fdxManager()&&!fdxPersonel()){
             ['workCenterApp','fdxWorkCenterModal','fdxMyRequestsModal','fdxReviewModal','fdxAuditDetailModal'].forEach(id=>{const modal=document.getElementById(id);if(modal)modal.style.display='none'});
             fdxState.requests=[];fdxState.myRequests=[];fdxState.closures=[];fdxState.schedules=[];fdxState.audit=[];fdxState.closureCheck=null;fdxState.reviewId='';fdxState.auditId='';
@@ -21969,14 +21982,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v108';
+      const anahtar='fd-pwa-yenileme-v109';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=108',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=109',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
