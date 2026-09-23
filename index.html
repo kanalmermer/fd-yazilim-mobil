@@ -1219,6 +1219,8 @@
 body.personel-session #fdGlobalArama,
 body.personel-session #fdGlobalAraBtn,
 body.personel-session #fdGlobalTakvimBtn{display:none!important}
+body.personel-session.personel-primsiz button[onclick="openPrimApp()"],
+body.personel-session.personel-primsiz #btnWorkspacePrim{display:none!important}
 .puan-mobil-personel-secim{display:none}
 @media(max-width:760px){html,body{max-width:100%;overflow-x:hidden}.app-header-bar{padding:8px 10px;gap:7px;align-items:flex-start}.workspace-nav,.module-subnav{display:flex!important;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap!important;gap:6px;padding:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}.workspace-nav button,.module-subnav button{flex:0 0 auto!important;min-width:max-content!important;white-space:nowrap;padding:8px 10px!important;font-size:.72rem!important}.app-layout{display:block;min-height:0}.app-layout>main,main{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;min-width:0}.card{padding:10px!important;border-radius:10px!important;max-width:100%}.card-header{align-items:flex-start!important;gap:8px!important}.card-header>div{max-width:100%;gap:6px!important}.form-row,.profile-layout,.grid-horizontal{grid-template-columns:1fr!important}input,select,textarea{max-width:100%;min-height:40px;font-size:16px}.table-wrapper{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:max-content}.modal-card{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;max-height:96vh!important;margin:6px!important}.modal-body{padding:12px!important;overflow:auto}.action-btns{flex-wrap:nowrap!important}#puanPersonelAra{width:180px!important;min-height:34px;font-size:.82rem}#magicpassApp .magicpass-shell{grid-template-columns:1fr!important}#magicpassApp .magicpass-personel-panel{max-height:none!important}#kiraTakipApp .kira-masraf-toolbar{grid-template-columns:1fr!important}}
 @media(max-width:900px){#magicpass-tab-liste .magicpass-rapor-layout{display:flex!important;flex-direction:column!important;width:100%!important;gap:12px}#magicpass-tab-liste .magicpass-personel-panel{position:static!important;width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;padding:14px!important;overflow:visible!important;box-sizing:border-box}#magicpass-tab-liste .magicpass-personel-panel>input,#magicpass-tab-liste .magicpass-personel-panel>select{width:100%!important;margin-bottom:9px!important;box-sizing:border-box}#magicpassSolPersonelListesi{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%!important;max-height:230px!important;padding:6px;overflow:auto;box-sizing:border-box;background:#f8fafc}.magicpass-sol-personel{border:1px solid #e2e8f0!important;border-radius:8px!important}.magicpass-sol-personel:last-child{border-bottom:1px solid #e2e8f0!important}#magicpass-tab-liste .magicpass-rapor-panel{width:100%!important;max-width:100%!important;height:auto!important;box-sizing:border-box}}
@@ -5220,28 +5222,36 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!baslatici)return;
         baslatici.querySelectorAll('.personel-home-card').forEach(kart=>kart.remove());
         const anaPersonelKarti=baslatici.querySelector('[data-ana-menu-modul="personel"]');
+        const primMenusuAcik=personelPrimMenusuAcikMi();
+        document.body.classList.toggle('personel-primsiz',isPersonelUser()&&!primMenusuAcik);
         if(!isPersonelUser())return;
         if(anaPersonelKarti)anaPersonelKarti.style.display='none';
         const kartlar=[
-            ['👤','Personel Bilgilerim','Kendi personel kartınızı görüntüleyin','openPersonelApp','linear-gradient(135deg,#0369a1,#0ea5e9)'],
-            ['🏖️','İzinlerim','İzin kayıtlarınızı görüntüleyin','openIzinTakipApp','linear-gradient(135deg,#047857,#10b981)'],
-            ['📅','Puantajım','Aylık puantajınızı görüntüleyin','openPuantajApp','linear-gradient(135deg,#b45309,#f59e0b)'],
-            ['💰','Primlerim','Prim listenizi görüntüleyin','openPrimApp','linear-gradient(135deg,#c2410c,#fb7185)'],
-            ['💳','Avanslarım','Avans ve kesinti kayıtlarınızı görüntüleyin','openAvansApp','linear-gradient(135deg,#0f766e,#14b8a6)'],
-            ['⚖️','İcra Takibim','İcra kayıtlarınızı görüntüleyin','openIcraApp','linear-gradient(135deg,#7c3aed,#a855f7)'],
-            ['🧾','Ek Ödemelerim','Ek ödeme kayıtlarınızı görüntüleyin','openEkOdemeApp','linear-gradient(135deg,#4338ca,#6366f1)'],
-            ['🦺','KKD Teslimlerim','Teslim edilen ekipmanları görüntüleyin','openKkdApp','linear-gradient(135deg,#be123c,#f43f5e)'],
-
-            ['↔️','Giriş–Çıkışım','Günlük giriş ve çıkışlarınızı görüntüleyin','openMagicpassApp','linear-gradient(135deg,#0369a1,#22d3ee)']
+            ['bilgiler','👤','Personel Bilgilerim','Kendi personel kartınızı görüntüleyin','openPersonelApp','linear-gradient(135deg,#0369a1,#0ea5e9)'],
+            ['izin','🏖️','İzinlerim','İzin kayıtlarınızı görüntüleyin','openIzinTakipApp','linear-gradient(135deg,#047857,#10b981)'],
+            ['puantaj','📅','Puantajım','Aylık puantajınızı görüntüleyin','openPuantajApp','linear-gradient(135deg,#b45309,#f59e0b)'],
+            ['prim','💰','Primlerim','Prim listenizi görüntüleyin','openPrimApp','linear-gradient(135deg,#c2410c,#fb7185)'],
+            ['avans','💳','Avanslarım','Avans ve kesinti kayıtlarınızı görüntüleyin','openAvansApp','linear-gradient(135deg,#0f766e,#14b8a6)'],
+            ['icra','⚖️','İcra Takibim','İcra kayıtlarınızı görüntüleyin','openIcraApp','linear-gradient(135deg,#7c3aed,#a855f7)'],
+            ['ekodeme','🧾','Ek Ödemelerim','Ek ödeme kayıtlarınızı görüntüleyin','openEkOdemeApp','linear-gradient(135deg,#4338ca,#6366f1)'],
+            ['kkd','🦺','KKD Teslimlerim','Teslim edilen ekipmanları görüntüleyin','openKkdApp','linear-gradient(135deg,#be123c,#f43f5e)'],
+            ['giriscikis','↔️','Giriş–Çıkışım','Günlük giriş ve çıkışlarınızı görüntüleyin','openMagicpassApp','linear-gradient(135deg,#0369a1,#22d3ee)']
         ];
-        kartlar.forEach(([ikon,ad,aciklama,fonksiyon,renk])=>{
+        kartlar.filter(([anahtar])=>anahtar!=='prim'||primMenusuAcik).forEach(([anahtar,ikon,ad,aciklama,fonksiyon,renk])=>{
             const kart=document.createElement('button');
             kart.type='button';
             kart.className='workspace-card personel-home-card';
+            kart.dataset.personelMenu=anahtar;
             kart.addEventListener('click',()=>{personelModuluYetkiGorunumunuUygula('personel');const ac=window[fonksiyon];if(typeof ac==='function')ac();setTimeout(()=>personelModuluYetkiGorunumunuUygula('personel'),0);});
             kart.innerHTML=`<span class="workspace-card-icon" style="background:${renk}" aria-hidden="true">${ikon}</span><span><strong>${ad}</strong><small>${aciklama}</small></span><b>Görüntüle →</b>`;
             baslatici.appendChild(kart);
         });
+    }
+
+    function personelPrimMenusuAcikMi(){
+        if(!isPersonelUser())return true;
+        const personel=personeller.find(p=>aktifSirketeAit(p)&&String(p.id)===String(activeUser?.tcNo||''));
+        return String(personel?.primVar||'').trim().toLocaleLowerCase('tr-TR')==='evet';
     }
     let anaMenuAyarTaslagi=[];
     function ayarlarBolumAc(panelId,buton){
@@ -6285,6 +6295,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function openPrimApp() {
+        if(!personelPrimMenusuAcikMi())return showToast('Bu personel için prim takibi aktif değil.','warning');
         openPuantajGorunumu('prim');
     }
 
@@ -21958,14 +21969,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v107';
+      const anahtar='fd-pwa-yenileme-v108';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=107',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=108',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
