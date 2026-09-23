@@ -9977,8 +9977,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 let temiz = String(aday || '')
                     .replace(tarihDeseni, ' ')
                     .replace(/\bT\.?\s*C\.?\b/gi, ' ')
-                    .replace(/\bİCRA\s+DAİRESİ\b/giu, ' ')
-                    .replace(/\bICRA\s+DAIRESI\b/giu, ' ')
+                    .replace(/İCRA\s+DAİRESİ/giu, ' ')
+                    .replace(/ICRA\s+DAIRESI/giu, ' ')
                     .replace(/\b(?:19|20)\d{2}\s*[\/-]\s*\d+\s*(?:ESAS)?\b/giu, ' ')
                     .replace(/[^\p{L}\p{N}.\s-]/gu, ' ')
                     .replace(/\s+/g, ' ')
@@ -22245,14 +22245,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v110';
+      const anahtar='fd-pwa-yenileme-v111';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=110',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=111',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
