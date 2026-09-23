@@ -20789,6 +20789,7 @@ document.addEventListener('click',function(e){
     window.fdWhatsappSekmeAc=function(sekme){const gelen=sekme==='inbox',gelenPanel=document.getElementById('fdWhatsappGelenPanel'),gonderPanel=document.getElementById('fdWhatsappGonderPanel'),gelenDugme=document.getElementById('fdWhatsappSekmeGelen'),gonderDugme=document.getElementById('fdWhatsappSekmeGonder');if(gelenPanel)gelenPanel.style.display=gelen?'block':'none';if(gonderPanel)gonderPanel.style.display=gelen?'none':'block';gelenDugme?.classList.toggle('active',gelen);gonderDugme?.classList.toggle('active',!gelen);if(gelen)fdWhatsappGelenKutusuYukle(false)};
     window.openWhatsappMesajlari=function(){return openBildirimModal({tab:'inbox'})};
     async function fdWhatsappGelenSayaciniYenile(){if(!isManagerUser())return;try{const sonuc=await whatsappCagir({action:'config'});fdWhatsappRozetiniGuncelle(sonuc.inboxUnreadCount)}catch(error){console.warn('WhatsApp gelen kutusu sayacı alınamadı:',error)}}
+    async function fdWhatsappWebhookunuDogrula(){const anahtar='fd_whatsapp_webhook_subscribed_v1';if(sessionStorage.getItem(anahtar)==='1')return;try{await whatsappCagir({action:'ensure-webhook'});sessionStorage.setItem(anahtar,'1')}catch(error){console.warn('WhatsApp webhook aboneliği kurulamadı:',error);showToast('Gelen mesaj bağlantısı doğrulanamadı: '+hataMesaji(error),'warning')}}
     function base64UrlDizisi(deger){
         const dolgu='='.repeat((4-deger.length%4)%4),base64=(deger+dolgu).replace(/-/g,'+').replace(/_/g,'/'),ham=atob(base64),sonuc=new Uint8Array(ham.length);
         for(let i=0;i<ham.length;i++)sonuc[i]=ham.charCodeAt(i);return sonuc;
@@ -20895,7 +20896,7 @@ document.addEventListener('click',function(e){
     window.openBildirimModal=async function(options={}){
         if(!isManagerUser())return showToast('Bildirim göndermek için yönetici yetkisi gerekli.','warning');
         const modal=document.getElementById('modalBildirimGonder'),sayac=document.getElementById('fdBildirimCihazSayisi'),baslik=document.getElementById('fdBildirimBaslik');if(baslik)baslik.value='';const planId=document.getElementById('fdBildirimPlanId');if(planId)planId.value='';const mesaj=document.getElementById('fdBildirimMesaj');if(mesaj)mesaj.value='';const at=document.getElementById('fdBildirimPlanZamani');if(at)at.value='';fdBildirimModuDegisti('instant');fdBildirimHedefleriniDoldur();modal.style.display='flex';sayac.textContent='Kontrol ediliyor...';fdWhatsappSekmeAc(options?.tab==='inbox'&&!options?.item?'inbox':'send');if(options?.item)fdBildirimPlanDuzenlemeAc(options.item);
-        try{const sonuc=await whatsappCagir({action:'config'});sayac.textContent=sonuc.whatsappRecipientCount+' personel'+(sonuc.missingPhoneCount?' · '+sonuc.missingPhoneCount+' telefonsuz':'');fdWhatsappRozetiniGuncelle(sonuc.inboxUnreadCount);if(!sonuc.configured)showToast('WhatsApp sunucu anahtarı ve şablonu henüz etkinleştirilmedi.','warning')}catch(error){sayac.textContent='Alınamadı';showToast(hataMesaji(error),'error')}
+        try{const sonuc=await whatsappCagir({action:'config'});sayac.textContent=sonuc.whatsappRecipientCount+' personel'+(sonuc.missingPhoneCount?' · '+sonuc.missingPhoneCount+' telefonsuz':'');fdWhatsappRozetiniGuncelle(sonuc.inboxUnreadCount);if(options?.tab==='inbox'&&!options?.item)await fdWhatsappWebhookunuDogrula();if(!sonuc.configured)showToast('WhatsApp sunucu anahtarı ve şablonu henüz etkinleştirilmedi.','warning')}catch(error){sayac.textContent='Alınamadı';showToast(hataMesaji(error),'error')}
     };
     window.fdBildirimHedefleriniDoldur=function(){
         const secim=document.getElementById('fdBildirimSube');if(!secim)return;
@@ -21810,14 +21811,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v94';
+      const anahtar='fd-pwa-yenileme-v95';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=94',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=95',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
