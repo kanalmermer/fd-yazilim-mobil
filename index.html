@@ -3362,6 +3362,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <div class="personel-word-actions" style="display:flex;justify-content:flex-end;gap:8px;padding:10px 14px;border-top:1px solid #dbe5ef;background:#f8fafc;">
             <button type="button" class="btn-cancel" style="width:auto;margin:0;" onclick="personelBelgeOnizlemeKapat()">Kapat</button>
             <button type="button" class="btn-modern btn-detail-modern" onclick="personelBelgeWordIndir()">⬇️ Word İndir</button>
+            <button id="personelBelgePdfIndirBtn" type="button" class="btn-modern btn-detail-modern" style="display:none;" onclick="personelBelgeAktifPdfIndir()">⬇️ PDF İndir</button>
             <button type="button" class="btn-submit" style="width:auto;margin:0;" onclick="personelBelgeYazdir()">🖨️ Yazdır</button>
         </div>
     </div>
@@ -3816,6 +3817,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let subeKayitIslemiDevamEdiyor = false;
     let personelBelgeOnizlemeBlobu = null;
     let personelBelgeOnizlemeAdi = '';
+    let personelBelgeOnizlemeBasligi = '';
     let yillikPersonelBelgeTopluModu = false;
     let yillikPersonelBelgeHazirlananCiftler = [];
     let yillikPersonelBelgeAktifYili = 0;
@@ -10218,7 +10220,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const boyut = Math.max(14, Math.round(Number(secenek.boyut || 12) * 2));
         const kalin = secenek.kalin ? '<w:b/><w:bCs/>' : '';
         const italik = secenek.italik ? '<w:i/><w:iCs/>' : '';
-        return `<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="Times New Roman" w:cs="Times New Roman"/>${kalin}${italik}<w:sz w:val="${boyut}"/><w:szCs w:val="${boyut}"/><w:lang w:val="tr-TR"/></w:rPr><w:t xml:space="preserve">${icraResmiDocxXml(metin)}</w:t></w:r>`;
+        return `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:eastAsia="Arial" w:cs="Arial"/>${kalin}${italik}<w:sz w:val="${boyut}"/><w:szCs w:val="${boyut}"/><w:lang w:val="tr-TR"/></w:rPr><w:t xml:space="preserve">${icraResmiDocxXml(metin)}</w:t></w:r>`;
     }
 
     function icraResmiDocxParagraf(runlar, secenek = {}) {
@@ -10238,14 +10240,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function icraResmiDocxImza(dilekceTarihi) {
-        const sol = '<w:tc><w:tcPr><w:tcW w:w="4700" w:type="dxa"/></w:tcPr><w:p/></w:tc>';
-        const icerik = [
-            icraResmiDocxParagraf([icraResmiDocxRun(dilekceTarihi, { boyut:12 })], { hizalama:'center', sonra:100, satir:240 }),
-            icraResmiDocxParagraf([icraResmiDocxRun('KANAL MERMER MAD. NAK. SAN. TİC. LTD. ŞTİ.', { boyut:11, kalin:true })], { hizalama:'center', sonra:100, satir:230 }),
-            icraResmiDocxParagraf([icraResmiDocxRun('Yetkili İmza', { boyut:11 })], { hizalama:'center', sonra:520, satir:230 })
-        ].join('');
-        const sag = `<w:tc><w:tcPr><w:tcW w:w="5600" w:type="dxa"/><w:vAlign w:val="top"/></w:tcPr>${icerik}</w:tc>`;
-        return `<w:tbl><w:tblPr><w:tblW w:w="10300" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="4700"/><w:gridCol w:w="5600"/></w:tblGrid><w:tr>${sol}${sag}</w:tr></w:tbl>`;
+        return icraResmiDocxParagraf([icraResmiDocxRun(dilekceTarihi, { boyut:12 })], { hizalama:'right', sonra:500, satir:240 });
     }
 
     function icraResmiDocxTablosu(satirlar) {
@@ -10287,17 +10282,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             icraResmiDocxRun(' T.C. Kimlik numaralı personelimiz ', { boyut:12 }),
             icraResmiDocxRun(personelAdi, { boyut:12, kalin:true }),
             icraResmiDocxRun(`, ${girisTarihi} tarihinden itibaren şirketimiz bünyesinde çalışmaktadır.`, { boyut:12 })
-        ], { hizalama:'both', sonra:150, satir:276, ilkGirinti:710 }));
+        ], { hizalama:'left', sonra:150, satir:276, ilkGirinti:710 }));
         if (tur === 'ilk') {
             govde.push(icraResmiDocxParagraf([
                 icraResmiDocxRun('Söz konusu personel hakkında belirtilen icra takibine ilişkin kesinti işlemi, ', { boyut:12 }),
                 icraResmiDocxRun(icraDilekceDonemiYaz(icra.baslangicAy), { boyut:12, kalin:true }),
                 icraResmiDocxRun(' döneminden itibaren uygulanacak olup, maaşının 1/4 oranındaki tutarı müdürlüğünüz hesabına havale/EFT yoluyla gönderilecektir.', { boyut:12 })
-            ], { hizalama:'both', sonra:160, satir:276, ilkGirinti:710 }));
+            ], { hizalama:'left', sonra:160, satir:276, ilkGirinti:710 }));
         } else {
             govde.push(icraResmiDocxParagraf([
                 icraResmiDocxRun('Personelimiz hakkında hâlihazırda devam eden icra kesintisi bulunmakta olup, söz konusu dosyaya ilişkin kesinti işlemi mevcut icra kesintisi sona erdikten sonra sıraya alınarak gerçekleştirilecektir.', { boyut:12 })
-            ], { hizalama:'both', sonra:190, satir:276, ilkGirinti:710 }));
+            ], { hizalama:'left', sonra:190, satir:276, ilkGirinti:710 }));
             govde.push(icraResmiDocxParagraf([icraResmiDocxRun('Devam Eden İcra Kesintileri', { boyut:11, kalin:true })], { hizalama:'left', sonra:80, satir:240, sonrakiyleTut:true }));
             const satirlar = Array.isArray(icra.dilekceSatirlari) && icra.dilekceSatirlari.length ? icra.dilekceSatirlari : icraDilekceSatirlariniOlustur(icra);
             govde.push(icraResmiDocxTablosu(satirlar));
@@ -10307,7 +10302,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         govde.push(icraResmiDocxImza(dilekceTarihi));
         const solSag = dar ? 900 : 1559;
         const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${govde.join('')}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1361" w:right="${solSag}" w:bottom="1247" w:left="${solSag}" w:header="708" w:footer="708" w:gutter="0"/><w:cols w:space="708"/><w:docGrid w:linePitch="360"/></w:sectPr></w:body></w:document>`;
-        const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="tr-TR"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
+        const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:eastAsia="Arial" w:cs="Arial"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="tr-TR"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
         zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`);
         zip.folder('_rels').file('.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`);
         zip.folder('word').file('document.xml', documentXml).folder('_rels').file('document.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
@@ -10337,33 +10332,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         showGlobalOverlay('İcra dilekçesi hazırlanıyor', 'Resmî Word şablonu dolduruluyor...');
         try {
             const blob = await icraDilekceBlobuOlustur(icra.id);
-            await personelBelgeOnizlemeAc(blob, icraDilekceDosyaAdi(icra), icraDilekceTuruBul(icra) === 'coklu' ? 'Birden Fazla İcrası Olan Personel Dilekçesi' : 'İlk İcrası Olan Personel Dilekçesi');
+            await personelBelgeOnizlemeAc(blob, icraDilekceDosyaAdi(icra), icraDilekceTuruBul(icra) === 'coklu' ? 'Birden Fazla İcrası Olan Personel Dilekçesi' : 'İlk İcrası Olan Personel Dilekçesi', { pdfIndir:true });
         } catch (error) {
             console.error('İcra dilekçesi:', error);
             alert('İcra dilekçesi hazırlanamadı: ' + (error.message || error));
-        } finally {
-            hideGlobalOverlay();
-        }
-    }
-
-    async function icraDilekcePdfIndir(icraId) {
-        const icra = icralar.find(kayit => String(kayit.id) === String(icraId));
-        if (!icra) return alert('İcra kaydı bulunamadı.');
-        showGlobalOverlay('İcra dilekçesi PDF hazırlanıyor', 'Resmî dilekçe düzeni PDF’ye dönüştürülüyor...');
-        try {
-            const wordBlob = await icraDilekceBlobuOlustur(icra.id);
-            hideGlobalOverlay();
-            const pdfAdi = icraDilekceDosyaAdi(icra).replace(/\.docx$/i, '.pdf');
-            const baslik = icraDilekceTuruBul(icra) === 'coklu' ? 'Birden Fazla İcrası Olan Personel Dilekçesi' : 'İlk İcrası Olan Personel Dilekçesi';
-            const pdfBlob = await personelBelgePdfOnizlemeAc(wordBlob, pdfAdi, baslik);
-            if (pdfBlob) {
-                const adres = URL.createObjectURL(pdfBlob), baglanti = document.createElement('a');
-                baglanti.href = adres; baglanti.download = pdfAdi; document.body.appendChild(baglanti); baglanti.click(); baglanti.remove();
-                setTimeout(() => URL.revokeObjectURL(adres), 1500);
-            }
-        } catch (error) {
-            console.error('İcra dilekçesi PDF:', error);
-            alert('İcra dilekçesi PDF hazırlanamadı: ' + (error.message || error));
         } finally {
             hideGlobalOverlay();
         }
@@ -10949,7 +10921,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const belgeButonlari = [
             activeUser?.rol === 'Personel'
                 ? ''
-                : `<button type="button" class="btn-modern btn-detail-modern" onclick='icraDilekceAc(${JSON.stringify(String(icra.id))})'>📄 Dilekçeyi Aç</button><button type="button" class="btn-modern btn-detail-modern" onclick='icraDilekcePdfIndir(${JSON.stringify(String(icra.id))})'>⬇ PDF İndir</button>`,
+                : `<button type="button" class="btn-modern btn-detail-modern" onclick='icraDilekceAc(${JSON.stringify(String(icra.id))})'>📄 Dilekçeyi Aç</button>`,
             icra.pdfUrl
                 ? `<button type="button" class="btn-modern btn-detail-modern" onclick='icraPdfAc(${JSON.stringify(String(icra.pdfUrl))}, ${JSON.stringify(String(icra.dosyaNo || ''))}, "İcra Yazısı")'>📄 İcra Yazısı</button>`
                 : '',
@@ -12808,9 +12780,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
     }
 
-    async function personelBelgeOnizlemeAc(blob, dosyaAdi, baslik) {
+    async function personelBelgeOnizlemeAc(blob, dosyaAdi, baslik, secenek = {}) {
         personelBelgeOnizlemeBlobu = blob;
         personelBelgeOnizlemeAdi = dosyaAdi;
+        personelBelgeOnizlemeBasligi = baslik || 'Personel Belgesi';
+        const pdfButonu = document.getElementById('personelBelgePdfIndirBtn');
+        if (pdfButonu) pdfButonu.style.display = secenek.pdfIndir ? '' : 'none';
         document.getElementById('personelBelgeBaslik').textContent = '📄 ' + baslik;
         document.getElementById('personelBelgeDosyaAdi').textContent = dosyaAdi;
         const alan = document.getElementById('personelBelgeOnizleme');
@@ -12841,8 +12816,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         document.getElementById('personelBelgeOnizleme').innerHTML = '';
         const indirButonu = document.querySelector('#modalPersonelBelge .personel-word-actions button[onclick="personelBelgeWordIndir()"]');
         if (indirButonu) indirButonu.style.display = '';
+        const pdfButonu = document.getElementById('personelBelgePdfIndirBtn');
+        if (pdfButonu) { pdfButonu.style.display = 'none'; pdfButonu.disabled = false; pdfButonu.textContent = '⬇️ PDF İndir'; }
         personelBelgeOnizlemeBlobu = null;
         personelBelgeOnizlemeAdi = '';
+        personelBelgeOnizlemeBasligi = '';
         yillikPersonelBelgeTopluModu = false;
         yillikPersonelBelgeHazirlananCiftler = [];
     }
@@ -12850,6 +12828,23 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function personelBelgeWordIndir() {
         if (!personelBelgeOnizlemeBlobu) return;
         fdCiktiDogrudanKaydet(personelBelgeOnizlemeBlobu, personelBelgeOnizlemeAdi || 'personel_belgesi.docx');
+    }
+
+    async function personelBelgeAktifPdfIndir() {
+        if (!personelBelgeOnizlemeBlobu) return;
+        const buton = document.getElementById('personelBelgePdfIndirBtn');
+        const pdfAdi = String(personelBelgeOnizlemeAdi || 'personel_belgesi.docx').replace(/\.docx$/i, '.pdf');
+        if (buton) { buton.disabled = true; buton.textContent = 'PDF hazırlanıyor...'; }
+        try {
+            const pdfBlob = await personelBelgePdfOnizlemeAc(personelBelgeOnizlemeBlobu, pdfAdi, personelBelgeOnizlemeBasligi, { onizle:false });
+            if (!pdfBlob) throw new Error('PDF dosyası oluşturulamadı.');
+            fdCiktiDogrudanKaydet(pdfBlob, pdfAdi);
+        } catch (error) {
+            console.error('Belge PDF indirme:', error);
+            alert('PDF indirilemedi: ' + (error.message || error));
+        } finally {
+            if (buton) { buton.disabled = false; buton.textContent = '⬇️ PDF İndir'; }
+        }
     }
 
     function personelBelgeYazdir() {
@@ -20925,11 +20920,13 @@ tapuCksArayuzunuKur();
 
     window.avansGecmisPdfIndir=function(){const tablo=document.querySelector('#avansGecmisRaporu table');return tabloPdfOnizle(tablo,document.getElementById('avansGecmisBaslik')?.textContent||'Avans Geçmişi','Avans_Gecmisi_'+avansGecmisYili+'.pdf',{yon:'landscape',altBaslik:'Avans Geçmişi'});};
 
-    window.personelBelgePdfOnizlemeAc=async function(wordBlob,dosyaAdi,baslik){
-        const baytlar=new Uint8Array(await wordBlob.arrayBuffer()),pdfMi=baytlar.length>4&&baytlar[0]===0x25&&baytlar[1]===0x50&&baytlar[2]===0x44&&baytlar[3]===0x46;
-        if(pdfMi){const pdfBlob=new Blob([baytlar],{type:'application/pdf'});fdCiktiPdfOnizle(pdfBlob,(dosyaAdi||'personel_belgesi.pdf').replace(/\.docx$/i,'.pdf'));return pdfBlob}
+    window.personelBelgePdfOnizlemeAc=async function(wordBlob,dosyaAdi,baslik,secenek={}){
+        const onizle=secenek.onizle!==false,baytlar=new Uint8Array(await wordBlob.arrayBuffer()),pdfMi=baytlar.length>4&&baytlar[0]===0x25&&baytlar[1]===0x50&&baytlar[2]===0x44&&baytlar[3]===0x46;
+        if(pdfMi){const pdfBlob=new Blob([baytlar],{type:'application/pdf'});if(onizle)fdCiktiPdfOnizle(pdfBlob,(dosyaAdi||'personel_belgesi.pdf').replace(/\.docx$/i,'.pdf'));return pdfBlob}
         if(!window.docx?.renderAsync||typeof html2canvas!=='function'||!window.jspdf?.jsPDF)throw new Error('PDF hazırlama bileşenleri yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
-        const modal=fdCiktiOnizlemeAc('pdf',dosyaAdi||'personel_belgesi.pdf'),icerik=modal.querySelector('[data-cikti-icerik]');icerik.innerHTML='';icerik.style.cssText+=';padding:0;overflow:auto;background:#cbd5e1';
+        const modal=onizle?fdCiktiOnizlemeAc('pdf',dosyaAdi||'personel_belgesi.pdf'):document.createElement('div');
+        if(!onizle){modal.style.cssText='position:fixed;left:-100000px;top:0;width:1200px;min-height:1600px;overflow:visible;background:#fff;z-index:-1;';modal.innerHTML='<span data-cikti-ad></span><div data-cikti-icerik></div>';document.body.appendChild(modal)}
+        const icerik=modal.querySelector('[data-cikti-icerik]');icerik.innerHTML='';icerik.style.cssText+=';padding:0;overflow:auto;background:#cbd5e1';
         const sahne=document.createElement('div');sahne.className='fd-v149-docx-stage';icerik.appendChild(sahne);
         try{
             await window.docx.renderAsync(wordBlob,sahne,sahne,{inWrapper:true,breakPages:true,ignoreLastRenderedPageBreak:false,renderHeaders:true,renderFooters:true,renderFootnotes:true,ignoreWidth:false,ignoreHeight:false,ignoreFonts:false,useBase64URL:true,experimental:false});
@@ -20943,7 +20940,7 @@ tapuCksArayuzunuKur();
                 const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=8,ust=9,alt=13,oran=Math.min((pw-kenarX*2)/canvas.width,(ph-ust-alt)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;
                 pdf.addImage(canvas.toDataURL('image/jpeg',.88),'JPEG',(pw-w)/2,ust,w,h,undefined,'FAST');await bekle(0);
             }
-            pdfSayfaNumarala(pdf,baslik||'Personel Belgesi');const blob=pdf.output('blob');fdCiktiPdfOnizle(blob,dosyaAdi||'personel_belgesi.pdf',modal);showToast?.((baslik||'Personel belgesi')+' PDF olarak hazırlandı.');return blob;
+            pdfSayfaNumarala(pdf,baslik||'Personel Belgesi');const blob=pdf.output('blob');if(onizle)fdCiktiPdfOnizle(blob,dosyaAdi||'personel_belgesi.pdf',modal);else modal.remove();showToast?.((baslik||'Personel belgesi')+' PDF olarak hazırlandı.');return blob;
         }catch(e){modal.remove();throw e;}
     };
 
@@ -22404,14 +22401,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v113';
+      const anahtar='fd-pwa-yenileme-v114';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=113',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=114',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
