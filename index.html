@@ -2669,12 +2669,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 <div class="action-btns"><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKayitListesiBody','excel','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKayitListesiBody','pdf','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📄 PDF</button></div>
             </div>
             <style>
-                .avans-kayit-filtreleri{display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(2,minmax(145px,.75fr)) minmax(150px,.85fr) minmax(135px,.75fr) auto;gap:9px;align-items:end;margin:0 0 13px;padding:12px;border:1px solid #dbe5ef;border-radius:12px;background:#f8fafc}.avans-kayit-filtreleri label{display:block;margin:0 0 5px;color:#475569;font-size:.68rem;font-weight:850}.avans-kayit-filtreleri input,.avans-kayit-filtreleri select{width:100%;min-height:39px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}.avans-kayit-filtre-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 2px 11px;color:#64748b;font-size:.72rem;font-weight:750}@media(max-width:980px){.avans-kayit-filtreleri{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.avans-kayit-filtreleri{grid-template-columns:1fr 1fr}.avans-kayit-filtreleri .avans-filtre-arama{grid-column:1/-1}.avans-kayit-filtreleri button{width:100%}}
+                .avans-kayit-filtreleri{display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(155px,.8fr) minmax(160px,.9fr) minmax(140px,.8fr) auto;gap:9px;align-items:end;margin:0 0 13px;padding:12px;border:1px solid #dbe5ef;border-radius:12px;background:#f8fafc}.avans-kayit-filtreleri label{display:block;margin:0 0 5px;color:#475569;font-size:.68rem;font-weight:850}.avans-kayit-filtreleri input,.avans-kayit-filtreleri select{width:100%;min-height:39px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}.avans-kayit-filtre-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 2px 11px;color:#64748b;font-size:.72rem;font-weight:750}@media(max-width:980px){.avans-kayit-filtreleri{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.avans-kayit-filtreleri{grid-template-columns:1fr 1fr}.avans-kayit-filtreleri .avans-filtre-arama{grid-column:1/-1}.avans-kayit-filtreleri button{width:100%}}
             </style>
             <div class="avans-kayit-filtreleri">
                 <div class="avans-filtre-arama"><label>Personel veya avans ara</label><input id="avansKayitArama" type="search" placeholder="Ad, avans no veya açıklama" oninput="renderAvansKayitListesi()"></div>
-                <div><label>Başlangıç tarihi</label><input id="avansKayitTarihBaslangic" type="date" onchange="renderAvansKayitListesi()"></div>
-                <div><label>Bitiş tarihi</label><input id="avansKayitTarihBitis" type="date" onchange="renderAvansKayitListesi()"></div>
+                <div><label>Kayıt ayı</label><input id="avansKayitAyFiltre" type="month" onchange="renderAvansKayitListesi()"></div>
                 <div><label>Şube</label><select id="avansKayitSubeFiltre" onchange="renderAvansKayitListesi()"><option value="">Tüm şubeler</option></select></div>
                 <div><label>Durum</label><select id="avansKayitDurumFiltre" onchange="renderAvansKayitListesi()"><option value="">Tüm durumlar</option><option value="Aktif">Aktif</option><option value="Kapandı">Kapandı</option><option value="Tamamlandı">Tamamlandı</option></select></div>
                 <button type="button" class="btn-modern" onclick="avansKayitFiltreleriniTemizle()">↺ Temizle</button>
@@ -9726,7 +9725,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function avansKayitFiltreleriniTemizle() {
-        ['avansKayitArama','avansKayitTarihBaslangic','avansKayitTarihBitis','avansKayitSubeFiltre','avansKayitDurumFiltre'].forEach(id => {
+        ['avansKayitArama','avansKayitAyFiltre','avansKayitSubeFiltre','avansKayitDurumFiltre'].forEach(id => {
             const alan = document.getElementById(id);
             if (alan) alan.value = '';
         });
@@ -9735,14 +9734,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function avansKayitFiltreliListe() {
         const arama = String(document.getElementById('avansKayitArama')?.value || '').trim().toLocaleLowerCase('tr-TR');
-        const tarihBaslangic = String(document.getElementById('avansKayitTarihBaslangic')?.value || '');
-        const tarihBitis = String(document.getElementById('avansKayitTarihBitis')?.value || '');
+        const kayitAyi = String(document.getElementById('avansKayitAyFiltre')?.value || '');
         const sube = String(document.getElementById('avansKayitSubeFiltre')?.value || '');
         const durum = String(document.getElementById('avansKayitDurumFiltre')?.value || '');
         return avanslar.filter(avansAktifSirketinMi).filter(avans => {
             const kayitTarihi = String(avans.kayitTarihi || '').slice(0, 10);
             const aramaMetni = [avans.personelAd, avans.avansNo, avans.aciklama, avans.sube, avans.baslangicAy, avans.durum].join(' ').toLocaleLowerCase('tr-TR');
-            return (!arama || aramaMetni.includes(arama)) && (!tarihBaslangic || kayitTarihi >= tarihBaslangic) && (!tarihBitis || kayitTarihi <= tarihBitis) && (!sube || String(avans.sube || '') === sube) && (!durum || String(avans.durum || 'Aktif') === durum);
+            return (!arama || aramaMetni.includes(arama)) && (!kayitAyi || kayitTarihi.slice(0, 7) === kayitAyi) && (!sube || String(avans.sube || '') === sube) && (!durum || String(avans.durum || 'Aktif') === durum);
         }).sort((a, b) => String(b.kayitTarihi || '').localeCompare(String(a.kayitTarihi || '')) || String(a.personelAd || '').localeCompare(String(b.personelAd || ''), 'tr-TR'));
     }
 
@@ -22454,14 +22452,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v117';
+      const anahtar='fd-pwa-yenileme-v118';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=117',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=118',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
