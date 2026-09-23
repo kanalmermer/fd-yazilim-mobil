@@ -20930,7 +20930,7 @@ tapuCksArayuzunuKur();
     window.avansGecmisPdfIndir=function(){const tablo=document.querySelector('#avansGecmisRaporu table');return tabloPdfOnizle(tablo,document.getElementById('avansGecmisBaslik')?.textContent||'Avans Geçmişi','Avans_Gecmisi_'+avansGecmisYili+'.pdf',{yon:'landscape',altBaslik:'Avans Geçmişi'});};
 
     window.personelBelgePdfOnizlemeAc=async function(wordBlob,dosyaAdi,baslik,secenek={}){
-        const onizle=secenek.onizle!==false,baytlar=new Uint8Array(await wordBlob.arrayBuffer()),pdfMi=baytlar.length>4&&baytlar[0]===0x25&&baytlar[1]===0x50&&baytlar[2]===0x44&&baytlar[3]===0x46;
+        const onizle=secenek.onizle!==false,baslikAnahtari=String(baslik||'').toLocaleLowerCase('tr-TR'),resmiIcraDilekcesi=baslikAnahtari.includes('icra')&&baslikAnahtari.includes('dilekçe'),baytlar=new Uint8Array(await wordBlob.arrayBuffer()),pdfMi=baytlar.length>4&&baytlar[0]===0x25&&baytlar[1]===0x50&&baytlar[2]===0x44&&baytlar[3]===0x46;
         if(pdfMi){const pdfBlob=new Blob([baytlar],{type:'application/pdf'});if(onizle)fdCiktiPdfOnizle(pdfBlob,(dosyaAdi||'personel_belgesi.pdf').replace(/\.docx$/i,'.pdf'));return pdfBlob}
         if(!window.docx?.renderAsync||typeof html2canvas!=='function'||!window.jspdf?.jsPDF)throw new Error('PDF hazırlama bileşenleri yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
         const modal=onizle?fdCiktiOnizlemeAc('pdf',dosyaAdi||'personel_belgesi.pdf'):document.createElement('div');
@@ -20946,10 +20946,10 @@ tapuCksArayuzunuKur();
                 const sayfa=sayfalar[i];sayfa.style.boxShadow='none';sayfa.style.overflow='hidden';
                 await new Promise(requestAnimationFrame);const canvas=await html2canvas(sayfa,{scale:olcek,backgroundColor:'#fff',useCORS:true,logging:false,scrollX:0,scrollY:0,windowWidth:Math.max(sayfa.scrollWidth,900),windowHeight:Math.max(sayfa.scrollHeight,1100)}),yon=canvas.width>canvas.height?'landscape':'portrait';
                 if(!pdf)pdf=new window.jspdf.jsPDF({orientation:yon,unit:'mm',format:'a4',compress:true});else pdf.addPage('a4',yon);
-                const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=8,ust=9,alt=13,oran=Math.min((pw-kenarX*2)/canvas.width,(ph-ust-alt)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;
+                const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=resmiIcraDilekcesi?0:8,ust=resmiIcraDilekcesi?0:9,alt=resmiIcraDilekcesi?0:13,oran=Math.min((pw-kenarX*2)/canvas.width,(ph-ust-alt)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;
                 pdf.addImage(canvas.toDataURL('image/jpeg',.88),'JPEG',(pw-w)/2,ust,w,h,undefined,'FAST');await bekle(0);
             }
-            pdfSayfaNumarala(pdf,baslik||'Personel Belgesi');const blob=pdf.output('blob');if(onizle)fdCiktiPdfOnizle(blob,dosyaAdi||'personel_belgesi.pdf',modal);else modal.remove();showToast?.((baslik||'Personel belgesi')+' PDF olarak hazırlandı.');return blob;
+            if(!resmiIcraDilekcesi)pdfSayfaNumarala(pdf,baslik||'Personel Belgesi');const blob=pdf.output('blob');if(onizle)fdCiktiPdfOnizle(blob,dosyaAdi||'personel_belgesi.pdf',modal);else modal.remove();showToast?.((baslik||'Personel belgesi')+' PDF olarak hazırlandı.');return blob;
         }catch(e){modal.remove();throw e;}
     };
 
@@ -22410,14 +22410,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v115';
+      const anahtar='fd-pwa-yenileme-v116';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=115',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=116',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
