@@ -1219,29 +1219,24 @@
 body.personel-session #fdGlobalArama,
 body.personel-session #fdGlobalAraBtn,
 body.personel-session #fdGlobalTakvimBtn{display:none!important}
+.puan-mobil-personel-secim{display:none}
 @media(max-width:760px){html,body{max-width:100%;overflow-x:hidden}.app-header-bar{padding:8px 10px;gap:7px;align-items:flex-start}.workspace-nav,.module-subnav{display:flex!important;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap!important;gap:6px;padding:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}.workspace-nav button,.module-subnav button{flex:0 0 auto!important;min-width:max-content!important;white-space:nowrap;padding:8px 10px!important;font-size:.72rem!important}.app-layout{display:block;min-height:0}.app-layout>main,main{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;min-width:0}.card{padding:10px!important;border-radius:10px!important;max-width:100%}.card-header{align-items:flex-start!important;gap:8px!important}.card-header>div{max-width:100%;gap:6px!important}.form-row,.profile-layout,.grid-horizontal{grid-template-columns:1fr!important}input,select,textarea{max-width:100%;min-height:40px;font-size:16px}.table-wrapper{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:max-content}.modal-card{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;max-height:96vh!important;margin:6px!important}.modal-body{padding:12px!important;overflow:auto}.action-btns{flex-wrap:nowrap!important}#puanPersonelAra{width:180px!important;min-height:34px;font-size:.82rem}#magicpassApp .magicpass-shell{grid-template-columns:1fr!important}#magicpassApp .magicpass-personel-panel{max-height:none!important}#kiraTakipApp .kira-masraf-toolbar{grid-template-columns:1fr!important}}
 @media(max-width:900px){#magicpass-tab-liste .magicpass-rapor-layout{display:flex!important;flex-direction:column!important;width:100%!important;gap:12px}#magicpass-tab-liste .magicpass-personel-panel{position:static!important;width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;padding:14px!important;overflow:visible!important;box-sizing:border-box}#magicpass-tab-liste .magicpass-personel-panel>input,#magicpass-tab-liste .magicpass-personel-panel>select{width:100%!important;margin-bottom:9px!important;box-sizing:border-box}#magicpassSolPersonelListesi{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%!important;max-height:230px!important;padding:6px;overflow:auto;box-sizing:border-box;background:#f8fafc}.magicpass-sol-personel{border:1px solid #e2e8f0!important;border-radius:8px!important}.magicpass-sol-personel:last-child{border-bottom:1px solid #e2e8f0!important}#magicpass-tab-liste .magicpass-rapor-panel{width:100%!important;max-width:100%!important;height:auto!important;box-sizing:border-box}}
 @media(max-width:560px){#magicpassSolPersonelListesi{grid-template-columns:1fr!important}}
 @media(max-width:760px){
 html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:none}.card-header{flex-wrap:wrap!important}.card-header>.action-btns,.action-btns{width:100%;max-width:100%;flex-wrap:wrap!important}.action-btns>*{max-width:100%}.filter-bar{max-width:100%;flex-wrap:wrap!important}.filter-bar>input,.filter-bar>select{flex:1 1 100%;width:100%!important}.modal-overlay{padding:0!important}.modal-card{max-height:calc(100dvh - 12px)!important}img,canvas{max-width:100%;height:auto}button,a,input,select,textarea{touch-action:manipulation}.table-wrapper{overscroll-behavior-inline:contain}
-#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:none!important;overflow:visible!important;background:transparent!important;border:0!important}
-#magicpassAylikTablo{display:block!important;width:100%!important;min-width:0!important;table-layout:auto!important;background:transparent!important}
-#magicpassAylikTablo thead{display:none!important}
-#magicpassAylikTablo tbody{display:grid!important;width:100%!important;gap:10px}
-#magicpassAylikTablo tbody tr{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));width:100%!important;overflow:hidden;border:1px solid #dbe3ed;border-radius:13px;background:#fff;box-shadow:0 4px 14px rgba(15,23,42,.06)}
-#magicpassAylikTablo tbody tr:hover td{font-size:.82rem!important;font-weight:inherit!important}
-#magicpassAylikTablo tbody td{display:flex!important;flex-direction:column;justify-content:center;gap:4px;width:auto!important;min-width:0!important;height:auto!important;min-height:54px;padding:9px 8px!important;overflow:visible!important;border:0!important;border-right:1px solid #edf2f7!important;border-bottom:1px solid #edf2f7!important;white-space:normal!important;text-align:left!important;font-size:.82rem!important;line-height:1.25!important}
-#magicpassAylikTablo tbody td::before{content:attr(data-label);display:block;color:#64748b;font-size:.61rem;font-weight:850;letter-spacing:.035em;text-transform:uppercase}
-#magicpassAylikTablo tbody td:nth-child(1){grid-column:1/-1;min-height:36px;align-items:flex-end;padding:6px 10px!important;background:#f8fafc}
-#magicpassAylikTablo tbody td:nth-child(2),#magicpassAylikTablo tbody td:nth-child(3){grid-column:span 2;min-height:58px;background:#f8fafc;font-weight:850;color:#0f172a}
-#magicpassAylikTablo tbody td:nth-child(4),#magicpassAylikTablo tbody td:nth-child(8){border-left:0!important}
-#magicpassAylikTablo tbody td:nth-child(10),#magicpassAylikTablo tbody td:nth-child(11){grid-column:1/-1;border-right:0!important}
-#magicpassAylikTablo tbody td:nth-child(11){min-height:44px;align-items:flex-start}
-#magicpassAylikTablo .magicpass-tarih-gun{display:block;margin:2px 0 0;font-size:.7rem!important}
-#magicpassAylikTablo .magicpass-durum{width:max-content;max-width:100%;white-space:normal;font-size:.73rem!important}
-#magicpassAylikTablo tbody td small{white-space:normal;line-height:1.35}
-.personel-session #magicpassAylikTablo tbody td:nth-child(1),.personel-session #magicpassAylikTablo tbody td:nth-child(11){display:none!important}
-.personel-session #magicpassAylikTablo tbody td:nth-child(2),.personel-session #magicpassAylikTablo tbody td:nth-child(3){border-top:0!important}
+.puan-mobil-personel-secim{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:0 0 12px;padding:11px;border:1px solid #93c5fd;border-radius:12px;background:#eff6ff}.puan-mobil-personel-secim label{color:#1e3a8a;font-size:.7rem;font-weight:900}.puan-mobil-personel-secim select{width:100%;border-color:#60a5fa;background:#fff;color:#0f172a;font-weight:800}.personel-session .puan-mobil-personel-secim{display:none!important}
+#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:none!important;overflow-x:auto!important;overflow-y:visible!important;border:1px solid #dbe3ed!important;background:#fff!important;-webkit-overflow-scrolling:touch}
+#magicpassAylikTablo{display:table!important;width:max-content!important;min-width:790px!important;table-layout:fixed!important;background:#fff!important}
+#magicpassAylikTablo thead{display:table-header-group!important}
+#magicpassAylikTablo tbody{display:table-row-group!important}
+#magicpassAylikTablo tr{display:table-row!important}
+#magicpassAylikTablo th,#magicpassAylikTablo td{display:table-cell!important;height:34px!important;padding:5px 6px!important;white-space:nowrap!important;font-size:.75rem!important}
+#magicpassAylikTablo tbody tr:hover td{font-size:.75rem!important;font-weight:inherit!important}
+#magicpassAylikTablo th:nth-child(2),#magicpassAylikTablo td:nth-child(2){position:sticky;left:30px;z-index:2;background:#fff}
+#magicpassAylikTablo thead th:nth-child(2){z-index:4;background:#f8fafc}
+.personel-session #magicpassAylikTablo th:nth-child(2),.personel-session #magicpassAylikTablo td:nth-child(2){left:0}
+.personel-session #magicpassAylikTablo tbody td:first-child{display:none!important}
 .table-wrapper:has(#puantajTablosu){padding:0!important;overflow:visible!important;border:0!important;background:transparent!important;box-shadow:none!important}
 #puantajTablosu,#puantajTablosu.prim-cizelgesi{display:block!important;width:100%!important;min-width:0!important;table-layout:auto!important;background:transparent!important}
 #puantajTablosu thead{display:none!important}
@@ -2579,7 +2574,10 @@ html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:non
                     <span style="background:#ea580c; color:white; padding:2px 6px; border-radius:4px;"><strong>PZ:</strong> Pazar Çalışma</span>
                 </div>
 
-
+                <div id="puanMobilPersonelSecim" class="puan-mobil-personel-secim">
+                    <label for="puanMobilPersonel">Görüntülenecek personel</label>
+                    <select id="puanMobilPersonel" onchange="renderPuantajMatrisi()"><option value="">Personel seçin</option></select>
+                </div>
                 <div class="table-wrapper">
                     <table class="puantaj-table" id="puantajTablosu">
                         <thead></thead>
@@ -13407,7 +13405,7 @@ html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:non
             if (!primDurumlari.has(anahtar)) primDurumlari.set(anahtar, personelPrimDurumu(p, ay, yil));
             return primDurumlari.get(anahtar);
         };
-        const aktifPersoneller = personeller.filter(p => {
+        let aktifPersoneller = personeller.filter(p => {
             if (!aktifSirketeAit(p)) return false;
             const ayBaslangic = `${yil}-${String(ay + 1).padStart(2, '0')}-01`;
             const ayBitis = `${yil}-${String(ay + 1).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
@@ -13429,6 +13427,16 @@ html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:non
             const subeSirasi = String(a.sube || '').localeCompare(String(b.sube || ''), 'tr', { sensitivity:'base' });
             return subeSirasi || String(a.ad || '').localeCompare(String(b.ad || ''), 'tr', { sensitivity:'base' });
         });
+
+        const mobilPersonelSecimi = document.getElementById('puanMobilPersonel');
+        const mobilTekPersonel = !isPersonelUser() && window.matchMedia('(max-width:760px)').matches;
+        if (mobilPersonelSecimi && mobilTekPersonel) {
+            const oncekiSecim = String(mobilPersonelSecimi.value || '');
+            mobilPersonelSecimi.innerHTML = aktifPersoneller.map(p => `<option value="${escapeHtml(String(p.id))}">${escapeHtml(p.ad || 'Personel')} · ${escapeHtml(p.sube || 'Merkez')}</option>`).join('');
+            const seciliId = aktifPersoneller.some(p => String(p.id) === oncekiSecim) ? oncekiSecim : String(aktifPersoneller[0]?.id || '');
+            mobilPersonelSecimi.value = seciliId;
+            aktifPersoneller = seciliId ? aktifPersoneller.filter(p => String(p.id) === seciliId) : [];
+        }
 
         if (aktifPersoneller.length === 0) {
             tbody.innerHTML = '<tr><td colspan="35" style="text-align:center; color:#64748b;">Kayıtlı aktif personel bulunmuyor.</td></tr>';
@@ -18824,12 +18832,14 @@ html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:non
     const fdSekmeAlanlari=['personelDashboardApp','personelApp','izinTakipApp','puantajApp','primApp','avansApp','icraApp','ekOdemeApp','kkdApp','vardiyaApp','magicpassApp','aracTakipApp','policeTakipApp','irsaliyeTakipApp','kiraTakipApp','ihracatApp','sirketApp','ayarlarApp','workCenterApp'],fdSekmeOrijinaller={};let fdAcikUygulamaSekmeleri=[],fdAktifUygulamaSekmesi='home',fdSekmeSistemGecisi=false,fdSekmeKapatiliyor=false;
     function fdGorunenUygulamaAlaniniBul(){return fdSekmeAlanlari.find(id=>{const e=document.getElementById(id);return e&&getComputedStyle(e).display!=='none'})||''}
     function fdTumUygulamaAlanlariniGizle(){fdSekmeAlanlari.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none'});const h=document.getElementById('appHub');if(h)h.style.display='none'}
+    function fdAnaEkranaHafifDon(){if(typeof ihracatHucreToplamSeciminiTemizle==='function')ihracatHucreToplamSeciminiTemizle();icraEkraniniKapat();document.querySelectorAll('.modal-overlay').forEach(modal=>{if(modal.id!=='modalZorunluSifre')modal.style.display='none'});fdTumUygulamaAlanlariniGizle();['evrakTakipApp','tapuTakipApp','insaatFiyatApp'].forEach(id=>{const alan=document.getElementById(id);if(alan)alan.style.display='none'});document.body.classList.remove('personel-modulu-salt-okunur');fdAktifUygulamaSekmesi='home';const hub=document.getElementById('appHub');if(hub)hub.style.display='block';fdSekmeCubugunuGuncelle(false)}
+    function fdSekmeAgirIceriginiTemizle(anahtar){if(anahtar!=='personel')return;const app=document.getElementById('puantajApp');if(app)app.style.display='none';const tablo=document.getElementById('puantajTablosu');if(!tablo)return;if(tablo.tHead)tablo.tHead.replaceWith(document.createElement('thead'));if(tablo.tBodies[0])tablo.tBodies[0].replaceWith(document.createElement('tbody'))}
     function fdSekmeCubugunuGuncelle(kaydir=true){const b=document.getElementById('fdAppTabBar'),l=document.getElementById('fdAppTabList'),t=document.getElementById('portalTopbar');if(!b||!l)return;b.style.display=activeUser&&t&&getComputedStyle(t).display!=='none'?'flex':'none';b.querySelector('[data-fd-tab="home"]')?.classList.toggle('active',fdAktifUygulamaSekmesi==='home');l.replaceChildren();fdAcikUygulamaSekmeleri.forEach(s=>{const d=fdUygulamaSekmeTanimlari[s.anahtar]||{ad:s.anahtar,ikon:'[]'},a=document.createElement('button');a.type='button';a.className='fd-app-tab'+(fdAktifUygulamaSekmesi===s.anahtar?' active':'');a.dataset.fdTab=s.anahtar;a.title=d.ad;a.onclick=()=>fdUygulamaSekmesineGec(s.anahtar);const i=document.createElement('span');i.className='fd-app-tab-icon';i.textContent=d.ikon;const y=document.createElement('span');y.className='fd-app-tab-label';y.textContent=d.ad;const k=document.createElement('span');k.className='fd-app-tab-close';k.title=d.ad+' sekmesini kapat';k.textContent='x';k.onclick=e=>fdUygulamaSekmesiniKapat(e,s.anahtar);a.append(i,y,k);l.appendChild(a)});if(kaydir)requestAnimationFrame(()=>b.querySelector('.fd-app-tab.active')?.scrollIntoView({behavior:'auto',block:'nearest',inline:'nearest'}))}
     function fdSekmeyiKaydet(a,f){let s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s){s={anahtar:a,fonksiyonAdi:f||fdUygulamaSekmeTanimlari[a]?.acilis||'',alanId:''};fdAcikUygulamaSekmeleri.push(s)}if(f)s.fonksiyonAdi=f;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();return s}
     function fdSekmeGorunumunuYakala(a){const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s||fdAktifUygulamaSekmesi!==a)return;const id=fdGorunenUygulamaAlaniniBul();if(id)s.alanId=id;fdSekmeCubugunuGuncelle()}
-    async function fdUygulamaSekmesineGec(a){if(a==='home'){fdAktifUygulamaSekmesi='home';fdTumUygulamaAlanlariniGizle();fdSekmeSistemGecisi=true;try{const f=fdSekmeOrijinaller.closeAppsToHub;if(f)await f();else document.getElementById('appHub').style.display='block'}finally{fdSekmeSistemGecisi=false;fdSekmeCubugunuGuncelle()}return}const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s)return;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();document.querySelectorAll('.modal-overlay').forEach(e=>{if(e.id!=='modalZorunluSifre')e.style.display='none'});fdTumUygulamaAlanlariniGizle();if(s.alanId&&document.getElementById(s.alanId)){document.getElementById(s.alanId).style.display='block';anaMenuDonusButonunuGoster();return}const f=fdSekmeOrijinaller[s.fonksiyonAdi||fdUygulamaSekmeTanimlari[a]?.acilis];if(!f)return;fdSekmeSistemGecisi=true;try{await f()}finally{fdSekmeSistemGecisi=false;fdSekmeGorunumunuYakala(a)}}
-    async function fdUygulamaSekmesiniKapat(e,a){e?.preventDefault?.();e?.stopPropagation?.();if(fdSekmeKapatiliyor)return;const i=fdAcikUygulamaSekmeleri.findIndex(x=>x.anahtar===a);if(i<0)return;fdSekmeKapatiliyor=true;try{const aktif=fdAktifUygulamaSekmesi===a;fdAcikUygulamaSekmeleri.splice(i,1);if(!aktif){fdSekmeCubugunuGuncelle(false);return}const s=fdAcikUygulamaSekmeleri[Math.min(i,fdAcikUygulamaSekmeleri.length-1)];if(s){await fdUygulamaSekmesineGec(s.anahtar);return}fdAktifUygulamaSekmesi='home';document.querySelectorAll('.modal-overlay').forEach(modal=>{if(modal.id!=='modalZorunluSifre')modal.style.display='none'});fdTumUygulamaAlanlariniGizle();icraEkraniniKapat?.();document.body.classList.remove('personel-modulu-salt-okunur');const hub=document.getElementById('appHub');if(hub)hub.style.display='block';fdSekmeCubugunuGuncelle(false)}finally{fdSekmeKapatiliyor=false;hideGlobalOverlay?.();document.documentElement.style.pointerEvents='';document.body.style.pointerEvents=''}}
-    function fdSekmeSisteminiKur(){Object.entries(fdSekmeFonksiyonlari).forEach(([f,a])=>{const o=window[f];if(typeof o!=='function'||o.__fdSekmeli)return;fdSekmeOrijinaller[f]=o;const w=function(...args){if(fdSekmeSistemGecisi)return o.apply(this,args);fdSekmeyiKaydet(a,f);let r;try{r=o.apply(this,args)}catch(e){fdSekmeGorunumunuYakala(a);throw e}if(r&&typeof r.then==='function')return r.finally(()=>fdSekmeGorunumunuYakala(a));setTimeout(()=>fdSekmeGorunumunuYakala(a),0);return r};w.__fdSekmeli=true;window[f]=w});const c=window.closeAppsToHub;if(typeof c==='function'&&!c.__fdSekmeli){fdSekmeOrijinaller.closeAppsToHub=c;const w=function(...a){if(fdSekmeSistemGecisi)return c.apply(this,a);fdAktifUygulamaSekmesi='home';fdTumUygulamaAlanlariniGizle();const r=c.apply(this,a);fdSekmeCubugunuGuncelle();return r};w.__fdSekmeli=true;window.closeAppsToHub=w}const q=window.logout;if(typeof q==='function'&&!q.__fdSekmeli){const w=async function(...a){try{return await q.apply(this,a)}finally{fdAcikUygulamaSekmeleri=[];fdAktifUygulamaSekmesi='home';fdSekmeCubugunuGuncelle()}};w.__fdSekmeli=true;window.logout=w}const t=document.getElementById('portalTopbar');if(t)new MutationObserver(fdSekmeCubugunuGuncelle).observe(t,{attributes:true,attributeFilter:['style','class']});fdSekmeCubugunuGuncelle()}
+    async function fdUygulamaSekmesineGec(a){if(a==='home'){fdAnaEkranaHafifDon();return}const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s)return;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();document.querySelectorAll('.modal-overlay').forEach(e=>{if(e.id!=='modalZorunluSifre')e.style.display='none'});fdTumUygulamaAlanlariniGizle();if(s.alanId&&document.getElementById(s.alanId)){document.getElementById(s.alanId).style.display='block';anaMenuDonusButonunuGoster();return}const f=fdSekmeOrijinaller[s.fonksiyonAdi||fdUygulamaSekmeTanimlari[a]?.acilis];if(!f)return;fdSekmeSistemGecisi=true;try{await f()}finally{fdSekmeSistemGecisi=false;fdSekmeGorunumunuYakala(a)}}
+    async function fdUygulamaSekmesiniKapat(e,a){e?.preventDefault?.();e?.stopPropagation?.();if(fdSekmeKapatiliyor)return;const i=fdAcikUygulamaSekmeleri.findIndex(x=>x.anahtar===a);if(i<0)return;fdSekmeKapatiliyor=true;try{const aktif=fdAktifUygulamaSekmesi===a;fdAcikUygulamaSekmeleri.splice(i,1);fdSekmeAgirIceriginiTemizle(a);if(!aktif){fdSekmeCubugunuGuncelle(false);return}const s=fdAcikUygulamaSekmeleri[Math.min(i,fdAcikUygulamaSekmeleri.length-1)];if(s){await fdUygulamaSekmesineGec(s.anahtar);return}fdAnaEkranaHafifDon()}finally{fdSekmeKapatiliyor=false;hideGlobalOverlay?.();document.documentElement.style.pointerEvents='';document.body.style.pointerEvents=''}}
+    function fdSekmeSisteminiKur(){Object.entries(fdSekmeFonksiyonlari).forEach(([f,a])=>{const o=window[f];if(typeof o!=='function'||o.__fdSekmeli)return;fdSekmeOrijinaller[f]=o;const w=function(...args){if(fdSekmeSistemGecisi)return o.apply(this,args);fdSekmeyiKaydet(a,f);let r;try{r=o.apply(this,args)}catch(e){fdSekmeGorunumunuYakala(a);throw e}if(r&&typeof r.then==='function')return r.finally(()=>fdSekmeGorunumunuYakala(a));setTimeout(()=>fdSekmeGorunumunuYakala(a),0);return r};w.__fdSekmeli=true;window[f]=w});const c=window.closeAppsToHub;if(typeof c==='function'&&!c.__fdSekmeli){fdSekmeOrijinaller.closeAppsToHub=c;const w=function(...a){if(fdSekmeSistemGecisi)return c.apply(this,a);fdAnaEkranaHafifDon()};w.__fdSekmeli=true;window.closeAppsToHub=w}const q=window.logout;if(typeof q==='function'&&!q.__fdSekmeli){const w=async function(...a){try{return await q.apply(this,a)}finally{fdAcikUygulamaSekmeleri=[];fdAktifUygulamaSekmesi='home';fdSekmeCubugunuGuncelle()}};w.__fdSekmeli=true;window.logout=w}const t=document.getElementById('portalTopbar');if(t)new MutationObserver(fdSekmeCubugunuGuncelle).observe(t,{attributes:true,attributeFilter:['style','class']});fdSekmeCubugunuGuncelle()}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fdSekmeSisteminiKur);else fdSekmeSisteminiKur();
     function fdPortalHesapMenusunuKur(){
         const kullaniciAlani=document.querySelector('#portalTopbar .portal-user');
@@ -21905,14 +21915,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v104';
+      const anahtar='fd-pwa-yenileme-v105';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=104',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=105',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
