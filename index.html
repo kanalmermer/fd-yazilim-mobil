@@ -10224,12 +10224,23 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function icraResmiDocxParagraf(runlar, secenek = {}) {
-        const hizalama = secenek.hizalama || 'left';
+        const hizalama = secenek.hizalama === 'justify' ? 'both' : (secenek.hizalama || 'left');
         const once = Number(secenek.once || 0), sonra = Number(secenek.sonra ?? 120);
         const satir = Number(secenek.satir || 276), ilkGirinti = Number(secenek.ilkGirinti || 0);
         const girinti = ilkGirinti ? `<w:ind w:firstLine="${ilkGirinti}"/>` : '';
         const sonrakiyleTut = secenek.sonrakiyleTut ? '<w:keepNext/>' : '';
         return `<w:p><w:pPr>${sonrakiyleTut}<w:jc w:val="${hizalama}"/><w:spacing w:before="${once}" w:after="${sonra}" w:line="${satir}" w:lineRule="auto"/>${girinti}</w:pPr>${runlar.join('')}</w:p>`;
+    }
+
+    function icraResmiDocxBaslikTablosu(daireBasligi, daireYeri) {
+        const kenarliklar = ['top','left','bottom','right','insideH','insideV']
+            .map(yon => `<w:${yon} w:val="none" w:sz="0" w:space="0" w:color="auto"/>`).join('');
+        const satir = (metin, hizalama, sonrakiyleTut) => `<w:tr><w:trPr><w:jc w:val="center"/></w:trPr><w:tc><w:tcPr><w:tcW w:w="2943" w:type="dxa"/><w:vAlign w:val="center"/></w:tcPr>${icraResmiDocxParagraf([icraResmiDocxRun(metin, { boyut:12 })], { hizalama, sonra:0, satir:240, sonrakiyleTut })}</w:tc></w:tr>`;
+        return `<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:jc w:val="center"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar><w:tblBorders>${kenarliklar}</w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="2943"/></w:tblGrid>${satir('T.C.', 'center', true)}${satir(daireBasligi, 'center', true)}${satir(daireYeri, 'right', false)}</w:tbl>`;
+    }
+
+    function icraDilekceKisiAdiYaz(ad) {
+        return String(ad || '-').trim().toLocaleLowerCase('tr-TR').replace(/(^|[\s'’-])(\p{L})/gu, (eslesme, onEk, harf) => onEk + harf.toLocaleUpperCase('tr-TR'));
     }
 
     function icraResmiDocxHucre(metin, genislik, secenek = {}) {
@@ -10265,40 +10276,38 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const daireYeri = String(icra.icraDairesiYer || icraDairesiYeriniBul(icra.icraDairesi) || '-').toLocaleUpperCase('tr-TR');
         const dilekceTarihi = tarihFormati(icra.dilekceTarihi || icraBugunAnahtari());
         const tcNo = String(personel.tcNo || personel.tc || personel.id || icra.pId || '-');
-        const personelAdi = String(personel.ad || icra.personelAd || '-').toLocaleUpperCase('tr-TR');
+        const personelAdi = icraDilekceKisiAdiYaz(personel.ad || icra.personelAd || '-');
         const girisTarihi = tarihFormati(personel.girisTarihi) || '-';
         const dar = tur === 'coklu';
         const govde = [];
-        govde.push(icraResmiDocxParagraf([icraResmiDocxRun('T.C.', { boyut:12, kalin:true })], { hizalama:'center', sonra:15, satir:240, sonrakiyleTut:true }));
-        govde.push(icraResmiDocxParagraf([icraResmiDocxRun(daireBasligi, { boyut:12, kalin:true })], { hizalama:'center', sonra:15, satir:240, sonrakiyleTut:true }));
-        govde.push(icraResmiDocxParagraf([icraResmiDocxRun(daireYeri, { boyut:12, kalin:true })], { hizalama:'center', sonra:300, satir:240 }));
+        govde.push(icraResmiDocxBaslikTablosu(daireBasligi, daireYeri));
+        govde.push(icraResmiDocxParagraf([], { hizalama:'center', sonra:15, satir:240, sonrakiyleTut:true }));
+        govde.push(icraResmiDocxParagraf([], { hizalama:'left', sonra:300, satir:260, sonrakiyleTut:true }));
         govde.push(icraResmiDocxParagraf([
-            icraResmiDocxRun('İLGİ: ', { boyut:12, kalin:true }),
+            icraResmiDocxRun('İLGİ: ', { boyut:12 }),
             icraResmiDocxRun(`${tarihFormati(icra.yaziTarihi)} tarihli ve ${String(icra.dosyaNo || '-')} Esas sayılı yazınız.`, { boyut:12 })
-        ], { hizalama:'left', sonra:300, satir:260, sonrakiyleTut:true }));
+        ], { hizalama:'left', sonra:0, satir:260, sonrakiyleTut:true }));
+        govde.push(icraResmiDocxParagraf([], { hizalama:'justify', sonra:0, satir:260, sonrakiyleTut:true }));
         govde.push(icraResmiDocxParagraf([
-            icraResmiDocxRun('İlgide kayıtlı yazınıza istinaden, ', { boyut:12 }),
-            icraResmiDocxRun(tcNo, { boyut:12, kalin:true }),
-            icraResmiDocxRun(' T.C. Kimlik numaralı personelimiz ', { boyut:12 }),
-            icraResmiDocxRun(personelAdi, { boyut:12, kalin:true }),
+            icraResmiDocxRun(`İlgide kayıtlı yazınıza istinaden, ${tcNo} T.C. Kimlik numaralı personelimiz `, { boyut:12 }),
+            icraResmiDocxRun(personelAdi, { boyut:12 }),
             icraResmiDocxRun(`, ${girisTarihi} tarihinden itibaren şirketimiz bünyesinde çalışmaktadır.`, { boyut:12 })
-        ], { hizalama:'left', sonra:150, satir:276, ilkGirinti:710 }));
+        ], { hizalama:'justify', sonra:150, satir:276, ilkGirinti:710 }));
         if (tur === 'ilk') {
             govde.push(icraResmiDocxParagraf([
-                icraResmiDocxRun('Söz konusu personel hakkında belirtilen icra takibine ilişkin kesinti işlemi, ', { boyut:12 }),
-                icraResmiDocxRun(icraDilekceDonemiYaz(icra.baslangicAy), { boyut:12, kalin:true }),
-                icraResmiDocxRun(' döneminden itibaren uygulanacak olup, maaşının 1/4 oranındaki tutarı müdürlüğünüz hesabına havale/EFT yoluyla gönderilecektir.', { boyut:12 })
-            ], { hizalama:'left', sonra:160, satir:276, ilkGirinti:710 }));
+                icraResmiDocxRun(`Söz konusu personel hakkında belirtilen icra takibine ilişkin kesinti işlemi, ${icraDilekceDonemiYaz(icra.baslangicAy)} döneminden itibaren uygulanacak olup, maaşının 1/4 oranındaki tutarı müdürlüğünüz hesabına havale/EFT yoluyla gönderilecektir.`, { boyut:12 })
+            ], { hizalama:'justify', sonra:160, satir:276, ilkGirinti:710 }));
         } else {
             govde.push(icraResmiDocxParagraf([
                 icraResmiDocxRun('Personelimiz hakkında hâlihazırda devam eden icra kesintisi bulunmakta olup, söz konusu dosyaya ilişkin kesinti işlemi mevcut icra kesintisi sona erdikten sonra sıraya alınarak gerçekleştirilecektir.', { boyut:12 })
-            ], { hizalama:'left', sonra:190, satir:276, ilkGirinti:710 }));
+            ], { hizalama:'justify', sonra:190, satir:276, ilkGirinti:710 }));
             govde.push(icraResmiDocxParagraf([icraResmiDocxRun('Devam Eden İcra Kesintileri', { boyut:11, kalin:true })], { hizalama:'left', sonra:80, satir:240, sonrakiyleTut:true }));
             const satirlar = Array.isArray(icra.dilekceSatirlari) && icra.dilekceSatirlari.length ? icra.dilekceSatirlari : icraDilekceSatirlariniOlustur(icra);
             govde.push(icraResmiDocxTablosu(satirlar));
             govde.push(icraResmiDocxParagraf([], { sonra:70, satir:120 }));
         }
-        govde.push(icraResmiDocxParagraf([icraResmiDocxRun('Gereğini bilgilerinize arz ederiz.', { boyut:12 })], { hizalama:'left', sonra:220, satir:260 }));
+        govde.push(icraResmiDocxParagraf([icraResmiDocxRun('Gereğini bilgilerinize arz ederiz.', { boyut:12 })], { hizalama:'left', sonra:220, satir:260, ilkGirinti:708 }));
+        govde.push(icraResmiDocxParagraf([], { hizalama:'left', sonra:220, satir:260 }));
         govde.push(icraResmiDocxImza(dilekceTarihi));
         const solSag = dar ? 900 : 1559;
         const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${govde.join('')}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1361" w:right="${solSag}" w:bottom="1247" w:left="${solSag}" w:header="708" w:footer="708" w:gutter="0"/><w:cols w:space="708"/><w:docGrid w:linePitch="360"/></w:sectPr></w:body></w:document>`;
@@ -22401,14 +22410,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v114';
+      const anahtar='fd-pwa-yenileme-v115';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=114',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=115',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
