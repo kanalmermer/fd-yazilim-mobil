@@ -10509,7 +10509,60 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
     }
 
+    let icraKaydetmeDevamEdiyor = false;
+
     async function icraKaydet(event) {
+        event.preventDefault();
+        if (icraKaydetmeDevamEdiyor) {
+            showToast('İcra kaydı zaten kaydediliyor. Lütfen işlemin tamamlanmasını bekleyin.', 'warning');
+            return;
+        }
+        const buton = document.getElementById('btnIcraKaydet');
+        const oncekiYazi = buton?.textContent || '💾 İcra Kaydını Kaydet';
+        icraKaydetmeDevamEdiyor = true;
+        if (buton) {
+            buton.disabled = true;
+            buton.textContent = '⏳ Kaydediliyor...';
+        }
+        try {
+            await icraKaydetIslemi(event);
+        } catch (error) {
+            console.error('İcra kaydetme işlemi:', error);
+            hideGlobalOverlay();
+            showToast('İcra kaydı tamamlanamadı: ' + (error.message || 'Bağlantıyı kontrol edip yeniden deneyin.'), 'error');
+        } finally {
+            icraKaydetmeDevamEdiyor = false;
+            if (buton) {
+                buton.disabled = false;
+                buton.textContent = oncekiYazi;
+            }
+        }
+    }
+
+    async function icraTekKaydiKaydet(kayit) {
+        if (!SUPABASE_MODE) {
+            return zamanAsimliBekle(verileriKaydet(), 25000, 'İcra kaydı zamanında tamamlanamadı. İnternet bağlantısını kontrol edin.');
+        }
+        if (!activeUser?.sirketId) throw new Error('Şirket oturumu bulunamadı.');
+        const legacyId = supabaseKayitAnahtari('icralar', kayit, 0);
+        const { error } = await zamanAsimliBekle(
+            supabaseClient.from('portal_records').upsert({
+                company_id: activeUser.sirketId,
+                module: 'icralar',
+                legacy_id: legacyId,
+                record_year: supabaseKayitYili('icralar', kayit),
+                employee_legacy_id: supabasePersonelKimligi(kayit, 'icralar') || null,
+                data: kayit
+            }, { onConflict:'company_id,module,legacy_id' }),
+            25000,
+            'İcra kaydı sunucuya gönderilirken zaman aşımına uğradı.'
+        );
+        if (error) throw error;
+        veriKayitGoruntusunuYenile('icralar');
+        veriOnbelleginiKaydet();
+    }
+
+    async function icraKaydetIslemi(event) {
         event.preventDefault();
         const form = event.currentTarget;
         let editId = String(document.getElementById('icraEditId').value || icraDuzenlenenKayitId || form.dataset.duzenlenenKayitId || '');
@@ -10657,27 +10710,29 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const dilekceOtomatikAcilsin = !mevcutKayit;
         let dilekceKaydiBasarili = false;
         try {
-            await verileriKaydet();
+            await icraTekKaydiKaydet(kayit);
             kayit.pdfBase64 = '';
             kayit.bitisPdfBase64 = '';
-            await driveVerileriniYukleBaslangicta('icra');
             dilekceKaydiBasarili = true;
+            zamanAsimliBekle(driveVerileriniYukleBaslangicta('icra'), 15000, 'Kayıt kaydedildi ancak liste yenilemesi gecikti.').catch(yenilemeHatasi => {
+                console.warn('İcra kaydı sonrası liste yenilemesi:', yenilemeHatasi);
+                showToast('İcra kaydı kaydedildi; liste yenilemesi gecikti.', 'warning');
+            });
             if (!mevcutKayit) {
                 const mesaj = personelBildirimSablonunuDoldur('magicpassBildirimIcraKayitMetni', {
                     AD: personel.ad || 'Personel', DOSYA_NO: kayit.dosyaNo,
                     ALACAKLI: kayit.alacakli, TUTAR: paraFormatla(kayit.toplamBorc)
                 });
-                try {
-                    await personelKayitBildirimiGonder(personel.id, 'İcra Kaydı', mesaj);
-                } catch (bildirimHatasi) {
+                zamanAsimliBekle(personelKayitBildirimiGonder(personel.id, 'İcra Kaydı', mesaj), 12000, 'Personel bildirimi zamanında tamamlanamadı.').catch(bildirimHatasi => {
                     console.warn('İcra kaydedildi ancak personel bildirimi gönderilemedi:', bildirimHatasi);
                     showToast?.('İcra kaydedildi; personel bildirimi gönderilemedi.', 'warning');
-                }
+                });
             }
             event.currentTarget.reset();
             document.getElementById('icraBaslangicAy').value = new Date().toISOString().slice(0, 7);
             icraYeniKayitKapat();
             icraSekmeDegistir('aktif', document.getElementById('btnIcraAktif'));
+            showToast('İcra kaydı kaydedildi.', 'success');
         } finally {
             hideGlobalOverlay();
             icraPersonelListesiniDoldur();
@@ -22245,14 +22300,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v111';
+      const anahtar='fd-pwa-yenileme-v112';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=111',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=112',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
