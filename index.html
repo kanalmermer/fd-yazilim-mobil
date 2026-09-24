@@ -19587,7 +19587,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function fdGorunenUygulamaAlaniniBul(){return fdSekmeAlanlari.find(id=>{const e=document.getElementById(id);return e&&getComputedStyle(e).display!=='none'})||''}
     function fdTumUygulamaAlanlariniGizle(){fdSekmeAlanlari.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none'});const h=document.getElementById('appHub');if(h)h.style.display='none'}
     function fdAnaEkranaHafifDon(){if(typeof ihracatHucreToplamSeciminiTemizle==='function')ihracatHucreToplamSeciminiTemizle();icraEkraniniKapat();document.querySelectorAll('.modal-overlay').forEach(modal=>{if(modal.id!=='modalZorunluSifre')modal.style.display='none'});fdTumUygulamaAlanlariniGizle();['evrakTakipApp','tapuTakipApp','insaatFiyatApp'].forEach(id=>{const alan=document.getElementById(id);if(alan)alan.style.display='none'});document.body.classList.remove('personel-modulu-salt-okunur');fdAktifUygulamaSekmesi='home';const hub=document.getElementById('appHub');if(hub)hub.style.display='block';fdSekmeCubugunuGuncelle(false)}
-    function fdSekmeAgirIceriginiTemizle(anahtar){if(anahtar!=='personel')return;const app=document.getElementById('puantajApp');if(app)app.style.display='none';const tablo=document.getElementById('puantajTablosu');if(!tablo)return;if(tablo.tHead)tablo.tHead.replaceWith(document.createElement('thead'));if(tablo.tBodies[0])tablo.tBodies[0].replaceWith(document.createElement('tbody'))}
+    function fdSekmeAgirIceriginiTemizle(anahtar){if(anahtar!=='personel')return;const app=document.getElementById('puantajApp');if(app)app.style.display='none';const bordroFrame=document.getElementById('bordroOnizlemeFrame');if(bordroFrame&&bordroFrame.src&&bordroFrame.src!=='about:blank')bordroFrame.src='about:blank'}
     function fdSekmeCubugunuGuncelle(kaydir=true){const b=document.getElementById('fdAppTabBar'),l=document.getElementById('fdAppTabList'),t=document.getElementById('portalTopbar');if(!b||!l)return;b.style.display=activeUser&&t&&getComputedStyle(t).display!=='none'?'flex':'none';b.querySelector('[data-fd-tab="home"]')?.classList.toggle('active',fdAktifUygulamaSekmesi==='home');l.replaceChildren();fdAcikUygulamaSekmeleri.forEach(s=>{const d=fdUygulamaSekmeTanimlari[s.anahtar]||{ad:s.anahtar,ikon:'[]'},a=document.createElement('button');a.type='button';a.className='fd-app-tab'+(fdAktifUygulamaSekmesi===s.anahtar?' active':'');a.dataset.fdTab=s.anahtar;a.title=d.ad;a.onclick=()=>fdUygulamaSekmesineGec(s.anahtar);const i=document.createElement('span');i.className='fd-app-tab-icon';i.textContent=d.ikon;const y=document.createElement('span');y.className='fd-app-tab-label';y.textContent=d.ad;const k=document.createElement('span');k.className='fd-app-tab-close';k.title=d.ad+' sekmesini kapat';k.textContent='x';k.onclick=e=>fdUygulamaSekmesiniKapat(e,s.anahtar);a.append(i,y,k);l.appendChild(a)});if(kaydir)requestAnimationFrame(()=>b.querySelector('.fd-app-tab.active')?.scrollIntoView({behavior:'auto',block:'nearest',inline:'nearest'}))}
     function fdSekmeyiKaydet(a,f){let s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s){s={anahtar:a,fonksiyonAdi:f||fdUygulamaSekmeTanimlari[a]?.acilis||'',alanId:''};fdAcikUygulamaSekmeleri.push(s)}if(f)s.fonksiyonAdi=f;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();return s}
     function fdSekmeGorunumunuYakala(a){const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s||fdAktifUygulamaSekmesi!==a)return;const id=fdGorunenUygulamaAlaniniBul();if(id)s.alanId=id;fdSekmeCubugunuGuncelle()}
@@ -21222,7 +21222,6 @@ tapuCksArayuzunuKur();
         alan.querySelectorAll('input,select,textarea').forEach(el=>{
             const bilgi=[el.id,el.name,el.className,el.placeholder].join(' ').toLocaleLowerCase('tr-TR'),arama=el.type==='search'||/arama|ara\.\.\.|filtre/.test(bilgi),filtreSecim=el.tagName==='SELECT'&&/filtre/.test(bilgi);if(!arama&&!filtreSecim)return;
             if(el.tagName==='SELECT')el.selectedIndex=0;else if(!['date','month','number'].includes(el.type))el.value='';
-            el.dispatchEvent(new Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));
         });
     }
     window.fdModulFiltreleriniTemizle=filtreleriTemizle;
@@ -21243,12 +21242,11 @@ tapuCksArayuzunuKur();
         kopya.querySelectorAll('button,[data-html2canvas-ignore],.vardiya-satir-kontrolleri').forEach(x=>x.remove());kopya.querySelectorAll('[contenteditable]').forEach(x=>x.removeAttribute('contenteditable'));kopya.style.cssText='width:900px;max-width:none;height:auto;max-height:none;overflow:visible;margin:0;padding:12px;background:#fff;box-sizing:border-box';kopya.querySelectorAll('.vardiya-board,.table-wrapper').forEach(x=>{x.style.height='auto';x.style.maxHeight='none';x.style.overflow='visible'});sahne.appendChild(kopya);icerik.appendChild(sahne);
         try{await document.fonts?.ready;await new Promise(requestAnimationFrame);await bekle(70);const canvas=await html2canvas(kopya,{scale:1.55,useCORS:true,backgroundColor:'#fff',logging:false,scrollX:0,scrollY:0,width:kopya.scrollWidth,height:kopya.scrollHeight,windowWidth:Math.max(kopya.scrollWidth,1000),windowHeight:Math.max(kopya.scrollHeight,1000)}),pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true}),pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),kenarX=8,ust=9,alt=14,oran=Math.min((pw-kenarX*2)/canvas.width,(ph-ust-alt)/canvas.height),w=canvas.width*oran,h=canvas.height*oran;pdf.addImage(canvas.toDataURL('image/jpeg',.94),'JPEG',(pw-w)/2,ust,w,h,undefined,'FAST');pdf.setFont('helvetica','normal');pdf.setFontSize(8);pdf.setTextColor(100,116,139);pdf.text('Personel Vardiya Listesi',kenarX,ph-6);pdf.text('Sayfa 1 / 1',pw-kenarX,ph-6,{align:'right'});const blob=pdf.output('blob');fdCiktiPdfOnizle(blob,dosyaAdi,modal);return blob}catch(e){modal.remove();console.error(e);alert('Vardiya PDF hazırlanamadı: '+(e.message||e))}
     };
-    function filtreleriKesinTemizle(anahtar){try{window.fdModulFiltreleriniTemizle?.(anahtar)}catch(_){}
+    function filtreleriKesinTemizle(anahtar){
         const secici=typeof ANA_MENU_MODUL_KOKLERI!=='undefined'?ANA_MENU_MODUL_KOKLERI?.[anahtar]:'';if(!secici)return;
-        document.querySelectorAll(secici).forEach(kok=>kok.querySelectorAll('input,select,textarea').forEach(el=>{const bilgi=[el.id,el.name,el.className,el.placeholder].join(' ').toLocaleLowerCase('tr-TR'),filtreMi=el.type==='search'||/arama|ara\.\.\.|filtre/.test(bilgi);if(!filtreMi)return;if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}));
-        if(anahtar==='tapu'&&typeof tapuFiltreDegisti==='function')tapuFiltreDegisti();if(anahtar==='cks'&&typeof cksFiltreTemizle==='function')cksFiltreTemizle();
+        document.querySelectorAll(secici).forEach(kok=>kok.querySelectorAll('input,select,textarea').forEach(el=>{const bilgi=[el.id,el.name,el.className,el.placeholder].join(' ').toLocaleLowerCase('tr-TR'),filtreMi=el.type==='search'||/arama|ara\.\.\.|filtre/.test(bilgi);if(!filtreMi)return;if(el.tagName==='SELECT')el.selectedIndex=0;else if(!['date','month','number'].includes(el.type))el.value=''}));
     }
-    window.fdModulFiltreleriniKesinTemizle=filtreleriKesinTemizle;document.addEventListener('click',function(e){const kapat=e.target?.closest?.('.fd-app-tab-close');if(!kapat)return;const anahtar=kapat.closest('.fd-app-tab')?.dataset?.fdTab;if(!anahtar)return;filtreleriKesinTemizle(anahtar);setTimeout(()=>filtreleriKesinTemizle(anahtar),0)},true);
+    window.fdModulFiltreleriniKesinTemizle=filtreleriKesinTemizle;document.addEventListener('click',function(e){const kapat=e.target?.closest?.('.fd-app-tab-close');if(!kapat)return;const anahtar=kapat.closest('.fd-app-tab')?.dataset?.fdTab;if(!anahtar)return;filtreleriKesinTemizle(anahtar)},true);
 })();
 </script>
 <script id="fdElKitabiKiraPdfV151">
@@ -22711,14 +22709,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v128';
+      const anahtar='fd-pwa-yenileme-v129';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=128',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=129',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
