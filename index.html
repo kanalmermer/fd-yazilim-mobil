@@ -7478,6 +7478,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let vardiyaDuzenlemeDevamEdiyor = false;
     let vardiyaKayitSurumu = 0;
     let vardiyaKayitKuyrugu = Promise.resolve();
+    const vardiyaBildirimGorunumleri = new Map();
     let vardiyaNumaraHaritasi = new Map();
     let vardiyaKayitZamanlayici = null;
 
@@ -7742,14 +7743,20 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         clearTimeout(vardiyaKayitZamanlayici);
         const kayitSurumu=++vardiyaKayitSurumu;
         const kayit=vardiyaAktifKayit(false);
+        const bildirimAnahtari=kayit?vardiyaHaftalikBildirimAnahtari(kayit):'';
+        const bildirimOnceki=bildirimAnahtari?(vardiyaBildirimGorunumleri.get(bildirimAnahtari)||vardiyaHaftalikBildirimGorunumu(kayit)):new Map();
         if(kayit) kayit.guncellemeZamani=Date.now();
         if(ciz) vardiyaCiz();
+        const bildirimDegisikligi=kayit?vardiyaHaftalikBildirimleriHazirla(kayit,bildirimOnceki):{bildirimler:[],guncel:new Map()};
         vardiyaKayitKuyrugu=vardiyaKayitKuyrugu.catch(()=>{}).then(()=>supabaseVerileriKaydet());
         try {
             await vardiyaKayitKuyrugu;
             if(kayitSurumu===vardiyaKayitSurumu){
                 magicpassAylikCizelgeyiCiz();
                 showToast('Vardiya listesi kaydedildi ve giriş–çıkışa yansıtıldı.');
+                if(bildirimAnahtari)vardiyaBildirimGorunumleri.set(bildirimAnahtari,bildirimDegisikligi.guncel);
+                const bildirimSonucu=await personelBildirimleriniTopluGonder(bildirimDegisikligi.bildirimler);
+                if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' vardiya WhatsApp bildirimi gönderilemedi.','warning');
             }
         } catch(error) {
             alert('Vardiya kaydedilemedi: '+(error.message||error));
@@ -9529,7 +9536,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         };
     }
 
-    function personelVardiyaBildirimiHazirla(personelId, tarihler, vardiya) {
+    function personelVardiyaBildirimiHazirla(personelId, tarihler, vardiya, detay = {}) {
         const personel = personeller.find(p => String(p.id) === String(personelId));
         if (!personel || !vardiya) return null;
         return {
@@ -9537,9 +9544,42 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             baslik:'Vardiya Planınız Güncellendi',
             mesaj:personelBildirimSablonunuDoldur('magicpassBildirimVardiyaDegisiklikMetni', {
                 AD:personel.ad || 'Personel', 'TARİHLER':personelBildirimTarihleriniYaz(tarihler), VARDİYA:magicpassVardiyaAdi(vardiya),
-                'ÇALIŞMA_SAATLERİ':vardiya === 'izin' ? 'Çalışma yok' : magicpassVardiyaSaatEtiketi(vardiya), GÖREV:personel.gorev || '-', ŞUBE:personel.sube || 'Merkez'
+                'ÇALIŞMA_SAATLERİ':vardiya === 'izin' ? 'Çalışma yok' : magicpassVardiyaSaatEtiketi(vardiya), GÖREV:detay.gorev || personel.gorev || '-', ŞUBE:detay.sube || personel.sube || 'Merkez'
             })
         };
+    }
+
+    function vardiyaHaftalikBildirimAnahtari(kayit) {
+        return `${aktifSirketId()}|${String(kayit?.id || '')}`;
+    }
+
+    function vardiyaHaftalikBildirimTarihleri(kayit) {
+        const baslangic=String(kayit?.haftaBaslangic||'').slice(0,10);if(!baslangic)return[];
+        const tarihler=[],ilk=new Date(baslangic+'T12:00:00');
+        for(let gun=0;gun<7;gun++){const tarih=new Date(ilk);tarih.setDate(ilk.getDate()+gun);tarihler.push(magicpassTarihAnahtari(tarih))}
+        return tarihler;
+    }
+
+    function vardiyaHaftalikBildirimGorunumu(kayit) {
+        const gorunum=new Map();if(!kayit)return gorunum;
+        const tanimlar=vardiyaKayitTanimHaritasi(kayit);
+        (kayit.satirlar||[]).forEach(satir=>{
+            const personelId=String(satir.personelId||'');if(!personelId)return;
+            const vardiya=String(tanimlar[satir.vardiya]||fdVardiyaVarsayilanGunduzId()),gorev=String(satir.gorev||'').trim(),sube=String(kayit.sube||'').trim();
+            gorunum.set(personelId,{personelId,vardiya,gorev,sube,imza:[vardiya,gorev,sube].join('|')});
+        });
+        return gorunum;
+    }
+
+    function vardiyaHaftalikBildirimGorunumunuBaslat(kayit) {
+        if(!kayit)return;const anahtar=vardiyaHaftalikBildirimAnahtari(kayit);
+        if(!vardiyaBildirimGorunumleri.has(anahtar))vardiyaBildirimGorunumleri.set(anahtar,vardiyaHaftalikBildirimGorunumu(kayit));
+    }
+
+    function vardiyaHaftalikBildirimleriHazirla(kayit, onceki) {
+        const guncel=vardiyaHaftalikBildirimGorunumu(kayit),tarihler=vardiyaHaftalikBildirimTarihleri(kayit),bildirimler=[];
+        guncel.forEach((detay,personelId)=>{const eski=onceki?.get?.(personelId);if(eski&&eski.imza===detay.imza)return;const bildirim=personelVardiyaBildirimiHazirla(personelId,tarihler,detay.vardiya,detay);if(bildirim)bildirimler.push(bildirim)});
+        return{guncel,bildirimler};
     }
 
     function personelBordroAvansOzetiniBul(personelId, ay, yil) {
@@ -18271,6 +18311,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         vardiyaBosSatirlariTamamla(kayit);document.getElementById('vardiyaAnaBaslik').textContent=kayit.basliklar?.anaBaslik||'PERSONEL VARDİYA LİSTESİ';document.getElementById('vardiyaTarihBaslik').textContent=tarihFormati(kayit.haftaBaslangic)+' - '+tarihFormati(vardiyaHaftaBitisi(kayit.haftaBaslangic));document.getElementById('vardiyaNotlar').innerText=kayit.notlar||'';
         vardiyaNumaraHaritasi=new Map();let no=1;vardiyaBolumleriniDuzelt(kayit).forEach(b=>kayit.satirlar.filter(s=>s.vardiya===b.id).sort((a,c)=>Number(a.sira||0)-Number(c.sira||0)).forEach(s=>{if(s.personelId||s.personelAd)vardiyaNumaraHaritasi.set(String(s.id),no++);}));
         board.innerHTML='<div class="vardiya-dinamik-grid">'+vardiyaBolumleriniDuzelt(kayit).map(b=>vardiyaPanelHtml(kayit,b.id)).join('')+'</div>';
+        vardiyaHaftalikBildirimGorunumunuBaslat(kayit);
     };
 
     async function vardiyaYeniBolumEkle(){
@@ -18996,6 +19037,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             });
             yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();modalKapat('modalMagicpassTopluSaat');magicpassAylikCizelgeyiCiz();
             showToast(islemler.length+' günlük giriş–çıkış kaydı vardiya saatleri temel alınarak dolduruldu.');
+            if(vardiyaSecimi!=='gunluk'){
+                const bildirimler=seciliPersoneller.map(personel=>{const tarihler=islemler.filter(islem=>String(islem.personel.id)===String(personel.id)).map(islem=>islem.tarih);return tarihler.length?personelVardiyaBildirimiHazirla(personel.id,tarihler,vardiyaSecimi):null}).filter(Boolean);
+                const bildirimSonucu=await personelBildirimleriniTopluGonder(bildirimler);
+                if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' vardiya WhatsApp bildirimi gönderilemedi.','warning');
+            }
         }catch(error){vardiyaKayitlari=oncekiKayitlar;showToast('Toplu saatler kaydedilemedi: '+(error.message||error),'error');}
         finally{hideGlobalOverlay();}
     }
@@ -22595,14 +22641,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v124';
+      const anahtar='fd-pwa-yenileme-v125';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=124',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=125',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
