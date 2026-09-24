@@ -5022,7 +5022,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 if (!secilenSirketId) throw new Error('Şirket seçin.');
                 // Giriş ekranından yapılan her deneme bağımsız doğrulanır. Tarayıcıda
                 // kalmış geçerli bir oturum yanlış parolayı örtemez.
-                await supabaseClient.auth.signOut();
+                await supabaseClient.auth.signOut({ scope:'local' });
                 sessionStorage.removeItem('loggedInUser');
                 activeUser = null;
                 supabaseProfile = null;
@@ -5049,7 +5049,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 }
                 document.getElementById('loginAlert').style.display = 'none';
             } catch (error) {
-                await supabaseClient.auth.signOut();
+                await supabaseClient.auth.signOut({ scope:'local' });
                 document.getElementById('loginAlert').textContent = error.message || 'Giriş yapılamadı.';
                 document.getElementById('loginAlert').style.display = 'block';
             } finally {
@@ -6178,7 +6178,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function logout() {
         await kullaniciOturumunuKapat();
-        if (SUPABASE_MODE) await supabaseClient.auth.signOut();
+        if (SUPABASE_MODE) await supabaseClient.auth.signOut({ scope:'local' });
         sessionStorage.removeItem('loggedInUser');
         activeUser = null;
         supabaseProfile = null;
@@ -17468,7 +17468,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             if (!yeniOturum?.user) throw sonOturumHatasi || new Error('Yeni şifreyle güvenli oturum yenilenemedi.');
             if (activeUser?.supabaseUserId && String(yeniOturum.user.id) !== String(activeUser.supabaseUserId)) {
-                await supabaseClient.auth.signOut();
+                await supabaseClient.auth.signOut({ scope:'local' });
                 throw new Error('Yenilenen oturum mevcut kullanıcıyla eşleşmedi.');
             }
             activeUser.sifreDegismeli = false;
@@ -22452,14 +22452,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v120';
+      const anahtar='fd-pwa-yenileme-v121';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=120',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=121',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
