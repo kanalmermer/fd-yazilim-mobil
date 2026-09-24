@@ -4044,7 +4044,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     const fdUzakAnahtarSonYukleme = new Map();
     const fdSirketYuklemeSozleri = new Map();
     const fdSirketSonYukleme = new Map();
-    const FD_AYNI_VERI_YUKLEME_KORUMASI = 30 * 1000;
+    const FD_AYNI_VERI_YUKLEME_KORUMASI = 2 * 60 * 1000;
     const FD_SIRKET_AYARI_ONBELLEK_SURESI = 30 * 60 * 1000;
     const FD_OTOMATIK_KONTROL_ARALIGI = 5 * 60 * 1000;
     const FD_ODAK_KONTROL_ARALIGI = 2 * 60 * 1000;
@@ -4169,6 +4169,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             finally { if (fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari) === yuklemeSozu) fdUzakAnahtarYuklemeSozleri.delete(yuklemeAnahtari); }
         }));
         veriOnbelleginiKaydet();
+    }
+
+    function fdModulVerisiTazeMi(modul, kayitYili = '') {
+        if (!SUPABASE_MODE || !activeUser?.sirketId) return false;
+        const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
+        const anahtarlar = [...new Set(SUPABASE_MODULLERI[modul] || [])];
+        if (!anahtarlar.length) return true;
+        return anahtarlar.every(anahtar => {
+            const yuklemeAnahtari = fdUzakImzaAnahtari(anahtar, yil);
+            const sonYukleme = Number(fdUzakAnahtarSonYukleme.get(yuklemeAnahtari) || 0);
+            return yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI;
+        });
     }
 
     let supabaseKaydetmeKuyrugu = Promise.resolve();
@@ -6250,9 +6262,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         });
         document.getElementById('vardiyaApp').style.display = 'block';
         workspaceSekmesiniAktifEt('vardiya');
-        await driveVerileriniYukleBaslangicta('vardiya');
         vardiyaFiltreleriniHazirla();
         vardiyaCiz();
+        if (!fdModulVerisiTazeMi('vardiya')) {
+            driveVerileriniYukleBaslangicta('vardiya').then(() => {
+                if (document.getElementById('vardiyaApp')?.style.display !== 'block') return;
+                vardiyaFiltreleriniHazirla();
+                vardiyaCiz();
+            }).catch(error => {
+                console.error('Vardiya verileri yenilenemedi:', error);
+                showToast('Vardiya verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     async function openMagicpassApp() {
@@ -6263,14 +6284,22 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         });
         document.getElementById('magicpassApp').style.display = 'block';
         workspaceSekmesiniAktifEt('giriscikis');
-        await driveVerileriniYukleBaslangicta('vardiya');
         if (isPersonelUser()) {
             const listeButonu = document.querySelector('#magicpassAltSekmeler button[onclick*="magicpass-tab-liste"]');
             magicpassSekmeAc('magicpass-tab-liste', listeButonu);
         }
         const magicpassSube=document.getElementById('magicpassSubeFiltre');if(magicpassSube)magicpassSube.dataset.fabrikaVarsayilan='1';
         magicpassArayuzunuHazirla();
-        if (!isPersonelUser()) await magicpassDosyaDurumunuGuncelle();
+        if (!fdModulVerisiTazeMi('vardiya')) {
+            driveVerileriniYukleBaslangicta('vardiya').then(() => {
+                if (document.getElementById('magicpassApp')?.style.display !== 'block') return;
+                magicpassArayuzunuHazirla();
+            }).catch(error => {
+                console.error('Giriş-çıkış verileri yenilenemedi:', error);
+                showToast('Giriş-çıkış verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
+        if (!isPersonelUser()) magicpassDosyaDurumunuGuncelle().catch(error => console.warn('Giriş-çıkış dosya durumu alınamadı:', error));
     }
 
     function toggleSidebar() {
@@ -6280,6 +6309,39 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(pSide) pSide.classList.toggle('collapsed');
         if(iSide) iSide.classList.toggle('collapsed');
         if(puanSide) puanSide.classList.toggle('collapsed');
+    }
+
+    function fdSelectDegerleriniSakla(seciciler) {
+        return Object.fromEntries(seciciler.map(id => [id, document.getElementById(id)?.value ?? '']));
+    }
+
+    function fdSelectDegerleriniGeriYukle(degerler) {
+        Object.entries(degerler || {}).forEach(([id, deger]) => {
+            const alan = document.getElementById(id);
+            if (alan && [...alan.options].some(option => option.value === deger)) alan.value = deger;
+        });
+    }
+
+    function fdPersonelArayuzunuYenile(filtreleriYenile = false) {
+        if (filtreleriYenile) {
+            const secimler = fdSelectDegerleriniSakla(['fAktifSube','fAktifYil','fAktifEngelli','fAktifEmekli','fAktifSiralama','fAyrilanSube','fAyrilanCikisYili','fAyrilanEngelli','fAyrilanEmekli']);
+            filtreDropdownlariDoldur();
+            fdSelectDegerleriniGeriYukle(secimler);
+            syncSubeDatalist();
+        }
+        renderPersonelTables();
+        yillikPersonelBelgeButonunuGuncelle();
+    }
+
+    function fdIzinArayuzunuYenile(filtreleriYenile = false) {
+        if (filtreleriYenile) {
+            const secimler = fdSelectDegerleriniSakla(['fBakiyeSube','fBakiyeDonem']);
+            filtreDropdownlariDoldur();
+            fdSelectDegerleriniGeriYukle(secimler);
+        }
+        renderIzinDashAndTables();
+        renderBakiyeTable();
+        personelSelectDoldur();
     }
 
     function openPersonelApp() {
@@ -6295,14 +6357,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         document.getElementById('personelApp').style.display = 'block';
         workspaceSekmesiniAktifEt('personel');
         hideGlobalOverlay();
-        yillikPersonelBelgeButonunuGuncelle();
-        initUI();
+        fdPersonelArayuzunuYenile(false);
         if (isPersonelUser()) openPersonelDetayModal(String(activeUser?.tcNo || ''));
-        driveVerileriniYukleBaslangicta('personel').then(()=>{
-            initUI();
-            yillikPersonelBelgeButonunuGuncelle();
-            if (isPersonelUser() && document.getElementById('personelApp')?.style.display === 'block' && document.getElementById('modalPersonelDetay')?.style.display !== 'flex') openPersonelDetayModal(String(activeUser?.tcNo || ''));
-        });
+        if (!fdModulVerisiTazeMi('personel')) {
+            driveVerileriniYukleBaslangicta('personel').then(()=>{
+                if (document.getElementById('personelApp')?.style.display !== 'block') return;
+                fdPersonelArayuzunuYenile(true);
+                if (isPersonelUser() && document.getElementById('modalPersonelDetay')?.style.display !== 'flex') openPersonelDetayModal(String(activeUser?.tcNo || ''));
+            }).catch(error => {
+                console.error('Personel verileri yenilenemedi:', error);
+                showToast('Personel verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     function openIzinTakipApp() {
@@ -6318,22 +6384,28 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         document.getElementById('izinTakipApp').style.display = 'block';
         workspaceSekmesiniAktifEt('izin');
         hideGlobalOverlay();
-        initUI();
+        fdIzinArayuzunuYenile(false);
         switchIzinTab('i-tab-form', document.getElementById('btnNavForm'));
         izinFormReset();
         const kendiPersonelId = isPersonelUser() ? String(activeUser.tcNo || '') : '';
         document.getElementById('izinPersonelSelect').value = kendiPersonelId;
         personelSecildi(kendiPersonelId);
-        driveVerileriniYukleBaslangicta('izin').then(() => {
-            const seciliPersonelId = isPersonelUser() ? String(activeUser.tcNo || '') : document.getElementById('izinPersonelSelect').value;
-            initUI();
-            switchIzinTab('i-tab-form', document.getElementById('btnNavForm'));
-            if (seciliPersonelId) {
-                document.getElementById('izinPersonelSelect').value = seciliPersonelId;
-                personelSecildi(seciliPersonelId);
-            }
-            setTimeout(izinKurtarmaUyarisiGoster, 120);
-        });
+        if (!fdModulVerisiTazeMi('izin')) {
+            driveVerileriniYukleBaslangicta('izin').then(() => {
+                if (document.getElementById('izinTakipApp')?.style.display !== 'block') return;
+                const seciliPersonelId = isPersonelUser() ? String(activeUser.tcNo || '') : document.getElementById('izinPersonelSelect').value;
+                fdIzinArayuzunuYenile(true);
+                switchIzinTab('i-tab-form', document.getElementById('btnNavForm'));
+                if (seciliPersonelId) {
+                    document.getElementById('izinPersonelSelect').value = seciliPersonelId;
+                    personelSecildi(seciliPersonelId);
+                }
+                setTimeout(izinKurtarmaUyarisiGoster, 120);
+            }).catch(error => {
+                console.error('İzin verileri yenilenemedi:', error);
+                showToast('İzin verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     function openPuantajApp() {
@@ -6387,9 +6459,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         workspaceSekmesiniAktifEt('ekodeme');
         const ay = document.getElementById('ekOdemeAySec');
         if (!ay.value) ay.value = new Date().toISOString().slice(0, 7);
-        await driveVerileriniYukleBaslangicta('ekodeme');
         await new Promise(requestAnimationFrame);
         await ekOdemeCizelgesiniHazirla();
+        if (!fdModulVerisiTazeMi('ekodeme', String(ay.value || '').slice(0, 4))) {
+            driveVerileriniYukleBaslangicta('ekodeme', String(ay.value || '').slice(0, 4)).then(() => {
+                if (document.getElementById('ekOdemeApp')?.style.display !== 'block') return;
+                return ekOdemeCizelgesiniHazirla();
+            }).catch(error => {
+                console.error('Ek ödeme verileri yenilenemedi:', error);
+                showToast('Ek ödeme verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     async function ekOdemeAyiDegistir() {
@@ -6615,11 +6695,22 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const ay = document.getElementById('kkdAySec');
         if (!ay.value) ay.value = new Date().toISOString().slice(0, 7);
         if (!document.getElementById('kkdTarih').value) document.getElementById('kkdTarih').value = new Date().toISOString().slice(0, 10);
-        await driveVerileriniYukleBaslangicta('kkd');
         yuklenenVeriler.add('kkd');
         if (!veriSonKayitGoruntuleri.has('kkd')) veriKayitGoruntusunuYenile('kkd');
         kkdFiltreleriniDoldur();
         kkdCizelgesiniHazirla();
+        if (!fdModulVerisiTazeMi('kkd')) {
+            driveVerileriniYukleBaslangicta('kkd').then(() => {
+                if (document.getElementById('kkdApp')?.style.display !== 'block') return;
+                yuklenenVeriler.add('kkd');
+                veriKayitGoruntusunuYenile('kkd');
+                kkdFiltreleriniDoldur();
+                kkdCizelgesiniHazirla();
+            }).catch(error => {
+                console.error('KKD verileri yenilenemedi:', error);
+                showToast('KKD verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     function kkdFiltreleriniDoldur() {
@@ -9396,16 +9487,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         avansPersonelListesiniDoldur();
         renderAvansKayitListesi();
         renderAvansKesintiListesi();
-        avansVerileriniYukle().then(() => {
-            avansPersonelListesiniDoldur();
-            renderAvansKayitListesi();
-            renderAvansKesintiListesi();
-        }).catch(error => {
-            console.error('Avans ekranı yükleme hatası:', error);
-            avansPersonelListesiniDoldur();
-            renderAvansKayitListesi();
-            renderAvansKesintiListesi();
-        });
+        if (!fdModulVerisiTazeMi('avans')) {
+            avansVerileriniYukle().then(() => {
+                if (document.getElementById('avansApp')?.style.display !== 'block') return;
+                avansPersonelListesiniDoldur();
+                renderAvansKayitListesi();
+                renderAvansKesintiListesi();
+            }).catch(error => {
+                console.error('Avans ekranı yükleme hatası:', error);
+                showToast('Avans verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
 
     function avansPersonelListesiniDoldur() {
@@ -10784,6 +10876,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
         icraPersonelListesiniDoldur();
         renderIcraListesi();
+        if (SUPABASE_MODE && fdModulVerisiTazeMi('icra')) return;
         try {
             if (SUPABASE_MODE) {
                 await supabaseVerileriniYukle('icra');
@@ -11316,11 +11409,20 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         document.getElementById('btnWorkspacePuantaj').classList.toggle('active', !isPrim);
         document.getElementById('btnWorkspacePrim').classList.toggle('active', isPrim);
         hideGlobalOverlay();
+        const seciliGorunum = gorunum;
+        const seciliYil = document.getElementById('puanYilSec')?.value || '';
+        const verilerTaze = fdModulVerisiTazeMi('puantaj', seciliYil);
         renderPuantajMatrisi();
-        driveVerileriniYukleBaslangicta('puantaj').then(() => {
-            initUI();
-            renderPuantajMatrisi();
-        });
+        if (!verilerTaze) {
+            driveVerileriniYukleBaslangicta('puantaj', seciliYil).then(() => {
+                if (document.getElementById('puantajApp')?.style.display !== 'block' || puantajGorunumu !== seciliGorunum) return;
+                puantajYilSecenekleriniGuncelle();
+                renderPuantajMatrisi();
+            }).catch(error => {
+                console.error('Puantaj verileri yenilenemedi:', error);
+                showToast('Puantaj verileri arka planda yenilenemedi.', 'warning');
+            });
+        }
     }
     async function puantajYiliDegistir() {
         const yil = document.getElementById('puanYilSec').value;
@@ -14091,7 +14193,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }));
     }
 
+    let fdPuantajHizliHesapCache = null;
+    let fdPuantajHizliGunTuruCache = null;
+
     function renderPuantajMatrisi() {
+        fdPuantajHizliHesapCache = new Map();
+        fdPuantajHizliGunTuruCache = new Map();
+        try {
         const ay = parseInt(document.getElementById('puanAySec').value);
         const yil = parseInt(document.getElementById('puanYilSec').value);
         const primFiltre = document.getElementById('puanPrimFiltre')?.value || 'tum';
@@ -14107,6 +14215,19 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const daysInMonth = new Date(yil, ay + 1, 0).getDate();
         const bugun = new Date();
         bugun.setHours(0, 0, 0, 0);
+        const izinlerByPersonel = new Map();
+        izinler.forEach(izin => {
+            if (!aktifSirketeAit(izin)) return;
+            const anahtar = String(izin.pId || '');
+            if (!izinlerByPersonel.has(anahtar)) izinlerByPersonel.set(anahtar, []);
+            izinlerByPersonel.get(anahtar).push(izin);
+        });
+        const manuelPuantajByGun = new Map();
+        puantajVerileri.forEach(kayit => {
+            if (!aktifSirketeAit(kayit) || kayit.kayitTipi) return;
+            const anahtar = `${String(kayit.pId || '')}|${String(kayit.tarih || '')}`;
+            if (!manuelPuantajByGun.has(anahtar)) manuelPuantajByGun.set(anahtar, kayit);
+        });
 
         const thead = document.querySelector('#puantajTablosu thead');
         const tbody = document.querySelector('#puantajTablosu tbody');
@@ -14183,7 +14304,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             let toplamX = 0, toplamPazar = 0, toplamResmiTatil = 0, toplamY = 0, toplamR = 0, toplamU = 0, toplamZ = 0, toplamM = 0, pazarCalisma = 0, resmiTatilCalisma = 0;
             const iseGirisTarihi = tarihInputDegeri(p.girisTarihi);
             const isCikisTarihi = tarihInputDegeri(p.cikisTarihi);
-            const pIzinleri = izinler.filter(i => aktifSirketeAit(i) && String(i.pId) === String(p.id));
+            const pIzinleri = izinlerByPersonel.get(String(p.id)) || [];
             const izinKoduBul = tarih => {
                 const izin = pIzinleri.find(i => tarih >= i.baslangic && tarih <= i.bitis);
                 if (!izin) return '';
@@ -14240,7 +14361,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                         }
                     }
 
-                    const foundObj = puantajVerileri.find(item => aktifSirketeAit(item) && !item.kayitTipi && String(item.pId) === String(p.id) && String(item.tarih) === String(dateKey));
+                    const foundObj = manuelPuantajByGun.get(`${String(p.id)}|${dateKey}`);
                     if (foundObj && foundObj.durum) harf = String(foundObj.durum).toUpperCase();
                     if (primBugunTamamlanmadi && harf !== 'HS' && harf !== 'RT') harf = '';
                 }
@@ -14312,6 +14433,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         tbody.innerHTML = bodyRows.join('');
         puantajMobilEtiketleriniUygula();
         if (primGorunumu) primOzetleriniKaydet(ay, yil, primOzetleri);
+        } finally {
+            fdPuantajHizliHesapCache = null;
+            fdPuantajHizliGunTuruCache = null;
+        }
     }
 
     let manuelPrimHakkiTarget = null;
@@ -14974,9 +15099,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (pIzinleri.length === 0) {
             izinBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#64748b;">Bu personele ait kayıtlı geçmiş izin bulunmuyor.</td></tr>';
         } else {
-            pIzinleri.forEach((i, idx) => {
+            izinBody.innerHTML = pIzinleri.map((i, idx) => {
                 let badgeCls = getTurBadgeClass(i.tur);
-                izinBody.innerHTML += `
+                return `
                     <tr>
                         <td>${idx + 1}</td>
                         <td><span class="badge ${badgeCls}">${i.tur}</span></td>
@@ -14986,7 +15111,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                         <td>${izinGecmisAciklamaHtml(i)}</td>
                     </tr>
                 `;
-            });
+            }).join('');
         }
 
         const bilgiTablosu = (basliklar, satirlar, bosMesaj) => `
@@ -15802,6 +15927,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const tAyrilan = document.querySelector('#tabloAyrilanPersonel tbody');
         tAktif.innerHTML = ''; tAyrilan.innerHTML = '';
         let aCount = 0, cCount = 0;
+        const aktifSatirlar = [];
+        const ayrilanSatirlar = [];
 
         const isAdmin = isManagerUser();
 
@@ -15828,7 +15955,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             actionButtons += `</div>`;
 
-            tAktif.innerHTML += `
+            aktifSatirlar.push(`
                 <tr>
                     <td>${aCount}</td>
                     <td>${foto}</td>
@@ -15840,7 +15967,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <td>${tarihFormati(p.girisTarihi)}</td>
                     <td>${actionButtons}</td>
                 </tr>
-            `;
+            `);
         });
 
         personeller.forEach((p) => {
@@ -15868,7 +15995,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             actionButtons += `</div>`;
 
-            tAyrilan.innerHTML += `
+            ayrilanSatirlar.push(`
                 <tr>
                     <td>${cCount}</td>
                     <td>${foto}</td>
@@ -15881,9 +16008,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <td><strong style="color:#ef4444;">${tarihFormati(p.cikisTarihi)}</strong></td>
                     <td>${actionButtons}</td>
                 </tr>
-            `;
+            `);
         });
 
+        tAktif.innerHTML = aktifSatirlar.join('');
+        tAyrilan.innerHTML = ayrilanSatirlar.join('');
         document.getElementById('badgeAktifSayisi').innerText = `${aCount} Kişi`;
         document.getElementById('badgeAyrilanSayisi').innerText = `${cCount} Kişi`;
     }
@@ -19113,6 +19242,21 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const vardiya=temel.vardiya||magicpassGunVardiyasi(personel,tarihKey),saatler=magicpassVardiyaSaatleri(vardiya,tarihKey),giris=new Date(saatler.bas),cikis=new Date(saatler.bit);
         let normal=Math.max(0,Math.round((cikis-giris)/60000));if(typeof magicpassAralikDakikasi==='function')normal=Math.max(0,normal-magicpassAralikDakikasi(giris,cikis,saatler.yemekBas,saatler.yemekBit));
         return{...temel,vardiya,giris,cikis,normal,gec:0,erken:0,brutMesai:0,mesai:0,durum:kod==='PZ'?'Pazar Çalışması':kod==='RC'?'Resmî Tatil Çalışması':'Çalıştı',seviye:'tamam',uyarilar:[],puantajManuel:true};
+    };
+
+    const fdMagicpassGunHesaplaHam = magicpassGunHesapla;
+    magicpassGunHesapla = function(personel, tarihKey) {
+        if (!fdPuantajHizliHesapCache) return fdMagicpassGunHesaplaHam(personel, tarihKey);
+        const anahtar = `${String(personel?.id || '')}|${String(tarihKey || '')}`;
+        if (!fdPuantajHizliHesapCache.has(anahtar)) fdPuantajHizliHesapCache.set(anahtar, fdMagicpassGunHesaplaHam(personel, tarihKey));
+        return fdPuantajHizliHesapCache.get(anahtar);
+    };
+    const fdMagicpassGunTuruBulHam = magicpassGunTuruBul;
+    magicpassGunTuruBul = function(personel, tarihKey) {
+        if (!fdPuantajHizliGunTuruCache) return fdMagicpassGunTuruBulHam(personel, tarihKey);
+        const anahtar = `${String(personel?.id || '')}|${String(tarihKey || '')}`;
+        if (!fdPuantajHizliGunTuruCache.has(anahtar)) fdPuantajHizliGunTuruCache.set(anahtar, fdMagicpassGunTuruBulHam(personel, tarihKey));
+        return fdPuantajHizliGunTuruCache.get(anahtar);
     };
 
     // Kira Takip: Daire / İşyeri listesi ve ayrı poliçe payları
@@ -22709,14 +22853,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v130';
+      const anahtar='fd-pwa-yenileme-v131';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=130',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=131',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
