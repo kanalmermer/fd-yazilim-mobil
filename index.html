@@ -2039,8 +2039,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <div style="display:flex;justify-content:flex-end;"><button id="ayarKvkkYayinlaBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="kvkkMetniniYayinla(this)">📜 Yeni Sürümü Yayımla</button></div>
                     <small style="display:block;margin-top:10px;color:#9a3412;">Bu alan aydınlatma metnidir; açık rıza beyanı değildir. Yayımlamadan önce şirketinizin hukuk/KVKK danışmanına kontrol ettirmeniz önerilir.</small>
                 </div></details>
-                <details class="profile-section" id="ayarOtomatikBildirimBolumu"><summary>🔔 Otomatik Personel Bildirimleri</summary><div>
-                    <p style="margin:0 0 12px;color:#64748b;line-height:1.55;">Avans ve icra ilk kez kaydedildiğinde anlık bildirim gönderilir. Her gün saat 12.00'de giriş-çıkış, doğum günü ve yıllık izin; her ayın 15'inde açık icra bakiyeleri kontrol edilir. Metinleri aşağıdan değiştirebilirsiniz.</p>
+                <details class="profile-section" id="ayarOtomatikBildirimBolumu"><summary>💬 WhatsApp Otomatik Bildirim Şablonları</summary><div>
+                    <p style="margin:0 0 12px;color:#64748b;line-height:1.55;">Avans ve icra ilk kez kaydedildiğinde anlık bildirim gönderilir. Her gün saat 12.00'de giriş-çıkış, doğum günü ve yıllık izin; her ayın 15'inde açık icra bakiyeleri kontrol edilir. Aşağıdaki metinler Meta'da onaylanan WhatsApp şablonunun değişken mesaj alanına yerleştirilir; buradan değiştirdiğiniz metin bir sonraki uygun gönderimde kullanılır.</p>
                     <div class="form-group"><label>İşe Gelmeme Bildirimi</label><textarea id="ayarMagicBildirimGelmedi" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Giriş Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimGirisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
                     <div class="form-group"><label>Çıkış Kaydı Yok Bildirimi</label><textarea id="ayarMagicBildirimCikisYok" rows="2" maxlength="500" data-case-preserve="true"></textarea></div>
@@ -22452,14 +22452,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v122';
+      const anahtar='fd-pwa-yenileme-v123';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=122',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=123',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
