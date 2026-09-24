@@ -2049,6 +2049,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <div class="form-group"><label>Yeni Avans Kaydı Bildirimi</label><textarea id="ayarMagicBildirimAvansKayit" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {TUTAR}, {TAKSİT}, {TAKSİT_BİLGİSİ}</small></div>
                     <div class="form-group"><label>Yeni İcra Kaydı Bildirimi</label><textarea id="ayarMagicBildirimIcraKayit" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {DOSYA_NO}, {ALACAKLI}, {TUTAR}</small></div>
                     <div class="form-group"><label>Ayın 15'i İcra Bakiye Bildirimi</label><textarea id="ayarMagicBildirimIcraAylik" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {DOSYA_NO}, {ALACAKLI}, {TOPLAM}, {ÖDENEN}, {KALAN}</small></div>
+                    <div class="form-group"><label>İzin Kaydı Bildirimi</label><textarea id="ayarMagicBildirimIzinKayit" rows="3" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {İZİN_TÜRÜ}, {BAŞLANGIÇ}, {BİTİŞ}, {İŞE_BAŞLAMA}, {GÜN}</small></div>
+                    <div class="form-group"><label>Ücret Pusulası Yayımlandı Bildirimi</label><textarea id="ayarMagicBildirimBordroYayin" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {DÖNEM}, {UYGULAMA_ADRESİ}</small></div>
+                    <div class="form-group"><label>Ücret Pusulası ve Avans Kesintisi Bildirimi</label><textarea id="ayarMagicBildirimBordroAvans" rows="3" maxlength="500" data-case-preserve="true"></textarea><small>Avans kesintisi bulunan personelde kullanılır. Alanlar: {AD}, {DÖNEM}, {AVANS_KESİNTİSİ}, {AVANS_KALAN}, {UYGULAMA_ADRESİ}</small></div>
+                    <div class="form-group"><label>Vardiya Değişikliği Bildirimi</label><textarea id="ayarMagicBildirimVardiyaDegisiklik" rows="3" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {TARİHLER}, {VARDİYA}, {ÇALIŞMA_SAATLERİ}, {GÖREV}, {ŞUBE}</small></div>
+                    <div class="form-group"><label>İşe Giriş ve Uygulama Bilgileri</label><textarea id="ayarMagicBildirimIseGiris" rows="4" maxlength="500" data-case-preserve="true"></textarea><small>Yalnızca yeni giriş hesabı başarıyla oluşturulduğunda gönderilir. Şifre değeri mesaja yazılmaz; ilk şifrenin T.C. kimlik numarasının ilk 6 hanesi olduğu belirtilir. Alanlar: {AD}, {İŞE_GİRİŞ_TARİHİ}, {GÖREV}, {ŞUBE}, {UYGULAMA_ADRESİ}, {KULLANICI_ADI}</small></div>
+                    <div class="form-group"><label>İşten Ayrılış Bildirimi</label><textarea id="ayarMagicBildirimIstenAyrilis" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {İŞTEN_AYRILIŞ_TARİHİ}, {GÖREV}, {ŞUBE}</small></div>
                     <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Ortak alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>. Yıllık izin mesajında ayrıca <strong>{YIL}</strong> ve <strong>{GÜN}</strong> kullanılabilir.</div>
                     <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button id="ayarOtomatikBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">💾 Bildirim Metinlerini Kaydet</button></div>
                 </div></details>
@@ -3796,6 +3802,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         magicpassBildirimAvansKayitMetni: '{AD}, {TUTAR} tutarında avans kaydınız oluşturuldu. Kesinti {TAKSİT_BİLGİSİ} yapılacaktır.',
         magicpassBildirimIcraKayitMetni: '{AD}, {DOSYA_NO} dosya numaralı, {ALACAKLI} alacaklı kurumuna ait {TUTAR} tutarındaki icra kaydınız oluşturuldu.',
         magicpassBildirimIcraAylikMetni: '{AD}, {DOSYA_NO} numaralı icra dosyanızdan bugüne kadar {ÖDENEN} ödendi. Kalan tutar {KALAN}.',
+        magicpassBildirimIzinKayitMetni: '{AD}, {BAŞLANGIÇ} - {BİTİŞ} tarihleri arasındaki {İZİN_TÜRÜ} izniniz kaydedilmiştir. Toplam izin süreniz {GÜN} gündür. İşe başlama tarihiniz {İŞE_BAŞLAMA} olarak belirlenmiştir.',
+        magicpassBildirimBordroYayinMetni: '{AD}, {DÖNEM} dönemine ait ücret pusulanız yayımlanmıştır. {UYGULAMA_ADRESİ} adresinden uygulamaya giriş yaparak görüntüleyebilirsiniz.',
+        magicpassBildirimBordroAvansMetni: '{AD}, {DÖNEM} dönemine ait ücret pusulanız yayımlanmıştır. Bu dönemde {AVANS_KESİNTİSİ} avans kesintisi yapılmıştır. Planlanan kalan avans bakiyeniz {AVANS_KALAN}. Pusulanızı {UYGULAMA_ADRESİ} adresinden görüntüleyebilirsiniz.',
+        magicpassBildirimVardiyaDegisiklikMetni: '{AD}, {TARİHLER} için çalışma planınız {VARDİYA} ({ÇALIŞMA_SAATLERİ}) olarak güncellenmiştir. Göreviniz: {GÖREV}. Çalışma yeriniz: {ŞUBE}.',
+        magicpassBildirimIseGirisMetni: '{AD}, {İŞE_GİRİŞ_TARİHİ} tarihinde {ŞUBE} işyerinde {GÖREV} göreviyle işe giriş kaydınız oluşturulmuştur. Uygulamaya {UYGULAMA_ADRESİ} adresinden girebilirsiniz. Kullanıcı adınız: {KULLANICI_ADI}. İlk şifreniz T.C. kimlik numaranızın ilk 6 hanesidir. İlk girişte şifrenizi değiştiriniz.',
+        magicpassBildirimIstenAyrilisMetni: '{AD}, {İŞTEN_AYRILIŞ_TARİHİ} tarihli işten ayrılış işleminiz kaydedilmiştir.',
         vardiyaAciklamalar: 'HERKES GÖREVİ NEREDE YAZIYORSA ORADA ÇALIŞACAK.\nHERKES ÇALIŞTIĞI BÖLGEYİ AKŞAM TEMİZLEYECEK.\nGİRİŞ VE ÇIKIŞLARDA HERKES KARTINI MAKİNAYA OKUTACAK.',
         yedekleme: {
             aktif: false,
@@ -7160,6 +7172,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     async function magicpassSeciliGunlereVardiyaAta(vardiya) {
         const pId = document.getElementById('magicpassPersonel').value;
         if (!pId || !magicpassSeciliGunler.size) return;
+        const bildirilecekTarihler = [...magicpassSeciliGunler];
         const degisiklikler = [];
         [...magicpassSeciliGunler].forEach(tarih => {
             const oncekiler = magicpassKayitlari('vardiyaAtama').filter(k => String(k.pId) === String(pId) && k.tarih === tarih);
@@ -7172,6 +7185,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         await magicpassAtamalariKaydet(degisiklikler, magicpassSeciliGunler.size + ' güne vardiya atandı');
         magicpassAylikCizelgeyiCiz();
         showToast('Seçili günlerin vardiyası güncellendi.');
+        if (vardiya) {
+            const bildirim = personelVardiyaBildirimiHazirla(pId, bildirilecekTarihler, vardiya);
+            const sonuc = await personelBildirimleriniTopluGonder([bildirim]);
+            if (sonuc.basarisiz) showToast('Vardiya kaydedildi; WhatsApp bildirimi gönderilemedi.', 'warning');
+        }
     }
 
     async function magicpassGunDuzenle(tarih) {
@@ -7418,6 +7436,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!await fdYuzerOnaySor(mesaj)){degisiklikler.forEach(d=>{vardiyaKayitlari=vardiyaKayitlari.filter(k=>k.id!==d.yeniId);vardiyaKayitlari.push(...d.oncekiler);});return;}
         await magicpassAtamalariKaydet(degisiklikler,pIdler.length+' personele toplu vardiya atandı');
         magicpassTopluPlanlamaKapat();magicpassAylikCizelgeyiCiz();showToast('Toplu vardiya ataması tamamlandı.');
+        const bildirimler=pIdler.map(pId=>{const tarihler=degisiklikler.filter(d=>String(d.pId)===String(pId)).map(d=>d.tarih);return tarihler.length?personelVardiyaBildirimiHazirla(pId,tarihler,vardiya):null}).filter(Boolean);
+        const bildirimSonucu=await personelBildirimleriniTopluGonder(bildirimler);
+        if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' vardiya WhatsApp bildirimi gönderilemedi.','warning');
     }
 
     async function magicpassSonTopluIslemiGeriAl() {
@@ -9458,10 +9479,112 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         ).slice(0, 500);
     }
 
-    async function personelKayitBildirimiGonder(personelId, baslik, mesaj) {
+    async function personelKayitBildirimiGonder(personelId, baslik, mesaj, secenekler = {}) {
         if (!SUPABASE_MODE || !supabaseClient || !activeUser?.sirketId) return { atlandi:true };
         if (typeof window.fdPersonelOtomatikBildirimGonder !== 'function') throw new Error('Bildirim sistemi hazır değil.');
-        return window.fdPersonelOtomatikBildirimGonder(String(personelId || ''), baslik, mesaj);
+        return window.fdPersonelOtomatikBildirimGonder(String(personelId || ''), baslik, mesaj, Boolean(secenekler.ayrilanPersonel));
+    }
+
+    const PERSONEL_UYGULAMA_ADRESI = 'https://kanalmermer.github.io/fd-yazilim-mobil/';
+
+    async function personelBildirimleriniTopluGonder(bildirimler, eszamanli = 4) {
+        const kuyruk = (Array.isArray(bildirimler) ? bildirimler : []).filter(item => item?.personelId && item?.mesaj);
+        if (!kuyruk.length) return { toplam:0, gonderilen:0, basarisiz:0, hatalar:[] };
+        let sira = 0, gonderilen = 0;
+        const hatalar = [];
+        const isci = async () => {
+            while (sira < kuyruk.length) {
+                const item = kuyruk[sira++];
+                try {
+                    const sonuc = await personelKayitBildirimiGonder(item.personelId, item.baslik, item.mesaj, item);
+                    if (sonuc?.atlandi || Number(sonuc?.sent || 0) > 0) gonderilen++;
+                    else throw new Error(sonuc?.failureReasons?.[0]?.error_message || 'WhatsApp alıcısına ulaşılamadı.');
+                } catch (error) {
+                    hatalar.push({ personelId:String(item.personelId), hata:String(error?.message || error) });
+                }
+            }
+        };
+        await Promise.all(Array.from({ length:Math.min(Math.max(1, Number(eszamanli) || 1), kuyruk.length) }, () => isci()));
+        return { toplam:kuyruk.length, gonderilen, basarisiz:hatalar.length, hatalar };
+    }
+
+    function personelBildirimTarihleriniYaz(tarihler) {
+        const liste = [...new Set((Array.isArray(tarihler) ? tarihler : [tarihler]).map(tarih => String(tarih || '').slice(0,10)).filter(Boolean))].sort();
+        if (!liste.length) return '-';
+        if (liste.length === 1) return tarihFormati(liste[0]) + ' tarihinde';
+        const ardArda = liste.every((tarih, index) => !index || Math.round((new Date(tarih+'T12:00:00') - new Date(liste[index-1]+'T12:00:00')) / 86400000) === 1);
+        return ardArda ? tarihFormati(liste[0]) + ' - ' + tarihFormati(liste[liste.length-1]) + ' tarihleri arasında' : liste.map(tarihFormati).join(', ') + ' tarihlerinde';
+    }
+
+    function personelIzinBildirimiHazirla(izin) {
+        const personel = personeller.find(p => String(p.id) === String(izin?.pId));
+        if (!personel) return null;
+        return {
+            personelId:String(personel.id),
+            baslik:'İzin Kaydınız Oluşturuldu',
+            mesaj:personelBildirimSablonunuDoldur('magicpassBildirimIzinKayitMetni', {
+                AD:personel.ad || 'Personel', 'İZİN_TÜRÜ':izin.tur || 'İzin', BAŞLANGIÇ:tarihFormati(izin.baslangic),
+                BİTİŞ:tarihFormati(izin.bitis), 'İŞE_BAŞLAMA':izin.iseBaslama ? tarihFormati(izin.iseBaslama) : '-', GÜN:Number(izin.gun || 0)
+            })
+        };
+    }
+
+    function personelVardiyaBildirimiHazirla(personelId, tarihler, vardiya) {
+        const personel = personeller.find(p => String(p.id) === String(personelId));
+        if (!personel || !vardiya) return null;
+        return {
+            personelId:String(personel.id),
+            baslik:'Vardiya Planınız Güncellendi',
+            mesaj:personelBildirimSablonunuDoldur('magicpassBildirimVardiyaDegisiklikMetni', {
+                AD:personel.ad || 'Personel', 'TARİHLER':personelBildirimTarihleriniYaz(tarihler), VARDİYA:magicpassVardiyaAdi(vardiya),
+                'ÇALIŞMA_SAATLERİ':vardiya === 'izin' ? 'Çalışma yok' : magicpassVardiyaSaatEtiketi(vardiya), GÖREV:personel.gorev || '-', ŞUBE:personel.sube || 'Merkez'
+            })
+        };
+    }
+
+    function personelBordroAvansOzetiniBul(personelId, ay, yil) {
+        const hedefAy = puantajAyAnahtari(ay, yil);
+        const planlar = avanslar.filter(avans => String(avans.pId) === String(personelId) && avansAktifSirketinMi(avans) && String(avans.durum || '') !== 'Tamamlandı')
+            .map(avans => avansAylikKesinti(avans, hedefAy)).filter(Boolean);
+        return { kesinti:planlar.reduce((toplam, plan) => toplam + Number(plan.kesinti || 0), 0), kalan:planlar.reduce((toplam, plan) => toplam + Number(plan.kalan || 0), 0) };
+    }
+
+    function personelBordroBildirimiHazirla(personelId, donem) {
+        const personel = personeller.find(p => String(p.id) === String(personelId));
+        if (!personel || !donem) return null;
+        const avans = personelBordroAvansOzetiniBul(personel.id, donem.ay, donem.yil), avansVar = avans.kesinti > 0;
+        return {
+            personelId:String(personel.id),
+            baslik:'Ücret Pusulanız Yayımlandı',
+            mesaj:personelBildirimSablonunuDoldur(avansVar ? 'magicpassBildirimBordroAvansMetni' : 'magicpassBildirimBordroYayinMetni', {
+                AD:personel.ad || 'Personel', 'DÖNEM':donem.etiket || '-', 'AVANS_KESİNTİSİ':paraFormatla(avans.kesinti),
+                'AVANS_KALAN':paraFormatla(avans.kalan), 'UYGULAMA_ADRESİ':PERSONEL_UYGULAMA_ADRESI
+            })
+        };
+    }
+
+    function personelIseGirisBildirimiHazirla(personel) {
+        if (!personel?.id) return null;
+        return {
+            personelId:String(personel.id),
+            baslik:'İşe Giriş Bilgilendirmesi',
+            mesaj:personelBildirimSablonunuDoldur('magicpassBildirimIseGirisMetni', {
+                AD:personel.ad || 'Personel', 'İŞE_GİRİŞ_TARİHİ':tarihFormati(personel.girisTarihi), GÖREV:personel.gorev || '-', ŞUBE:personel.sube || 'Merkez',
+                'UYGULAMA_ADRESİ':PERSONEL_UYGULAMA_ADRESI, 'KULLANICI_ADI':String(personel.id)
+            }).replaceAll('{GEÇİCİ_ŞİFRE}', 'T.C. kimlik numaranızın ilk 6 hanesi')
+        };
+    }
+
+    function personelIstenAyrilisBildirimiHazirla(personel) {
+        if (!personel?.id || !personel.cikisTarihi) return null;
+        return {
+            personelId:String(personel.id),
+            baslik:'İşten Ayrılış Bilgilendirmesi',
+            ayrilanPersonel:true,
+            mesaj:personelBildirimSablonunuDoldur('magicpassBildirimIstenAyrilisMetni', {
+                AD:personel.ad || 'Personel', 'İŞTEN_AYRILIŞ_TARİHİ':tarihFormati(personel.cikisTarihi), GÖREV:personel.gorev || '-', ŞUBE:personel.sube || 'Merkez'
+            })
+        };
     }
 
     function avansSirketIdBul(personel) {
@@ -15196,6 +15319,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         showGlobalOverlay('Personeller topluca kaydediliyor', `${yeniPersoneller.length} kayıt ve giriş hesabı hazırlanıyor...`);
         const eklenenTcNoListesi = yeniPersoneller.map(p => p.id);
         const hesapHatalari = [];
+        const hesapOlusturulanIdler = new Set();
         try {
             personeller.push(...yeniPersoneller);
             for (let i = 0; i < yeniPersoneller.length; i += 4) {
@@ -15203,9 +15327,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 const sonuclar = await Promise.allSettled(grup.map(p => personelKullaniciHesabiOlustur(p)));
                 sonuclar.forEach((sonuc, index) => {
                     if (sonuc.status === 'rejected') hesapHatalari.push(`${grup[index].ad}: ${sonuc.reason?.message || 'hesap oluşturulamadı'}`);
+                    else if (sonuc.value) hesapOlusturulanIdler.add(String(grup[index].id));
                 });
             }
             await verileriKaydet();
+            const bildirimSonucu = await personelBildirimleriniTopluGonder(yeniPersoneller.filter(p => hesapOlusturulanIdler.has(String(p.id))).map(personelIseGirisBildirimiHazirla));
+            if (bildirimSonucu.basarisiz) hesapHatalari.push(`${bildirimSonucu.basarisiz} personele işe giriş WhatsApp bildirimi gönderilemedi.`);
             personelTopluAktarModaliniKapat();
             initUI();
             alert(`${yeniPersoneller.length} personel başarıyla kaydedildi.${hesapHatalari.length ? `\n\n${hesapHatalari.length} giriş hesabı oluşturulamadı; personel kayıtları kaydedildi:\n${hesapHatalari.join('\n')}` : `\n\nKullanıcı adları T.C. numarası, ilk şifreleri T.C. numarasının ilk 6 hanesidir.`}`);
@@ -15411,6 +15538,14 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             hideGlobalOverlay();
         }
         if (personelKaydiBasarili && !origId) personelKayitHatirlatmasiniGoster(tcNo, personelHesabiOlustu);
+        if (personelKaydiBasarili && !origId && personelHesabiOlustu) {
+            const bildirimSonucu = await personelBildirimleriniTopluGonder([personelIseGirisBildirimiHazirla(pObj)]);
+            if (bildirimSonucu.basarisiz) showToast('Personel ve giriş hesabı kaydedildi; işe giriş WhatsApp bildirimi gönderilemedi.', 'warning');
+        }
+        if (personelKaydiBasarili && cikisTarihiYeniEklendi) {
+            const bildirimSonucu = await personelBildirimleriniTopluGonder([personelIstenAyrilisBildirimiHazirla(pObj)]);
+            if (bildirimSonucu.basarisiz) showToast('İşten ayrılış kaydedildi; WhatsApp bildirimi gönderilemedi.', 'warning');
+        }
         if (personelKaydiBasarili && kullaniciHesabiOlusturmaHatasi) showToast('Personel kaydı oluşturuldu; ancak giriş hesabı açılamadı: ' + (kullaniciHesabiOlusturmaHatasi.message || kullaniciHesabiOlusturmaHatasi), 'warning');
         if (personelKaydiBasarili && kullaniciHesabiSilmeHatasi) showToast('Personel çıkışı kaydedildi ancak giriş hesabı kapatılamadı: ' + (kullaniciHesabiSilmeHatasi.message || kullaniciHesabiSilmeHatasi), 'warning');
         else if (personelKaydiBasarili && kullaniciHesabiKapatilacak) showToast('Personel çıkışı kaydedildi ve kullanıcı giriş hesabı kapatıldı.');
@@ -16775,6 +16910,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             izinMTopluKayitSonrasiSifirla(yeniIzinler);
             izinMTopluDilekceleriAc(yeniIzinler);
             showToast(`${yeniIzinler.length} izin kaydedildi; dilekçeler toplu hazırlandı.`);
+            const bildirimSonucu=await personelBildirimleriniTopluGonder(yeniIzinler.map(personelIzinBildirimiHazirla));
+            if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' izin WhatsApp bildirimi gönderilemedi.','warning');
         } catch (error) {
             veriOnbelleginiKaydet();
             showToast('Toplu izin kaydı tamamlanamadı. Yerel kurtarma yedeği korundu: ' + (error.message || 'Bilinmeyen hata'), 'error');
@@ -17083,6 +17220,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 personelSecildi(kaydedilenPersonelId);
             }
             showToast(yeniIzinler.length + ' izin kaydı kaydedildi ve yeniden yüklenerek doğrulandı.');
+            const bildirimSonucu=await personelBildirimleriniTopluGonder(yeniIzinler.map(personelIzinBildirimiHazirla));
+            if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' izin WhatsApp bildirimi gönderilemedi.','warning');
         } catch (error) {
             veriOnbelleginiKaydet();
             showToast('Toplu izin kaydı tamamlanamadı. Kayıtlar silinmedi; yerel kurtarma yedeğinde korunuyor: ' + (error.message || 'Bilinmeyen hata'), 'error');
@@ -17162,6 +17301,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             personelSelectDoldur();
             document.getElementById('izinPersonelSelect').value = String(pId);
             personelSecildi(String(pId));
+            const bildirimSonucu=await personelBildirimleriniTopluGonder([personelIzinBildirimiHazirla(kaydedilenIzin)]);
+            if(bildirimSonucu.basarisiz)showToast('İzin kaydedildi; WhatsApp bildirimi gönderilemedi.','warning');
         } finally {
             submitButton.disabled = false;
             izinIslemde = false;
@@ -18625,11 +18766,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function magicpassGunlukRaporAyarlariniDoldur(){
         const mesai=document.getElementById('ayarMagicGunlukMesaiEsik'),mukerrer=document.getElementById('ayarMagicMukerrerDakika'),durum=document.getElementById('ayarMagicCihazsizDurum');
         if(mesai)mesai.value=magicpassGunlukMesaiEsigi();if(mukerrer)mukerrer.value=Math.min(30,Math.max(0,Number(uygulamaAyarlari.magicpassMukerrerBasimDakika??3)));if(durum)durum.value=String(uygulamaAyarlari.magicpassCihazsizDurumMetni||'Kayıt Yok');
-        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni',ayarMagicBildirimAvansKayit:'magicpassBildirimAvansKayitMetni',ayarMagicBildirimIcraKayit:'magicpassBildirimIcraKayitMetni',ayarMagicBildirimIcraAylik:'magicpassBildirimIcraAylikMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
+        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni',ayarMagicBildirimAvansKayit:'magicpassBildirimAvansKayitMetni',ayarMagicBildirimIcraKayit:'magicpassBildirimIcraKayitMetni',ayarMagicBildirimIcraAylik:'magicpassBildirimIcraAylikMetni',ayarMagicBildirimIzinKayit:'magicpassBildirimIzinKayitMetni',ayarMagicBildirimBordroYayin:'magicpassBildirimBordroYayinMetni',ayarMagicBildirimBordroAvans:'magicpassBildirimBordroAvansMetni',ayarMagicBildirimVardiyaDegisiklik:'magicpassBildirimVardiyaDegisiklikMetni',ayarMagicBildirimIseGiris:'magicpassBildirimIseGirisMetni',ayarMagicBildirimIstenAyrilis:'magicpassBildirimIstenAyrilisMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
     }
 
     function otomatikBildirimSablonDegerleriniOku(varsayılanKullan=false){
-        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin',magicpassBildirimAvansKayitMetni:'ayarMagicBildirimAvansKayit',magicpassBildirimIcraKayitMetni:'ayarMagicBildirimIcraKayit',magicpassBildirimIcraAylikMetni:'ayarMagicBildirimIcraAylik'};
+        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin',magicpassBildirimAvansKayitMetni:'ayarMagicBildirimAvansKayit',magicpassBildirimIcraKayitMetni:'ayarMagicBildirimIcraKayit',magicpassBildirimIcraAylikMetni:'ayarMagicBildirimIcraAylik',magicpassBildirimIzinKayitMetni:'ayarMagicBildirimIzinKayit',magicpassBildirimBordroYayinMetni:'ayarMagicBildirimBordroYayin',magicpassBildirimBordroAvansMetni:'ayarMagicBildirimBordroAvans',magicpassBildirimVardiyaDegisiklikMetni:'ayarMagicBildirimVardiyaDegisiklik',magicpassBildirimIseGirisMetni:'ayarMagicBildirimIseGiris',magicpassBildirimIstenAyrilisMetni:'ayarMagicBildirimIstenAyrilis'};
         return Object.fromEntries(Object.entries(alanlar).map(([anahtar,id])=>{
             const girilen=String(document.getElementById(id)?.value||'').trim();
             const deger=varsayılanKullan?(girilen||String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')):girilen;
@@ -21277,7 +21418,7 @@ document.addEventListener('click',function(e){
         if(!secilen.length)return alert('Yüklenecek en az bir belge seçin.');
         const max=20*1024*1024;
         for(const x of secilen){if(!uzanti(x.f))return alert(x.t.ad+' için yalnızca PDF veya Excel dosyası seçebilirsiniz.');if(x.f.size>max)return alert(x.t.ad+' dosyası en fazla 20 MB olabilir.')}
-        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[];
+        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[];
         islemde=true;btn.disabled=true;btn.classList.add('yukleniyor');
         try{
             for(let i=0;i<secilen.length;i++){
@@ -21294,6 +21435,7 @@ document.addEventListener('click',function(e){
                 await ayariKaydet(d,k);
                 if(ayrilan){
                     const kaydedilen=await pusulaKayitlariniKaydet(ayrilan,d,yeni,btn);
+                    kaydedilen.forEach((_,tc)=>{const bildirim=personelBordroBildirimiHazirla(tc,d);if(bildirim)bordroBildirilecekler.push(bildirim)});
                     k.belgeler[t.kod].ayristirilan=kaydedilen.size;k.belgeler[t.kod].eslesmeyen=ayrilan.sorunlar.length;k.belgeler[t.kod].toplamPusula=ayrilan.toplam;
                     await ayariKaydet(d,k);
                     if(ayrilan.sorunlar.length){
@@ -21304,6 +21446,7 @@ document.addEventListener('click',function(e){
                 await bordroEskiBelgeleriTemizle(yeni.id,ad,eski?.id||'');
                 bordroIlerlet(btn,Math.round((i+1)/secilen.length*100));
             }
+            if(bordroBildirilecekler.length){bordroIlerlet(btn,96,'WhatsApp bildirimleri gönderiliyor...');const bildirimSonucu=await personelBildirimleriniTopluGonder(bordroBildirilecekler);if(bildirimSonucu.basarisiz)uyarilar.push(bildirimSonucu.basarisiz+' personele ücret pusulası WhatsApp bildirimi gönderilemedi.')}
             bordroIlerlet(btn,100,'Tamamlandı %100');panelCiz();showToast?.(d.etiket+' bordro belgeleri kaydedildi.');
             setTimeout(()=>modalKapat('bordroBelgeleriModal'),450);
             if(uyarilar.length)setTimeout(()=>alert(uyarilar.join('\n\n')),550);
@@ -21501,10 +21644,10 @@ document.addEventListener('click',function(e){
         if(!activeUser||!destekleniyor()||!mobilUygulamaOrtami()||Notification.permission!=='granted')return;
         try{const registration=await navigator.serviceWorker.ready,config=await cagir({action:'config'});await aboneligiKaydet(registration,config);izinDugmesiniGuncelle()}catch(error){console.warn('Bildirim aboneliği yenilenemedi:',error)}
     }
-    window.fdPersonelOtomatikBildirimGonder=async function(personelId,baslik,mesaj){
+    window.fdPersonelOtomatikBildirimGonder=async function(personelId,baslik,mesaj,ayrilanPersonel=false){
         const hedef=String(personelId||'').trim();
         if(!hedef)throw new Error('Bildirim gönderilecek personel bulunamadı.');
-        return whatsappCagir({action:'send',title:String(baslik||'Bilgilendirme'),message:String(mesaj||''),targetMode:'selection',targetEmployeeIds:[hedef]});
+        return whatsappCagir({action:'send',title:String(baslik||'Bilgilendirme'),message:String(mesaj||''),targetMode:'selection',targetEmployeeIds:[hedef],allowInactiveTargets:Boolean(ayrilanPersonel)});
     };
     function fdBildirimPlanZamaniVarsayilan(force=false){const input=document.getElementById('fdBildirimPlanZamani');if(!input||(!force&&input.value))return;const date=new Date(Date.now()+60*60*1000);date.setMinutes(Math.ceil(date.getMinutes()/5)*5,0,0);input.value=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')+'T'+String(date.getHours()).padStart(2,'0')+':'+String(date.getMinutes()).padStart(2,'0')}
     window.fdBildirimModuDegisti=function(mode){const modal=document.getElementById('modalBildirimGonder'),planned=mode==='scheduled',instantButton=document.getElementById('fdBildirimModuAnlik'),plannedButton=document.getElementById('fdBildirimModuPlanli'),settings=document.getElementById('fdBildirimPlanAyarlari'),submit=document.getElementById('fdBildirimGonderBtn');if(!modal)return;modal.dataset.mode=planned?'scheduled':'instant';instantButton?.classList.toggle('active',!planned);plannedButton?.classList.toggle('active',planned);if(settings)settings.style.display=planned?'block':'none';if(submit)submit.textContent=planned?'💬 WhatsApp Mesajını Planla':'💬 WhatsApp\'tan Gönder';if(planned)fdBildirimPlanZamaniVarsayilan()};
@@ -22452,14 +22595,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v123';
+      const anahtar='fd-pwa-yenileme-v124';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=123',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=124',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
