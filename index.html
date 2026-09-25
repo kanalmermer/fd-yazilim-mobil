@@ -2438,8 +2438,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                                 </div>
                             </div>
 
-                            <div id="genelToplamKalanDiv" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:8px;"><div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 10px;color:#1e3a8a;"><small style="display:block;color:#64748b;">Toplam Hak</small><strong id="genelToplamHakDeger">0 Gün</strong></div><div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px 10px;color:#9a3412;"><small style="display:block;color:#64748b;">Kullanılan Yıllık İzin</small><strong id="genelToplamKullanilanDeger">0 Gün</strong></div><div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:9px 10px;color:#047857;"><small style="display:block;color:#64748b;">Toplam Kalan</small><strong id="genelToplamKalanDeger">0 Gün</strong></div></div>
-                            <div id="genelToplamDuzeltmeNotu" style="display:none;margin:0 0 12px;padding:7px 9px;border:1px solid #c4b5fd;border-radius:8px;background:#faf5ff;color:#6d28d9;font-size:.72rem;font-weight:750;"></div><div style="margin-bottom: 10px;">
+                            <div id="genelToplamKalanDiv" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px;"><div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 10px;color:#1e3a8a;"><small style="display:block;color:#64748b;">Toplam Hak</small><strong id="genelToplamHakDeger">0 Gün</strong></div><div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px 10px;color:#9a3412;"><small style="display:block;color:#64748b;">Kullanılan Yıllık İzin</small><strong id="genelToplamKullanilanDeger">0 Gün</strong></div><div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:9px 10px;color:#047857;"><small style="display:block;color:#64748b;">Toplam Kalan</small><strong id="genelToplamKalanDeger">0 Gün</strong></div></div><div style="margin-bottom: 10px;">
                                 <div class="ozet-section-title">📊 Kullandığı İzin Toplamları (Tüm Türler):</div>
                                 <div id="ozetKullanilanBadges" class="ozet-badges"></div>
                             </div>
@@ -2477,12 +2476,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                                 <div style="padding:9px 11px;color:#6d28d9;font-size:.8rem;font-weight:850;">📝 İzinlerle İlgili Ek Notlar</div>
                                 <div style="padding:0 10px 10px;">
                                     <textarea id="izinPersonelNotu" rows="3" placeholder="Bu personelin izinleriyle ilgili kalıcı not yazın..." style="width:100%;resize:vertical;"></textarea>
-                                    <div class="form-row" style="margin-top:8px;">
-                                        <div class="form-group"><label>Yıllık İzin Bakiye Düzeltmesi (Gün)</label><input id="izinBakiyeDuzeltme" type="number" step="0.5" min="-365" max="365" value="0" placeholder="Örn. 4 veya -2"></div>
-                                        <div class="form-group"><label>Düzeltme Açıklaması</label><input id="izinBakiyeDuzeltmeAciklama" type="text" maxlength="250" placeholder="Düzeltmenin nedenini yazın"></div>
-                                    </div>
                                     <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:6px;">
-                                        <button id="izinPersonelNotKaydetBtn" type="button" class="btn-modern btn-edit-modern" onclick="izinPersonelNotunuKaydet()">Not ve Bakiyeyi Kaydet</button>
+                                        <button id="izinPersonelNotKaydetBtn" type="button" class="btn-modern btn-edit-modern" onclick="izinPersonelNotunuKaydet()">Notu Kaydet</button>
                                     </div>
                                 </div>
                             </div>
@@ -16378,15 +16373,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return h;
     }
 
-    function yillikIzinBakiyeDuzeltmesiniGetir(personel) {
-        const deger = Number(personel?.yillikIzinBakiyeDuzeltme || 0);
-        return Number.isFinite(deger) ? deger : 0;
-    }
-
-    function izinGunMetni(deger) {
-        return new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 2 }).format(Number(deger || 0));
-    }
-
     function personelDonemleriniGetir(p) {
         if (!p || !p.girisTarihi) return [];
         let gt = new Date(p.girisTarihi), ref = (p.cikisTarihi && p.cikisTarihi !== "null") ? new Date(p.cikisTarihi) : new Date();
@@ -16562,12 +16548,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!personel)return null;
         const gecmis=izinler.filter(i=>String(i.pId)===String(pId)).sort((a,b)=>new Date(b.baslangic)-new Date(a.baslangic));
         const hakedis=personelDonemleriniGetir(personel).map(d=>{const kullanilan=izinler.filter(i=>String(i.pId)===String(personel.id)&&i.donem===d.donem&&i.tur==='Yıllık İzin').reduce((s,x)=>s+Number(x.gun||0),0);return{...d,kullanilan,kalan:d.hak-kullanilan}}).filter(d=>d.kalan>0);
-        return{personel,gecmis,hakedis,toplamKalan:hakedis.reduce((t,d)=>t+d.kalan,0),bakiyeDuzeltme:yillikIzinBakiyeDuzeltmesiniGetir(personel),bakiyeDuzeltmeAciklama:String(personel.yillikIzinBakiyeDuzeltmeAciklama||'').trim()||'-',kullanilanOzet:document.getElementById('ozetKullanilanBadges').innerText.trim()||'Henüz izin kullanılmamış.',izinNotu:String(personel.izinNotu||'').trim()||'-'};
+        return{personel,gecmis,hakedis,toplamKalan:hakedis.reduce((t,d)=>t+d.kalan,0),kullanilanOzet:document.getElementById('ozetKullanilanBadges').innerText.trim()||'Henüz izin kullanılmamış.',izinNotu:String(personel.izinNotu||'').trim()||'-'};
     }
 
     function exportIzinOzetExcel() {
         const veri=seciliPersonelIzinCiktiVerisi();if(!veri)return alert('Lütfen önce bir personel seçin.');
-        const ozetSatirlari=[['PERSONEL İZİN DURUMU ÖZETİ'],['Personel',veri.personel.ad],['İşe Giriş',tarihFormati(veri.personel.girisTarihi)],['Şube',veri.personel.sube||'Merkez'],['Toplam Kalan Yıllık İzin',veri.toplamKalan+' Gün'],['Geçmiş Bakiye Düzeltmesi',(veri.bakiyeDuzeltme>0?'+':'')+izinGunMetni(veri.bakiyeDuzeltme)+' Gün',veri.bakiyeDuzeltmeAciklama],['Kullandığı İzin Toplamları',veri.kullanilanOzet],['İzinlerle İlgili Ek Not',veri.izinNotu],[],['AKTİF VE KALAN YILLIK İZİN HAKEDİŞLERİ'],['Dönem','Toplam Hak','Kullanılan','Kalan','Durum'],...veri.hakedis.map(d=>[d.donem,d.hak+' Gün',d.kullanilan+' Gün',d.kalan+' Gün',d.kullanilan?'Kısmi kullanım':'Tam kalan'])];
+        const ozetSatirlari=[['PERSONEL İZİN DURUMU ÖZETİ'],['Personel',veri.personel.ad],['İşe Giriş',tarihFormati(veri.personel.girisTarihi)],['Şube',veri.personel.sube||'Merkez'],['Toplam Kalan Yıllık İzin',veri.toplamKalan+' Gün'],['Kullandığı İzin Toplamları',veri.kullanilanOzet],['İzinlerle İlgili Ek Not',veri.izinNotu],[],['AKTİF VE KALAN YILLIK İZİN HAKEDİŞLERİ'],['Dönem','Toplam Hak','Kullanılan','Kalan','Durum'],...veri.hakedis.map(d=>[d.donem,d.hak+' Gün',d.kullanilan+' Gün',d.kalan+' Gün',d.kullanilan?'Kısmi kullanım':'Tam kalan'])];
         if(!veri.hakedis.length)ozetSatirlari.push(['Aktif yıllık izin hakedişi bulunmuyor.']);
         const gecmisSatirlari=[['#','İzin Türü','Dönem','Başlangıç','Bitiş','Süre','Rapor / Açıklama'],...veri.gecmis.map((i,index)=>[index+1,i.tur||'-',i.donem||'-',tarihFormati(i.baslangic),tarihFormati(i.bitis),Number(i.gun||0)+' Gün',izinGecmisAciklamaMetni(i)])];
         if(!veri.gecmis.length)gecmisSatirlari.push(['','','','','','','Kayıtlı geçmiş izin bulunmuyor.']);
@@ -16584,7 +16570,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         veri.gecmis.forEach(i=>satirlar.push(['Geçmiş İzin',i.tur||'-',tarihFormati(i.baslangic)+' – '+tarihFormati(i.bitis),Number(i.gun||0)+' Gün',i.donem||'-',izinGecmisAciklamaMetni(i)]));
         if(!veri.gecmis.length)satirlar.push(['Geçmiş İzin','-','-','-','-','Kayıtlı geçmiş izin bulunmuyor.']);
         satirlar.push(['Genel Özet','Toplam Kalan','-',veri.toplamKalan+' Gün','-',veri.kullanilanOzet]);
-        if(veri.bakiyeDuzeltme) satirlar.push(['Bakiye Düzeltmesi','Geçmiş Dönem','-',(veri.bakiyeDuzeltme>0?'+':'')+izinGunMetni(veri.bakiyeDuzeltme)+' Gün','-',veri.bakiyeDuzeltmeAciklama]);
         if(veri.izinNotu!=='-')satirlar.push(['Ek Not','-','-','-','-',veri.izinNotu]);
         alan.innerHTML='<table><thead><tr><th>Bölüm</th><th>Tür / Dönem</th><th>Tarih Aralığı</th><th>Süre / Hak</th><th>Kullanılan / Dönem</th><th>Açıklama</th></tr></thead><tbody>'+satirlar.map(s=>'<tr>'+s.map(v=>'<td>'+escapeDashboardText(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
         return window.fdTabloPdfOnizle(alan.querySelector('table'),veri.personel.ad+' · İZİN DURUMU VE GEÇMİŞİ',izinOzetDosyaAdi('pdf'),{yon:'landscape',ilkKolonGenislik:'15%',altBaslik:'Personel İzin Durumu ve Geçmişi'});
@@ -16592,33 +16577,23 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function izinPersonelNotunuFormaYukle(pId) {
         const menu = document.getElementById('izinPersonelNotMenu');
         const alan = document.getElementById('izinPersonelNotu');
-        const duzeltmeAlani = document.getElementById('izinBakiyeDuzeltme');
-        const duzeltmeAciklamaAlani = document.getElementById('izinBakiyeDuzeltmeAciklama');
         const buton = document.getElementById('izinPersonelNotKaydetBtn');
         if (!menu || !alan) return;
         const personel = personeller.find(p => String(p.id) === String(pId));
         menu.dataset.personelId = personel ? String(personel.id) : '';
         menu.style.display = personel && !isPersonelUser() ? 'block' : 'none';
         alan.value = personel?.izinNotu || '';
-        if (duzeltmeAlani) duzeltmeAlani.value = personel ? String(yillikIzinBakiyeDuzeltmesiniGetir(personel)) : '0';
-        if (duzeltmeAciklamaAlani) duzeltmeAciklamaAlani.value = personel?.yillikIzinBakiyeDuzeltmeAciklama || '';
         alan.readOnly = isPersonelUser();
-        if (duzeltmeAlani) duzeltmeAlani.readOnly = isPersonelUser();
-        if (duzeltmeAciklamaAlani) duzeltmeAciklamaAlani.readOnly = isPersonelUser();
         if (buton) buton.style.display = isPersonelUser() ? 'none' : 'inline-flex';
     }
 
     async function izinPersonelNotunuKaydet() {
         if (isPersonelUser()) return showToast('Personel hesab\u0131n\u0131n not de\u011fi\u015ftirme yetkisi yoktur.', 'warning');
-        const menu=document.getElementById('izinPersonelNotMenu'),alan=document.getElementById('izinPersonelNotu'),duzeltmeAlani=document.getElementById('izinBakiyeDuzeltme'),duzeltmeAciklamaAlani=document.getElementById('izinBakiyeDuzeltmeAciklama');
+        const menu=document.getElementById('izinPersonelNotMenu'),alan=document.getElementById('izinPersonelNotu');
         const personel=personeller.find(p=>String(p.id)===String(menu?.dataset.personelId||document.getElementById('izinPersonelSelect')?.value));
         if(!personel||!alan)return showToast('\u00d6nce personel se\u00e7in.','warning');
-        const onceki=personel.izinNotu||'',oncekiDuzeltme=yillikIzinBakiyeDuzeltmesiniGetir(personel),oncekiDuzeltmeAciklama=personel.yillikIzinBakiyeDuzeltmeAciklama||'',yeniNot=alan.value.trim(),yeniDuzeltme=Number(duzeltmeAlani?.value||0),yeniDuzeltmeAciklama=String(duzeltmeAciklamaAlani?.value||'').trim(),personelIndex=personeller.indexOf(personel);
-        if(!Number.isFinite(yeniDuzeltme)||yeniDuzeltme < -365||yeniDuzeltme > 365)return showToast('Bakiye düzeltmesi -365 ile 365 gün arasında olmalıdır.','warning');
-        if(yeniDuzeltme!==0&&!yeniDuzeltmeAciklama)return showToast('Bakiye düzeltmesinin nedenini yazın.','warning');
+        const onceki=personel.izinNotu||'',yeniNot=alan.value.trim(),personelIndex=personeller.indexOf(personel);
         personel.izinNotu=yeniNot;
-        personel.yillikIzinBakiyeDuzeltme=yeniDuzeltme;
-        personel.yillikIzinBakiyeDuzeltmeAciklama=yeniDuzeltmeAciklama;
         try{
             yuklenenVeriler.add('personeller');
             if(SUPABASE_MODE&&supabaseClient&&activeUser?.sirketId){
@@ -16627,13 +16602,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 const {error}=await supabaseClient.from('portal_records').upsert(payload,{onConflict:'company_id,module,legacy_id'});if(error)throw error;
                 const {data:kontrol,error:kontrolHatasi}=await supabaseClient.from('portal_records').select('data').eq('company_id',activeUser.sirketId).eq('module','personeller').eq('legacy_id',legacyId).maybeSingle();
                 if(kontrolHatasi)throw kontrolHatasi;
-                if(String(kontrol?.data?.izinNotu||'')!==yeniNot||Number(kontrol?.data?.yillikIzinBakiyeDuzeltme||0)!==yeniDuzeltme)throw new Error('\u0130zin bilgileri veritaban\u0131nda do\u011frulanamad\u0131.');
+                if(String(kontrol?.data?.izinNotu||'')!==yeniNot)throw new Error('\u0130zin notu veritaban\u0131nda do\u011frulanamad\u0131.');
                 veriKayitGoruntusunuYenile('personeller');veriOnbelleginiKaydet();
             }else await verileriKaydet();
             personelOzetKutusunuGuncelle(personel);
-            showToast('Personelin izin notu ve bakiye düzeltmesi kaydedildi.','success');
+            showToast('Personelin izin notu kaydedildi.','success');
         }catch(error){
-            personel.izinNotu=onceki;personel.yillikIzinBakiyeDuzeltme=oncekiDuzeltme;personel.yillikIzinBakiyeDuzeltmeAciklama=oncekiDuzeltmeAciklama;alan.value=onceki;if(duzeltmeAlani)duzeltmeAlani.value=String(oncekiDuzeltme);if(duzeltmeAciklamaAlani)duzeltmeAciklamaAlani.value=oncekiDuzeltmeAciklama;showToast('\u0130zin bilgileri kaydedilemedi: '+(error.message||error),'error');
+            personel.izinNotu=onceki;alan.value=onceki;showToast('\u0130zin notu kaydedilemedi: '+(error.message||error),'error');
         }
     }
     function izinGecmisAciklamaMetni(izin) {
@@ -20598,9 +20573,8 @@ tapuCksArayuzunuKur();
     }
     const fdPersonelOzetToplamOncesi=personelOzetKutusunuGuncelle;
     personelOzetKutusunuGuncelle=function(p){
-        fdPersonelOzetToplamOncesi(p);const donemler=personelDonemleriniGetir(p),duzeltme=yillikIzinBakiyeDuzeltmesiniGetir(p),hak=donemler.reduce((t,d)=>t+Number(d.hak||0),0)+duzeltme,kullanilan=izinler.filter(i=>String(i.pId)===String(p.id)&&i.tur==='Yıllık İzin').reduce((t,i)=>t+Number(i.gun||0),0),kalan=Math.max(0,hak-kullanilan);
+        fdPersonelOzetToplamOncesi(p);const donemler=personelDonemleriniGetir(p),hak=donemler.reduce((t,d)=>t+Number(d.hak||0),0),kullanilan=izinler.filter(i=>String(i.pId)===String(p.id)&&i.tur==='Yıllık İzin').reduce((t,i)=>t+Number(i.gun||0),0),kalan=Math.max(0,hak-kullanilan);
         const hakEl=document.getElementById('genelToplamHakDeger'),kulEl=document.getElementById('genelToplamKullanilanDeger'),kalEl=document.getElementById('genelToplamKalanDeger');if(hakEl)hakEl.textContent=hak+' Gün';if(kulEl)kulEl.textContent=kullanilan+' Gün';if(kalEl)kalEl.textContent=kalan+' Gün';
-        const duzeltmeNotu=document.getElementById('genelToplamDuzeltmeNotu');if(duzeltmeNotu){duzeltmeNotu.style.display=duzeltme?'block':'none';duzeltmeNotu.textContent=duzeltme?('Geçmiş bakiye düzeltmesi: '+(duzeltme>0?'+':'')+izinGunMetni(duzeltme)+' Gün'+(p.yillikIzinBakiyeDuzeltmeAciklama?' · '+p.yillikIzinBakiyeDuzeltmeAciklama:'')):'';}
     };
     exportBakiyeToPDF=function(){return window.fdTabloPdfOnizle(document.getElementById('bakiyeTablo'),'KALAN YILLIK İZİN BAKİYELERİ · '+new Date().toLocaleDateString('tr-TR'),'Kalan_Yillik_Izinler.pdf',{yon:'landscape'});};
     const FD_PUANTAJ_RENK_VARSAYILAN={X:['#ffffff','#0f172a'],Y:['#10b981','#ffffff'],R:['#ef4444','#ffffff'],'Ü':['#8b5cf6','#ffffff'],Z:['#f59e0b','#ffffff'],M:['#b91c1c','#ffffff'],HS:['#94a3b8','#ffffff'],RT:['#0284c7','#ffffff'],RC:['#0d9488','#ffffff'],PZ:['#ea580c','#ffffff'],'-':['#f8fafc','#64748b']};
