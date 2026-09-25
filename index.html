@@ -2805,7 +2805,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         </div>
         <div class="card" style="max-width:1120px; margin:0 auto;">
             <div class="card-header"><h2 id="icraListeBaslik">⚖️ Aktif İcralar</h2><div class="action-btns"><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('icraListeBody','excel',document.getElementById('icraListeBaslik').textContent,'ICRA_LISTESI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="icraListePdfAl()">📄 PDF</button></div></div>
-            <div class="filter-bar" style="margin:0 0 12px;"><input id="icraPersonelFiltre" type="search" placeholder="Personel adına göre ara..." oninput="renderIcraListesi()"></div>
+            <div class="filter-bar" style="margin:0 0 12px;"><input id="icraPersonelFiltre" type="search" placeholder="Personel adı, T.C. veya dosya numarası ara..." oninput="renderIcraListesi()"></div>
             <div class="table-wrapper">
                 <table><thead><tr><th>Dosya No</th><th>Personel</th><th>Başlangıç Ayı</th><th>Toplam Borç</th><th>Kesilen</th><th>Kalan</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="icraListeBody"></tbody></table>
             </div>
@@ -11175,7 +11175,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             return !aktifSirket || !i.sirketId || String(i.sirketId) === aktifSirket;
         }).filter(i => {
             if (!personelArama) return true;
-            return `${i.personelAd || ''} ${i.pId || ''}`.toLocaleLowerCase('tr-TR').includes(personelArama);
+            return `${i.personelAd || ''} ${i.pId || ''} ${i.dosyaNo || ''}`.toLocaleLowerCase('tr-TR').includes(personelArama);
         }).filter(i => {
             const bitmis = String(i.durum) === 'Kapandı' || icraKalanBorc(i) <= 0;
             return icraListeModu === 'biten' ? bitmis : !bitmis;
@@ -14396,12 +14396,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
             const toplamCalisilmayan = personelPrimCalisilmayanGunSayisi(p, ay, yil);
             const toplamCalisilmayanMetni = toplamCalisilmayan.toLocaleString('tr-TR', { minimumFractionDigits:0, maximumFractionDigits:1 });
+            const yarimGunEksikligi = Math.max(0, toplamCalisilmayan - toplamZ - toplamR - toplamM);
+            const mazeretsizToplam = Math.round((toplamM + yarimGunEksikligi) * 2) / 2;
+            const mazeretsizToplamMetni = mazeretsizToplam.toLocaleString('tr-TR', { minimumFractionDigits:0, maximumFractionDigits:1 });
             const primDurumu = primDurumuAl(p);
             const primHakkiYok = !primDurumu.hakkiVar;
             if (primGorunumu) {
                 primOzetleri.push({ pId: p.id, primHakki: primHakkiYok ? 'Yok' : 'Var', calisilmayanGun: toplamCalisilmayan });
                 rowHtml = rowHtml.replace('<tr>', `<tr class="${primHakkiYok ? 'puantaj-no-prime' : ''}">`);
-                rowHtml += `<td class="p-ozet">${toplamZ}</td><td class="p-ozet">${toplamR}</td><td class="p-ozet">${toplamM}</td><td class="p-ozet">${toplamCalisilmayanMetni}</td><td class="p-ozet p-prim-sonuc ${primHakkiYok ? 'p-prim-yok' : 'p-prim-var'}" title="Prim hakkını manuel değiştirmek için sağ tıklayın" oncontextmenu="openPrimHakkiDuzenleme(event, '${p.id}')">${primHakkiYok ? 'Prim Yok' : 'Prim Var'}${primDurumu.manuel ? ' ✦' : ''}</td></tr>`;
+                rowHtml += `<td class="p-ozet">${toplamZ}</td><td class="p-ozet">${toplamR}</td><td class="p-ozet">${mazeretsizToplamMetni}</td><td class="p-ozet">${toplamCalisilmayanMetni}</td><td class="p-ozet p-prim-sonuc ${primHakkiYok ? 'p-prim-yok' : 'p-prim-var'}" title="Prim hakkını manuel değiştirmek için sağ tıklayın" oncontextmenu="openPrimHakkiDuzenleme(event, '${p.id}')">${primHakkiYok ? 'Prim Yok' : 'Prim Var'}${primDurumu.manuel ? ' ✦' : ''}</td></tr>`;
                 bodyRows.push(rowHtml);
                 return;
             }
@@ -22864,14 +22867,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v132';
+      const anahtar='fd-pwa-yenileme-v133';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=132',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=133',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
