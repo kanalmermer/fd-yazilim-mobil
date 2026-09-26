@@ -13987,7 +13987,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             const puantaj = puantajVerileri.find(item => aktifSirketeAit(item) && String(item.pId) === String(personel.id) && String(item.tarih) === dateKey);
             if (!izin && puantaj?.durum) durum = puantaj.durum;
-            if (dateKey === bugunKey && !gunTamamlandi) durum = '';
+            if (!izin && dateKey === bugunKey && !gunTamamlandi) durum = '';
             if (durum === 'R' || durum === 'Z' || durum === 'M') {
                 calisilmayanGun += 1;
             } else if (gunTamamlandi && !izin) {
@@ -14402,7 +14402,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
                     const foundObj = manuelPuantajByGun.get(`${String(p.id)}|${dateKey}`);
                     if (foundObj && foundObj.durum) harf = String(foundObj.durum).toUpperCase();
-                    if (primBugunTamamlanmadi && harf !== 'HS' && harf !== 'RT') harf = '';
+                    if (primBugunTamamlanmadi && !izinKodu && harf !== 'HS' && harf !== 'RT') harf = '';
                 }
 
                 if (harf === 'X') toplamX++;
