@@ -14127,22 +14127,29 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         renderPuantajMatrisi();
     }
 
-    async function puantajIcraKesintisiniGuncelle(pId, ay, yil, tutar) {
+    async function puantajIcraKesintisiniGuncelle(pId, ay, yil, tutar, kaynakTuru = 'puantaj') {
         const ayAnahtari = puantajAyAnahtari(ay, yil);
         const kaynak = `puantaj_${pId}_${ayAnahtari}`;
-        icralar.filter(i => String(i.pId) === String(pId) && aktifSirketeAit(i)).forEach(icra => {
+        const personelIcralari=icralar.filter(i => String(i.pId) === String(pId) && aktifSirketeAit(i));let kaynakVardi=false;
+        personelIcralari.forEach(icra => {
             const oncekiKesintiler = Array.isArray(icra.kesintiler) ? icra.kesintiler : [];
-            const kaynakVardi = oncekiKesintiler.some(k => String(k.id) === kaynak);
+            if(oncekiKesintiler.some(k => String(k.id) === kaynak))kaynakVardi=true;
             icra.kesintiler = oncekiKesintiler.filter(k => String(k.id) !== kaynak);
-            if (kaynakVardi && String(icra.durum) === 'Kapandı' && icraKalanBorc(icra) > 0) {
-                icralar.filter(diger => String(diger.pId) === String(pId) && String(diger.id) !== String(icra.id) && String(diger.durum) === 'Aktif').forEach(diger => diger.durum = 'Bekleyen Sıra');
-                icra.durum = 'Aktif';
-            }
         });
+        if(kaynakVardi){
+            const aciklar=personelIcralari.filter(icra=>icraKalanBorc(icra)>0).sort((a,b)=>Number(a.siraTarihi||0)-Number(b.siraTarihi||0));
+            personelIcralari.filter(icra=>icraKalanBorc(icra)<=0).forEach(icra=>icra.durum='Kapandı');
+            aciklar.forEach((icra,index)=>icra.durum=index===0?'Aktif':'Bekleyen Sıra');
+        }
+        let kalanTutar=Math.max(0,Number(tutar)||0),islenenTutar=0,guvenlik=0;
         if (tutar > 0) {
-            const icra = aktifIcraBul(pId);
-            if (icra) {
-                icra.kesintiler.push({ id: kaynak, ay: ayAnahtari, tutar: Number(tutar), kaynak: 'puantaj' });
+            icraSiradakiniAktifEt(pId);
+            while(kalanTutar>0.009&&guvenlik++<100){
+                const icra = aktifIcraBul(pId);if(!icra)break;
+                if(!Array.isArray(icra.kesintiler))icra.kesintiler=[];
+                const pay=Math.min(kalanTutar,icraKalanBorc(icra));if(pay<=0)break;
+                icra.kesintiler.push({ id: kaynak, ay: ayAnahtari, tutar: Number(pay.toFixed(2)), kaynak: kaynakTuru });
+                islenenTutar+=pay;kalanTutar-=pay;
                 if (icraKalanBorc(icra) <= 0) {
                     icra.durum = 'Kapandı';
                     icraSiradakiniAktifEt(pId);
@@ -14150,6 +14157,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
         }
         yuklenenVeriler.add('icralar');
+        return{islenenTutar:Number(islenenTutar.toFixed(2)),artanTutar:Number(Math.max(0,kalanTutar).toFixed(2))};
     }
 
     function maasSatiriniOnizle(input) {
@@ -21596,6 +21604,26 @@ document.addEventListener('click',function(e){
         });
         return satirlar.sort((a,b)=>b.y-a.y).map(satir=>({...satir,metin:satir.ogeler.sort((a,b)=>a.x-b.x).map(oge=>oge.metin).join(' ')}));
     }
+    function bordroParaMetniniSayiyaCevir(deger){
+        let metin=String(deger||'').replace(/\s+/g,'').replace(/[^0-9,.-]/g,'');
+        if(!metin)return 0;
+        if(metin.includes(','))metin=metin.replace(/\./g,'').replace(',','.');
+        else if((metin.match(/\./g)||[]).length>1||/\.\d{3}$/.test(metin))metin=metin.replace(/\./g,'');
+        const sayi=Number(metin);return Number.isFinite(sayi)?Math.abs(sayi):0;
+    }
+    function bordroIcraKesintisiniOku(satirlar){
+        const icraSatirlari=(satirlar||[]).filter(satir=>/(^| )ICRA( |$)/.test(bordroMetinAnahtari(satir.metin)));
+        for(const satir of icraSatirlari){
+            const adaylar=String(satir.metin||'').match(/-?(?:\d{1,3}(?:[.\s]\d{3})+|\d+)(?:[,\.]\d{1,2})?/g)||[];
+            const parasal=adaylar.filter(aday=>/[,\.]\d{2}$/.test(aday.trim())),kullanilacak=parasal.length?parasal:adaylar;
+            for(let i=kullanilacak.length-1;i>=0;i--){
+                const tutar=bordroParaMetniniSayiyaCevir(kullanilacak[i]);
+                if(tutar>0&&tutar<100000000)return{bulundu:true,tutar,satir:String(satir.metin||'').slice(0,180)};
+            }
+            return{bulundu:true,tutar:0,satir:String(satir.metin||'').slice(0,180)};
+        }
+        return{bulundu:false,tutar:0,satir:''};
+    }
     async function ucretPusulalariniAyir(dosya,d){
         if(!window.pdfjsLib)throw new Error('PDF okuma bileşeni yüklenemedi.');
         if(!window.PDFLib?.PDFDocument)throw new Error('PDF ayırma bileşeni yüklenemedi.');
@@ -21615,7 +21643,7 @@ document.addEventListener('click',function(e){
                 for(let i=0;i<basliklar.length;i++){
                     const yUst=i===0?sayfaBoy:Math.min(sayfaBoy,basliklar[i].y+basliklar[i].boy+7);
                     const yAlt=i===basliklar.length-1?0:Math.max(0,basliklar[i+1].y+basliklar[i+1].boy+7);
-                    const bolumMetni=satirlar.filter(s=>s.y>=yAlt-2&&s.y<=yUst+2).map(s=>s.metin).join(' ');
+                    const bolumSatirlari=satirlar.filter(s=>s.y>=yAlt-2&&s.y<=yUst+2),bolumMetni=bolumSatirlari.map(s=>s.metin).join(' ');
                     const eslesenler=adayPersoneller.filter(p=>new RegExp(String(p.id).split('').join('\\s*')).test(bolumMetni));
                     if(eslesenler.length!==1){
                         const tcAdaylari=[...bolumMetni.matchAll(/(?:^|\D)(\d{11})(?!\d)/g)].map(x=>x[1]);
@@ -21628,7 +21656,8 @@ document.addEventListener('click',function(e){
                     const parca=await yeniPdf.embedPage(kaynakSayfa,{left:0,bottom:yAlt,right:sayfaEn,top:yUst});
                     const hedef=yeniPdf.addPage([sayfaEn,sayfaBoy]);
                     hedef.drawPage(parca,{x:0,y:sayfaBoy-(yUst-yAlt),width:sayfaEn,height:yUst-yAlt});
-                    bulunanlar.push({tc,personelAd:String(personel.ad||tc),sayfa:sayfaNo,sira:i+1,baytlar:await yeniPdf.save({useObjectStreams:true})});
+                    const icraKesintisi=bordroIcraKesintisiniOku(bolumSatirlari);
+                    bulunanlar.push({tc,personelAd:String(personel.ad||tc),sayfa:sayfaNo,sira:i+1,baytlar:await yeniPdf.save({useObjectStreams:true}),icraKesintisi:Number(icraKesintisi.tutar||0),icraKesintisiBulundu:Boolean(icraKesintisi.bulundu)});
                     kullanilan.add(tc);
                 }
             }
@@ -21660,7 +21689,7 @@ document.addEventListener('click',function(e){
             bordroIlerlet(btn,35+((i+1)/Math.max(1,toplam))*58,'Pusulalar yükleniyor '+(i+1)+' / '+toplam);
             const base64=await dosyayiBase64Oku(new Blob([parca.baytlar],{type:'application/pdf'}));
             const yuklenen=await fdYazilimDriveDosyaYukle(base64,ad,'application/pdf','',KLASOR);
-            const kayit={id:d.anahtar+'_'+parca.tc,kayitTipi:'ucretPusulasi',ay:d.anahtar,yil:d.yil,ayNo:d.ay+1,pId:parca.tc,personelAd:parca.personelAd,dosya:{id:yuklenen.id,url:yuklenen.url||'',ad:yuklenen.ad||ad,mimeType:'application/pdf',boyut:Number(yuklenen.boyut||parca.baytlar.length)},kaynakDosyaId:kaynakDosya.id,guncellemeTarihi:new Date().toISOString()};
+            const kayit={id:d.anahtar+'_'+parca.tc,kayitTipi:'ucretPusulasi',ay:d.anahtar,yil:d.yil,ayNo:d.ay+1,pId:parca.tc,personelAd:parca.personelAd,icraKesintisi:Number(parca.icraKesintisi||0),icraKesintisiOkundu:Boolean(parca.icraKesintisiBulundu),dosya:{id:yuklenen.id,url:yuklenen.url||'',ad:yuklenen.ad||ad,mimeType:'application/pdf',boyut:Number(yuklenen.boyut||parca.baytlar.length)},kaynakDosyaId:kaynakDosya.id,guncellemeTarihi:new Date().toISOString()};
             const satir={company_id:aktifSirketId(),module:'bordropusulalari',legacy_id:kayit.id,record_year:d.yil,employee_legacy_id:parca.tc,data:kayit};
             const{error}=await supabaseClient.from('portal_records').upsert(satir,{onConflict:'company_id,module,legacy_id'});if(error){try{await fdYazilimDriveDosyaSil(yuklenen.id,KLASOR)}catch(_){}throw error}
             if(eski?.dosya?.id&&String(eski.dosya.id)!==String(yuklenen.id)){try{await fdYazilimDriveDosyaSil(eski.dosya.id,KLASOR)}catch(hata){console.warn('Eski personel pusulası silinemedi:',hata)}}
@@ -21672,6 +21701,29 @@ document.addEventListener('click',function(e){
             if(eski?.dosya?.id){try{await fdYazilimDriveDosyaSil(eski.dosya.id,KLASOR)}catch(hata){console.warn('Eski personel pusulası silinemedi:',hata)}}
         }
         pusulaCache.set(pusulaOnbellekAnahtari(d),yeniler);return yeniler;
+    }
+    async function bordroIcraKesintileriniKaydet(parcalar,d){
+        const sonuc={islenen:0,bulundu:0,acikDosyaYok:[],borcuAsan:[]},dokunuldu=new Set();
+        for(const parca of parcalar||[]){
+            if(!parca.icraKesintisiBulundu)continue;
+            sonuc.bulundu++;
+            const pId=String(parca.tc||''),tutar=Math.max(0,Number(parca.icraKesintisi||0));
+            const personelIcralari=personelIcraKayitlari(pId),kaynak='puantaj_'+pId+'_'+d.anahtar;
+            const oncekiKayitVar=personelIcralari.some(icra=>(Array.isArray(icra.kesintiler)?icra.kesintiler:[]).some(kesinti=>String(kesinti.id)===kaynak));
+            if(tutar>0&&!aktifIcraBul(pId))icraSiradakiniAktifEt(pId);
+            if(tutar>0&&!aktifIcraBul(pId)){
+                sonuc.acikDosyaYok.push(parca.personelAd||pId);
+                continue;
+            }
+            if(tutar>0||oncekiKayitVar){
+                const dagitim=await puantajIcraKesintisiniGuncelle(pId,d.ay,d.yil,tutar,'bordroPusulasi');
+                dokunuldu.add(pId);
+                if(tutar>0&&dagitim?.islenenTutar>0)sonuc.islenen++;
+                if(Number(dagitim?.artanTutar||0)>0)sonuc.borcuAsan.push((parca.personelAd||pId)+' ('+paraFormatla(dagitim.artanTutar)+')');
+            }
+        }
+        if(dokunuldu.size)await verileriKaydet();
+        return sonuc;
     }
     async function pusulaKayitlariniSil(d){
         const harita=await pusulaKayitlariniYukle(d,true),kimlikler=[...harita.values()].map(k=>String(k.id||'')).filter(Boolean);
@@ -21725,7 +21777,7 @@ document.addEventListener('click',function(e){
         if(!secilen.length)return alert('Yüklenecek en az bir belge seçin.');
         const max=20*1024*1024;
         for(const x of secilen){if(!uzanti(x.f))return alert(x.t.ad+' için yalnızca PDF veya Excel dosyası seçebilirsiniz.');if(x.f.size>max)return alert(x.t.ad+' dosyası en fazla 20 MB olabilir.')}
-        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[];
+        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[];let icraIslenen=0;
         islemde=true;btn.disabled=true;btn.classList.add('yukleniyor');
         try{
             for(let i=0;i<secilen.length;i++){
@@ -21742,6 +21794,10 @@ document.addEventListener('click',function(e){
                 await ayariKaydet(d,k);
                 if(ayrilan){
                     const kaydedilen=await pusulaKayitlariniKaydet(ayrilan,d,yeni,btn);
+                    bordroIlerlet(btn,94,'İcra kesintileri kaydediliyor...');
+                    const icraSonucu=await bordroIcraKesintileriniKaydet(ayrilan.bulunanlar,d);icraIslenen+=icraSonucu.islenen;
+                    if(icraSonucu.acikDosyaYok.length)uyarilar.push('Ücret pusulasında icra kesintisi okundu ancak açık icra dosyası bulunamadı:\n'+icraSonucu.acikDosyaYok.join(', '));
+                    if(icraSonucu.borcuAsan.length)uyarilar.push('İcra kesintisinin açık dosya bakiyesini aşan kısmı kaydedilmedi:\n'+icraSonucu.borcuAsan.join(', '));
                     kaydedilen.forEach((_,tc)=>{const bildirim=personelBordroBildirimiHazirla(tc,d);if(bildirim)bordroBildirilecekler.push(bildirim)});
                     k.belgeler[t.kod].ayristirilan=kaydedilen.size;k.belgeler[t.kod].eslesmeyen=ayrilan.sorunlar.length;k.belgeler[t.kod].toplamPusula=ayrilan.toplam;
                     await ayariKaydet(d,k);
@@ -21754,7 +21810,7 @@ document.addEventListener('click',function(e){
                 bordroIlerlet(btn,Math.round((i+1)/secilen.length*100));
             }
             if(bordroBildirilecekler.length){bordroIlerlet(btn,96,'WhatsApp bildirimleri gönderiliyor...');const bildirimSonucu=await personelBildirimleriniTopluGonder(bordroBildirilecekler);if(bildirimSonucu.basarisiz)uyarilar.push(bildirimSonucu.basarisiz+' personele ücret pusulası WhatsApp bildirimi gönderilemedi.')}
-            bordroIlerlet(btn,100,'Tamamlandı %100');panelCiz();showToast?.(d.etiket+' bordro belgeleri kaydedildi.');
+            bordroIlerlet(btn,100,'Tamamlandı %100');panelCiz();showToast?.(d.etiket+' bordro belgeleri kaydedildi.'+(icraIslenen?' '+icraIslenen+' personelin icra kesintisi işlendi.':''));
             setTimeout(()=>modalKapat('bordroBelgeleriModal'),450);
             if(uyarilar.length)setTimeout(()=>alert(uyarilar.join('\n\n')),550);
         }catch(e){console.error(e);alert('Belgeler kaydedilemedi: '+(e.message||e));panelCiz()}
