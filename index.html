@@ -21784,7 +21784,7 @@ document.addEventListener('click',function(e){
     const bildirimKuyrugu=[];
     let aktifBildirim=null,okunmamisKontrolEdiliyor=false,sonOkunmamisKontrolu=0;
     let fdWhatsappGelenMesajlar=[],fdWhatsappGidenOzetleri=[],fdWhatsappAktifGonderen='',fdWhatsappGelenYukleniyor=false,fdWhatsappKonusmalarYuklendi=false;
-    const fdWhatsappSohbetGidenleri=new Map(),fdWhatsappSohbetYuklenenler=new Set();
+    const fdWhatsappSohbetGidenleri=new Map(),fdWhatsappSohbetYuklenenler=new Set(),fdWhatsappSohbetIstekleri=new Map();
     const fdBildirimSeciliIdler=new Set();
     function destekleniyor(){return 'Notification' in window&&'serviceWorker' in navigator&&'PushManager' in window}
     function mobilUygulamaOrtami(){return location.hostname==='kanalmermer.github.io'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
@@ -21836,6 +21836,7 @@ document.addEventListener('click',function(e){
         if(!grup){sohbet.innerHTML='<div class="fd-wa-empty"><div><span>👈</span>Görüntülemek için soldan bir konuşma seçin.</div></div>';return}
         const akıs=(grup.messages||[]).map(m=>({yon:'in',zaman:m.received_at||m.created_at,mesaj:m})),giden=grup.employeeId?fdWhatsappSohbetGidenleri.get(String(grup.employeeId)):null;
         (giden?.notifications||[]).forEach(b=>{const alici=(giden.recipients||[]).find(a=>String(a.notification_id)===String(b.id))||{};akıs.push({yon:'out',zaman:b.created_at||alici.created_at,bildirim:b,alici})});
+        if(!giden&&grup.outgoingSummary?.notification)akıs.push({yon:'out',zaman:grup.outgoingSummary.notification.created_at||grup.outgoingSummary.created_at,bildirim:grup.outgoingSummary.notification,alici:grup.outgoingSummary});
         akıs.sort((a,b)=>new Date(a.zaman||0)-new Date(b.zaman||0));
         const balonlar=akıs.map(item=>{if(item.yon==='in'){const tur=fdWhatsappMesajTuru(item.mesaj);return '<div class="fd-wa-bubble">'+(tur?'<span class="fd-wa-message-kind">'+escapeDashboardText(tur)+'</span>':'')+'<p>'+escapeDashboardText(fdWhatsappMesajMetni(item.mesaj))+'</p><small>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</small></div>'}const durum=fdWhatsappGidenDurumu(item.alici),baslik=String(item.bildirim?.title||'');return '<div class="fd-wa-bubble outgoing">'+(baslik?'<strong class="fd-wa-bubble-title">'+escapeDashboardText(baslik)+'</strong>':'')+'<p>'+escapeDashboardText(item.bildirim?.message||'')+'</p><span class="fd-wa-bubble-footer">'+escapeDashboardText(WHATSAPP_SISTEM_ALT_BILGISI)+'</span><small class="fd-wa-bubble-meta '+durum.sinif+'"><span>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</span><span>'+escapeDashboardText(durum.metin)+'</span></small></div>'}).join('');
         const yukleniyor=grup.employeeId&&!fdWhatsappSohbetYuklenenler.has(String(grup.employeeId))?'<div class="fd-wa-empty" style="min-height:70px;padding:10px"><div>Gönderilen mesajlar yükleniyor...</div></div>':'';
@@ -21849,12 +21850,23 @@ document.addEventListener('click',function(e){
         liste.innerHTML=gruplar.length?gruplar.map(g=>'<button type="button" class="fd-wa-conversation '+(g.anahtar===fdWhatsappAktifGonderen?'active':'')+'" onclick="fdWhatsappKonusmaAc(\''+escapeDashboardText(g.anahtar)+'\')"><span><strong>'+escapeDashboardText(g.ad)+'</strong><small>'+escapeDashboardText(fdWhatsappTelefonuYaz(g.senderWaId))+' · '+escapeDashboardText(fdBildirimTarihi(g.sonZaman))+'</small><span>'+(g.sonYon==='out'?'<i class="fd-wa-conversation-direction">✓</i>':'')+escapeDashboardText(g.sonMesaj)+'</span></span>'+(g.okunmamis?'<b>'+g.okunmamis+'</b>':'')+'</button>').join(''):'<div class="fd-wa-empty"><div><span>📭</span>'+(arama?'Aramanıza uygun konuşma bulunamadı.':'Henüz WhatsApp konuşması yok.')+'</div></div>';
         fdWhatsappSohbetiCiz(tumGruplar.find(g=>g.anahtar===fdWhatsappAktifGonderen));
     };
+    function fdWhatsappSohbetGecmisiniYukle(employeeId,zorla=false){
+        const id=String(employeeId||'');if(!id)return Promise.resolve();
+        if(!zorla&&fdWhatsappSohbetYuklenenler.has(id))return Promise.resolve();
+        if(fdWhatsappSohbetIstekleri.has(id))return fdWhatsappSohbetIstekleri.get(id);
+        const istek=whatsappCagir({action:'history',employeeId:id}).then(sonuc=>{
+            fdWhatsappSohbetGidenleri.set(id,{notifications:Array.isArray(sonuc.notifications)?sonuc.notifications:[],recipients:Array.isArray(sonuc.recipients)?sonuc.recipients:[]});
+            fdWhatsappSohbetYuklenenler.add(id);
+            fdWhatsappGelenKutusuCiz();
+        }).catch(error=>{fdWhatsappSohbetYuklenenler.add(id);fdWhatsappGelenKutusuCiz();showToast(hataMesaji(error,'Gönderilen mesajlar yüklenemedi.'),'error')}).finally(()=>fdWhatsappSohbetIstekleri.delete(id));
+        fdWhatsappSohbetIstekleri.set(id,istek);return istek;
+    }
     window.fdWhatsappKonusmaAc=async function(anahtar,zorla=false){
         fdWhatsappAktifGonderen=String(anahtar||'');fdWhatsappGelenKutusuCiz();const grup=fdWhatsappKonusmaGruplari().find(g=>g.anahtar===fdWhatsappAktifGonderen);if(!grup)return;
         const okunmamis=(grup.messages||[]).filter(m=>!m.read_at),simdi=new Date().toISOString();if(okunmamis.length){okunmamis.forEach(m=>m.read_at=simdi);fdWhatsappGelenKutusuCiz();fdWhatsappRozetiniGuncelle(fdWhatsappGelenMesajlar.filter(m=>!m.read_at).length)}
         const islemler=[];
         if(okunmamis.length&&grup.senderWaId)islemler.push(whatsappCagir({action:'inbox-mark-read',senderWaId:grup.senderWaId}).then(sonuc=>fdWhatsappRozetiniGuncelle(sonuc.unreadCount)).catch(error=>{okunmamis.forEach(m=>m.read_at=null);fdWhatsappGelenKutusuCiz();fdWhatsappRozetiniGuncelle(fdWhatsappGelenMesajlar.filter(m=>!m.read_at).length);showToast(hataMesaji(error,'Mesajlar okundu olarak işaretlenemedi.'),'error')}));
-        if(grup.employeeId&&(zorla||!fdWhatsappSohbetYuklenenler.has(String(grup.employeeId))))islemler.push(whatsappCagir({action:'history',employeeId:String(grup.employeeId)}).then(sonuc=>{fdWhatsappSohbetGidenleri.set(String(grup.employeeId),{notifications:Array.isArray(sonuc.notifications)?sonuc.notifications:[],recipients:Array.isArray(sonuc.recipients)?sonuc.recipients:[]});fdWhatsappSohbetYuklenenler.add(String(grup.employeeId));fdWhatsappGelenKutusuCiz()}).catch(error=>{fdWhatsappSohbetYuklenenler.add(String(grup.employeeId));fdWhatsappGelenKutusuCiz();showToast(hataMesaji(error,'Gönderilen mesajlar yüklenemedi.'),'error')}));
+        if(grup.employeeId&&(zorla||!fdWhatsappSohbetYuklenenler.has(String(grup.employeeId))))islemler.push(fdWhatsappSohbetGecmisiniYukle(grup.employeeId,zorla));
         await Promise.all(islemler);
     };
     window.fdWhatsappGelenKutusuYukle=async function(zorla=false){
@@ -22002,7 +22014,7 @@ document.addEventListener('click',function(e){
     };
     function fdBildirimTarihi(deger){try{return new Date(deger).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}catch(_){return '-'}}
     function fdBildirimAliciAdi(alici){const id=String(alici.employee_legacy_id||''),personel=(Array.isArray(personeller)?personeller:[]).find(p=>String(p.id)===id);return personel?.ad||('Kullanıcı '+id.slice(-4))}
-    function fdWhatsappHataMetniDuzelt(deger){const metin=String(deger||'').trim();if(!metin)return 'WhatsApp mesajı gönderilemedi.';if(metin.includes('132001')||/template name does not exist/i.test(metin))return 'Mesaj şablonu Meta onayında; onay tamamlanınca gönderilebilir.';if(metin.includes('131026'))return 'Mesaj bu WhatsApp numarasına ulaştırılamadı.';return metin}
+    function fdWhatsappHataMetniDuzelt(deger){const metin=String(deger||'').trim();if(!metin)return 'WhatsApp mesajı gönderilemedi.';if(metin.includes('132001')||/template name does not exist/i.test(metin))return 'Mesaj şablonu Meta onayında; onay tamamlanınca gönderilebilir.';if(metin.includes('131049')||/not delivered to maintain healthy ecosystem engagement/i.test(metin))return 'Meta, mesajlaşma sıklığı nedeniyle bu mesajı alıcıya teslim etmedi. Daha sonra tekrar deneyin.';if(metin.includes('131026'))return 'Mesaj bu WhatsApp numarasına ulaştırılamadı.';return metin}
     window.fdWhatsappGidenPersonelleriniDoldur=function(){
         const secim=document.getElementById('fdWhatsappGidenPersonel');if(!secim)return;const onceki=String(secim.value||''),tum=(Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)),sirala=(a,b)=>String(a.ad||'').localeCompare(String(b.ad||''),'tr'),aktif=tum.filter(p=>!p.cikisTarihi||String(p.cikisTarihi)==='null').sort(sirala),ayrilan=tum.filter(p=>p.cikisTarihi&&String(p.cikisTarihi)!=='null').sort(sirala),secenekler=liste=>liste.map(p=>'<option value="'+escapeDashboardText(String(p.id||''))+'">'+escapeDashboardText(String(p.ad||p.id||'-'))+'</option>').join('');
         secim.innerHTML='<option value="">Personel seçin</option>'+(aktif.length?'<optgroup label="Aktif Personeller">'+secenekler(aktif)+'</optgroup>':'')+(ayrilan.length?'<optgroup label="Ayrılan Personeller">'+secenekler(ayrilan)+'</optgroup>':'');if(tum.some(p=>String(p.id)===onceki))secim.value=onceki;
