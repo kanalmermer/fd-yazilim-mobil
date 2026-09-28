@@ -2251,9 +2251,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                         <select id="fAktifEngelli" onchange="renderPersonelTables()"><option value="">Engelli: Tümü</option><option value="evet">Engelli olanlar</option><option value="hayir">Engelli olmayanlar</option></select>
                         <select id="fAktifEmekli" onchange="renderPersonelTables()"><option value="">Emekli: Tümü</option><option value="evet">Emekli olanlar</option><option value="hayir">Emekli olmayanlar</option></select>
                         <select id="fAktifSiralama" onchange="renderPersonelTables()">
+                            <option value="sube-asc">Sırala: Şube ve Ad (A-Z)</option>
                             <option value="ad-asc">Sırala: Ad (A-Z)</option>
                             <option value="ad-desc">Sırala: Ad (Z-A)</option>
-                            <option value="sube-asc">Sırala: Şube (A-Z)</option>
                             <option value="tarih-yeni">Sırala: En Yeni Giriş</option>
                             <option value="tarih-eski">Sırala: En Eski Giriş</option>
                         </select>
@@ -15953,7 +15953,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const yil = document.getElementById('fAktifYil')?.value || '';
         const engelli = document.getElementById('fAktifEngelli')?.value || '';
         const emekli = document.getElementById('fAktifEmekli')?.value || '';
-        const siralama = document.getElementById('fAktifSiralama')?.value || 'ad-asc';
+        const siralama = document.getElementById('fAktifSiralama')?.value || 'sube-asc';
 
         const liste = personeller.filter(personel => {
             if (!aktifSirketeAit(personel)) return false;
@@ -16027,7 +16027,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             `);
         });
 
-        personeller.forEach((p) => {
+        [...personeller].sort((x, y) => String(x.sube || 'Merkez').localeCompare(String(y.sube || 'Merkez'), 'tr') || String(x.ad || '').localeCompare(String(y.ad || ''), 'tr')).forEach((p) => {
             const isAyrilan = Boolean(p.cikisTarihi && String(p.cikisTarihi) !== "null");
             if (!isAyrilan) return;
             if (isPersonelUser() && String(p.id) !== String(activeUser.tcNo)) return;
@@ -22186,8 +22186,50 @@ document.addEventListener('click',function(e){
     const FDX_PDKS_AKTARIM_SAATLERI=['08:30','13:30','17:30','20:30','23:30'];
     function fdxPdksSonrakiAktarim(){const saatler=FDX_PDKS_AKTARIM_SAATLERI,now=new Date(),dakika=now.getHours()*60+now.getMinutes(),sirali=saatler.map(s=>{const p=s.split(':').map(Number);return{metin:s,dakika:p[0]*60+p[1]}}),sonraki=sirali.find(item=>item.dakika>dakika);return sonraki?.metin||'yarın '+saatler[0]}
     function fdxPdksCalismaSaati(value){if(!value)return'Son';const date=new Date(value);if(Number.isNaN(date.getTime()))return'Son';const dakika=date.getHours()*60+date.getMinutes(),saatler=FDX_PDKS_AKTARIM_SAATLERI;let yakin=saatler[0],fark=Infinity;saatler.forEach(s=>{const [h,m]=s.split(':').map(Number),yeni=Math.abs(h*60+m-dakika);if(yeni<fark){fark=yeni;yakin=s}});return fark<=20?yakin:'Son'}
-    function fdxPdksDurumCiz(run,today){const state=document.getElementById('fdxPdksState'),grid=document.getElementById('fdxPdksGrid'),note=document.getElementById('fdxPdksNote');if(!state||!grid||!note)return;const status=String(run?.status||''),ok=status==='success'||status==='ok'||status==='completed',failed=status==='failed'||status==='error',attempt=run?.last_attempt_at||run?.last_success_at,calisma=fdxPdksCalismaSaati(attempt),label=ok?calisma+' aktarımı başarılı':failed?calisma+' aktarımı başarısız':'Aktarım durumu alınamadı',dot=ok?'success':failed?'error':'',count=Math.max(0,Number(run?.record_count||0));state.innerHTML='<span class="fdx-pdks-dot '+dot+'"></span><span>'+fdxEsc(label)+'</span>';grid.innerHTML='<div class="fdx-pdks-metric"><span>Bu çalışmanın zamanı</span><strong>'+fdxEsc(attempt?fdxTarihSaat(attempt):'—')+'</strong></div><div class="fdx-pdks-metric"><span>Bu çalışmada aktarılan</span><strong>'+count+'</strong></div><div class="fdx-pdks-metric"><span>Sonuç</span><strong>'+(ok?(count?count+' yeni hareket':'Yeni hareket yok'):(failed?'Hata':'—'))+'</strong></div><div class="fdx-pdks-metric"><span>Bilgisayar</span><strong>'+fdxEsc(run?.machine_name||'—')+'</strong></div>';const sonuc=failed&&run?.message?String(run.message):(count?count+' yeni hareket personel kayıtlarına işlendi.':'Bu çalışmada yeni aktarılacak hareket bulunmadı.');note.textContent=sonuc+' · Sonraki aktarım: '+fdxPdksSonrakiAktarim()}
-    window.fdxPdksDurumunuYukle=async function(){const card=document.getElementById('fdxPdksSummary');if(!card||!fdxManager()||typeof supabaseClient==='undefined')return;const button=document.getElementById('fdxPdksRefresh');if(button)button.disabled=true;try{const session=await supabaseClient.auth.getSession(),token=session?.data?.session?.access_token;if(!token)throw new Error('Oturum doğrulanamadı.');const response=await fetch(SUPABASE_URL+'/functions/v1/pdks-status',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({action:'get-pdks-run-status'})});const data=await response.json();if(!response.ok||!data?.success)throw new Error(data?.message||'Aktarım durumu alınamadı.');fdxPdksDurumCiz(data.run,data.today)}catch(error){fdxPdksDurumCiz({status:'error',message:fdxHata(error,'Aktarım durumu alınamadı.')},'')}finally{if(button)button.disabled=false}}
+    function fdxPdksDurumCiz(run,today){
+        const state=document.getElementById('fdxPdksState'),grid=document.getElementById('fdxPdksGrid'),note=document.getElementById('fdxPdksNote');
+        if(!state||!grid||!note)return;
+        if(!run){
+            state.innerHTML='<span class="fdx-pdks-dot"></span><span>Bugünün ilk aktarımı bekleniyor</span>';
+            grid.innerHTML='<div class="fdx-pdks-metric"><span>Son çalışma zamanı</span><strong>—</strong></div><div class="fdx-pdks-metric"><span>Aktarılan kayıt</span><strong>0</strong></div><div class="fdx-pdks-metric"><span>Sonuç</span><strong>Bekleniyor</strong></div><div class="fdx-pdks-metric"><span>Bilgisayar</span><strong>—</strong></div>';
+            note.textContent='Henüz aktarım kaydı oluşmadı · Sonraki aktarım: '+fdxPdksSonrakiAktarim();
+            return;
+        }
+        const status=String(run.status||''),ok=status==='success'||status==='ok'||status==='completed',failed=status==='failed'||status==='error',attempt=run.last_attempt_at||run.last_success_at,calisma=fdxPdksCalismaSaati(attempt),eskiGun=Boolean(today&&run.run_date&&String(run.run_date)!==String(today)),labelOnu=eskiGun?'Son ':'';
+        const label=ok?labelOnu+calisma+' aktarımı başarılı':failed?labelOnu+calisma+' aktarımı başarısız':'Aktarım durumu bekleniyor',dot=ok?'success':failed?'error':'',count=Math.max(0,Number(run.record_count||0));
+        state.innerHTML='<span class="fdx-pdks-dot '+dot+'"></span><span>'+fdxEsc(label)+'</span>';
+        grid.innerHTML='<div class="fdx-pdks-metric"><span>Bu çalışmanın zamanı</span><strong>'+fdxEsc(attempt?fdxTarihSaat(attempt):'—')+'</strong></div><div class="fdx-pdks-metric"><span>Bu çalışmada aktarılan</span><strong>'+count+'</strong></div><div class="fdx-pdks-metric"><span>Sonuç</span><strong>'+(ok?(count?count+' yeni hareket':'Yeni hareket yok'):(failed?'Hata':'Bekleniyor'))+'</strong></div><div class="fdx-pdks-metric"><span>Bilgisayar</span><strong>'+fdxEsc(run.machine_name||'—')+'</strong></div>';
+        const sonuc=failed&&run.message?String(run.message):(count?count+' yeni hareket personel kayıtlarına işlendi.':'Bu çalışmada yeni aktarılacak hareket bulunmadı.');
+        note.textContent=sonuc+(eskiGun?' · Son kayıt: '+fdxTarih(run.run_date):'')+' · Sonraki aktarım: '+fdxPdksSonrakiAktarim();
+    }
+    let fdxPdksYuklemeSozu=null,fdxPdksSonBasarili=null;
+    window.fdxPdksDurumunuYukle=function(){
+        const card=document.getElementById('fdxPdksSummary');
+        if(!card||!fdxManager()||typeof supabaseClient==='undefined')return Promise.resolve();
+        if(fdxPdksYuklemeSozu)return fdxPdksYuklemeSozu;
+        const button=document.getElementById('fdxPdksRefresh');if(button)button.disabled=true;
+        fdxPdksYuklemeSozu=(async()=>{
+            try{
+                let sessionResult=await supabaseClient.auth.getSession(),token=sessionResult?.data?.session?.access_token;
+                if(!token){sessionResult=await supabaseClient.auth.refreshSession();token=sessionResult?.data?.session?.access_token;}
+                if(!token)throw new Error('Oturum doğrulanamadı.');
+                const istek=async accessToken=>{
+                    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+                    try{return await fetch(SUPABASE_URL+'/functions/v1/pdks-status',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({action:'get-pdks-run-status'}),signal:controller.signal})}finally{clearTimeout(timer)}
+                };
+                let response=await istek(token);
+                if(response.status===401){const refreshed=await supabaseClient.auth.refreshSession();token=refreshed?.data?.session?.access_token;if(token)response=await istek(token);}
+                let data={};try{data=await response.json()}catch(_){throw new Error('Aktarım durum servisinden geçerli yanıt alınamadı.');}
+                if(!response.ok||!data?.success)throw new Error(data?.message||'Aktarım durumu alınamadı.');
+                fdxPdksSonBasarili={run:data.run||null,today:data.today||''};
+                fdxPdksDurumCiz(fdxPdksSonBasarili.run,fdxPdksSonBasarili.today);
+            }catch(error){
+                if(fdxPdksSonBasarili){fdxPdksDurumCiz(fdxPdksSonBasarili.run,fdxPdksSonBasarili.today);const note=document.getElementById('fdxPdksNote');if(note)note.textContent+=' · Durum şu anda yenilenemedi.';}
+                else fdxPdksDurumCiz({status:'error',message:fdxHata(error,'Aktarım durumu alınamadı.')},'');
+            }finally{if(button)button.disabled=false;fdxPdksYuklemeSozu=null;}
+        })();
+        return fdxPdksYuklemeSozu;
+    }
     function fdxPdksKartiniKur(){const card=document.getElementById('fdxPdksSummary');if(!card)return;const manager=fdxManager();card.style.display=manager?'block':'none';if(!manager)return;const saat=document.getElementById('fdxPdksScheduleTimes');if(saat)saat.textContent=FDX_PDKS_AKTARIM_SAATLERI.join(' · ');fdxPdksDurumunuYukle()}
     function fdxKur(){
         if(document.getElementById('fdxWorkCenterModal'))return;
@@ -22199,7 +22241,7 @@ document.addEventListener('click',function(e){
         const oncekiAy=new Date();oncekiAy.setDate(1);oncekiAy.setMonth(oncekiAy.getMonth()-1);const ayKey=oncekiAy.getFullYear()+'-'+String(oncekiAy.getMonth()+1).padStart(2,'0');
         const monthInput=document.getElementById('fdxClosureMonth');if(monthInput)monthInput.value=ayKey;
         fdxPlanVarsayilanZaman();fdxTalepTuruDegisti();fdxGorunumuGuncelle();
-        const hub=document.getElementById('appHub');if(hub)new MutationObserver(()=>fdxGorunumuGuncelle()).observe(hub,{attributes:true,attributeFilter:['style','class']});const dashboard=document.getElementById('personelDashboardApp');if(dashboard){const watch=()=>{if(getComputedStyle(dashboard).display!=='none'){fdxPdksKartiniKur();fdxPdksDurumunuYukle()}};new MutationObserver(watch).observe(dashboard,{attributes:true,attributeFilter:['style','class']});watch()}
+        const hub=document.getElementById('appHub');if(hub)new MutationObserver(()=>fdxGorunumuGuncelle()).observe(hub,{attributes:true,attributeFilter:['style','class']});const dashboard=document.getElementById('personelDashboardApp');if(dashboard){const watch=()=>{if(getComputedStyle(dashboard).display!=='none')fdxPdksKartiniKur()};new MutationObserver(watch).observe(dashboard,{attributes:true,attributeFilter:['style','class']});watch()}
     }
 
     function fdxGorunumuGuncelle(){
