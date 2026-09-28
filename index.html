@@ -5199,7 +5199,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             if(kayit.kullaniciYetkileri&&typeof kayit.kullaniciYetkileri==='object'){
                 Object.entries(kayit.kullaniciYetkileri).forEach(([anahtar,seviye])=>{const temiz=kullaniciYetkiAnahtari(anahtar),duzey=String(seviye);if(temiz&&temiz!=='admin'&&seviyeler.includes(duzey))kullaniciYetkileri[temiz]=duzey;});
             }
-            const kullaniciRolHaritasi=new Map(anaMenuYetkiKullanicilari().map(k=>[kullaniciYetkiAnahtari(k.username),k.rol]));Object.keys(kullaniciYetkileri).forEach(anahtar=>{const rol=kullaniciRolHaritasi.get(anahtar);if(rol&&kullaniciYetkileri[anahtar]===yetkiler[rol])delete kullaniciYetkileri[anahtar];});
             const izinler=roller.filter(rol=>yetkiler[rol]!=='yok');
             return {...varsayilan,...kayit,anahtar:varsayilan.anahtar,fonksiyon:varsayilan.fonksiyon,ikon:varsayilan.ikon,renk:varsayilan.renk,ad:varsayilan.anahtar==='bildirim'?varsayilan.ad:(String(kayit.ad||varsayilan.ad).trim()||varsayilan.ad),aciklama:varsayilan.anahtar==='bildirim'?varsayilan.aciklama:(String(kayit.aciklama||varsayilan.aciklama).trim()||varsayilan.aciklama),roller:izinler,yetkiler,kullaniciYetkileri,kullaniciBazliYetki:false,aktif,sira:Number.isFinite(Number(kayit.sira))?Number(kayit.sira):eksikSiraTabani+index};
         }).sort((a,b)=>a.sira-b.sira).map((modul,sira)=>({...modul,sira}));
@@ -5385,10 +5384,19 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function ayarlarKullaniciIstisnasiEkle(modulAnahtari){
         anaMenuAyarTaslaginiFormdanOku();
-        const satir=document.querySelector('[data-modul-anahtar="'+modulAnahtari+'"]'),secim=satir?.querySelector('.ayar-istisna-kullanici-sec')?.value,anahtar=kullaniciYetkiAnahtari(secim);
+        const satir=document.getElementById('ayarlarModulListesi')?.querySelector('[data-modul-anahtar="'+modulAnahtari+'"]'),secim=satir?.querySelector('.ayar-istisna-kullanici-sec')?.value,anahtar=kullaniciYetkiAnahtari(secim);
         if(!anahtar)return showToast('Önce kullanıcı seçin.','warning');
         anaMenuAyarTaslagi=anaMenuAyarTaslagi.map(modul=>modul.anahtar===modulAnahtari?{...modul,kullaniciYetkileri:{...(modul.kullaniciYetkileri||{}),[anahtar]:'yazma'}}:modul);
         ayarlarModulListesiniCiz();
+        const yeniSatir=document.getElementById('ayarlarModulListesi')?.querySelector('[data-modul-anahtar="'+modulAnahtari+'"]');
+        if(yeniSatir){yeniSatir.open=true;const detay=yeniSatir.querySelector('.ayar-istisna-detay');if(detay)detay.open=true;}
+        showToast('İstisna eklendi. Kalıcı olması için Ayarları Kaydet düğmesine basın.','success');
+    }
+
+    function ayarlarKullaniciIstisnaYetkisiniGuncelle(modulAnahtari,kullaniciAnahtari,seviye){
+        const anahtar=kullaniciYetkiAnahtari(kullaniciAnahtari),duzey=['yok','okuma','yazma'].includes(seviye)?seviye:'yok';
+        if(!anahtar)return;
+        anaMenuAyarTaslagi=anaMenuAyarTaslagi.map(modul=>modul.anahtar===modulAnahtari?{...modul,kullaniciYetkileri:{...(modul.kullaniciYetkileri||{}),[anahtar]:duzey}}:modul);
     }
 
     function ayarlarKullaniciIstisnasiSil(modulAnahtari,kullaniciAnahtari){
@@ -5408,7 +5416,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const modulSatiri=(modul,index,kisilerAktif=true)=>{
             const rolAlanlari=[['Yonetici','Kullanıcı'],['Personel','Personel']].map(([rol,etiket])=>{const seviye=String(modul.yetkiler?.[rol]||'yok');return '<label class="ayar-rol-yetki"><span>'+etiket+'</span><select class="ayar-rol-yetki-select" data-rol="'+rol+'" data-seviye="'+seviye+'" onchange="this.dataset.seviye=this.value">'+seviyeSecenekleri.map(([deger,ad])=>'<option value="'+deger+'" '+(deger===seviye?'selected':'')+'>'+ad+'</option>').join('')+'</select></label>';}).join('');
             const istisnalar=kisilerAktif?Object.entries(modul.kullaniciYetkileri||{}).filter(([anahtar])=>kullaniciHaritasi.has(anahtar)):[];
-            const istisnaSatirlari=istisnalar.length?istisnalar.map(([anahtar,seviye])=>{const kullanici=kullaniciHaritasi.get(anahtar),ad=String(kullanici?.ad||kullanici?.username||anahtar);return '<div class="ayar-kullanici-istisna"><strong title="'+escapeDashboardText(kullanici?.username||anahtar)+'">'+escapeDashboardText(ad)+'</strong><select class="ayar-kullanici-yetki" data-kullanici="'+escapeDashboardText(anahtar)+'">'+seviyeSecenekleri.map(([deger,etiket])=>'<option value="'+deger+'" '+(deger===seviye?'selected':'')+'>'+etiket+'</option>').join('')+'</select><button type="button" title="Rol ayarına döndür" onclick="ayarlarKullaniciIstisnasiSil(\''+escapeDashboardText(modul.anahtar)+'\',\''+escapeDashboardText(anahtar)+'\')">×</button></div>';}).join(''):'<small style="color:#64748b;">Kişiye özel istisna yok; rol ayarı kullanılır.</small>';
+            const istisnaSatirlari=istisnalar.length?istisnalar.map(([anahtar,seviye])=>{const kullanici=kullaniciHaritasi.get(anahtar),ad=String(kullanici?.ad||kullanici?.username||anahtar);return '<div class="ayar-kullanici-istisna"><strong title="'+escapeDashboardText(kullanici?.username||anahtar)+'">'+escapeDashboardText(ad)+'</strong><select class="ayar-kullanici-yetki" data-kullanici="'+escapeDashboardText(anahtar)+'" onchange="ayarlarKullaniciIstisnaYetkisiniGuncelle(\''+escapeDashboardText(modul.anahtar)+'\',\''+escapeDashboardText(anahtar)+'\',this.value)">'+seviyeSecenekleri.map(([deger,etiket])=>'<option value="'+deger+'" '+(deger===seviye?'selected':'')+'>'+etiket+'</option>').join('')+'</select><button type="button" title="Rol ayarına döndür" onclick="ayarlarKullaniciIstisnasiSil(\''+escapeDashboardText(modul.anahtar)+'\',\''+escapeDashboardText(anahtar)+'\')">×</button></div>';}).join(''):'<small style="color:#64748b;">Kişiye özel istisna yok; rol ayarı kullanılır.</small>';
             const kullanilabilir=kisilerAktif?yetkiKullanicilari.filter(k=>!Object.prototype.hasOwnProperty.call(modul.kullaniciYetkileri||{},kullaniciYetkiAnahtari(k.username))):[];
             const ekleme=kullanilabilir.length?'<div class="ayar-istisna-ekle"><select class="ayar-istisna-kullanici-sec"><option value="">Kullanıcı seçin...</option>'+kullanilabilir.map(k=>'<option value="'+escapeDashboardText(kullaniciYetkiAnahtari(k.username))+'">'+escapeDashboardText(String(k.ad||k.username))+'</option>').join('')+'</select><button type="button" onclick="ayarlarKullaniciIstisnasiEkle(\''+escapeDashboardText(modul.anahtar)+'\')">＋ İstisna Ekle</button></div>':'';
             const yetkiAlani='<div class="ayar-yetki-kapsam"><div class="ayar-yetki-grup"><span class="ayar-yetki-grup-baslik">Rol varsayılanları</span><div class="ayarlar-roller">'+rolAlanlari+'</div></div><details class="ayar-istisna-detay"><summary><span>Kişiye özel kullanıcı yetkileri</span><b>'+istisnalar.length+'</b></summary><div class="ayar-istisna-icerik"><div class="ayar-istisna-listesi">'+istisnaSatirlari+'</div>'+ekleme+'</div></details></div>';
@@ -5780,6 +5788,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     async function uygulamaAyarlariniKaydet(event) {
         event.preventDefault();
         if (!isManagerUser()) return showToast('Bu ayarları kaydetmek için admin veya kullanıcı yetkisi gerekir.','error');
+        const anaMenuModulleri = anaMenuAyarlariniFormdanOku();
         const irsaliyeBirimleri = irsaliyeAyarBirimDegerleri();
         const aracTurleri = aracAyarTurDegerleri();
         if (!aracTurleri.length) return alert('En az bir araç türü tanımlayın.');
@@ -5827,13 +5836,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             ...otomatikBildirimSablonDegerleriniOku(true),
             vardiyaAciklamalar:String(document.getElementById('ayarVardiyaAciklamalar')?.value || uygulamaAyarlari.vardiyaAciklamalar || '').trim() || VARSAYILAN_UYGULAMA_AYARLARI.vardiyaAciklamalar,
             yedekleme:yedeklemeFormDegerleriniOku(),
-            anaMenuModulleri:anaMenuAyarlariniFormdanOku()
+            anaMenuModulleri
         };
         showGlobalOverlay('Ayarlar kaydediliyor', 'Şirket ayarları güncelleniyor...');
         try {
-            await sirketUygulamaAyarParcasiKaydet(yeniAyarlar);
+            const kaydedilenAyarlar = await sirketUygulamaAyarParcasiKaydet(yeniAyarlar);
+            const beklenenIstisnalar=Object.fromEntries(anaMenuModulleri.map(modul=>[modul.anahtar,modul.kullaniciYetkileri||{}]));
+            const kayitliModuller=anaMenuModulAyarlariniDuzelt(kaydedilenAyarlar?.anaMenuModulleri);
+            const kayitliIstisnalar=Object.fromEntries(kayitliModuller.map(modul=>[modul.anahtar,modul.kullaniciYetkileri||{}]));
+            if(JSON.stringify(kayitliIstisnalar)!==JSON.stringify(beklenenIstisnalar))throw new Error('Kişiye özel kullanıcı yetkileri sunucuda doğrulanamadı.');
             try { await yedeklemeAyariniOrtakKaydet(yeniAyarlar.yedekleme); } catch (ortakHata) { console.warn('Ortak yedekleme ayarı ayrıca kaydedilemedi:', ortakHata); }
-            uygulamaAyarlari = { ...VARSAYILAN_UYGULAMA_AYARLARI, ...uygulamaAyarlari, ...yeniAyarlar };
+            uygulamaAyarlari = { ...VARSAYILAN_UYGULAMA_AYARLARI, ...kaydedilenAyarlar };
+            anaMenuAyarTaslagi = kayitliModuller;
             aracTurSecenekleriniYenile();
             izinAyarEtiketleriniGuncelle();
             irsaliyeBirimSecenekleriniYenile();
