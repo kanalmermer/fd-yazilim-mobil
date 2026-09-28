@@ -4150,7 +4150,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return tumKayitlar;
     }
     async function supabaseVerileriniYukle(modul = 'giris', kayitYili = '', secenekler = {}) {
-        if (!activeUser?.sirketId) return;
+        if (!activeUser?.sirketId) return false;
+        let veriDegisti = false;
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
         const sirketOnbellekAnahtari = String(activeUser.sirketId);
@@ -4161,7 +4162,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 sirketYuklemeSozu = supabaseSirketiYukle().then(() => fdSirketSonYukleme.set(sirketOnbellekAnahtari, Date.now()));
                 fdSirketYuklemeSozleri.set(sirketOnbellekAnahtari, sirketYuklemeSozu);
             }
-            try { await sirketYuklemeSozu; }
+            try { await sirketYuklemeSozu; veriDegisti = true; }
             finally { if (fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari) === sirketYuklemeSozu) fdSirketYuklemeSozleri.delete(sirketOnbellekAnahtari); }
         }
         const anahtarlar = SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat();
@@ -4186,6 +4187,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
                 const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
                 supabaseDiziAta(anahtar, kayitlar);
+                veriDegisti = true;
                 fdUzakImzayiSatirlardanKaydet(anahtar, yil, data);
                 if (dogrulananUzakImza) fdUzakVeriImzalari.set(yuklemeAnahtari, dogrulananUzakImza);
                 fdUzakAnahtarSonYukleme.set(yuklemeAnahtari, Date.now());
@@ -4195,6 +4197,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             finally { if (fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari) === yuklemeSozu) fdUzakAnahtarYuklemeSozleri.delete(yuklemeAnahtari); }
         }));
         veriOnbelleginiKaydet();
+        return veriDegisti;
     }
 
     function fdModulVerisiTazeMi(modul, kayitYili = '') {
@@ -6939,6 +6942,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let magicpassSeciliGunler = new Set();
 
     function magicpassKayitlari(tur) {
+        if (fdMagicpassKayitTurCache) return fdMagicpassKayitTurCache.get(String(tur || '')) || [];
         return vardiyaKayitlari.filter(k => k.kayitTipi === tur && aktifSirketeAit(k));
     }
 
@@ -6980,6 +6984,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function magicpassPersonelBul(kayit) {
+        if (fdMagicpassPersonelIdCache || fdMagicpassPersonelCihazCache) {
+            const pId = String(kayit?.pId || '');
+            if (pId && fdMagicpassPersonelIdCache?.has(pId)) return fdMagicpassPersonelIdCache.get(pId);
+            return fdMagicpassPersonelCihazCache?.get(String(kayit?.cihazNo || '').trim()) || null;
+        }
         if (kayit.pId) {
             const p = personeller.find(x => String(x.id) === String(kayit.pId) && aktifSirketeAit(x));
             if (p) return p;
@@ -7007,8 +7016,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const saatler = magicpassVardiyaSaatleri(vardiya, tarihKey);
         const pencereBas = new Date(saatler.bas); pencereBas.setHours(pencereBas.getHours() - 4);
         const pencereBit = new Date(saatler.bit); pencereBit.setHours(pencereBit.getHours() + 8);
-        const sirali = magicpassKayitlari('magicpassHareket').filter(k => {
-            const p = magicpassPersonelBul(k);
+        const onbellekli = Boolean(fdMagicpassHareketlerByPersonelCache);
+        const kaynak = onbellekli
+            ? (fdMagicpassHareketlerByPersonelCache.get(String(personel?.id || '')) || [])
+            : magicpassKayitlari('magicpassHareket');
+        const sirali = kaynak.filter(k => {
+            const p = onbellekli ? personel : magicpassPersonelBul(k);
             const zaman = new Date(k.zamanDamgasi);
             return p && String(p.id) === String(personel.id) && zaman >= pencereBas && zaman <= pencereBit;
         }).sort((a,b) => String(a.zamanDamgasi).localeCompare(String(b.zamanDamgasi)));
@@ -11486,10 +11499,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const verilerTaze = fdModulVerisiTazeMi('puantaj', seciliYil);
         renderPuantajMatrisi();
         if (!verilerTaze) {
-            driveVerileriniYukleBaslangicta('puantaj', seciliYil).then(() => {
+            driveVerileriniYukleBaslangicta('puantaj', seciliYil).then(veriDegisti => {
                 if (document.getElementById('puantajApp')?.style.display !== 'block' || puantajGorunumu !== seciliGorunum) return;
-                puantajYilSecenekleriniGuncelle();
-                renderPuantajMatrisi();
+                if (veriDegisti) {
+                    puantajYilSecenekleriniGuncelle();
+                    renderPuantajMatrisi();
+                }
             }).catch(error => {
                 console.error('Puantaj verileri yenilenemedi:', error);
                 showToast('Puantaj verileri arka planda yenilenemedi.', 'warning');
@@ -13996,22 +14011,34 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function personelPrimCalisilmayanGunSayisi(personel, ay, yil) {
+        const onbellekAnahtari = `${String(personel?.id || '')}|${Number(yil)}-${String(Number(ay) + 1).padStart(2, '0')}`;
+        if (fdPuantajPrimCalisilmayanCache?.has(onbellekAnahtari)) return fdPuantajPrimCalisilmayanCache.get(onbellekAnahtari);
         const daysInMonth = new Date(yil, ay + 1, 0).getDate();
         const ayBaslangic = `${yil}-${String(ay + 1).padStart(2, '0')}-01`;
         const ayBitis = `${yil}-${String(ay + 1).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
         const girisTarihi = tarihInputDegeri(personel?.girisTarihi);
         const cikisTarihi = tarihInputDegeri(personel?.cikisTarihi);
-        if (girisTarihi && girisTarihi > ayBaslangic) return 0;
-        if (cikisTarihi && cikisTarihi < ayBitis) return 0;
+        if (girisTarihi && girisTarihi > ayBaslangic) {
+            fdPuantajPrimCalisilmayanCache?.set(onbellekAnahtari, 0);
+            return 0;
+        }
+        if (cikisTarihi && cikisTarihi < ayBitis) {
+            fdPuantajPrimCalisilmayanCache?.set(onbellekAnahtari, 0);
+            return 0;
+        }
         let calisilmayanGun = 0;
+        const bugunKey = magicpassTarihAnahtari(new Date());
+        const personelId = String(personel?.id || '');
+        const personelIzinleri = fdPuantajIzinlerByPersonelCache?.get(personelId) || null;
 
         for (let d = 1; d <= daysInMonth; d++) {
             const dateKey = `${yil}-${String(ay + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-            const bugunKey = magicpassTarihAnahtari(new Date());
             const gunTamamlandi = primGunuTamamlandiMi(personel, dateKey);
             let durum = '';
             let cihazGunu = null;
-            const izin = izinler.find(item => aktifSirketeAit(item) && String(item.pId) === String(personel.id) && dateKey >= item.baslangic && dateKey <= item.bitis);
+            const izin = personelIzinleri
+                ? personelIzinleri.find(item => dateKey >= item.baslangic && dateKey <= item.bitis)
+                : izinler.find(item => aktifSirketeAit(item) && String(item.pId) === personelId && dateKey >= item.baslangic && dateKey <= item.bitis);
             if (izin) {
                 if (izin.tur === 'Sağlık / Rapor') durum = 'R';
                 if (izin.tur === 'Ücretsiz İzin') durum = 'Z';
@@ -14020,7 +14047,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 cihazGunu = magicpassGunHesapla(personel, dateKey);
                 if (!durum && cihazGunu.durum === 'Gelmedi') durum = 'M';
             }
-            const puantaj = puantajVerileri.find(item => aktifSirketeAit(item) && String(item.pId) === String(personel.id) && String(item.tarih) === dateKey);
+            const puantaj = fdPuantajManuelByGunCache?.get(`${personelId}|${dateKey}`)
+                || puantajVerileri.find(item => aktifSirketeAit(item) && !item.kayitTipi && String(item.pId) === personelId && String(item.tarih) === dateKey);
             if (!izin && puantaj?.durum) durum = puantaj.durum;
             if (!izin && dateKey === bugunKey && !gunTamamlandi) durum = '';
             if (durum === 'R' || durum === 'Z' || durum === 'M') {
@@ -14030,7 +14058,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 if (eksikCalismaDakikasi >= ayarSayisi('primYarimGunEksikMesaiDakika', 210)) calisilmayanGun += 0.5;
             }
         }
-        return Math.round(calisilmayanGun * 2) / 2;
+        const sonuc = Math.round(calisilmayanGun * 2) / 2;
+        fdPuantajPrimCalisilmayanCache?.set(onbellekAnahtari, sonuc);
+        return sonuc;
     }
 
     function personelPrimHakkiVarMi(personel, ay, yil) {
@@ -14198,41 +14228,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         };
     }
 
-    function primOzetleriniKaydet(ay, yil, ozetler) {
-        if (!yuklenenVeriler.has('puantaj') || !ozetler.length) return;
-        const ozetTarihi = `${yil}-${String(ay + 1).padStart(2, '0')}-00`;
-        let degisiklikVar = false;
-
-        ozetler.forEach(ozet => {
-            const index = puantajVerileri.findIndex(item =>
-                item.kayitTipi === 'primOzet' &&
-                String(item.pId) === String(ozet.pId) &&
-                String(item.tarih) === ozetTarihi &&
-                String(item.sirketId || '') === aktifSirketId()
-            );
-            const manuelKarar = index > -1 && String(puantajVerileri[index].primHakkiManuel) === 'true';
-            const yeniKayit = {
-                pId: String(ozet.pId),
-                tarih: ozetTarihi,
-                durum: 'PRIM_OZET',
-                kayitTipi: 'primOzet',
-                primHakki: manuelKarar ? puantajVerileri[index].primHakki : ozet.primHakki,
-                primHakkiManuel: manuelKarar ? 'true' : '',
-                calisilmayanGun: ozet.calisilmayanGun,
-                sirketId: aktifSirketId()
-            };
-            if (index === -1) {
-                puantajVerileri.push(yeniKayit);
-                degisiklikVar = true;
-            } else if (puantajVerileri[index].primHakki !== yeniKayit.primHakki || String(puantajVerileri[index].primHakkiManuel || '') !== yeniKayit.primHakkiManuel || Number(puantajVerileri[index].calisilmayanGun) !== Number(yeniKayit.calisilmayanGun)) {
-                puantajVerileri[index] = yeniKayit;
-                degisiklikVar = true;
-            }
-        });
-
-        if (degisiklikVar) verileriKaydet();
-    }
-
     function fdFabrikaSubeDegeri(select){
         if(!select)return '';
         const secenek=[...select.options].find(option=>String((option.value||'')+' '+(option.textContent||'')).toLocaleLowerCase('tr-TR').replace(/ı/g,'i').includes('fabrika'));
@@ -14257,6 +14252,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function puantajMobilEtiketleriniUygula() {
         const tablo = document.getElementById('puantajTablosu');
         if (!tablo) return;
+        if (!window.matchMedia('(max-width:760px)').matches) return;
         const ay = Number(document.getElementById('puanAySec')?.value || 0);
         const yil = Number(document.getElementById('puanYilSec')?.value || new Date().getFullYear());
         const etiketler = [...tablo.querySelectorAll('thead th')].map((baslik, index) => {
@@ -14277,10 +14273,87 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     let fdPuantajHizliHesapCache = null;
     let fdPuantajHizliGunTuruCache = null;
+    let fdPuantajPrimCalisilmayanCache = null;
+    let fdPuantajIzinlerByPersonelCache = null;
+    let fdPuantajManuelByGunCache = null;
+    let fdMagicpassKayitTurCache = null;
+    let fdMagicpassPersonelIdCache = null;
+    let fdMagicpassPersonelCihazCache = null;
+    let fdMagicpassHareketlerByPersonelCache = null;
+    let fdMagicpassHaftalikVardiyaCache = null;
 
-    function renderPuantajMatrisi() {
+    function fdPuantajHesapOnbelleginiBaslat() {
+        const onceki = {
+            hesap:fdPuantajHizliHesapCache, gunTuru:fdPuantajHizliGunTuruCache, prim:fdPuantajPrimCalisilmayanCache,
+            izin:fdPuantajIzinlerByPersonelCache, manuel:fdPuantajManuelByGunCache, tur:fdMagicpassKayitTurCache,
+            personelId:fdMagicpassPersonelIdCache, cihaz:fdMagicpassPersonelCihazCache,
+            hareket:fdMagicpassHareketlerByPersonelCache, haftalik:fdMagicpassHaftalikVardiyaCache
+        };
         fdPuantajHizliHesapCache = new Map();
         fdPuantajHizliGunTuruCache = new Map();
+        fdPuantajPrimCalisilmayanCache = new Map();
+        fdPuantajIzinlerByPersonelCache = new Map();
+        fdPuantajManuelByGunCache = new Map();
+        fdMagicpassKayitTurCache = new Map();
+        fdMagicpassPersonelIdCache = new Map();
+        fdMagicpassPersonelCihazCache = new Map();
+        fdMagicpassHareketlerByPersonelCache = new Map();
+        fdMagicpassHaftalikVardiyaCache = new Map();
+        personeller.filter(aktifSirketeAit).forEach(personel => {
+            const personelId = String(personel.id || '');
+            if (personelId) fdMagicpassPersonelIdCache.set(personelId, personel);
+            const cihazNo = String(personel.cihazPersonelNo || '').trim();
+            if (cihazNo) fdMagicpassPersonelCihazCache.set(cihazNo, personel);
+        });
+        vardiyaKayitlari.forEach(kayit => {
+            if (!aktifSirketeAit(kayit)) return;
+            const tur = String(kayit.kayitTipi || '');
+            if (tur) {
+                if (!fdMagicpassKayitTurCache.has(tur)) fdMagicpassKayitTurCache.set(tur, []);
+                fdMagicpassKayitTurCache.get(tur).push(kayit);
+            } else if (kayit.haftaBaslangic) {
+                const sube = String(kayit.sube || '').trim().toLocaleLowerCase('tr-TR');
+                const anahtar = `${String(kayit.haftaBaslangic)}|${sube}`;
+                const onceki = fdMagicpassHaftalikVardiyaCache.get(anahtar);
+                if (!onceki || Number(kayit.guncellemeZamani || kayit.zaman || 0) >= Number(onceki.guncellemeZamani || onceki.zaman || 0)) fdMagicpassHaftalikVardiyaCache.set(anahtar, kayit);
+            }
+        });
+        izinler.forEach(izin => {
+            if (!aktifSirketeAit(izin)) return;
+            const personelId = String(izin.pId || '');
+            if (!fdPuantajIzinlerByPersonelCache.has(personelId)) fdPuantajIzinlerByPersonelCache.set(personelId, []);
+            fdPuantajIzinlerByPersonelCache.get(personelId).push(izin);
+        });
+        puantajVerileri.forEach(kayit => {
+            if (!aktifSirketeAit(kayit) || kayit.kayitTipi) return;
+            const anahtar = `${String(kayit.pId || '')}|${String(kayit.tarih || '')}`;
+            if (!fdPuantajManuelByGunCache.has(anahtar)) fdPuantajManuelByGunCache.set(anahtar, kayit);
+        });
+        (fdMagicpassKayitTurCache.get('magicpassHareket') || []).forEach(hareket => {
+            const personel = magicpassPersonelBul(hareket);
+            const personelId = String(personel?.id || '');
+            if (!personelId) return;
+            if (!fdMagicpassHareketlerByPersonelCache.has(personelId)) fdMagicpassHareketlerByPersonelCache.set(personelId, []);
+            fdMagicpassHareketlerByPersonelCache.get(personelId).push(hareket);
+        });
+        return onceki;
+    }
+
+    function fdPuantajHesapOnbelleginiGeriYukle(onceki = {}) {
+        fdPuantajHizliHesapCache = onceki.hesap || null;
+        fdPuantajHizliGunTuruCache = onceki.gunTuru || null;
+        fdPuantajPrimCalisilmayanCache = onceki.prim || null;
+        fdPuantajIzinlerByPersonelCache = onceki.izin || null;
+        fdPuantajManuelByGunCache = onceki.manuel || null;
+        fdMagicpassKayitTurCache = onceki.tur || null;
+        fdMagicpassPersonelIdCache = onceki.personelId || null;
+        fdMagicpassPersonelCihazCache = onceki.cihaz || null;
+        fdMagicpassHareketlerByPersonelCache = onceki.hareket || null;
+        fdMagicpassHaftalikVardiyaCache = onceki.haftalik || null;
+    }
+
+    function renderPuantajMatrisi() {
+        const oncekiOnbellek = fdPuantajHesapOnbelleginiBaslat();
         try {
         const ay = parseInt(document.getElementById('puanAySec').value);
         const yil = parseInt(document.getElementById('puanYilSec').value);
@@ -14297,19 +14370,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const daysInMonth = new Date(yil, ay + 1, 0).getDate();
         const bugun = new Date();
         bugun.setHours(0, 0, 0, 0);
-        const izinlerByPersonel = new Map();
-        izinler.forEach(izin => {
-            if (!aktifSirketeAit(izin)) return;
-            const anahtar = String(izin.pId || '');
-            if (!izinlerByPersonel.has(anahtar)) izinlerByPersonel.set(anahtar, []);
-            izinlerByPersonel.get(anahtar).push(izin);
-        });
-        const manuelPuantajByGun = new Map();
-        puantajVerileri.forEach(kayit => {
-            if (!aktifSirketeAit(kayit) || kayit.kayitTipi) return;
-            const anahtar = `${String(kayit.pId || '')}|${String(kayit.tarih || '')}`;
-            if (!manuelPuantajByGun.has(anahtar)) manuelPuantajByGun.set(anahtar, kayit);
-        });
+        const izinlerByPersonel = fdPuantajIzinlerByPersonelCache;
+        const manuelPuantajByGun = fdPuantajManuelByGunCache;
 
         const thead = document.querySelector('#puantajTablosu thead');
         const tbody = document.querySelector('#puantajTablosu tbody');
@@ -14374,7 +14436,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             return;
         }
 
-        const primOzetleri = [];
         const bodyRows = [];
 
         aktifPersoneller.forEach((p, index) => {
@@ -14474,7 +14535,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const primDurumu = primDurumuAl(p);
             const primHakkiYok = !primDurumu.hakkiVar;
             if (primGorunumu) {
-                primOzetleri.push({ pId: p.id, primHakki: primHakkiYok ? 'Yok' : 'Var', calisilmayanGun: toplamCalisilmayan });
                 rowHtml = rowHtml.replace('<tr>', `<tr class="${primHakkiYok ? 'puantaj-no-prime' : ''}">`);
                 rowHtml += `<td class="p-ozet">${toplamZ}</td><td class="p-ozet">${toplamR}</td><td class="p-ozet">${mazeretsizToplamMetni}</td><td class="p-ozet">${toplamCalisilmayanMetni}</td><td class="p-ozet p-prim-sonuc ${primHakkiYok ? 'p-prim-yok' : 'p-prim-var'}" title="Prim hakkını manuel değiştirmek için sağ tıklayın" oncontextmenu="openPrimHakkiDuzenleme(event, '${p.id}')">${primHakkiYok ? 'Prim Yok' : 'Prim Var'}${primDurumu.manuel ? ' ✦' : ''}</td></tr>`;
                 bodyRows.push(rowHtml);
@@ -14519,10 +14579,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         });
         tbody.innerHTML = bodyRows.join('');
         puantajMobilEtiketleriniUygula();
-        if (primGorunumu) primOzetleriniKaydet(ay, yil, primOzetleri);
         } finally {
-            fdPuantajHizliHesapCache = null;
-            fdPuantajHizliGunTuruCache = null;
+            fdPuantajHesapOnbelleginiGeriYukle(oncekiOnbellek);
         }
     }
 
@@ -14561,7 +14619,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
         const ozetTarihi = `${yil}-${String(ay + 1).padStart(2, '0')}-00`;
         const mevcut = primOzetKaydiBul(pId, ay, yil);
-        const calisilmayanGun = mevcut ? Number(mevcut.calisilmayanGun || 0) : 0;
+        const calisilmayanGun = personelPrimCalisilmayanGunSayisi(personel, ay, yil);
         const yeniKayit = {
             pId,
             tarih: ozetTarihi,
@@ -14627,7 +14685,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     async function kaydetVeyaGuncellePuantaj(pId, dateKey, val) {
         const oncekiPuantajVerileri = puantajVerileri;
         puantajVerileri = puantajVerileri.filter(item => !(!item.kayitTipi && aktifSirketeAit(item) && String(item.pId) === String(pId) && String(item.tarih) === String(dateKey)));
-        puantajVerileri.push({ pId: String(pId), tarih: String(dateKey), durum: String(val).toUpperCase(), sirketId: aktifSirketId() });
+        puantajVerileri.push({ id:`puantaj_gun_${String(pId)}_${String(dateKey)}`, pId: String(pId), tarih: String(dateKey), durum: String(val).toUpperCase(), sirketId: aktifSirketId() });
         try {
             await verileriKaydet();
         } catch (error) {
@@ -18993,7 +19051,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     };
     function fdMagicpassHaftalikVardiyaBilgisi(personel,tarihKey){
         const hafta=vardiyaPazartesi(tarihKey),sube=String(personel?.sube||'').trim().toLocaleLowerCase('tr-TR');
-        const kayit=vardiyaKayitlari.find(k=>!k.kayitTipi&&aktifSirketeAit(k)&&String(k.haftaBaslangic||'')===hafta&&String(k.sube||'').trim().toLocaleLowerCase('tr-TR')===sube);if(!kayit)return null;
+        const kayit=fdMagicpassHaftalikVardiyaCache?.get(`${hafta}|${sube}`)||vardiyaKayitlari.find(k=>!k.kayitTipi&&aktifSirketeAit(k)&&String(k.haftaBaslangic||'')===hafta&&String(k.sube||'').trim().toLocaleLowerCase('tr-TR')===sube);if(!kayit)return null;
         const satir=(kayit.satirlar||[]).find(s=>String(s.personelId||'')===String(personel.id));
         return satir?{vardiya:vardiyaKayitTanimHaritasi(kayit)[satir.vardiya]||fdVardiyaVarsayilanGunduzId(),zaman:Number(kayit.guncellemeZamani||kayit.zaman||0)}:null;
     }
@@ -21838,7 +21896,7 @@ document.addEventListener('click',function(e){
     window.bordroMaasKarsilastirmayiAc=function(){
         const d=donem(),veri=belge('banka_maas')?.maasKarsilastirma;if(!veri?.satirlar?.length){showToast?.('Karşılaştırma için Maaş Listesi dosyasını kalem düğmesinden yeniden yükleyin.','warning');return}
         bordroMaasKarsilastirmaModaliniKur();const ayBas=`${d.yil}-${String(d.ay+1).padStart(2,'0')}-01`,aySon=`${d.yil}-${String(d.ay+1).padStart(2,'0')}-${String(new Date(d.yil,d.ay+1,0).getDate()).padStart(2,'0')}`,aktifler=personeller.filter(p=>aktifSirketeAit(p)&&(!tarihInputDegeri(p.girisTarihi)||tarihInputDegeri(p.girisTarihi)<=aySon)&&(!tarihInputDegeri(p.cikisTarihi)||tarihInputDegeri(p.cikisTarihi)>=ayBas)),listeHaritasi=new Map(veri.satirlar.map(x=>[String(x.pId),x]));
-        const oncekiHesapCache=fdPuantajHizliHesapCache,oncekiGunCache=fdPuantajHizliGunTuruCache;fdPuantajHizliHesapCache=new Map();fdPuantajHizliGunTuruCache=new Map();let satirlar=[];try{satirlar=aktifler.map(p=>{const liste=listeHaritasi.get(String(p.id)),puantaj=bordroPuantajToplamMaasiniHesapla(p,d),listeTutari=liste?Number(liste.listeTutari||0):null,fark=liste?Number((listeTutari-puantaj).toFixed(2)):null,uyumlu=liste&&Math.abs(fark)<=0.01;listeHaritasi.delete(String(p.id));return{personelAd:p.ad||p.id,listeTutari,puantaj,fark,uyumlu,durum:liste?(uyumlu?'Uyumlu':'Tutar farklı'):'Maaş listesinde yok'}})}finally{fdPuantajHizliHesapCache=oncekiHesapCache;fdPuantajHizliGunTuruCache=oncekiGunCache}
+        const oncekiOnbellek=fdPuantajHesapOnbelleginiBaslat();let satirlar=[];try{satirlar=aktifler.map(p=>{const liste=listeHaritasi.get(String(p.id)),puantaj=bordroPuantajToplamMaasiniHesapla(p,d),listeTutari=liste?Number(liste.listeTutari||0):null,fark=liste?Number((listeTutari-puantaj).toFixed(2)):null,uyumlu=liste&&Math.abs(fark)<=0.01;listeHaritasi.delete(String(p.id));return{personelAd:p.ad||p.id,listeTutari,puantaj,fark,uyumlu,durum:liste?(uyumlu?'Uyumlu':'Tutar farklı'):'Maaş listesinde yok'}})}finally{fdPuantajHesapOnbelleginiGeriYukle(oncekiOnbellek)}
         listeHaritasi.forEach(x=>satirlar.push({personelAd:x.personelAd||x.pId,listeTutari:Number(x.listeTutari||0),puantaj:null,fark:null,uyumlu:false,durum:'Puantajda personel yok'}));satirlar.sort((a,b)=>Number(a.uyumlu)-Number(b.uyumlu)||String(a.personelAd).localeCompare(String(b.personelAd),'tr'));
         const uyumlu=satirlar.filter(x=>x.uyumlu).length,farkli=satirlar.length-uyumlu;document.getElementById('bordroMaasKarsilastirmaBaslik').textContent='⚖ Maaş Listesi Karşılaştırması · '+d.etiket;document.getElementById('bordroMaasKarsilastirmaAltBaslik').textContent=veri.dosyaAdi+' · '+tarih(veri.okumaTarihi);document.getElementById('bordroMaasKarsilastirmaOzet').innerHTML='<article><span>Kontrol edilen</span><strong>'+satirlar.length+'</strong></article><article><span>Uyumlu</span><strong>'+uyumlu+'</strong></article><article class="'+(farkli?'hata':'')+'"><span>Farklı / eksik</span><strong>'+farkli+'</strong></article><article><span>Dosyada okunan</span><strong>'+veri.satirlar.length+'</strong></article>';
         document.getElementById('bordroMaasKarsilastirmaBody').innerHTML=satirlar.map((x,i)=>'<tr class="'+(x.uyumlu?'uyumlu':'farkli')+'"><td>'+(i+1)+'</td><td>'+esc(x.personelAd)+'</td><td class="para">'+(x.listeTutari===null?'—':paraFormatla(x.listeTutari))+'</td><td class="para">'+(x.puantaj===null?'—':paraFormatla(x.puantaj))+'</td><td class="para">'+(x.fark===null?'—':paraFormatla(x.fark))+'</td><td class="durum">'+(x.uyumlu?'✓ Uyumlu':'⚠ '+esc(x.durum))+'</td></tr>').join('');
@@ -21896,7 +21954,7 @@ document.addEventListener('click',function(e){
         if(!secilen.length)return alert('Yüklenecek en az bir belge seçin.');
         const max=20*1024*1024;
         for(const x of secilen){if(!uzanti(x.f))return alert(x.t.ad+' için yalnızca PDF veya Excel dosyası seçebilirsiniz.');if(x.f.size>max)return alert(x.t.ad+' dosyası en fazla 20 MB olabilir.')}
-        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[];let icraIslenen=0,besIslenen=0;
+        const d=donem(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[],temizlikler=[];let icraIslenen=0,besIslenen=0,belgeAyariDegisti=false;
         islemde=true;btn.disabled=true;btn.classList.add('yukleniyor');
         try{
             for(let i=0;i<secilen.length;i++){
@@ -21914,7 +21972,7 @@ document.addEventListener('click',function(e){
                 const base64=await dosyayiBase64Oku(f),ad='BORDRO_BELGELERI_'+d.anahtar+'_'+t.dosya+'.'+ext,eski=k.belgeler?.[t.kod]||null,yeni=await fdYazilimDriveDosyaYukle(base64,ad,mime,'',KLASOR);
                 k.belgeler=k.belgeler||{};
                 k.belgeler[t.kod]={id:yeni.id,url:yeni.url||'',ad:yeni.ad||ad,mimeType:mime,boyut:f.size,guncellemeTarihi:new Date().toISOString(),...(maasKarsilastirma?{maasKarsilastirma}:{})};
-                await ayariKaydet(d,k);
+                belgeAyariDegisti=true;
                 if(ayrilan){
                     const kaydedilen=await pusulaKayitlariniKaydet(ayrilan,d,yeni,btn);
                     bordroIlerlet(btn,94,'İcra kesintileri kaydediliyor...');
@@ -21925,20 +21983,26 @@ document.addEventListener('click',function(e){
                     const besSonucu=await bordroBesKesintileriniKaydet(ayrilan.bulunanlar,d);besIslenen+=besSonucu.islenen;
                     kaydedilen.forEach((_,tc)=>{const bildirim=personelBordroBildirimiHazirla(tc,d);if(bildirim)bordroBildirilecekler.push(bildirim)});
                     k.belgeler[t.kod].ayristirilan=kaydedilen.size;k.belgeler[t.kod].eslesmeyen=ayrilan.sorunlar.length;k.belgeler[t.kod].toplamPusula=ayrilan.toplam;
-                    await ayariKaydet(d,k);
                     if(ayrilan.sorunlar.length){
                         const ozet=ayrilan.sorunlar.slice(0,8).map(s=>'Sayfa '+s.sayfa+(s.sira?' / '+s.sira+'. pusula':'')+': '+s.neden+(s.tc?' ('+s.tc+')':'')).join('\n');
                         uyarilar.push(ayrilan.sorunlar.length+' pusula eşleştirilemedi:\n'+ozet+(ayrilan.sorunlar.length>8?'\n...':''));
                     }
                 }else if(t.kod==='ucret_pusulasi')uyarilar.push('Personel bazında ayırma yalnızca PDF ücret pusulasında yapılır.');
-                await bordroEskiBelgeleriTemizle(yeni.id,ad,eski?.id||'');
+                temizlikler.push({yeniId:yeni.id,dosyaAdi:ad,eskiId:eski?.id||''});
                 bordroIlerlet(btn,Math.round((i+1)/secilen.length*100));
             }
+            await ayariKaydet(d,k);
+            belgeAyariDegisti=false;
+            await Promise.all(temizlikler.map(islem=>bordroEskiBelgeleriTemizle(islem.yeniId,islem.dosyaAdi,islem.eskiId)));
+            temizlikler.length=0;
             if(bordroBildirilecekler.length){bordroIlerlet(btn,96,'WhatsApp bildirimleri gönderiliyor...');const bildirimSonucu=await personelBildirimleriniTopluGonder(bordroBildirilecekler);if(bildirimSonucu.basarisiz)uyarilar.push(bildirimSonucu.basarisiz+' personele ücret pusulası WhatsApp bildirimi gönderilemedi.')}
             bordroIlerlet(btn,100,'Tamamlandı %100');renderPuantajMatrisi();panelCiz();showToast?.(d.etiket+' bordro belgeleri kaydedildi.'+(icraIslenen?' '+icraIslenen+' personelin icra kesintisi işlendi.':'')+(besIslenen?' '+besIslenen+' personelin BES kesintisi puantaja işlendi.':''));
             setTimeout(()=>modalKapat('bordroBelgeleriModal'),450);
             if(uyarilar.length)setTimeout(()=>alert(uyarilar.join('\n\n')),550);
-        }catch(e){console.error(e);alert('Belgeler kaydedilemedi: '+(e.message||e));panelCiz()}
+        }catch(e){
+            if(belgeAyariDegisti){try{await ayariKaydet(d,k);belgeAyariDegisti=false;await Promise.all(temizlikler.map(islem=>bordroEskiBelgeleriTemizle(islem.yeniId,islem.dosyaAdi,islem.eskiId)))}catch(kayitHatasi){console.error('Kısmi bordro kaydı korunamadı:',kayitHatasi)}}
+            console.error(e);alert('Belgeler kaydedilemedi: '+(e.message||e));panelCiz()
+        }
         finally{islemde=false;btn.disabled=false;btn.classList.remove('yukleniyor')}
     };
     function bordroOnizlemeAc(kayit,baslik,tur='toplu'){
