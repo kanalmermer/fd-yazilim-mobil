@@ -5841,9 +5841,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         showGlobalOverlay('Ayarlar kaydediliyor', 'Şirket ayarları güncelleniyor...');
         try {
             const kaydedilenAyarlar = await sirketUygulamaAyarParcasiKaydet(yeniAyarlar);
-            const beklenenIstisnalar=Object.fromEntries(anaMenuModulleri.map(modul=>[modul.anahtar,modul.kullaniciYetkileri||{}]));
+            const istisnalariKarsilastirmayaHazirla=moduller=>Object.fromEntries((moduller||[]).map(modul=>[
+                modul.anahtar,
+                Object.fromEntries(Object.entries(modul.kullaniciYetkileri||{}).sort(([ilk],[ikinci])=>ilk.localeCompare(ikinci,'tr')))
+            ]));
+            const beklenenIstisnalar=istisnalariKarsilastirmayaHazirla(anaMenuModulleri);
             const kayitliModuller=anaMenuModulAyarlariniDuzelt(kaydedilenAyarlar?.anaMenuModulleri);
-            const kayitliIstisnalar=Object.fromEntries(kayitliModuller.map(modul=>[modul.anahtar,modul.kullaniciYetkileri||{}]));
+            const kayitliIstisnalar=istisnalariKarsilastirmayaHazirla(kayitliModuller);
             if(JSON.stringify(kayitliIstisnalar)!==JSON.stringify(beklenenIstisnalar))throw new Error('Kişiye özel kullanıcı yetkileri sunucuda doğrulanamadı.');
             try { await yedeklemeAyariniOrtakKaydet(yeniAyarlar.yedekleme); } catch (ortakHata) { console.warn('Ortak yedekleme ayarı ayrıca kaydedilemedi:', ortakHata); }
             uygulamaAyarlari = { ...VARSAYILAN_UYGULAMA_AYARLARI, ...kaydedilenAyarlar };
