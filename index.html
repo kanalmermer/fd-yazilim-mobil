@@ -2781,11 +2781,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             </div>
         </div>
         <div id="avansGelecekCard" class="card" style="max-width:1120px; margin:0 auto; display:none;">
-            <div class="card-header" style="flex-wrap:wrap;gap:10px;">
+            <div class="card-header avans-gelecek-baslik">
                 <div><h2 style="margin:0;">📆 Önümüzdeki Avans Kesintileri</h2><small id="avansGelecekOzet" style="color:#64748b;font-weight:700;"></small></div>
-                <div class="action-btns"><select id="avansGelecekAySayisi" onchange="renderAvansGelecekKesintileri()" style="padding:7px 10px;"><option value="3">Önümüzdeki 3 ay</option><option value="6">Önümüzdeki 6 ay</option><option value="12">Önümüzdeki 12 ay</option><option value="year">Tüm yıl</option><option value="0" selected>Tüm plan</option></select><button type="button" class="btn-export" style="background:#0284c7;color:#fff;" onclick="avansGelecekGoruntuAl(this)">📸 Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansGelecekBody','excel','GELECEK AVANS KESİNTİLERİ','GELECEK_AVANS_KESINTILERI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div>
+                <div class="action-btns avans-gelecek-aksiyonlar"><select id="avansGelecekAySayisi" onchange="renderAvansGelecekKesintileri()"><option value="3">Önümüzdeki 3 ay</option><option value="6">Önümüzdeki 6 ay</option><option value="12">Önümüzdeki 12 ay</option><option value="year">Tüm yıl</option><option value="0" selected>Tüm plan</option></select><button type="button" class="btn-export avans-goruntu-btn" onclick="avansGelecekGoruntuAl(this)">Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansGelecekBody','excel','GELECEK AVANS KESİNTİLERİ','GELECEK_AVANS_KESINTILERI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div>
             </div>
             <style>
+                #avansGelecekCard .avans-gelecek-baslik{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:center;gap:14px;flex-wrap:nowrap!important}
+                #avansGelecekCard .avans-gelecek-aksiyonlar{width:auto;max-width:none;display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap!important;gap:7px}
+                #avansGelecekCard .avans-gelecek-aksiyonlar>*{flex:0 0 auto;min-height:44px;margin:0;white-space:nowrap}
+                #avansGelecekCard .avans-gelecek-aksiyonlar select{width:232px;padding:7px 10px}
+                #avansGelecekCard .avans-goruntu-btn{min-width:112px;background:#0284c7!important;color:#fff!important;justify-content:center}
+                @media(max-width:760px){#avansGelecekCard .avans-gelecek-baslik{grid-template-columns:1fr}#avansGelecekCard .avans-gelecek-aksiyonlar{width:100%;justify-content:flex-start;overflow-x:auto;padding-bottom:3px}#avansGelecekCard .avans-gelecek-aksiyonlar select{width:180px}}
                 #avansGelecekCard .avans-matris{min-width:760px;border-collapse:separate;border-spacing:0}
                 #avansGelecekCard .avans-matris th,#avansGelecekCard .avans-matris td{padding:10px 12px;text-align:right;border-bottom:1px solid #dbe4ec;border-right:1px solid #e2e8f0;white-space:nowrap}
                 #avansGelecekCard .avans-matris thead th{background:#0f766e;color:#fff;text-align:center;font-size:12px;letter-spacing:.02em;position:sticky;top:0;z-index:2}
@@ -23553,14 +23559,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v169';
+      const anahtar='fd-pwa-yenileme-v170';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=169',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=170',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
