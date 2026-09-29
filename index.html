@@ -3933,8 +3933,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let activeUser = null;
     let supabaseProfile = null;
     let aktifKullaniciOturumId = '';
+    let aktifKullaniciOturumToken = '';
     let kullaniciOturumKalpAtisiZamanlayici = null;
     const KULLANICI_OTURUM_ANAHTARI = 'fdYazilimAktifOturumV1';
+    const KULLANICI_OTURUM_AKTIFLIK_ESIGI = 2 * 60 * 1000;
+    const KULLANICI_OTURUM_TUTARSIZ_CIKIS_ESIGI = 5 * 60 * 1000;
     let kullaniciOturumSayfasi = 0;
     let kullaniciOturumToplamSayfa = 1;
     const KULLANICI_OTURUM_SAYFA_BOYUTU = 5;
@@ -4345,6 +4348,25 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return Number.isNaN(tarih.getTime()) ? '-' : tarih.toLocaleString('tr-TR', { dateStyle:'short', timeStyle:'medium' });
     }
 
+    function kullaniciOturumBitisBilgisi(oturum, simdi = Date.now()) {
+        const giris = new Date(oturum?.signed_in_at || '').getTime();
+        const sonEtkinlik = new Date(oturum?.last_seen_at || oturum?.signed_in_at || '').getTime();
+        const kayitliCikis = new Date(oturum?.signed_out_at || '').getTime();
+        const sonEtkinlikVar = Number.isFinite(sonEtkinlik);
+        const cikisVar = Number.isFinite(kayitliCikis);
+        const aktif = !oturum?.signed_out_at && sonEtkinlikVar && simdi - sonEtkinlik <= KULLANICI_OTURUM_AKTIFLIK_ESIGI;
+        const tutarliCikis = cikisVar && (!sonEtkinlikVar || Math.abs(kayitliCikis - sonEtkinlik) <= KULLANICI_OTURUM_TUTARSIZ_CIKIS_ESIGI);
+        if (aktif) return { zaman:oturum.last_seen_at || oturum.signed_in_at, tur:'aktif' };
+        if (tutarliCikis) return { zaman:oturum.signed_out_at, tur:'cikis' };
+        return { zaman:sonEtkinlikVar ? (oturum.last_seen_at || oturum.signed_in_at) : (cikisVar ? oturum.signed_out_at : (Number.isFinite(giris) ? oturum.signed_in_at : '')), tur:'otomatik' };
+    }
+
+    function kullaniciOturumBitisMetni(oturum, simdi = Date.now()) {
+        const bilgi = kullaniciOturumBitisBilgisi(oturum, simdi);
+        const onEk = bilgi.tur === 'aktif' ? 'Aktif · Son görülme: ' : (bilgi.tur === 'cikis' ? 'Çıkış: ' : 'Son etkinlik: ');
+        return onEk + kullaniciOturumTarihSaat(bilgi.zaman) + (bilgi.tur === 'otomatik' ? ' · otomatik kapandı' : '');
+    }
+
     async function kullaniciOturumKalpAtisi() {
         if (!SUPABASE_MODE || !supabaseClient || !activeUser?.supabaseUserId || !aktifKullaniciOturumId) return;
         const { error } = await supabaseClient.from('portal_user_sessions').update({ last_seen_at:new Date().toISOString(), signed_out_at:null })
@@ -4364,6 +4386,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     async function kullaniciOturumunuBaslat() {
         if (!SUPABASE_MODE || !supabaseClient || !activeUser?.supabaseUserId || !activeUser?.sirketId) return;
         try {
+            const { data:oturumVerisi } = await supabaseClient.auth.getSession();
+            aktifKullaniciOturumToken = String(oturumVerisi?.session?.access_token || '');
             let oturum = null;
             try { oturum = JSON.parse(sessionStorage.getItem(KULLANICI_OTURUM_ANAHTARI) || 'null'); } catch (_) {}
             if (!oturum?.id || String(oturum.userId || '') !== String(activeUser.supabaseUserId)) {
@@ -4397,6 +4421,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             } catch (error) { console.warn('Kullanıcı çıkış zamanı kaydedilemedi:', error); }
         }
         aktifKullaniciOturumId = '';
+        aktifKullaniciOturumToken = '';
         sessionStorage.removeItem(KULLANICI_OTURUM_ANAHTARI);
     }
 
@@ -4436,7 +4461,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 kullaniciOturumSayfasi = kullaniciOturumToplamSayfa - 1;
                 return kullaniciOturumPaneliniYukle(false);
             }
-            const aktifEsigi = new Date(simdi.getTime() - 120000).toISOString();
+            const aktifEsigi = new Date(simdi.getTime() - KULLANICI_OTURUM_AKTIFLIK_ESIGI).toISOString();
             const { data:aktifKayitlar, error:aktifHatasi } = await supabaseClient.from('portal_user_sessions')
                 .select('user_id').eq('company_id', aktifSirketId()).is('signed_out_at', null).gte('last_seen_at', aktifEsigi);
             if (aktifHatasi) throw aktifHatasi;
@@ -4448,10 +4473,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 const personelTc = tc || String(hesap?.tcNo || '');
                 const personel = personeller.find(p => String(p.id) === personelTc && aktifSirketeAit(p));
                 const sonGorulme = new Date(oturum.last_seen_at || oturum.signed_in_at).getTime();
-                const aktif = !oturum.signed_out_at && Number.isFinite(sonGorulme) && simdi.getTime() - sonGorulme <= 120000;
+                const aktif = !oturum.signed_out_at && Number.isFinite(sonGorulme) && simdi.getTime() - sonGorulme <= KULLANICI_OTURUM_AKTIFLIK_ESIGI;
                 return { ...oturum, personelTc, personelAdi:personel?.ad || hesap?.ad || oturum.username || 'Kullanıcı', aktif };
             });
-            const tablo = satirlar.length ? `<table class="admin-session-table"><thead><tr><th>Durum</th><th>Personel / Kullanıcı</th><th>T.C. Kimlik No</th><th>Kullanıcı Adı</th><th>Rol</th><th>Giriş</th><th>Çıkış / Son Görülme</th></tr></thead><tbody>${satirlar.map(s => `<tr><td><span class="session-state ${s.aktif ? 'active' : 'closed'}">${s.aktif ? '● AKTİF' : '○ KAPALI'}</span></td><td><strong>${escapeDashboardText(s.personelAdi)}</strong></td><td>${escapeDashboardText(s.personelTc || '-')}</td><td>${escapeDashboardText(s.username || '-')}</td><td>${escapeDashboardText(s.role === 'Yonetici' ? 'Kullanıcı' : (s.role || '-'))}</td><td>${kullaniciOturumTarihSaat(s.signed_in_at)}</td><td>${s.signed_out_at ? kullaniciOturumTarihSaat(s.signed_out_at) : `${kullaniciOturumTarihSaat(s.last_seen_at)}${s.aktif ? '' : ' (son görülme)'}`}</td></tr>`).join('')}</tbody></table>` : '<div class="dashboard-empty">Son 1 ay içinde kayıtlı kullanıcı oturumu bulunmuyor.</div>';
+            const tablo = satirlar.length ? `<table class="admin-session-table"><thead><tr><th>Durum</th><th>Personel / Kullanıcı</th><th>T.C. Kimlik No</th><th>Kullanıcı Adı</th><th>Rol</th><th>Giriş</th><th>Çıkış / Son Etkinlik</th></tr></thead><tbody>${satirlar.map(s => `<tr><td><span class="session-state ${s.aktif ? 'active' : 'closed'}">${s.aktif ? '● AKTİF' : '○ KAPALI'}</span></td><td><strong>${escapeDashboardText(s.personelAdi)}</strong></td><td>${escapeDashboardText(s.personelTc || '-')}</td><td>${escapeDashboardText(s.username || '-')}</td><td>${escapeDashboardText(s.role === 'Yonetici' ? 'Kullanıcı' : (s.role || '-'))}</td><td>${kullaniciOturumTarihSaat(s.signed_in_at)}</td><td>${kullaniciOturumBitisMetni(s, simdi.getTime())}</td></tr>`).join('')}</tbody></table>` : '<div class="dashboard-empty">Son 1 ay içinde kayıtlı kullanıcı oturumu bulunmuyor.</div>';
             const sayfalama = `<div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:10px 4px 2px;flex-wrap:wrap;"><small style="margin-right:auto;color:#64748b;">Son 1 ay · ${Number(count || 0)} kayıt</small><button type="button" class="btn-modern" onclick="kullaniciOturumSayfasiniDegistir(-1)" ${kullaniciOturumSayfasi === 0 ? 'disabled' : ''}>← Önceki</button><strong style="font-size:.78rem;color:#334155;">${kullaniciOturumSayfasi + 1} / ${kullaniciOturumToplamSayfa}</strong><button type="button" class="btn-modern" onclick="kullaniciOturumSayfasiniDegistir(1)" ${kullaniciOturumSayfasi + 1 >= kullaniciOturumToplamSayfa ? 'disabled' : ''}>Sonraki →</button></div>`;
             body.innerHTML = tablo + sayfalama;
             if (bildirimGoster) showToast('Kullanıcı oturumları yenilendi.');
@@ -20876,7 +20901,7 @@ tapuCksArayuzunuKur();
 
     // Ana ekranda giriş yapmış tüm kullanıcılar; aktiflik, son giriş/çıkış ve kişi bazlı bildirim.
     function fdSessionModalKur(){if(document.getElementById('fdSessionHistoryModal'))return;const m=document.createElement('div');m.id='fdSessionHistoryModal';m.className='modal-overlay';m.innerHTML='<div class="modal-card" style="width:min(920px,96vw);max-height:90vh"><div class="modal-header"><h3 id="fdSessionHistoryTitle">Giriş Geçmişi</h3><button class="modal-close" onclick="modalKapat(\'fdSessionHistoryModal\')">✕</button></div><div class="modal-body" id="fdSessionHistoryBody"></div></div>';document.body.appendChild(m);}
-    window.fdAktifKullaniciGecmisi=async function(userId,ad){fdSessionModalKur();const body=document.getElementById('fdSessionHistoryBody');document.getElementById('fdSessionHistoryTitle').textContent=ad+' · Son 1 Aylık Girişler';body.innerHTML='<div class="dashboard-empty">Girişler yükleniyor...</div>';document.getElementById('fdSessionHistoryModal').style.display='flex';try{const d=new Date();d.setDate(d.getDate()-30);const{data,error}=await supabaseClient.from('portal_user_sessions').select('role,signed_in_at,last_seen_at,signed_out_at').eq('company_id',aktifSirketId()).eq('user_id',userId).gte('signed_in_at',d.toISOString()).order('signed_in_at',{ascending:false});if(error)throw error;body.innerHTML=(data||[]).length?'<table class="fd-session-history-table"><thead><tr><th>Giriş</th><th>Çıkış / Son Görülme</th><th>Rol</th></tr></thead><tbody>'+(data||[]).map(s=>'<tr><td>'+kullaniciOturumTarihSaat(s.signed_in_at)+'</td><td>'+kullaniciOturumTarihSaat(s.signed_out_at||s.last_seen_at)+'</td><td>'+fdEsc(s.role==='Yonetici'?'Kullanıcı':(s.role||'-'))+'</td></tr>').join('')+'</tbody></table>':'<div class="dashboard-empty">Son 1 ayda giriş kaydı bulunmuyor.</div>';}catch(e){body.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">Giriş geçmişi alınamadı.</div>';}};
+    window.fdAktifKullaniciGecmisi=async function(userId,ad){fdSessionModalKur();const body=document.getElementById('fdSessionHistoryBody');document.getElementById('fdSessionHistoryTitle').textContent=ad+' · Son 1 Aylık Girişler';body.innerHTML='<div class="dashboard-empty">Girişler yükleniyor...</div>';document.getElementById('fdSessionHistoryModal').style.display='flex';try{const d=new Date();d.setDate(d.getDate()-30);const{data,error}=await supabaseClient.from('portal_user_sessions').select('role,signed_in_at,last_seen_at,signed_out_at').eq('company_id',aktifSirketId()).eq('user_id',userId).gte('signed_in_at',d.toISOString()).order('signed_in_at',{ascending:false});if(error)throw error;body.innerHTML=(data||[]).length?'<table class="fd-session-history-table"><thead><tr><th>Giriş</th><th>Çıkış / Son Etkinlik</th><th>Rol</th></tr></thead><tbody>'+(data||[]).map(s=>'<tr><td>'+kullaniciOturumTarihSaat(s.signed_in_at)+'</td><td>'+kullaniciOturumBitisMetni(s)+'</td><td>'+fdEsc(s.role==='Yonetici'?'Kullanıcı':(s.role||'-'))+'</td></tr>').join('')+'</tbody></table>':'<div class="dashboard-empty">Son 1 ayda giriş kaydı bulunmuyor.</div>';}catch(e){body.innerHTML='<div class="dashboard-empty" style="color:#b91c1c">Giriş geçmişi alınamadı.</div>';}};
     let fdOturumKullaniciListesi=[];
     let fdOturumKayitOnbellegi=[],fdOturumKayitZamani=0,fdOturumKayitSozu=null;
     async function fdTumOturumKayitlariniAl(zorla=false){
@@ -20910,7 +20935,7 @@ tapuCksArayuzunuKur();
         try{
             const simdi=new Date(),kayitlar=await fdTumOturumKayitlariniAl(bildirimGoster),tekil=new Map();
             kayitlar.forEach(s=>{const id=String(s.user_id);if(!tekil.has(id))tekil.set(id,s)});
-            fdOturumKullaniciListesi=[...tekil.values()].map(s=>{const tc=String(s.employee_legacy_id||''),hesap=kullanicilar.find(k=>String(k.supabaseUserId||k.id||'')===String(s.user_id)||(tc&&String(k.tcNo||'')===tc)),personelTc=tc||String(hesap?.tcNo||''),p=personeller.find(x=>String(x.id)===personelTc&&aktifSirketeAit(x)),son=new Date(s.last_seen_at||s.signed_in_at).getTime(),aktif=!s.signed_out_at&&Number.isFinite(son)&&simdi.getTime()-son<=120000;return{...s,personelTc,ad:p?.ad||hesap?.ad||s.username||'Kullanıcı',sube:p?.sube||'',rol:s.role==='Yonetici'?'Kullanıcı':(s.role||'-'),aktif}}).sort((a,b)=>Number(b.aktif)-Number(a.aktif)||String(b.last_seen_at||b.signed_in_at).localeCompare(String(a.last_seen_at||a.signed_in_at)));
+            fdOturumKullaniciListesi=[...tekil.values()].map(s=>{const tc=String(s.employee_legacy_id||''),hesap=kullanicilar.find(k=>String(k.supabaseUserId||k.id||'')===String(s.user_id)||(tc&&String(k.tcNo||'')===tc)),personelTc=tc||String(hesap?.tcNo||''),p=personeller.find(x=>String(x.id)===personelTc&&aktifSirketeAit(x)),son=new Date(s.last_seen_at||s.signed_in_at).getTime(),aktif=!s.signed_out_at&&Number.isFinite(son)&&simdi.getTime()-son<=KULLANICI_OTURUM_AKTIFLIK_ESIGI;return{...s,personelTc,ad:p?.ad||hesap?.ad||s.username||'Kullanıcı',sube:p?.sube||'',rol:s.role==='Yonetici'?'Kullanıcı':(s.role||'-'),aktif}}).sort((a,b)=>Number(b.aktif)-Number(a.aktif)||String(b.last_seen_at||b.signed_in_at).localeCompare(String(a.last_seen_at||a.signed_in_at)));
             const aktif=fdOturumKullaniciListesi.filter(s=>s.aktif).length,cevrimdisi=fdOturumKullaniciListesi.length-aktif;document.getElementById('adminSessionActiveCount').textContent=aktif+' aktif';document.getElementById('adminSessionOfflineCount').textContent=cevrimdisi+' çevrimdışı';document.getElementById('adminSessionTotalCount').textContent=fdOturumKullaniciListesi.length+' kullanıcı';
             body.innerHTML=fdOturumKullaniciListesi.length?'<div class="fd-session-toolbar"><input id="fdOturumKullaniciAra" placeholder="İsim veya şube ara..." oninput="fdOturumKullanicilariniFiltrele()"><small style="margin-left:auto;color:#64748b">Karta tıklayın: giriş geçmişi · 🔔: kişiye bildirim</small></div><div id="fdOturumKullaniciKartlari" class="fd-active-user-grid"></div>':'<div class="dashboard-empty">Henüz giriş yapmış kullanıcı bulunmuyor.</div>';fdOturumKartlariniCiz(fdOturumKullaniciListesi);if(bildirimGoster)showToast('Kullanıcı oturumları yenilendi.');
         }catch(e){console.warn(e);body.innerHTML='<div class="dashboard-empty" style="color:#b45309">Kullanıcı oturumları alınamadı.</div>';}
@@ -21190,8 +21215,22 @@ tapuCksArayuzunuKur();
     ['pointerdown','pointermove','keydown','touchstart','wheel','scroll'].forEach(ad=>window.addEventListener(ad,hareket,{capture:true,passive:true}));
     async function eskiAcikOturumlariKapat(){
         if(!SUPABASE_MODE||!supabaseClient||!activeUser?.sirketId)return;
-        const esik=new Date(Date.now()-BOS_KALMA_SURESI).toISOString(),simdi=new Date().toISOString();
-        try{await supabaseClient.from('portal_user_sessions').update({signed_out_at:simdi}).eq('company_id',activeUser.sirketId).is('signed_out_at',null).lt('last_seen_at',esik)}catch(e){console.warn('Süresi dolan oturumlar kapatılamadı:',e)}
+        const esik=Date.now()-BOS_KALMA_SURESI,baslangic=new Date(Date.now()-35*24*60*60*1000).toISOString();
+        try{
+            const{data,error}=await supabaseClient.from('portal_user_sessions').select('id,signed_in_at,last_seen_at,signed_out_at').eq('company_id',activeUser.sirketId).gte('signed_in_at',baslangic).order('signed_in_at',{ascending:false}).limit(1000);
+            if(error)throw error;
+            const duzeltilecek=(data||[]).map(k=>{const sonEtkinlik=String(k.last_seen_at||k.signed_in_at||''),sonMs=new Date(sonEtkinlik).getTime(),cikisMs=new Date(k.signed_out_at||'').getTime(),acikVeSuresiDoldu=!k.signed_out_at&&Number.isFinite(sonMs)&&sonMs<esik,tutarsizCikis=k.signed_out_at&&Number.isFinite(sonMs)&&Number.isFinite(cikisMs)&&cikisMs-sonMs>KULLANICI_OTURUM_TUTARSIZ_CIKIS_ESIGI;return(acikVeSuresiDoldu||tutarsizCikis)?{id:k.id,sonEtkinlik}:null}).filter(Boolean);
+            const sonuclar=await Promise.allSettled(duzeltilecek.map(k=>supabaseClient.from('portal_user_sessions').update({signed_out_at:k.sonEtkinlik}).eq('company_id',activeUser.sirketId).eq('id',k.id)));
+            const hata=sonuclar.find(x=>x.status==='rejected'||x.value?.error);if(hata)console.warn('Bazı eski oturum süreleri düzeltilemedi:',hata.reason||hata.value?.error);
+            if(duzeltilecek.length){fdOturumKayitZamani=0;fdOturumKayitOnbellegi=[]}
+        }catch(e){console.warn('Süresi dolan oturumlar kapatılamadı:',e)}
+    }
+    let arkaPlanKapanisGonderildi=false;
+    function kullaniciOturumunuArkaPlandaKapat(){
+        if(arkaPlanKapanisGonderildi||!aktifKullaniciOturumId||!activeUser?.supabaseUserId||!aktifKullaniciOturumToken)return;
+        arkaPlanKapanisGonderildi=true;const simdi=new Date().toISOString(),id=aktifKullaniciOturumId,userId=activeUser.supabaseUserId,token=aktifKullaniciOturumToken;
+        fetch(SUPABASE_URL+'/rest/v1/portal_user_sessions?id=eq.'+encodeURIComponent(id)+'&user_id=eq.'+encodeURIComponent(userId),{method:'PATCH',keepalive:true,headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_seen_at:simdi,signed_out_at:simdi})}).catch(()=>{});
+        aktifKullaniciOturumId='';aktifKullaniciOturumToken='';sessionStorage.removeItem(KULLANICI_OTURUM_ANAHTARI);
     }
     async function bosKalmaKontrolu(){
         if(cikisYapiliyor||!activeUser||Date.now()-sonHareket<BOS_KALMA_SURESI)return false;
@@ -21200,11 +21239,12 @@ tapuCksArayuzunuKur();
         return true;
     }
     const oturumBaslatEski=window.kullaniciOturumunuBaslat;
-    if(typeof oturumBaslatEski==='function')window.kullaniciOturumunuBaslat=async function(){hareket();const r=await oturumBaslatEski.apply(this,arguments);await eskiAcikOturumlariKapat();return r};
+    if(typeof oturumBaslatEski==='function')window.kullaniciOturumunuBaslat=async function(){hareket();arkaPlanKapanisGonderildi=false;const r=await oturumBaslatEski.apply(this,arguments);await eskiAcikOturumlariKapat();return r};
     const kalpAtisiEski=window.kullaniciOturumKalpAtisi;
     if(typeof kalpAtisiEski==='function')window.kullaniciOturumKalpAtisi=async function(){if(await bosKalmaKontrolu())return;return kalpAtisiEski.apply(this,arguments)};
     setInterval(bosKalmaKontrolu,30000);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')bosKalmaKontrolu()},true);
+    window.addEventListener('pagehide',e=>{if(!e.persisted)kullaniciOturumunuArkaPlandaKapat()},true);
 
     /* Abonelik faturalarında ödeme durumu takibini kaldır. */
     function abonelikArayuzunuSadelestir(){
@@ -23385,14 +23425,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v158';
+      const anahtar='fd-pwa-yenileme-v159';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=158',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=159',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
