@@ -23056,7 +23056,12 @@ document.addEventListener('click',function(e){
 .fd-calendar-head{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:12px}.fd-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(100px,1fr));border:1px solid #dbe5ef;border-radius:12px;overflow:auto}.fd-calendar-day,.fd-calendar-week{min-height:95px;padding:7px;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}.fd-calendar-week{min-height:auto;background:#f1f5f9;text-align:center;font-weight:800}.fd-calendar-day.muted{background:#f8fafc;color:#94a3b8}.fd-calendar-event{display:block;width:100%;margin-top:4px;padding:3px 5px;border:0;border-radius:5px;background:#e0f2fe;color:#075985;font-size:.67rem;line-height:1.25;text-align:left;white-space:normal}.fd-calendar-event.vehicle{background:#fef3c7;color:#92400e}.fd-calendar-event.rent{background:#dcfce7;color:#166534}.fd-calendar-event.doc{background:#ede9fe;color:#6d28d9}.fd-calendar-event.manual{background:#dbeafe;color:#1d4ed8;cursor:pointer}.fd-ceza-dar{white-space:normal;overflow-wrap:anywhere;line-height:1.25}
 #arac-tab-ceza .fd-ceza-toolbar{display:grid;grid-template-columns:minmax(200px,1fr) 180px auto;gap:8px;padding:12px}.kira-abonelik-toolbar{grid-template-columns:minmax(145px,1fr) minmax(145px,1fr) minmax(175px,1fr) auto auto auto!important}
 #aracAnaSekmeler{display:flex!important;flex-wrap:wrap!important;justify-content:flex-start!important;gap:7px!important}#aracAnaSekmeler button{flex:0 0 auto!important}#arac-tab-ceza{width:100%}#arac-tab-ceza>.card{width:100%;margin:0}.fd-ceza-header{align-items:center!important;flex-wrap:wrap}.fd-ceza-header .action-btns{margin-left:auto}
-@media(max-width:760px){.fd-home-search,#arac-tab-ceza .fd-ceza-toolbar,.kira-abonelik-toolbar,.fd-tool-list{grid-template-columns:1fr!important}.fd-calendar-grid{min-width:820px}}
+#trafikCezaGecmisIcerik .table-wrapper{max-width:100%;overflow:visible}
+.fd-ceza-gecmis-tablo{width:100%!important;min-width:0!important;table-layout:fixed!important}
+.fd-ceza-gecmis-tablo th,.fd-ceza-gecmis-tablo td{padding:8px 5px!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal;vertical-align:top;font-size:.71rem}
+.fd-ceza-gecmis-tablo th:nth-child(1){width:9%}.fd-ceza-gecmis-tablo th:nth-child(2){width:9%}.fd-ceza-gecmis-tablo th:nth-child(3){width:15%}.fd-ceza-gecmis-tablo th:nth-child(4){width:12%}.fd-ceza-gecmis-tablo th:nth-child(5){width:17%}.fd-ceza-gecmis-tablo th:nth-child(6){width:10%}.fd-ceza-gecmis-tablo th:nth-child(7){width:9%}.fd-ceza-gecmis-tablo th:nth-child(8){width:11%}.fd-ceza-gecmis-tablo th:nth-child(9){width:8%}
+.fd-ceza-gecmis-tablo td:last-child{white-space:nowrap!important}.fd-ceza-gecmis-tablo .btn-modern{min-width:0;padding:5px 7px;font-size:.66rem}
+@media(max-width:760px){.fd-home-search,#arac-tab-ceza .fd-ceza-toolbar,.kira-abonelik-toolbar,.fd-tool-list{grid-template-columns:1fr!important}.fd-calendar-grid{min-width:820px}#trafikCezaGecmisIcerik .table-wrapper{overflow:visible}.fd-ceza-gecmis-tablo,.fd-ceza-gecmis-tablo tbody{display:block!important}.fd-ceza-gecmis-tablo thead{display:none!important}.fd-ceza-gecmis-tablo tr{display:block!important;margin-bottom:10px;border:1px solid #dbe5ef;border-radius:11px;overflow:hidden;background:#fff}.fd-ceza-gecmis-tablo td{display:grid!important;grid-template-columns:105px minmax(0,1fr);gap:8px;width:auto!important;border:0!important;border-bottom:1px solid #eef2f7!important;text-align:left!important}.fd-ceza-gecmis-tablo td:last-child{border-bottom:0!important;white-space:normal!important}.fd-ceza-gecmis-tablo td::before{color:#64748b;font-size:.65rem;font-weight:900}.fd-ceza-gecmis-tablo td:nth-child(1)::before{content:'Tarih'}.fd-ceza-gecmis-tablo td:nth-child(2)::before{content:'Plaka'}.fd-ceza-gecmis-tablo td:nth-child(3)::before{content:'Personel'}.fd-ceza-gecmis-tablo td:nth-child(4)::before{content:'Yer'}.fd-ceza-gecmis-tablo td:nth-child(5)::before{content:'Ceza'}.fd-ceza-gecmis-tablo td:nth-child(6)::before{content:'Tutar'}.fd-ceza-gecmis-tablo td:nth-child(7)::before{content:'Tutanak'}.fd-ceza-gecmis-tablo td:nth-child(8)::before{content:'Ceza Fotoğrafı'}.fd-ceza-gecmis-tablo td:nth-child(9)::before{content:'İşlem'}}
 </style>
 <script id="fdOperasyonGenisletmeV149">
 (function(){
@@ -23103,7 +23108,7 @@ document.addEventListener('click',function(e){
         const belge=(b,ad)=>b?.url?'<button type="button" class="btn-modern btn-detail-modern" onclick="fdBelgeYuzerAc(\''+esc(b.url)+'\',\''+esc(ad)+'\')">Aç</button>':'-';
         const satirlar=liste.map(x=>'<tr><td>'+tarihFormati(x.c.tarih)+'</td><td>'+esc(x.a.plaka||'-')+'</td><td>'+esc(x.p?.ad||'-')+'</td><td>'+esc(x.c.yer||'-')+'</td><td><strong>'+esc(x.c.tur||'-')+'</strong>'+(x.c.not?'<small style="display:block;color:#64748b;margin-top:3px">'+esc(x.c.not)+'</small>':'')+'</td><td>'+paraFormatla(x.c.tutar)+'</td><td>'+belge(x.c.tutanakBelgesi||x.c.belge,'Trafik Tutanağı')+'</td><td>'+belge(x.c.cezaFotografi,'Ceza Fotoğrafı')+'</td><td><button class="fd-icon-btn fd-icon-edit" title="Düzenle" onclick="modalKapat(\'modalTrafikCezaGecmisi\');aracTrafikCezasiFormuAc(\''+esc(x.a.id)+'\',\''+esc(x.c.id)+'\')">✎</button><button class="fd-icon-btn fd-icon-delete" title="Sil" onclick="aracTrafikCezasiSil(\''+esc(x.a.id)+'\',\''+esc(x.c.id)+'\')">🗑</button></td></tr>').join('');
         document.getElementById('trafikCezaGecmisBaslik').textContent='🚨 '+baslik+' · Trafik Ceza Geçmişi';
-        document.getElementById('trafikCezaGecmisIcerik').innerHTML=aracDetayBilgiAlani([['Ceza Kaydı',liste.length+' adet'],['Toplam Ceza Tutarı',paraFormatla(toplam)],['Son Ceza Tarihi',sonTarih?tarihFormati(sonTarih):'-']])+'<div class="table-wrapper" style="margin-top:16px"><table><thead><tr><th>Tarih</th><th>Plaka</th><th>Personel</th><th>Yer</th><th>Ceza</th><th>Tutar</th><th>Tutanak</th><th>Ceza Fotoğrafı</th><th>İşlem</th></tr></thead><tbody>'+(satirlar||'<tr><td colspan="9" style="text-align:center;padding:24px;color:#64748b">Ceza geçmişi bulunmuyor.</td></tr>')+'</tbody></table></div>';
+        document.getElementById('trafikCezaGecmisIcerik').innerHTML=aracDetayBilgiAlani([['Ceza Kaydı',liste.length+' adet'],['Toplam Ceza Tutarı',paraFormatla(toplam)],['Son Ceza Tarihi',sonTarih?tarihFormati(sonTarih):'-']])+'<div class="table-wrapper" style="margin-top:16px"><table class="fd-ceza-gecmis-tablo"><thead><tr><th>Tarih</th><th>Plaka</th><th>Personel</th><th>Yer</th><th>Ceza</th><th>Tutar</th><th>Tutanak</th><th>Ceza Fotoğrafı</th><th>İşlem</th></tr></thead><tbody>'+(satirlar||'<tr><td colspan="9" style="text-align:center;padding:24px;color:#64748b">Ceza geçmişi bulunmuyor.</td></tr>')+'</tbody></table></div>';
         const modal=document.getElementById('modalTrafikCezaGecmisi');modal.dataset.tur=tur;modal.dataset.deger=String(deger);modal.style.display='flex';
     }
     window.trafikCezaFiltrele=function(tur,deger){if(tur==='plaka'){const arac=araclar.find(a=>aktifSirketeAit(a)&&(String(a.id)===String(deger)||String(a.plaka)===String(deger)));return arac&&trafikCezaGecmisiniAc('arac',arac.id)}return trafikCezaGecmisiniAc(tur,deger)}
@@ -23525,14 +23530,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v166';
+      const anahtar='fd-pwa-yenileme-v167';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=166',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=167',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
