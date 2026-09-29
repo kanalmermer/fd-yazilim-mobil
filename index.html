@@ -1083,6 +1083,19 @@
     .arac-devir-bilgi span,.arac-devir-bilgi strong { display:block; }
     .arac-devir-bilgi span { color:#64748b; font-size:.66rem; font-weight:800; text-transform:uppercase; }
     .arac-devir-bilgi strong { margin-top:5px; color:#0f172a; font-size:.84rem; line-height:1.35; overflow-wrap:anywhere; }
+    .arac-vize-gecmis-tablosu { width:100%; min-width:760px; table-layout:fixed; }
+    .arac-vize-gecmis-tablosu th:nth-child(1),.arac-vize-gecmis-tablosu td:nth-child(1),
+    .arac-vize-gecmis-tablosu th:nth-child(2),.arac-vize-gecmis-tablosu td:nth-child(2),
+    .arac-vize-gecmis-tablosu th:nth-child(3),.arac-vize-gecmis-tablosu td:nth-child(3),
+    .arac-vize-gecmis-tablosu th:nth-child(4),.arac-vize-gecmis-tablosu td:nth-child(4) { width:11%; }
+    .arac-vize-gecmis-tablosu th:nth-child(5),.arac-vize-gecmis-tablosu td:nth-child(5) { width:16%; }
+    .arac-vize-gecmis-tablosu th:nth-child(6),.arac-vize-gecmis-tablosu td:nth-child(6) { width:22%; }
+    .arac-vize-gecmis-tablosu th:nth-child(7),.arac-vize-gecmis-tablosu td:nth-child(7) { width:8%; text-align:center; }
+    .arac-vize-gecmis-tablosu th:nth-child(8),.arac-vize-gecmis-tablosu td:nth-child(8) { width:10%; text-align:center; }
+    .arac-vize-kusur-hucre { display:flex; align-items:center; gap:7px; min-width:0; }
+    .arac-vize-kusur-ozet { display:block; min-width:0; flex:1; overflow:hidden; color:#334155; text-overflow:ellipsis; white-space:nowrap; }
+    .arac-vize-kusur-detay-btn { flex:0 0 auto; min-height:30px!important; padding:5px 8px!important; font-size:.68rem!important; white-space:nowrap; }
+    #aracVizeKusurDetayMetni { margin:0; padding:14px; border:1px solid #dbe3ee; border-radius:10px; background:#f8fafc; color:#334155; font:inherit; line-height:1.6; overflow-wrap:anywhere; white-space:pre-wrap; }
     #modalAkaryakitAracDetay .akaryakit-detail-toolbar { display:grid; grid-template-columns:120px minmax(155px,1fr) 145px 145px auto auto; gap:8px; align-items:center; margin-bottom:12px; padding:10px; border:1px solid #dce6ef; border-radius:11px; background:#fff; }
     #akaryakitDetayOzet { display:block; margin-bottom:12px !important; }
     #akaryakitDetayOzet > .personel-summary-grid { width:100%; grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
@@ -1961,8 +1974,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <div class="modal-header"><h3 id="aracVizeModalBaslik">📅 Vize / Muayene</h3><button class="modal-close" onclick="document.getElementById('modalAracVize').style.display='none'">✕</button></div>
         <div class="modal-body"><input type="hidden" id="aracVizeAracId"><input type="hidden" id="aracVizeGecmisId">
             <form id="aracVizeForm" onsubmit="aracVizeKaydet(event)" class="card" style="background:#f8fafc;margin-bottom:16px;"><input type="hidden" id="aracVizeKayitModu" value="yeni"><div class="profile-layout"><div class="form-group"><label>Araç Muayene Tarihi</label><input id="takipMuayeneTarihi" type="date" required></div><div class="form-group"><label>Araç Muayene Geçerlilik Bitişi</label><input id="takipMuayeneBitis" type="date" required></div><div class="form-group"><label>Egzoz Emisyon Muayene Tarihi</label><input id="takipEgzozMuayeneTarihi" type="date"></div><div class="form-group"><label>Egzoz Emisyon Geçerlilik Bitişi</label><input id="takipEgzozMuayeneBitis" type="date"></div><div class="form-group"><label>Muayene Sonucu</label><select id="takipMuayeneDurumu" required onchange="aracVizeDurumunaGoreKusurAlani()"><option value="">Seçiniz</option><option>Kusursuz Geçti</option><option>Hafif Kusurlu Geçti</option><option>Kaldı</option></select></div></div><div class="form-group" id="takipMuayeneKusurlariAlani"><label>Tespit Edilen Kusurlar</label><textarea id="takipMuayeneKusurlari" rows="3" placeholder="Muayenede belirtilen kusurları yazın"></textarea></div><button id="aracVizeKaydetBtn" type="submit" class="btn-submit">💾 Vize ve Egzoz Muayenesini Kaydet</button></form>
-            <h3 style="margin:8px 0 12px;">Geçmiş Vize İşlemleri</h3><div class="table-wrapper"><table><thead><tr><th>Araç Muayene</th><th>Araç Muayene Bitişi</th><th>Egzoz Muayene</th><th>Egzoz Bitişi</th><th>Sonuç</th><th>Kusurlar</th><th>Kayıt</th><th>İşlem</th></tr></thead><tbody id="aracVizeGecmisBody"></tbody></table></div>
+            <h3 style="margin:8px 0 12px;">Geçmiş Vize İşlemleri</h3><div class="table-wrapper"><table class="arac-vize-gecmis-tablosu"><thead><tr><th>Araç Muayene</th><th>Araç Muayene Bitişi</th><th>Egzoz Muayene</th><th>Egzoz Bitişi</th><th>Sonuç</th><th>Kusurlar</th><th>Kayıt</th><th>İşlem</th></tr></thead><tbody id="aracVizeGecmisBody"></tbody></table></div>
         </div>
+    </div>
+</div>
+
+<div id="modalAracVizeKusurDetay" class="modal-overlay">
+    <div class="modal-card" style="max-width:620px;">
+        <div class="modal-header"><h3>🔎 Muayenede Tespit Edilen Kusurlar</h3><button class="modal-close" onclick="document.getElementById('modalAracVizeKusurDetay').style.display='none'">✕</button></div>
+        <div class="modal-body"><p id="aracVizeKusurDetayMetni"></p></div>
     </div>
 </div>
 
@@ -12716,15 +12736,28 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (kusursuz) kusurlar.value = '';
     }
 
+    function aracVizeGecmisKayitlari(arac) {
+        const mevcut = arac.muayeneTarihi || arac.muayeneBitis || arac.egzozMuayeneTarihi || arac.egzozMuayeneBitis ? [{ tarih:arac.muayeneTarihi, bitis:arac.muayeneBitis, egzozTarihi:arac.egzozMuayeneTarihi, egzozBitis:arac.egzozMuayeneBitis, durum:arac.muayeneDurumu || '', kusurlar:arac.muayeneKusurlari || '', guncel:true }] : [];
+        return [...mevcut, ...(arac.vizeGecmisi || [])].sort((a,b) => String(b.tarih || '').localeCompare(String(a.tarih || '')));
+    }
+
+    function aracVizeKusurDetayAc(index) {
+        const arac = araclar.find(a => String(a.id) === String(document.getElementById('aracVizeAracId').value)); if (!arac) return;
+        const kayit = aracVizeGecmisKayitlari(arac)[Number(index)]; if (!kayit) return;
+        document.getElementById('aracVizeKusurDetayMetni').textContent = String(kayit.kusurlar || '-');
+        document.getElementById('modalAracVizeKusurDetay').style.display = 'flex';
+    }
+
     function aracVizeGecmisiniCiz() {
         const arac = araclar.find(a => String(a.id) === String(document.getElementById('aracVizeAracId').value)); if (!arac) return;
-        const mevcut = arac.muayeneTarihi || arac.muayeneBitis || arac.egzozMuayeneTarihi || arac.egzozMuayeneBitis ? [{ tarih:arac.muayeneTarihi, bitis:arac.muayeneBitis, egzozTarihi:arac.egzozMuayeneTarihi, egzozBitis:arac.egzozMuayeneBitis, durum:arac.muayeneDurumu || '', kusurlar:arac.muayeneKusurlari || '', guncel:true }] : [];
-        const liste = [...mevcut, ...(arac.vizeGecmisi || [])].sort((a,b) => String(b.tarih || '').localeCompare(String(a.tarih || '')));
-        document.getElementById('aracVizeGecmisBody').innerHTML = liste.map(v => {
+        const liste = aracVizeGecmisKayitlari(arac);
+        document.getElementById('aracVizeGecmisBody').innerHTML = liste.map((v,index) => {
             const sonuc = v.durum === 'Geçti' ? 'Kusursuz Geçti' : (v.durum || '-');
             const sonucStil = sonuc === 'Kaldı' ? 'background:#fee2e2;color:#991b1b;' : sonuc === 'Hafif Kusurlu Geçti' ? 'background:#fef3c7;color:#92400e;' : 'background:#dcfce7;color:#166534;';
             const islemler = v.guncel ? `<button class="btn-modern btn-edit-modern" onclick="aracVizeModaliniAc('${arac.id}',false,true)">✏️ Düzenle</button>` : `<div class="action-btns"><button class="btn-modern btn-edit-modern" onclick="aracVizeGecmisDuzenle('${v.id}')">✏️ Düzenle</button><button class="btn-modern btn-del-modern" onclick="aracVizeGecmisSil('${v.id}')">🗑️ Sil</button></div>`;
-            return `<tr><td>${tarihFormati(v.tarih)}</td><td>${tarihFormati(v.bitis)}</td><td>${tarihFormati(v.egzozTarihi)}</td><td>${tarihFormati(v.egzozBitis)}</td><td><span class="badge" style="${sonucStil}">${escapeDashboardText(sonuc)}</span></td><td>${escapeDashboardText(v.kusurlar || '-')}</td><td>${v.guncel ? '<span class="badge" style="background:#dbeafe;color:#1d4ed8;">Güncel</span>' : '<span class="badge" style="background:#e2e8f0;color:#475569;">Geçmiş</span>'}</td><td>${islemler}</td></tr>`;
+            const kusurVar = Boolean(String(v.kusurlar || '').trim());
+            const kusurHucre = `<div class="arac-vize-kusur-hucre"><span class="arac-vize-kusur-ozet">${escapeDashboardText(v.kusurlar || '-')}</span>${kusurVar ? `<button type="button" class="btn-modern btn-detail-modern arac-vize-kusur-detay-btn" onclick="aracVizeKusurDetayAc(${index})">Detay</button>` : ''}</div>`;
+            return `<tr><td>${tarihFormati(v.tarih)}</td><td>${tarihFormati(v.bitis)}</td><td>${tarihFormati(v.egzozTarihi)}</td><td>${tarihFormati(v.egzozBitis)}</td><td><span class="badge" style="${sonucStil}">${escapeDashboardText(sonuc)}</span></td><td>${kusurHucre}</td><td>${v.guncel ? '<span class="badge" style="background:#dbeafe;color:#1d4ed8;">Güncel</span>' : '<span class="badge" style="background:#e2e8f0;color:#475569;">Geçmiş</span>'}</td><td>${islemler}</td></tr>`;
         }).join('') || '<tr><td colspan="8" style="text-align:center;padding:22px;color:#64748b;">Vize geçmişi bulunmuyor.</td></tr>';
     }
 
@@ -23352,14 +23385,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v157';
+      const anahtar='fd-pwa-yenileme-v158';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=157',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=158',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
