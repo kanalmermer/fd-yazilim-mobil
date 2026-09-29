@@ -1083,10 +1083,6 @@
     .arac-devir-bilgi span,.arac-devir-bilgi strong { display:block; }
     .arac-devir-bilgi span { color:#64748b; font-size:.66rem; font-weight:800; text-transform:uppercase; }
     .arac-devir-bilgi strong { margin-top:5px; color:#0f172a; font-size:.84rem; line-height:1.35; overflow-wrap:anywhere; }
-    .arac-devir-bos { display:grid; place-items:center; min-height:168px; padding:28px 18px; color:#64748b; text-align:center; }
-    .arac-devir-bos span { display:block; margin-bottom:7px; font-size:1.45rem; }
-    .arac-devir-bos strong { display:block; color:#475569; }
-    .arac-devir-bos small { display:block; margin-top:5px; line-height:1.45; }
     #modalAkaryakitAracDetay .akaryakit-detail-toolbar { display:grid; grid-template-columns:120px minmax(155px,1fr) 145px 145px auto auto; gap:8px; align-items:center; margin-bottom:12px; padding:10px; border:1px solid #dce6ef; border-radius:11px; background:#fff; }
     #akaryakitDetayOzet { display:block; margin-bottom:12px !important; }
     #akaryakitDetayOzet > .personel-summary-grid { width:100%; grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
@@ -11663,7 +11659,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function aracAlisSatisDetayAlani(arac) {
         const bilgiKartlari = alanlar => `<div class="arac-devir-bilgiler">${alanlar.map(([etiket,deger]) => `<div class="arac-devir-bilgi"><span>${escapeDashboardText(etiket)}</span><strong>${escapeDashboardText(deger || '-')}</strong></div>`).join('')}</div>`;
-        const satisVar = Boolean(arac.satisTarihi || String(arac.alici || '').trim() || Number(arac.satisBedeli || 0) > 0);
         const alis = bilgiKartlari([
             ['Alış Tarihi',tarihFormati(arac.alisTarihi)],
             ['Satıcı',arac.satici || '-'],
@@ -11671,12 +11666,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             ['Alış Kilometresi',Number(arac.alisKm || 0).toLocaleString('tr-TR')],
             ['Fatura / Belge No',arac.faturaNo || '-']
         ]);
-        const satis = satisVar ? bilgiKartlari([
+        const satis = bilgiKartlari([
             ['Satış Tarihi',tarihFormati(arac.satisTarihi)],
             ['Alıcı',arac.alici || '-'],
-            ['Satış Bedeli',paraFormatla(arac.satisBedeli)]
-        ]) : '<div class="arac-devir-bos"><div><span>🚘</span><strong>Henüz satış yapılmadı</strong><small>Araç satış bilgileri kaydedildiğinde bu bölümde ayrı olarak gösterilecek.</small></div></div>';
-        return `<div class="arac-alis-satis-layout"><section class="arac-devir-panel alis"><header class="arac-devir-baslik"><div><h3>📥 Alış Bilgileri</h3><small>Aracın şirkete giriş ve edinim bilgileri</small></div><span class="arac-devir-rozet">Alış</span></header>${alis}</section><section class="arac-devir-panel satis"><header class="arac-devir-baslik"><div><h3>📤 Satış Bilgileri</h3><small>Aracın devir ve satış bilgileri</small></div><span class="arac-devir-rozet">${satisVar ? 'Satıldı' : 'Aktif Araç'}</span></header>${satis}</section></div>`;
+            ['Satış Bedeli',Number(arac.satisBedeli || 0) > 0 ? paraFormatla(arac.satisBedeli) : '-']
+        ]);
+        return `<div class="arac-alis-satis-layout"><section class="arac-devir-panel alis"><header class="arac-devir-baslik"><div><h3>📥 Alış Bilgileri</h3><small>Aracın şirkete giriş ve edinim bilgileri</small></div><span class="arac-devir-rozet">Alış</span></header>${alis}</section><section class="arac-devir-panel satis"><header class="arac-devir-baslik"><div><h3>📤 Satış Bilgileri</h3><small>Aracın devir ve satış bilgileri</small></div><span class="arac-devir-rozet">Satış</span></header>${satis}</section></div>`;
     }
 
     function aracDetayTablosu(basliklar, satirlar, bosMesaj) {
@@ -23357,14 +23352,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v156';
+      const anahtar='fd-pwa-yenileme-v157';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=156',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=157',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
