@@ -881,6 +881,12 @@
     #magicpassAylikTablo tr.magicpass-izin-rapor td:first-child{box-shadow:inset 4px 0 #8b5cf6}
     #magicpassAylikTablo tr.magicpass-izin-ucretsiz td{background:#fff7ed}
     #magicpassAylikTablo tr.magicpass-izin-ucretsiz td:first-child{box-shadow:inset 4px 0 #f59e0b}
+    #magicpassAylikTablo tr.magicpass-izin-ucretli td{background:#fdf2f8}
+    #magicpassAylikTablo tr.magicpass-izin-ucretli td:first-child{box-shadow:inset 4px 0 #ec4899}
+    #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td{background:#fef2f2}
+    #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td:first-child{box-shadow:inset 4px 0 #ef4444}
+    #magicpassAylikTablo tr.magicpass-izin-diger td{background:#f0fdfa}
+    #magicpassAylikTablo tr.magicpass-izin-diger td:first-child{box-shadow:inset 4px 0 #14b8a6}
     #magicpassVardiyaMenu { position:fixed; z-index:130000; display:none; min-width:210px; padding:7px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; box-shadow:0 16px 35px rgba(15,23,42,.2); }
     #magicpassVardiyaMenu button { display:block; width:100%; padding:9px 10px; border:0; border-radius:7px; background:transparent; text-align:left; cursor:pointer; font-weight:750; }
     #magicpassVardiyaMenu button:hover { background:#e0f2fe; color:#0369a1; }
@@ -18289,7 +18295,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
     fdPersonelAramaPanelleriniKur();
     // Giriş-çıkış şube hafızası, haftalık vardiya devri ve pazar/resmi tatil işaretleme.
-    (function(){const stil=document.createElement('style');stil.textContent='.magicpass-tatil-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:8px 0 10px;padding:9px;border:1px solid #dbeafe;border-radius:9px;background:#f8fbff}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) td{background:#fed7aa;color:#7c2d12}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #ea580c}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) .magicpass-tarih-gun{color:#9a3412}#magicpassAylikTablo tr.magicpass-pazar.magicpass-pazar-calisti:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #059669}#magicpassAylikTablo tr.magicpass-resmi-tatil td{background:#fecaca;color:#7f1d1d}#magicpassAylikTablo tr.magicpass-resmi-tatil td:first-child{box-shadow:inset 5px 0 #dc2626}#magicpassAylikTablo tr.magicpass-resmi-tatil .magicpass-tarih-gun{color:#991b1b}';document.head.appendChild(stil);})();
+    (function(){const stil=document.createElement('style');stil.textContent='.magicpass-tatil-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:8px 0 10px;padding:9px;border:1px solid #dbeafe;border-radius:9px;background:#f8fbff}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) td{background:#fed7aa;color:#7c2d12}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #ea580c}#magicpassAylikTablo tr.magicpass-pazar:not([class*="magicpass-izin-"]) .magicpass-tarih-gun{color:#9a3412}#magicpassAylikTablo tr.magicpass-pazar.magicpass-pazar-calisti:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #059669}#magicpassAylikTablo tr.magicpass-resmi-tatil:not([class*="magicpass-izin-"]) td{background:#fecaca;color:#7f1d1d}#magicpassAylikTablo tr.magicpass-resmi-tatil:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #dc2626}#magicpassAylikTablo tr.magicpass-resmi-tatil:not([class*="magicpass-izin-"]) .magicpass-tarih-gun{color:#991b1b}';document.head.appendChild(stil);})();
     function magicpassSubeHafizaAnahtari(){return 'fd_magicpass_sube_'+String(aktifSirketId()||'genel');}
     function magicpassSubeFiltresiniHatirla(){const select=document.getElementById('magicpassSubeFiltre');if(!select)return;try{localStorage.setItem(magicpassSubeHafizaAnahtari(),select.value||'');}catch(_){}}
     const magicpassArayuzunuHazirlaSubeOncesi=magicpassArayuzunuHazirla;
@@ -18852,11 +18858,21 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!zaman)return eksik?'<span class="magicpass-eksik-saat">⚠ '+(girisMi?'GİRİŞ YOK':'ÇIKIŞ YOK')+'</span>':magicpassSaatMetni(zaman);
         return'<span class="magicpass-saat-islem">'+magicpassSaatMetni(zaman)+'</span>';
     }
+    function magicpassIzinSatirSinifi(izin){
+        if(!izin)return'';
+        const anahtar=String(izin.tur||'').toLocaleLowerCase('tr-TR');
+        if(/yıllık|yillik/.test(anahtar))return' magicpass-izin-yillik';
+        if(/sağlık|saglik|rapor/.test(anahtar))return' magicpass-izin-rapor';
+        if(/ücretsiz|ucretsiz/.test(anahtar))return' magicpass-izin-ucretsiz';
+        if(/mazeretsiz|gelmedi/.test(anahtar))return' magicpass-izin-mazeretsiz';
+        if(/ücretli|ucretli|düğün|dugun|evlenme|doğum|dogum|ölüm|olum|babalık|babalik|süt izni|sut izni/.test(anahtar))return' magicpass-izin-ucretli';
+        return' magicpass-izin-diger';
+    }
     magicpassAylikCizelgeyiCiz=function(){
         const tbody=document.querySelector('#magicpassAylikTablo tbody');if(!tbody)return;const personel=personeller.find(p=>String(p.id)===String(document.getElementById('magicpassPersonel')?.value));magicpassSeciliGunler.clear();const baslik=document.getElementById('magicpassSeciliPersonelBaslik'),bilgi=document.getElementById('magicpassSeciliPersonelBilgi');
         if(!personel){tbody.innerHTML='<tr><td colspan="11" style="padding:24px;color:#64748b">Personel seçin.</td></tr>';document.getElementById('magicpassOzet').innerHTML='';if(baslik)baslik.textContent='Personel seçin';if(bilgi)bilgi.textContent='';return;}
         if(baslik)baslik.textContent=personel.ad||'Personel';if(bilgi)bilgi.textContent=(personel.sube||'Merkez')+' · '+(personel.gorev||'-')+' · Cihaz No: '+(personel.cihazPersonelNo||'tanımsız');magicpassPersonelListesiCiz();const liste=magicpassAylikCizelgeVerisi(personel);
-        tbody.innerHTML=liste.map(k=>{const eksik=['Giriş Yok','Çıkış Yok'].includes(String(k.durum||'')),pazarCalisti=Boolean(k.gunTuru==='pazar'&&(k.giris||k.cikis)),tatilBos=Boolean((k.gunTuru==='pazar'||k.gunTuru==='resmiTatil')&&!k.giris&&!k.cikis),gelmedi=String(k.durum||'')==='Gelmedi',izinAnahtar=String(k.izin?.tur||k.durum||'').toLocaleLowerCase('tr-TR'),izinSinif=k.izin?(/yıllık|yillik/.test(izinAnahtar)?' magicpass-izin-yillik':(/sağlık|saglik|rapor/.test(izinAnahtar)?' magicpass-izin-rapor':(/ücretsiz|ucretsiz/.test(izinAnahtar)?' magicpass-izin-ucretsiz':''))):'',sinif=(gelmedi?'magicpass-gelmedi ':'')+(k.gunTuru==='pazar'?' magicpass-pazar'+(pazarCalisti?' magicpass-pazar-calisti':''):(k.gunTuru==='resmiTatil'?' magicpass-resmi-tatil':''))+izinSinif,durumSinif=String(k.durum||'')==='Planlandı'?'planlandi':(k.seviye==='hata'?'hata':(k.seviye==='uyari'?'uyari':'tamam')),uyariMetni=k.uyarilar?.length?k.uyarilar.join(' · '):'',uyarilar='',durumGosterimi=pazarCalisti?'Pazar Çalıştı':(['Tamam','Uyarı'].includes(String(k.durum||''))?'✓':String(k.durum||'')),gunHam=new Date(k.tarih+'T12:00:00').toLocaleDateString('tr-TR',{weekday:'long'}),gun=gunHam.charAt(0).toLocaleUpperCase('tr-TR')+gunHam.slice(1),manuel=k.duzeltme?'<span class="magicpass-manuel-isaret" title="Giriş veya çıkış saati manuel değiştirildi">✎ MANUEL</span>':'',brutBaslik=k.brutMesai!==k.mesai?'Brüt fazla mesai: '+magicpassDakikaMetni(k.brutMesai):'',brut='',hamAdet=magicpassGunHamHareketleriBul(personel,k.tarih).length,sil=hamAdet&&!isPersonelUser()?'<button type="button" class="magicpass-gun-islem sil" data-html2canvas-ignore="true" title="Bu günün ham saat hareketlerini sil" onclick="magicpassGunHamHareketleriniSil(\''+k.tarih+'\')">🗑</button>':'';
+        tbody.innerHTML=liste.map(k=>{const eksik=['Giriş Yok','Çıkış Yok'].includes(String(k.durum||'')),pazarCalisti=Boolean(k.gunTuru==='pazar'&&(k.giris||k.cikis)),tatilBos=Boolean((k.gunTuru==='pazar'||k.gunTuru==='resmiTatil')&&!k.giris&&!k.cikis),gelmedi=String(k.durum||'')==='Gelmedi',izinSinif=magicpassIzinSatirSinifi(k.izin),sinif=(gelmedi?'magicpass-gelmedi ':'')+(k.gunTuru==='pazar'?' magicpass-pazar'+(pazarCalisti?' magicpass-pazar-calisti':''):(k.gunTuru==='resmiTatil'?' magicpass-resmi-tatil':''))+izinSinif,durumSinif=String(k.durum||'')==='Planlandı'?'planlandi':(k.seviye==='hata'?'hata':(k.seviye==='uyari'?'uyari':'tamam')),uyariMetni=k.uyarilar?.length?k.uyarilar.join(' · '):'',uyarilar='',durumGosterimi=pazarCalisti?'Pazar Çalıştı':(['Tamam','Uyarı'].includes(String(k.durum||''))?'✓':String(k.durum||'')),gunHam=new Date(k.tarih+'T12:00:00').toLocaleDateString('tr-TR',{weekday:'long'}),gun=gunHam.charAt(0).toLocaleUpperCase('tr-TR')+gunHam.slice(1),manuel=k.duzeltme?'<span class="magicpass-manuel-isaret" title="Giriş veya çıkış saati manuel değiştirildi">✎ MANUEL</span>':'',brutBaslik=k.brutMesai!==k.mesai?'Brüt fazla mesai: '+magicpassDakikaMetni(k.brutMesai):'',brut='',hamAdet=magicpassGunHamHareketleriBul(personel,k.tarih).length,sil=hamAdet&&!isPersonelUser()?'<button type="button" class="magicpass-gun-islem sil" data-html2canvas-ignore="true" title="Bu günün ham saat hareketlerini sil" onclick="magicpassGunHamHareketleriniSil(\''+k.tarih+'\')">🗑</button>':'';
             const secim=isPersonelUser()?'<span aria-hidden="true">—</span>':'<input class="magicpass-gun-sec" type="checkbox" aria-label="'+escapeDashboardText(tarihFormati(k.tarih))+' tarihini seç" onchange="magicpassGunSecildi(\''+k.tarih+'\',this.checked)">';
             return '<tr class="'+sinif.trim()+'" data-tarih="'+k.tarih+'" oncontextmenu="magicpassGunMenuAc(event,\''+k.tarih+'\')"><td data-label="Seç">'+secim+'</td><td class="magicpass-tarih-hucre" data-label="Tarih / Gün">'+tarihFormati(k.tarih)+'<small class="magicpass-tarih-gun">'+escapeDashboardText(gun)+'</small></td><td data-label="Vardiya">'+escapeDashboardText(magicpassVardiyaSaatEtiketi(k.vardiya))+'</td><td data-label="Giriş">'+magicpassSaatHucresiHtml(k,'giris')+'</td><td data-label="Çıkış">'+magicpassSaatHucresiHtml(k,'cikis')+'</td><td data-label="Normal" title="Vardiya içinde çalışılan süre; tanımlı yemek arası düşülür">'+(tatilBos?'-':magicpassDakikaMetni(k.normal))+'</td><td data-label="Geç">'+(tatilBos?'-':magicpassDakikaMetni(k.gec))+'</td><td data-label="Erken">'+(tatilBos?'-':magicpassDakikaMetni(k.erken))+'</td><td data-label="Fazla Mesai"><strong title="'+escapeDashboardText(brutBaslik)+'">'+(tatilBos?'-':magicpassDakikaMetni(k.mesai))+'</strong>'+brut+'</td><td data-label="Durum / Uyarı" style="position:relative;text-align:center"><span class="magicpass-durum-hizasi'+(['Tamam','Uyarı'].includes(String(k.durum||''))?' magicpass-tik-hizasi':'')+'" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:auto"><span class="magicpass-durum '+durumSinif+'" title="'+escapeDashboardText(uyariMetni||k.durum||'')+'">'+(eksik?'⚠ ':'')+escapeDashboardText(durumGosterimi)+'</span>'+manuel+'</span>'+uyarilar+'</td><td data-label="İşlem"><span class="magicpass-gun-islemler"><button type="button" class="magicpass-gun-islem duzenle" title="Giriş ve çıkış saatlerini düzenle" aria-label="Giriş ve çıkış saatlerini düzenle" onclick="magicpassGunDuzenle(\''+k.tarih+'\')">&#9998;</button>'+sil+'</span></td></tr>';
         }).join('');
@@ -23442,14 +23458,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v160';
+      const anahtar='fd-pwa-yenileme-v161';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=160',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=161',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
