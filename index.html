@@ -12177,13 +12177,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         } else {
             alert('Akaryakıt işlem türü belirlenemedi.'); return;
         }
+        const editIndex=editId?akaryakitKayitlari.findIndex(k=>String(k.id)===String(editId)):-1;
+        if(editId&&editIndex<0){alert('Düzenlenecek yakıt kaydı bulunamadı.');return;}
         if(akaryakitKaydetmeDevamEdiyor){showToast('Yakıt kaydı zaten kaydediliyor. Lütfen bekleyin.','warning');return;}
         akaryakitKaydetmeDevamEdiyor=true;
         const kaydetBtn=document.getElementById('akaryakitKaydetBtn'),oncekiButonMetni=kaydetBtn?.textContent||'💾 Kaydet';
         if(kaydetBtn){kaydetBtn.disabled=true;kaydetBtn.textContent='⏳ Kaydediliyor...';}
         showGlobalOverlay('Yakıt kayıtları kaydediliyor',`${kayitlar.length} kayıt kontrol edilip sisteme aktarılıyor...`);
         const oncekiListe=akaryakitKayitlari.slice();
-        if(editId){const index=akaryakitKayitlari.findIndex(k=>String(k.id)===String(editId));if(index<0){alert('Düzenlenecek yakıt kaydı bulunamadı.');return;}akaryakitKayitlari[index]=kayitlar[0];}else akaryakitKayitlari.push(...kayitlar);
+        if(editId)akaryakitKayitlari[editIndex]=kayitlar[0];else akaryakitKayitlari.push(...kayitlar);
         yuklenenVeriler.add('akaryakit');
         try{await supabaseVerileriKaydet();if(tur==='cikis'&&!editId)akaryakitTopluTaslagiSil();document.getElementById('modalAkaryakit').style.display='none';akaryakitListesiniCiz();showToast(editId?'Yakıt kaydı güncellendi.':`${kayitlar.length} akaryakıt kaydı kaydedildi.`);}catch(error){akaryakitKayitlari=oncekiListe;alert('Akaryakıt kaydı kaydedilemedi: '+(error.message||'Bilinmeyen hata'));}finally{akaryakitKaydetmeDevamEdiyor=false;hideGlobalOverlay();if(kaydetBtn){kaydetBtn.disabled=false;kaydetBtn.textContent=oncekiButonMetni;}}
     }
@@ -23467,14 +23469,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v162';
+      const anahtar='fd-pwa-yenileme-v163';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=162',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=163',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
