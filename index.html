@@ -12106,13 +12106,23 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const verenDegeri=Object.prototype.hasOwnProperty.call(degerler,'veren')?degerler.veren:oncekiVeren;
         const satir=document.createElement('tr');
         satir.dataset.kayitId=degerler.id||akaryakitYeniKayitId();
-        satir.innerHTML=`<td class="akaryakit-satir-no"></td><td><input class="akaryakit-toplu-tarih" type="date" value="${String(degerler.tarih||bugun).slice(0,10)}"></td><td><select class="akaryakit-toplu-depo">${akaryakitDepoSecenekleri()}</select></td><td><input class="akaryakit-toplu-plaka" autocomplete="off" placeholder="Plakayı yazın" value="${escapeDashboardText(arac?.plaka||degerler.plaka||'')}"></td><td><input class="akaryakit-toplu-km" type="text" inputmode="numeric" placeholder="İsteğe bağlı" oninput="paraGirisiFormatla(this)" value="${degerler.km||''}"></td><td><input class="akaryakit-toplu-litre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)" value="${degerler.litre||''}"></td><td><input class="akaryakit-toplu-alan" autocomplete="off" placeholder="İsteğe bağlı" value="${escapeDashboardText(degerler.alan||'')}"></td><td><input class="akaryakit-toplu-veren" autocomplete="off" placeholder="İsteğe bağlı" onkeydown="akaryakitSonAlandaTab(event,this)" value="${escapeDashboardText(verenDegeri||'')}"></td><td><button type="button" class="btn-modern btn-del-modern" onclick="this.closest('tr').remove();akaryakitTopluSatirNumarala();akaryakitTopluTaslagiKaydet()">🗑️</button></td>`;
+        satir.innerHTML=`<td class="akaryakit-satir-no"></td><td><input class="akaryakit-toplu-tarih" type="date" value="${String(degerler.tarih||bugun).slice(0,10)}"></td><td><select class="akaryakit-toplu-depo">${akaryakitDepoSecenekleri()}</select></td><td><input class="akaryakit-toplu-plaka" autocomplete="off" placeholder="Plakayı yazın" oninput="akaryakitHucreIciTamamla(this,'plaka')" value="${escapeDashboardText(arac?.plaka||degerler.plaka||'')}"></td><td><input class="akaryakit-toplu-km" type="text" inputmode="numeric" placeholder="İsteğe bağlı" oninput="paraGirisiFormatla(this)" value="${degerler.km||''}"></td><td><input class="akaryakit-toplu-litre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)" value="${degerler.litre||''}"></td><td><input class="akaryakit-toplu-alan" autocomplete="off" placeholder="İsteğe bağlı" oninput="akaryakitHucreIciTamamla(this,'personel')" value="${escapeDashboardText(degerler.alan||'')}"></td><td><input class="akaryakit-toplu-veren" autocomplete="off" placeholder="İsteğe bağlı" oninput="akaryakitHucreIciTamamla(this,'personel')" onkeydown="akaryakitSonAlandaTab(event,this)" value="${escapeDashboardText(verenDegeri||'')}"></td><td><button type="button" class="btn-modern btn-del-modern" onclick="this.closest('tr').remove();akaryakitTopluSatirNumarala();akaryakitTopluTaslagiKaydet()">🗑️</button></td>`;
         body.appendChild(satir);
         if(depoDegeri)satir.querySelector('.akaryakit-toplu-depo').value=depoDegeri;
         akaryakitTopluSatirNumarala();
         return satir;
     }
     function akaryakitTopluSatirNumarala(){document.querySelectorAll('#akaryakitTopluBody tr').forEach((tr,i)=>tr.querySelector('.akaryakit-satir-no').textContent=i+1);}
+    function akaryakitHucreIciTamamlamaKaynagi(tur){
+        if(tur==='plaka')return araclar.filter(a=>aktifSirketeAit(a)&&a.durum!=='Satıldı'&&!aracYariRomorkMu(a.tur)&&a.plaka).map(a=>String(a.plaka).trim()).sort((a,b)=>a.localeCompare(b,'tr',{numeric:true}));
+        const adlar=new Map();personeller.filter(p=>aktifSirketeAit(p)&&!p.cikisTarihi&&p.ad).forEach(p=>{const ad=String(p.ad).trim(),anahtar=ad.toLocaleLowerCase('tr-TR');if(!adlar.has(anahtar))adlar.set(anahtar,ad);});return [...adlar.values()].sort((a,b)=>a.localeCompare(b,'tr'));
+    }
+    function akaryakitHucreIciTamamla(alan,tur){
+        const yazilan=String(alan?.value||''),imlec=Number(alan?.selectionStart??yazilan.length);if(!alan||!yazilan||imlec!==yazilan.length)return;
+        const anahtar=tur==='plaka'?aracPlakaAnahtari(yazilan):yazilan.toLocaleLowerCase('tr-TR');
+        const eslesen=akaryakitHucreIciTamamlamaKaynagi(tur).find(deger=>{const aday=tur==='plaka'?aracPlakaAnahtari(deger):deger.toLocaleLowerCase('tr-TR');return aday.startsWith(anahtar)&&aday!==anahtar;});
+        if(!eslesen)return;alan.value=eslesen;alan.setSelectionRange(yazilan.length,eslesen.length);
+    }
     function akaryakitSonAlandaTab(event,alan){if(event.key!=='Tab'||event.shiftKey)return;const satir=alan.closest('tr'),sonSatir=satir===document.querySelector('#akaryakitTopluBody tr:last-child');if(!sonSatir)return;event.preventDefault();const yeni=akaryakitTopluSatirEkle({depoId:satir.querySelector('.akaryakit-toplu-depo').value,veren:alan.value});yeni.querySelector('.akaryakit-toplu-tarih').focus();}
     function akaryakitPlakadanAracBul(plaka){const anahtar=aracPlakaAnahtari(plaka);return araclar.find(a=>aktifSirketeAit(a)&&a.durum!=='Satıldı'&&!aracYariRomorkMu(a.tur)&&aracPlakaAnahtari(a.plaka)===anahtar);}
     function akaryakitAyniCikisKaydiMi(a,b){return a?.tur==='cikis'&&b?.tur==='cikis'&&String(a.depoId||'')===String(b.depoId||'')&&String(a.aracId||'')===String(b.aracId||'')&&String(a.tarih||'').slice(0,10)===String(b.tarih||'').slice(0,10)&&Number(a.litre||0)===Number(b.litre||0)&&Number(a.km||0)===Number(b.km||0)&&String(a.alan||'').trim()===String(b.alan||'').trim()&&String(a.veren||'').trim()===String(b.veren||'').trim();}
@@ -23498,14 +23508,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v164';
+      const anahtar='fd-pwa-yenileme-v165';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=164',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=165',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
