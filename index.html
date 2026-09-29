@@ -1078,6 +1078,7 @@
     .akaryakit-report-section .table-wrapper { border-radius:9px; }
     @media (max-width:760px) { #modalAkaryakitAracDetay .akaryakit-detail-toolbar { grid-template-columns:1fr 1fr; } #akaryakitDetayOzet > .personel-summary-grid { grid-template-columns:repeat(2,1fr) !important; } #arac-tab-akaryakit .card-header .action-btns > button { width:125px; } }
     @media (max-width:600px) {
+        html { -webkit-text-size-adjust:100%; }
         body { overflow-x:hidden; }
         .portal-topbar { padding:10px 12px !important; flex-wrap:wrap; gap:8px; }
         .portal-rates { order:3; width:100%; flex:0 0 100%; margin:2px 0 0; justify-content:flex-start; overflow-x:auto; padding-bottom:2px; }
@@ -1099,12 +1100,15 @@
         .portal-account-trigger strong,.portal-account-trigger>span:last-child{display:none}
         .portal-account-trigger>span:first-child{gap:0!important}
         .portal-account-menu{right:-38px}
-        .app-layout > main, #aracTakipApp main, #ayarlarApp main { padding:10px !important; }
-        .card { padding:12px; border-radius:10px; }
-        .card-header { align-items:flex-start; gap:9px; }
+        .app-layout, .app-layout > main, #aracTakipApp, #aracTakipApp main, #ayarlarApp main { width:100%; min-width:0; }
+        .app-layout > main, #aracTakipApp main, #ayarlarApp main { padding:10px 10px calc(18px + env(safe-area-inset-bottom)) !important; }
+        .card { min-width:0; padding:12px; border-radius:10px; }
+        .card-header { align-items:flex-start; flex-wrap:wrap; gap:9px; }
         .card-header > .action-btns { width:100%; flex-wrap:wrap; }
         .filter-bar { display:grid !important; grid-template-columns:minmax(0,1fr) !important; gap:8px; }
         .filter-bar > * { width:100% !important; min-width:0 !important; }
+        input:not([type="checkbox"]):not([type="radio"]), select, textarea { max-width:100%; font-size:16px !important; }
+        input[type="checkbox"], input[type="radio"] { min-width:20px; min-height:20px; }
         .modal-overlay { padding:6px; }
         .modal-card { width:calc(100vw - 12px) !important; max-width:none !important; max-height:96vh !important; border-radius:10px; }
         #modalAkaryakitAracDetay .modal-card, #modalAracDetay .modal-card { height:96vh !important; }
@@ -1112,9 +1116,12 @@
         .modal-body { padding:12px !important; }
         .form-row { flex-direction:column; gap:0; }
         .form-row > .form-group { width:100% !important; }
-        .module-subnav { overflow-x:auto; flex-wrap:nowrap !important; }
+        .workspace-nav, .module-subnav, .table-wrapper { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+        .workspace-nav::-webkit-scrollbar, .module-subnav::-webkit-scrollbar, .table-wrapper::-webkit-scrollbar { display:none; }
+        .module-subnav { flex-wrap:nowrap !important; }
         .module-subnav > button { flex:0 0 auto; }
-        .btn-export, .btn-modern { min-height:38px; }
+        .workspace-nav > button, .module-subnav > button, .btn-submit, .btn-export, .btn-modern { min-height:44px; }
+        details.profile-section > summary { min-height:44px; display:flex; align-items:center; }
         table { font-size:.72rem; }
         th, td { padding:7px 8px; }
         #modalAkaryakitAracDetay .akaryakit-detail-toolbar { grid-template-columns:1fr !important; }
@@ -1802,7 +1809,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <section id="arac-tab-araclar" class="tab-content active"><div class="card">
             <div class="module-subnav" style="margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><button id="btnAracAktif" type="button" class="active" onclick="aracListeModunuDegistir('aktif',this)">Aktif Araçlar</button><button type="button" onclick="aracListeModunuDegistir('satilan',this)">Satılan Araçlar</button><button type="button" onclick="aracListeModunuDegistir('tumu',this)">Tüm Araçlar</button><button type="button" class="btn-export btn-excel" style="margin-left:auto;" onclick="aracExportModaliniAc('excel')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracExportModaliniAc('pdf')">📄 PDF</button><button type="button" class="btn-submit" style="width:auto;margin:0;padding:9px 16px;" onclick="aracFormunuAc()">＋ Yeni Araç Kaydı</button></div>
             <div class="filter-bar" style="margin:0 0 14px;"><input id="aracArama" type="text" placeholder="🔍 Plaka, araç sahibi, marka, model, şasi veya sürücü ara..." oninput="aracListesiniCiz()"><select id="aracDurumFiltre" onchange="aracListesiniCiz()"><option value="">Tüm Durumlar</option><option>Aktif</option><option>Serviste</option><option>Satıldı</option><option>Pasif</option></select><select id="aracUyariFiltre" onchange="aracListesiniCiz()"><option value="">Tüm Tarihler</option><option value="gecen">Süresi Geçenler</option><option value="yaklasan">Yaklaşanlar</option><option value="normal">Süresi Uygun</option></select></div>
-            <div id="aracMobilKartlar" class="arac-mobil-kartlar"></div><div class="table-wrapper arac-masaustu-tablosu"><table id="aracTakipTablosu"><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Araç Sahibi</th><th>Model Yılı</th><th>Araç Türü</th><th>Şasi No</th><th>Motor No</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="aracTakipBody"></tbody></table></div>
+            <div id="aracMobilKartlar" class="arac-mobil-kartlar" aria-live="polite"></div><div class="table-wrapper arac-masaustu-tablosu"><table id="aracTakipTablosu"><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Araç Sahibi</th><th>Model Yılı</th><th>Araç Türü</th><th>Şasi No</th><th>Motor No</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="aracTakipBody"></tbody></table></div>
         </div></section>
         <section id="arac-tab-akaryakit" class="tab-content"><div class="card">
             <div class="card-header" style="flex-wrap:wrap;gap:10px;"><h2>⛽ Akaryakıt ve Depo Takibi</h2><div class="action-btns"><button class="btn-modern btn-detail-modern" onclick="akaryakitFormunuAc('depo')">＋ Depo Ekle</button><button class="btn-modern btn-edit-modern" onclick="akaryakitFormunuAc('giris')">📥 Yeni Yakıt Girişi</button><button class="btn-submit" style="width:auto;margin:0;padding:8px 14px;" onclick="akaryakitFormunuAc('cikis')">⛽ Yakıt Ver</button><button class="btn-export btn-excel" onclick="akaryakitRaporAl('excel')">📊 Excel</button><button class="btn-export btn-pdf" onclick="akaryakitRaporAl('pdf')">📄 PDF</button></div></div>
@@ -22991,7 +22998,34 @@ document.addEventListener('click',function(e){
 .fd-vk-shell{padding:18px 22px 32px}.fd-vk-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.fd-vk-head h2{margin:0;color:#0f172a}.fd-vk-head p{margin:4px 0 0;color:#64748b}.fd-vk-actions{display:flex;gap:8px;flex-wrap:wrap}.fd-vk-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:10px;margin-bottom:14px}.fd-vk-toolbar input{width:100%;padding:11px 13px;border:1px solid #cbd5e1;border-radius:10px}.fd-vk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}.fd-vk-card{border:1px solid #dbe3ee;border-radius:14px;background:#fff;padding:15px;box-shadow:0 5px 18px rgba(15,23,42,.05);cursor:pointer;transition:.16s ease}.fd-vk-card:hover{border-color:#38bdf8;transform:translateY(-1px);box-shadow:0 8px 22px rgba(15,23,42,.09)}.fd-vk-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.fd-vk-card h3{margin:0;color:#0f172a;font-size:1rem}.fd-vk-card p{margin:5px 0;color:#64748b;font-size:.82rem}.fd-vk-counts{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.fd-vk-counts span{background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:4px 8px;font-size:.72rem;font-weight:800}.fd-vk-links{margin-top:12px;padding-top:10px;border-top:1px solid #e2e8f0;display:grid;gap:5px;font-size:.78rem;color:#475569}.fd-vk-empty{padding:34px;text-align:center;border:1px dashed #cbd5e1;border-radius:14px;color:#64748b;background:#f8fafc}.fd-vk-detail{display:none;margin-top:18px;border:1px solid #cbd5e1;border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 8px 25px rgba(15,23,42,.07)}.fd-vk-detail.open{display:block}.fd-vk-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:16px 18px;background:#f8fafc;border-bottom:1px solid #e2e8f0}.fd-vk-detail-head h3{margin:0;color:#0f172a}.fd-vk-detail-head p{margin:4px 0 0;color:#64748b;font-size:.8rem}.fd-vk-filterler{display:flex;gap:7px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid #e2e8f0}.fd-vk-filter{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:999px;padding:7px 11px;font-weight:800;cursor:pointer}.fd-vk-filter.active{background:#0284c7;border-color:#0284c7;color:#fff}.fd-vk-varliklar{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:10px;padding:16px 18px}.fd-vk-varlik{border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#fff}.fd-vk-varlik b{display:block;color:#0f172a;margin-bottom:5px}.fd-vk-varlik span{display:block;color:#64748b;font-size:.78rem;line-height:1.45}.fd-vk-tur{display:inline-flex!important;width:max-content;margin-bottom:7px;padding:3px 7px;border-radius:999px;background:#ecfeff;color:#0e7490!important;font-size:.67rem!important;font-weight:900}.fd-ay-grup{border:1px solid #dbe3ee;border-radius:14px;background:#f8fafc;padding:12px;margin:12px 0}.fd-ay-grup>h4{margin:0 0 9px;color:#0f172a}.fd-ay-grup>p{margin:-4px 0 10px;color:#64748b;font-size:.8rem}.fd-ay-grup details{background:#fff}@media(max-width:720px){.fd-vk-shell{padding:13px}.fd-vk-head,.fd-vk-toolbar,.fd-vk-detail-head{display:flex;flex-direction:column;align-items:stretch}.fd-vk-actions>*{flex:1}.fd-vk-varliklar{grid-template-columns:1fr}}
 </style>
 <style id="fdVarlikKisileriV151Style">
-.fd-vk-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}.fd-vk-stat{padding:13px 14px;border:1px solid #dbe3ee;border-radius:12px;background:linear-gradient(145deg,#fff,#f8fafc)}.fd-vk-stat span{display:block;color:#64748b;font-size:.72rem;font-weight:750}.fd-vk-stat strong{display:block;margin-top:5px;color:#0f172a;font-size:1.18rem}.arac-mobil-kartlar{display:none}.arac-mobil-kart{border:1px solid #dbe3ee;border-radius:13px;background:#fff;padding:13px;box-shadow:0 4px 14px rgba(15,23,42,.05)}.arac-mobil-kart-ust,.arac-mobil-islemler{display:flex;align-items:center;justify-content:space-between;gap:8px}.arac-mobil-plaka{all:unset;cursor:pointer;color:#0369a1;font-size:1.05rem;font-weight:900}.arac-mobil-kart>strong{display:block;margin:8px 0 10px;color:#0f172a}.arac-mobil-kart dl{display:grid;gap:7px;margin:0 0 11px}.arac-mobil-kart dl div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:8px}.arac-mobil-kart dt{color:#64748b;font-size:.72rem}.arac-mobil-kart dd{margin:0;color:#334155;font-size:.78rem;font-weight:750;overflow-wrap:anywhere}.arac-mobil-islemler button{flex:1}@media(max-width:720px){.fd-vk-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.arac-mobil-kartlar{display:grid;grid-template-columns:1fr;gap:10px}.arac-masaustu-tablosu{display:none}}
+.fd-vk-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.fd-vk-stat{padding:13px 14px;border:1px solid #dbe3ee;border-radius:12px;background:linear-gradient(145deg,#fff,#f8fafc)}
+.fd-vk-stat span{display:block;color:#64748b;font-size:.72rem;font-weight:750}
+.fd-vk-stat strong{display:block;margin-top:5px;color:#0f172a;font-size:1.18rem}
+.arac-mobil-kartlar{display:none}
+.arac-mobil-kart{min-width:0;border:1px solid #dbe3ee;border-radius:13px;background:#fff;padding:13px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.arac-mobil-kart-ust,.arac-mobil-islemler{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.arac-mobil-plaka{all:unset;cursor:pointer;color:#0369a1;font-size:1.05rem;font-weight:900}
+.arac-mobil-kart>strong{display:block;margin:8px 0 10px;color:#0f172a}
+.arac-mobil-kart dl{display:grid;gap:7px;margin:0 0 11px}
+.arac-mobil-kart dl div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:8px}
+.arac-mobil-kart dt{color:#64748b;font-size:.72rem}
+.arac-mobil-kart dd{margin:0;color:#334155;font-size:.78rem;font-weight:750;overflow-wrap:anywhere}
+.arac-mobil-islemler button{flex:1;min-height:42px}
+@media(max-width:900px){
+    .fd-vk-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .arac-mobil-kartlar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+    .arac-masaustu-tablosu{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .arac-mobil-kartlar:not(:empty)+.arac-masaustu-tablosu{display:none!important}
+    #arac-tab-araclar>.card>.module-subnav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible!important;gap:7px!important}
+    #arac-tab-araclar>.card>.module-subnav>button{width:100%;min-width:0;min-height:42px;margin:0!important;padding:8px 6px!important;white-space:normal;line-height:1.2}
+    #arac-tab-araclar>.card>.module-subnav>button:last-child{grid-column:1/-1}
+}
+@media(max-width:620px){
+    .arac-mobil-kartlar{grid-template-columns:1fr}
+    .arac-mobil-kart{padding:12px}
+    .arac-mobil-kart dl div{grid-template-columns:102px minmax(0,1fr)}
+}
 </style>
 <style id="fdVarlikKisileriV152Style">
 .fd-vk-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:8px 12px;border:1px solid transparent;border-radius:9px;font-size:.75rem;font-weight:850;cursor:pointer;box-shadow:0 3px 9px rgba(15,23,42,.08);transition:transform .15s,box-shadow .15s,background .15s}.fd-vk-btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(15,23,42,.12)}.fd-vk-btn-soft{border-color:#cbd5e1;background:#fff;color:#334155}.fd-vk-btn-primary{border-color:#059669;background:#10b981;color:#fff}.fd-vk-btn-excel{border-color:#86efac;background:#f0fdf4;color:#047857}.fd-vk-btn-pdf{border-color:#fecdd3;background:#fff1f2;color:#be123c}.fd-vk-btn-edit{min-height:31px;padding:6px 10px;border-color:#d8e0e9;background:#f8fafc;color:#334155;box-shadow:none}.fd-vk-btn-open{min-height:31px;padding:6px 10px;border-color:#a7f3d0;background:#ecfdf5;color:#047857;box-shadow:none;white-space:nowrap}.fd-vk-card:hover{border-color:#6ee7b7}.fd-vk-counts span{border:1px solid #e2e8f0;background:#f8fafc;color:#334155}
@@ -23285,14 +23319,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v154';
+      const anahtar='fd-pwa-yenileme-v155';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=154',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=155',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
