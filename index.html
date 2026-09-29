@@ -1904,7 +1904,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     <div class="modal-card" style="max-width:1180px;"><div class="modal-header"><h3 id="akaryakitModalBaslik">⛽ Akaryakıt İşlemi</h3><button class="modal-close" onclick="document.getElementById('modalAkaryakit').style.display='none'">✕</button></div><div class="modal-body">
         <form id="akaryakitForm" onsubmit="akaryakitKaydet(event)"><input type="hidden" id="akaryakitFormTuru" data-case-preserve="true"><input type="hidden" id="akaryakitEditId" data-case-preserve="true"><div id="akaryakitDepoAlanlari" class="profile-layout"><div class="form-group"><label>Depo Adı</label><input id="akaryakitDepoAdi"></div><div class="form-group"><label>Depo Kapasitesi (Litre)</label><input id="akaryakitDepoKapasite" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Başlangıç Stoku (Litre)</label><input id="akaryakitDepoBaslangic" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div></div>
         <div id="akaryakitHareketAlanlari" class="profile-layout" style="display:none;"><div class="form-group"><label>Tarih ve Saat</label><input id="akaryakitTarih" type="datetime-local"></div><div class="form-group"><label>Depo</label><select id="akaryakitDepoId"></select></div><div class="form-group akaryakit-cikis"><label>Araç</label><select id="akaryakitAracId"></select></div><div class="form-group akaryakit-cikis"><label>Araç KM</label><input id="akaryakitKm" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Litre</label><input id="akaryakitLitre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)"></div><div class="form-group akaryakit-giris"><label>Tedarikçi / Açıklama</label><input id="akaryakitTedarikci"></div><div class="form-group akaryakit-cikis"><label>Yakıtı Alan</label><input id="akaryakitAlan"></div><div class="form-group akaryakit-cikis"><label>Yakıtı Veren</label><input id="akaryakitVeren"></div></div>
-        <div id="akaryakitTopluAlan" style="display:none;"><p style="margin:0 0 12px;color:#64748b;">Tarih, depo, plaka ve litre zorunludur. KM, yakıtı alan ve yakıtı veren isteğe bağlıdır. Yeni satırda yakıtı veren kişi bir üst satırdan otomatik kopyalanır.</p><datalist id="akaryakitPersonelAdlari"></datalist><datalist id="akaryakitAracPlakalari"></datalist><div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka</th><th>KM</th><th>Litre</th><th>Yakıtı Alan</th><th>Yakıtı Veren</th><th></th></tr></thead><tbody id="akaryakitTopluBody"></tbody></table></div><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px;" onclick="akaryakitTopluSatirEkle()">＋ Yeni Satır Ekle</button></div>
+        <div id="akaryakitTopluAlan" style="display:none;"><p style="margin:0 0 12px;color:#64748b;">Tarih, depo, plaka ve litre zorunludur. KM, yakıtı alan ve yakıtı veren isteğe bağlıdır. Yeni satırda depo ve yakıtı veren kişi bir üst satırdan otomatik kopyalanır.</p><datalist id="akaryakitPersonelAdlari"></datalist><datalist id="akaryakitAracPlakalari"></datalist><div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka</th><th>KM</th><th>Litre</th><th>Yakıtı Alan</th><th>Yakıtı Veren</th><th></th></tr></thead><tbody id="akaryakitTopluBody"></tbody></table></div><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px;" onclick="akaryakitTopluSatirEkle()">＋ Yeni Satır Ekle</button></div>
         <button id="akaryakitKaydetBtn" type="submit" class="btn-submit">💾 Kaydet</button></form>
     </div></div>
 </div>
@@ -12085,8 +12085,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function akaryakitAracSecenekleri() { return `<option value="">Seçiniz</option>${araclar.filter(a=>aktifSirketeAit(a)&&a.durum!=='Satıldı'&&!aracYariRomorkMu(a.tur)).sort((a,b)=>String(a.plaka).localeCompare(String(b.plaka),'tr')).map(a=>`<option value="${a.id}">${escapeDashboardText(`${a.plaka} · ${a.marka||''} ${a.model||''}`)}</option>`).join('')}`; }
     function akaryakitDepoSecenekleri() { return `<option value="">Seçiniz</option>${akaryakitDepolari().map(d=>`<option value="${d.id}">${escapeDashboardText(d.ad)}</option>`).join('')}`; }
     function akaryakitTopluTaslakAnahtari(){return `fd_akaryakit_taslak_${aktifSirketId()||'genel'}`;}
+    function akaryakitYeniKayitId(){return `yakit_${Date.now()}_${Math.random().toString(36).slice(2,10)}`;}
     function akaryakitTopluTaslakSatirlari(){
-        return [...document.querySelectorAll('#akaryakitTopluBody tr')].map(tr=>({tarih:tr.querySelector('.akaryakit-toplu-tarih')?.value||'',depoId:tr.querySelector('.akaryakit-toplu-depo')?.value||'',plaka:tr.querySelector('.akaryakit-toplu-plaka')?.value.trim()||'',km:tr.querySelector('.akaryakit-toplu-km')?.value||'',litre:tr.querySelector('.akaryakit-toplu-litre')?.value||'',alan:tr.querySelector('.akaryakit-toplu-alan')?.value.trim()||'',veren:tr.querySelector('.akaryakit-toplu-veren')?.value.trim()||''})).filter(r=>r.depoId||r.plaka||r.km||r.litre||r.alan||r.veren);
+        return [...document.querySelectorAll('#akaryakitTopluBody tr')].map(tr=>({id:tr.dataset.kayitId||'',tarih:tr.querySelector('.akaryakit-toplu-tarih')?.value||'',depoId:tr.querySelector('.akaryakit-toplu-depo')?.value||'',plaka:tr.querySelector('.akaryakit-toplu-plaka')?.value.trim()||'',km:tr.querySelector('.akaryakit-toplu-km')?.value||'',litre:tr.querySelector('.akaryakit-toplu-litre')?.value||'',alan:tr.querySelector('.akaryakit-toplu-alan')?.value.trim()||'',veren:tr.querySelector('.akaryakit-toplu-veren')?.value.trim()||''})).filter(r=>r.depoId||r.plaka||r.km||r.litre||r.alan||r.veren);
     }
     function akaryakitTopluTaslagiKaydet(){
         if(document.getElementById('akaryakitFormTuru')?.value!=='cikis'||document.getElementById('akaryakitEditId')?.value)return;
@@ -12099,18 +12100,44 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const bugun=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
         const arac=degerler.aracId?araclar.find(a=>String(a.id)===String(degerler.aracId)):null;
         const oncekiSatir=body.querySelector('tr:last-child');
+        const oncekiDepo=oncekiSatir?.querySelector('.akaryakit-toplu-depo')?.value||'';
         const oncekiVeren=oncekiSatir?.querySelector('.akaryakit-toplu-veren')?.value.trim()||'';
+        const depoDegeri=Object.prototype.hasOwnProperty.call(degerler,'depoId')?degerler.depoId:oncekiDepo;
         const verenDegeri=Object.prototype.hasOwnProperty.call(degerler,'veren')?degerler.veren:oncekiVeren;
         const satir=document.createElement('tr');
-        satir.innerHTML=`<td class="akaryakit-satir-no"></td><td><input class="akaryakit-toplu-tarih" type="date" value="${String(degerler.tarih||bugun).slice(0,10)}"></td><td><select class="akaryakit-toplu-depo">${akaryakitDepoSecenekleri()}</select></td><td><input class="akaryakit-toplu-plaka" list="akaryakitAracPlakalari" autocomplete="off" placeholder="Plaka yazın" value="${escapeDashboardText(arac?.plaka||degerler.plaka||'')}"></td><td><input class="akaryakit-toplu-km" type="text" inputmode="numeric" placeholder="İsteğe bağlı" oninput="paraGirisiFormatla(this)" value="${degerler.km||''}"></td><td><input class="akaryakit-toplu-litre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)" value="${degerler.litre||''}"></td><td><input class="akaryakit-toplu-alan" list="akaryakitPersonelAdlari" autocomplete="off" placeholder="İsteğe bağlı" value="${escapeDashboardText(degerler.alan||'')}"></td><td><input class="akaryakit-toplu-veren" list="akaryakitPersonelAdlari" autocomplete="off" placeholder="İsteğe bağlı" onkeydown="akaryakitSonAlandaTab(event,this)" value="${escapeDashboardText(verenDegeri||'')}"></td><td><button type="button" class="btn-modern btn-del-modern" onclick="this.closest('tr').remove();akaryakitTopluSatirNumarala();akaryakitTopluTaslagiKaydet()">🗑️</button></td>`;
+        satir.dataset.kayitId=degerler.id||akaryakitYeniKayitId();
+        satir.innerHTML=`<td class="akaryakit-satir-no"></td><td><input class="akaryakit-toplu-tarih" type="date" value="${String(degerler.tarih||bugun).slice(0,10)}"></td><td><select class="akaryakit-toplu-depo">${akaryakitDepoSecenekleri()}</select></td><td><input class="akaryakit-toplu-plaka" autocomplete="off" placeholder="Plakayı yazın" value="${escapeDashboardText(arac?.plaka||degerler.plaka||'')}"></td><td><input class="akaryakit-toplu-km" type="text" inputmode="numeric" placeholder="İsteğe bağlı" oninput="paraGirisiFormatla(this)" value="${degerler.km||''}"></td><td><input class="akaryakit-toplu-litre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)" value="${degerler.litre||''}"></td><td><input class="akaryakit-toplu-alan" autocomplete="off" placeholder="İsteğe bağlı" value="${escapeDashboardText(degerler.alan||'')}"></td><td><input class="akaryakit-toplu-veren" autocomplete="off" placeholder="İsteğe bağlı" onkeydown="akaryakitSonAlandaTab(event,this)" value="${escapeDashboardText(verenDegeri||'')}"></td><td><button type="button" class="btn-modern btn-del-modern" onclick="this.closest('tr').remove();akaryakitTopluSatirNumarala();akaryakitTopluTaslagiKaydet()">🗑️</button></td>`;
         body.appendChild(satir);
-        if(degerler.depoId)satir.querySelector('.akaryakit-toplu-depo').value=degerler.depoId;
+        if(depoDegeri)satir.querySelector('.akaryakit-toplu-depo').value=depoDegeri;
         akaryakitTopluSatirNumarala();
         return satir;
     }
     function akaryakitTopluSatirNumarala(){document.querySelectorAll('#akaryakitTopluBody tr').forEach((tr,i)=>tr.querySelector('.akaryakit-satir-no').textContent=i+1);}
     function akaryakitSonAlandaTab(event,alan){if(event.key!=='Tab'||event.shiftKey)return;const satir=alan.closest('tr'),sonSatir=satir===document.querySelector('#akaryakitTopluBody tr:last-child');if(!sonSatir)return;event.preventDefault();const yeni=akaryakitTopluSatirEkle({depoId:satir.querySelector('.akaryakit-toplu-depo').value,veren:alan.value});yeni.querySelector('.akaryakit-toplu-tarih').focus();}
     function akaryakitPlakadanAracBul(plaka){const anahtar=aracPlakaAnahtari(plaka);return araclar.find(a=>aktifSirketeAit(a)&&a.durum!=='Satıldı'&&!aracYariRomorkMu(a.tur)&&aracPlakaAnahtari(a.plaka)===anahtar);}
+    function akaryakitAyniCikisKaydiMi(a,b){return a?.tur==='cikis'&&b?.tur==='cikis'&&String(a.depoId||'')===String(b.depoId||'')&&String(a.aracId||'')===String(b.aracId||'')&&String(a.tarih||'').slice(0,10)===String(b.tarih||'').slice(0,10)&&Number(a.litre||0)===Number(b.litre||0)&&Number(a.km||0)===Number(b.km||0)&&String(a.alan||'').trim()===String(b.alan||'').trim()&&String(a.veren||'').trim()===String(b.veren||'').trim();}
+    async function akaryakitKayitlariniDogrula(kayitlar){
+        if(!SUPABASE_MODE)return true;
+        const kimlikler=kayitlar.map((kayit,index)=>supabaseKayitAnahtari('akaryakit',kayit,index));
+        const {data,error}=await zamanAsimliBekle(supabaseClient.from('portal_records').select('legacy_id').eq('company_id',activeUser.sirketId).eq('module','akaryakit').in('legacy_id',kimlikler),10000,'Yakıt kaydı sunucudan doğrulanırken zaman aşımına uğradı.');
+        if(error)throw error;
+        const bulunan=new Set((data||[]).map(satir=>String(satir.legacy_id)));
+        return kimlikler.every(kimlik=>bulunan.has(String(kimlik)));
+    }
+    async function akaryakitKayitlariniKaydet(kayitlar){
+        if(!SUPABASE_MODE)return zamanAsimliBekle(verileriKaydet(),25000,'Yakıt kaydı zamanında tamamlanamadı. İnternet bağlantısını kontrol edin.');
+        if(!activeUser?.sirketId)throw new Error('Şirket oturumu bulunamadı.');
+        const satirlar=kayitlar.map((kayit,index)=>({company_id:activeUser.sirketId,module:'akaryakit',legacy_id:supabaseKayitAnahtari('akaryakit',kayit,index),record_year:supabaseKayitYili('akaryakit',kayit),employee_legacy_id:null,data:kayit}));
+        try{
+            const {error}=await zamanAsimliBekle(supabaseClient.from('portal_records').upsert(satirlar,{onConflict:'company_id,module,legacy_id'}),25000,'Yakıt kaydı sunucuya gönderilirken zaman aşımına uğradı.');
+            if(error)throw error;
+        }catch(error){
+            try{if(await akaryakitKayitlariniDogrula(kayitlar)){veriKayitGoruntusunuYenile('akaryakit');veriOnbelleginiKaydet();return;}}catch(_){}
+            throw error;
+        }
+        if(!await akaryakitKayitlariniDogrula(kayitlar))throw new Error('Yakıt kaydı sunucuda doğrulanamadı.');
+        veriKayitGoruntusunuYenile('akaryakit');veriOnbelleginiKaydet();
+    }
     function akaryakitFormunuAc(tur) {
         document.getElementById('akaryakitForm').reset(); document.getElementById('akaryakitFormTuru').value=tur;document.getElementById('akaryakitEditId').value='';
         document.getElementById('akaryakitDepoAlanlari').style.display=tur==='depo'?'grid':'none'; document.getElementById('akaryakitHareketAlanlari').style.display=tur==='giris'?'grid':'none'; document.getElementById('akaryakitTopluAlan').style.display=tur==='cikis'?'block':'none';
@@ -12144,7 +12171,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const depoFormuAcik = document.getElementById('akaryakitDepoAlanlari').style.display !== 'none';
         const tur = String(turAlani.value || (depoFormuAcik ? 'depo' : '')).toLocaleLowerCase('tr-TR');
         const editId=document.getElementById('akaryakitEditId').value||'',eskiKayit=editId?akaryakitKayitlari.find(k=>String(k.id)===String(editId)):null;
-        let kayit, kayitlar=[];
+        let kayit, kayitlar=[],yinelenenSayisi=0;
         if(tur==='depo'){
             const ad=document.getElementById('akaryakitDepoAdi').value.trim(); if(!ad){alert('Depo ad\u0131n\u0131 girin.');return;}
             const kapasite=paraMetniniSayiyaCevir(document.getElementById('akaryakitDepoKapasite').value),girilenStok=paraMetniniSayiyaCevir(document.getElementById('akaryakitDepoBaslangic').value);
@@ -12170,9 +12197,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 if(!tarih||!depoId||!plaka||!(litre>0)){akaryakitTopluTaslagiKaydet();showToast(`${i+1}. satırda tarih, depo, plaka ve litre zorunludur. KM, alan ve veren isteğe bağlıdır.`,'warning');return;}
                 if(!arac){alert(`${i+1}. satırdaki “${plaka}” plakası aktif araç kayıtlarında bulunamadı.`);return;}
                 depoToplamlari[depoId]=(depoToplamlari[depoId]||0)+litre;
-                const yeniKayit={id:editId||`yakit_${Date.now()}_${i}`,tur:'cikis',sirketId:aktifSirketId(),depoId,tarih,litre,aracId,km,alan,veren,tedarikci:''};
+                const yeniKayit={id:editId||tr.dataset.kayitId||akaryakitYeniKayitId(),tur:'cikis',sirketId:aktifSirketId(),depoId,tarih,litre,aracId,km,alan,veren,tedarikci:''};
+                if(!editId&&[...akaryakitKayitlari,...kayitlar].some(mevcut=>akaryakitAyniCikisKaydiMi(mevcut,yeniKayit))){yinelenenSayisi++;continue;}
                 kayitlar.push(eskiKayit?{...eskiKayit,...yeniKayit}:yeniKayit);
             }
+            if(!kayitlar.length&&yinelenenSayisi){akaryakitTopluTaslagiSil();document.getElementById('modalAkaryakit').style.display='none';showToast('Bu yakıt kaydı daha önce kaydedilmiş. Yeniden eklenmedi.','warning');return;}
             if(!kayitlar.length){alert('Dolu bir yakıt satırı bulunamadı.');return;}
         } else {
             alert('Akaryakıt işlem türü belirlenemedi.'); return;
@@ -12187,7 +12216,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const oncekiListe=akaryakitKayitlari.slice();
         if(editId)akaryakitKayitlari[editIndex]=kayitlar[0];else akaryakitKayitlari.push(...kayitlar);
         yuklenenVeriler.add('akaryakit');
-        try{await supabaseVerileriKaydet();if(tur==='cikis'&&!editId)akaryakitTopluTaslagiSil();document.getElementById('modalAkaryakit').style.display='none';akaryakitListesiniCiz();showToast(editId?'Yakıt kaydı güncellendi.':`${kayitlar.length} akaryakıt kaydı kaydedildi.`);}catch(error){akaryakitKayitlari=oncekiListe;alert('Akaryakıt kaydı kaydedilemedi: '+(error.message||'Bilinmeyen hata'));}finally{akaryakitKaydetmeDevamEdiyor=false;hideGlobalOverlay();if(kaydetBtn){kaydetBtn.disabled=false;kaydetBtn.textContent=oncekiButonMetni;}}
+        try{await akaryakitKayitlariniKaydet(kayitlar);if(tur==='cikis'&&!editId)akaryakitTopluTaslagiSil();document.getElementById('modalAkaryakit').style.display='none';akaryakitListesiniCiz();showToast(editId?'Yakıt kaydı güncellendi.':`${kayitlar.length} akaryakıt kaydı kaydedildi.${yinelenenSayisi?` ${yinelenenSayisi} yinelenen satır eklenmedi.`:''}`);}catch(error){akaryakitKayitlari=oncekiListe;alert('Akaryakıt kaydı kaydedilemedi: '+(error.message||'Bilinmeyen hata')+'\n\nEkran yeniden açıldı. Aynı kaydı tekrar tekrar göndermenize gerek yoktur.');}finally{akaryakitKaydetmeDevamEdiyor=false;hideGlobalOverlay();if(kaydetBtn){kaydetBtn.disabled=false;kaydetBtn.textContent=oncekiButonMetni;}}
     }
     function akaryakitTuketimAraliklari(aracId='') {
         const gruplar={};
@@ -23469,14 +23498,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v163';
+      const anahtar='fd-pwa-yenileme-v164';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=163',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=164',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
