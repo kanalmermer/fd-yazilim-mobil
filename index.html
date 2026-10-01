@@ -3905,6 +3905,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         whatsappIzinOtomatikAktif: true,
         whatsappIzinBeklemeDakika: 3,
         whatsappVardiyaOtomatikAktif: true,
+        whatsappVardiyaSubeleri: [],
         whatsappVardiyaAksamSaati: '20:00',
         whatsappVardiyaErtesiGunSaati: '10:00',
         siparisBirimleri: ['ADET','KASA','TON','KG','M³','M²','PALET','KOLİ','PAKET','SEFER'],
@@ -5461,9 +5462,25 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         select.innerHTML=birimler.map(birim=>'<option value="'+escapeDashboardText(birim)+'">'+escapeDashboardText(birim)+'</option>').join('');select.value=birimler.includes(onceki)?onceki:birimler[0];
     }
 
+    function whatsappVardiyaSubeleriniDuzelt(kaynak=uygulamaAyarlari?.whatsappVardiyaSubeleri){
+        const ham=Array.isArray(kaynak)?kaynak:[];const liste=[];
+        ham.forEach(deger=>{const sube=String(deger||'').trim();if(sube&&!liste.includes(sube))liste.push(sube);});
+        return liste;
+    }
+
+    function whatsappVardiyaSubeSeciminiCiz(){
+        const alan=document.getElementById('ayarWhatsappVardiyaSubeleri');if(!alan)return;
+        const secili=new Set(whatsappVardiyaSubeleriniDuzelt()),subeler=[...new Set((Array.isArray(personeller)?personeller:[]).filter(p=>aktifSirketeAit(p)&&!p.cikisTarihi).map(p=>String(p.sube||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));
+        alan.innerHTML=subeler.map(sube=>'<label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #dbe4ee;border-radius:8px;background:#fff;cursor:pointer"><input type="checkbox" value="'+escapeDashboardText(sube)+'" '+(secili.has(sube)?'checked':'')+' style="width:17px;height:17px"><span>'+escapeDashboardText(sube)+'</span></label>').join('')||'<div style="color:#64748b;padding:8px 0">Aktif personel şubesi bulunamadı.</div>';
+    }
+
+    function whatsappVardiyaSubeSecilenleriniOku(){
+        return [...document.querySelectorAll('#ayarWhatsappVardiyaSubeleri input:checked')].map(input=>String(input.value||'').trim()).filter(Boolean);
+    }
+
     function ozelAyarPanelleriniKur(whatsappPanel,siparisPanel){
         if(whatsappPanel&&!document.getElementById('ayarWhatsappGonderimDetayi')){
-            const detay=document.createElement('details');detay.id='ayarWhatsappGonderimDetayi';detay.className='profile-section';detay.innerHTML='<summary>WhatsApp Gönderim Kuralları</summary><div><div class="form-row"><div class="form-group"><label>İzin Mesajlarını Otomatik Gönder</label><select id="ayarWhatsappIzinAktif"><option value="true">Evet</option><option value="false">Hayır</option></select></div><div class="form-group"><label>İzin Düzeltme Bekleme Süresi (Dakika)</label><input id="ayarWhatsappIzinBekleme" type="number" min="0" max="120" step="1"><small>Bu sürede izin değiştirilirse kuyruktaki eski mesaj son kayıtla değiştirilir.</small></div></div><div class="form-row"><div class="form-group"><label>Vardiya Mesajlarını Otomatik Gönder</label><select id="ayarWhatsappVardiyaAktif"><option value="true">Evet</option><option value="false">Hayır</option></select></div><div class="form-group"><label>Aynı Gün Vardiya Gönderim Saati</label><input id="ayarWhatsappVardiyaAksam" type="time"></div></div><div class="form-group"><label>Akşam Saati Geçildiyse Ertesi Gün Gönderim Saati</label><input id="ayarWhatsappVardiyaErtesi" type="time"><small>Örneğin vardiya saat 20.00’den sonra kaydedilirse mesaj ertesi gün seçilen saatte gönderilir.</small></div><div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5">Bekleyen mesajları <strong>WhatsApp Mesajları → Gönderim Kuyruğu</strong> bölümünden görebilir ve iptal edebilirsiniz.</div></div>';const panelBasligi=whatsappPanel.querySelector(':scope > .ayarlar-panel-baslik');if(panelBasligi)panelBasligi.after(detay);else whatsappPanel.appendChild(detay);
+            const detay=document.createElement('details');detay.id='ayarWhatsappGonderimDetayi';detay.className='profile-section';detay.innerHTML='<summary>WhatsApp Gönderim Kuralları</summary><div><div class="form-row"><div class="form-group"><label>İzin Mesajlarını Otomatik Gönder</label><select id="ayarWhatsappIzinAktif"><option value="true">Evet</option><option value="false">Hayır</option></select></div><div class="form-group"><label>İzin Düzeltme Bekleme Süresi (Dakika)</label><input id="ayarWhatsappIzinBekleme" type="number" min="0" max="120" step="1"><small>Bu sürede izin değiştirilirse kuyruktaki eski mesaj son kayıtla değiştirilir.</small></div></div><div class="form-row"><div class="form-group"><label>Vardiya Mesajlarını Otomatik Gönder</label><select id="ayarWhatsappVardiyaAktif"><option value="true">Evet</option><option value="false">Hayır</option></select></div><div class="form-group"><label>Aynı Gün Vardiya Gönderim Saati</label><input id="ayarWhatsappVardiyaAksam" type="time"></div></div><div class="form-group"><label>Vardiya Mesajı Gönderilecek Şubeler</label><div id="ayarWhatsappVardiyaSubeleri" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-top:6px"></div><small>Yalnızca işaretlediğiniz şubelerde gerçek vardiya değişikliği olduğunda mesaj hazırlanır. Hiç şube seçilmezse vardiya mesajı gönderilmez.</small></div><div class="form-group"><label>Akşam Saati Geçildiyse Ertesi Gün Gönderim Saati</label><input id="ayarWhatsappVardiyaErtesi" type="time"><small>Örneğin vardiya saat 20.00’den sonra kaydedilirse mesaj ertesi gün seçilen saatte gönderilir.</small></div><div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5">Bekleyen mesajları <strong>WhatsApp Mesajları → Gönderim Kuyruğu</strong> bölümünden görebilir ve iptal edebilirsiniz.</div></div>';const panelBasligi=whatsappPanel.querySelector(':scope > .ayarlar-panel-baslik');if(panelBasligi)panelBasligi.after(detay);else whatsappPanel.appendChild(detay);
         }
         if(siparisPanel&&!document.getElementById('ayarSiparisTakipDetayi')){
             const detay=document.createElement('details');detay.id='ayarSiparisTakipDetayi';detay.className='profile-section';detay.innerHTML='<summary>Sipariş Takibi Genel Ayarları</summary><div><div class="form-group"><label>Kullanılacak Ürün Birimleri</label><textarea id="ayarSiparisBirimleri" rows="3" data-case-preserve="true" placeholder="ADET, KASA, TON" oninput="siparisAyarBirimSeciminiYenile()"></textarea><small>Virgül veya yeni satırla ayırın. Ürün kartındaki birim listesinde görünür.</small></div><div class="form-row"><div class="form-group"><label>Varsayılan Ürün Birimi</label><select id="ayarSiparisVarsayilanBirim"></select></div><div class="form-group"><label>Gecikmiş Sayılması İçin Tolerans (Gün)</label><input id="ayarSiparisGecikmeTolerans" type="number" min="0" max="365" step="1"><small>0 seçilirse termin tarihi geçer geçmez gecikmiş sayılır.</small></div></div><div class="form-row"><div class="form-group"><label>Tamamlananları Ana Tabloda Göster</label><select id="ayarSiparisTamamlananGoster"><option value="false">Hayır, yalnızca detayda göster</option><option value="true">Evet</option></select></div><div class="form-group"><label>Ürün Detayında Varsayılan Tarih Aralığı</label><select id="ayarSiparisDetayGun"><option value="0">Tüm kayıtlar</option><option value="30">Son 30 gün</option><option value="90">Son 90 gün</option><option value="180">Son 180 gün</option><option value="365">Son 1 yıl</option></select></div></div></div>';siparisPanel.appendChild(detay);
@@ -5473,7 +5490,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function ozelAyarFormlariniDoldur(){
         const yaz=(id,deger)=>{const alan=document.getElementById(id);if(alan)alan.value=String(deger??'');};
         yaz('ayarWhatsappIzinAktif',uygulamaAyarlari.whatsappIzinOtomatikAktif!==false);yaz('ayarWhatsappIzinBekleme',Number(uygulamaAyarlari.whatsappIzinBeklemeDakika??3));
-        yaz('ayarWhatsappVardiyaAktif',uygulamaAyarlari.whatsappVardiyaOtomatikAktif!==false);yaz('ayarWhatsappVardiyaAksam',uygulamaAyarlari.whatsappVardiyaAksamSaati||'20:00');yaz('ayarWhatsappVardiyaErtesi',uygulamaAyarlari.whatsappVardiyaErtesiGunSaati||'10:00');
+        yaz('ayarWhatsappVardiyaAktif',uygulamaAyarlari.whatsappVardiyaOtomatikAktif!==false);yaz('ayarWhatsappVardiyaAksam',uygulamaAyarlari.whatsappVardiyaAksamSaati||'20:00');yaz('ayarWhatsappVardiyaErtesi',uygulamaAyarlari.whatsappVardiyaErtesiGunSaati||'10:00');whatsappVardiyaSubeSeciminiCiz();
         const birimler=siparisAyarBirimleriniDuzelt();yaz('ayarSiparisBirimleri',birimler.join(', '));siparisAyarBirimSeciminiYenile(uygulamaAyarlari.siparisVarsayilanBirim||'ADET');
         yaz('ayarSiparisGecikmeTolerans',Number(uygulamaAyarlari.siparisGecikmeToleransGunu??0));yaz('ayarSiparisTamamlananGoster',Boolean(uygulamaAyarlari.siparisTamamlananlariGoster));yaz('ayarSiparisDetayGun',Number(uygulamaAyarlari.siparisDetayVarsayilanGun??0));
     }
@@ -5973,6 +5990,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             whatsappIzinOtomatikAktif:document.getElementById('ayarWhatsappIzinAktif')?.value!=='false',
             whatsappIzinBeklemeDakika:Math.min(120,Math.max(0,Number(document.getElementById('ayarWhatsappIzinBekleme')?.value??3))),
             whatsappVardiyaOtomatikAktif:document.getElementById('ayarWhatsappVardiyaAktif')?.value!=='false',
+            whatsappVardiyaSubeleri:whatsappVardiyaSubeSecilenleriniOku(),
             whatsappVardiyaAksamSaati:/^\d{2}:\d{2}$/.test(String(document.getElementById('ayarWhatsappVardiyaAksam')?.value||''))?document.getElementById('ayarWhatsappVardiyaAksam').value:'20:00',
             whatsappVardiyaErtesiGunSaati:/^\d{2}:\d{2}$/.test(String(document.getElementById('ayarWhatsappVardiyaErtesi')?.value||''))?document.getElementById('ayarWhatsappVardiyaErtesi').value:'10:00',
             siparisBirimleri:siparisAyarBirimleriniDuzelt(document.getElementById('ayarSiparisBirimleri')?.value),
@@ -9885,9 +9903,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function personelVardiyaBildirimleriniPlanla(bildirimler) {
         if (uygulamaAyarlari?.whatsappVardiyaOtomatikAktif === false) return { toplam:Array.isArray(bildirimler)?bildirimler.length:0, planlanan:0, basarisiz:0, atlandi:true };
+        const izinliSubeler=new Set(whatsappVardiyaSubeleriniDuzelt());
+        if(!izinliSubeler.size)return { toplam:Array.isArray(bildirimler)?bildirimler.length:0, planlanan:0, basarisiz:0, atlandi:true, neden:'Vardiya mesajı gönderilecek şube seçilmedi.' };
         const benzersiz = new Map();
         (Array.isArray(bildirimler) ? bildirimler : []).forEach(item => {
-            if (item?.personelId && item?.mesaj) benzersiz.set(String(item.personelId), item);
+            const personel=personeller.find(p=>String(p.id)===String(item?.personelId));
+            if (item?.personelId && item?.mesaj && personel && izinliSubeler.has(String(personel.sube||'').trim())) benzersiz.set(String(item.personelId), item);
         });
         if (!benzersiz.size) return { toplam:0, planlanan:0, basarisiz:0, hatalar:[] };
         if (typeof window.fdxPlanliBildirimApi !== 'function') return { toplam:benzersiz.size, planlanan:0, basarisiz:benzersiz.size, hatalar:[{ hata:'Planlı bildirim bağlantısı hazır değil.' }] };
@@ -9994,7 +10015,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         (kayit.satirlar||[]).forEach(satir=>{
             const personelId=String(satir.personelId||'');if(!personelId)return;
             const vardiya=String(tanimlar[satir.vardiya]||fdVardiyaVarsayilanGunduzId()),gorev=String(satir.gorev||'').trim(),sube=String(kayit.sube||'').trim();
-            gorunum.set(personelId,{personelId,vardiya,gorev,sube,imza:[vardiya,gorev,sube].join('|')});
+            gorunum.set(personelId,{personelId,vardiya,gorev,sube,imza:vardiya});
         });
         return gorunum;
     }
@@ -10006,7 +10027,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function vardiyaHaftalikBildirimleriHazirla(kayit, onceki) {
         const guncel=vardiyaHaftalikBildirimGorunumu(kayit),tarihler=vardiyaHaftalikBildirimTarihleri(kayit),bildirimler=[];
-        guncel.forEach((detay,personelId)=>{const eski=onceki?.get?.(personelId);if(eski&&eski.imza===detay.imza)return;const bildirim=personelVardiyaBildirimiHazirla(personelId,tarihler,detay.vardiya,detay);if(bildirim)bildirimler.push(bildirim)});
+        guncel.forEach((detay,personelId)=>{const eski=onceki?.get?.(personelId);if(!eski||eski.imza===detay.imza)return;const bildirim=personelVardiyaBildirimiHazirla(personelId,tarihler,detay.vardiya,detay);if(bildirim)bildirimler.push(bildirim)});
         return{guncel,bildirimler};
     }
 
@@ -19684,19 +19705,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try{
             islemler.forEach((islem,index)=>{
                 vardiyaKayitlari=vardiyaKayitlari.filter(k=>!(k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(islem.personel.id)&&String(k.tarih)===islem.tarih));
-                if(vardiyaSecimi!=='gunluk'){
-                    vardiyaKayitlari=vardiyaKayitlari.filter(k=>!(k.kayitTipi==='vardiyaAtama'&&aktifSirketeAit(k)&&String(k.pId)===String(islem.personel.id)&&String(k.tarih)===islem.tarih));
-                    vardiyaKayitlari.push(magicpassAtamaKaydi(islem.personel.id,islem.tarih,islem.vardiya,'topluSaat'));
-                }
                 vardiyaKayitlari.push({id:'mduz_toplu_'+islem.personel.id+'_'+islem.tarih+'_'+zaman+'_'+index,kayitTipi:'magicpassDuzeltme',sirketId:aktifSirketId(),pId:String(islem.personel.id),tarih:islem.tarih,girisZamani:islem.girisZamani.toISOString(),cikisZamani:islem.cikisZamani.toISOString(),giris:islem.girisSaat,cikis:islem.cikisSaat,aciklama:'Tarih aralığı toplu doldurma · '+(vardiyaSecimi==='gunluk'?'Günlük vardiya planı':String(islem.tanim?.ad||islem.vardiya)),kaynak:'topluSaat',zaman:zaman+index});
             });
             yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();modalKapat('modalMagicpassTopluSaat');magicpassAylikCizelgeyiCiz();
             showToast(islemler.length+' günlük giriş–çıkış kaydı vardiya saatleri temel alınarak dolduruldu.');
-            if(vardiyaSecimi!=='gunluk'){
-                const bildirimler=seciliPersoneller.map(personel=>{const tarihler=islemler.filter(islem=>String(islem.personel.id)===String(personel.id)).map(islem=>islem.tarih);return tarihler.length?personelVardiyaBildirimiHazirla(personel.id,tarihler,vardiyaSecimi):null}).filter(Boolean);
-                const bildirimSonucu=await personelVardiyaBildirimleriniPlanla(bildirimler);
-                if(bildirimSonucu.basarisiz)showToast(bildirimSonucu.basarisiz+' vardiya WhatsApp bildirimi planlanamadı.','warning');
-            }
         }catch(error){vardiyaKayitlari=oncekiKayitlar;showToast('Toplu saatler kaydedilemedi: '+(error.message||error),'error');}
         finally{hideGlobalOverlay();}
     }
@@ -23987,14 +23999,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v187';
+      const anahtar='fd-pwa-yenileme-v188';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=187',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=188',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
