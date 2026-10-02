@@ -892,6 +892,9 @@
     #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td:first-child{box-shadow:inset 4px 0 #ef4444}
     #magicpassAylikTablo tr.magicpass-izin-diger td{background:#ccfbf1}
     #magicpassAylikTablo tr.magicpass-izin-diger td:first-child{box-shadow:inset 4px 0 #14b8a6}
+    #magicpassAylikTablo tr.magicpass-yarim-resmi-tatil:not([class*="magicpass-izin-"]) td{background:#fef3c7;color:#78350f}
+    #magicpassAylikTablo tr.magicpass-yarim-resmi-tatil:not([class*="magicpass-izin-"]) td:first-child{box-shadow:inset 5px 0 #d97706}
+    #magicpassAylikTablo tr.magicpass-yarim-resmi-tatil:not([class*="magicpass-izin-"]) .magicpass-tarih-gun{color:#92400e}
     #magicpassVardiyaMenu { position:fixed; z-index:130000; display:none; min-width:210px; padding:7px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; box-shadow:0 16px 35px rgba(15,23,42,.2); }
     #magicpassVardiyaMenu button { display:block; width:100%; padding:9px 10px; border:0; border-radius:7px; background:transparent; text-align:left; cursor:pointer; font-weight:750; }
     #magicpassVardiyaMenu button:hover { background:#e0f2fe; color:#0369a1; }
@@ -14835,10 +14838,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     const cihazGunTuru = typeof magicpassGunTuruBul === 'function' ? magicpassGunTuruBul(p, dateKey) : '';
                     if (!izinKodu && cihazGunTuru === 'pazar') harf = 'HS';
                     else if (!izinKodu && cihazGunTuru === 'resmiTatil') harf = 'RT';
+                    else if (!izinKodu && cihazGunTuru === 'yarimResmiTatil') harf = 'X';
                     if (!izinKodu && currDate <= bugun && !primBugunTamamlanmadi) {
                         const cihazGunu = magicpassGunHesapla(p, dateKey);
                         const cihazdaHareketVar = Boolean(cihazGunu.giris || cihazGunu.cikis);
-                        if (cihazdaHareketVar) {
+                        if (cihazGunTuru === 'yarimResmiTatil') {
+                            harf = 'X';
+                        } else if (cihazdaHareketVar) {
                             harf = harf === 'HS' ? 'PZ' : (harf === 'RT' ? 'RC' : 'X');
                         } else if (cihazGunu.pazarHakkiYok) {
                             harf = 'M';
@@ -14892,7 +14898,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const fazlaMesaiSaati = String(ozet.fazlaMesaiSaatiManuel) === 'true' ? Number(ozet.fazlaMesaiSaati || 0) : magicpassAylikMesaiSaati(p, ay, yil);
             const gunlukCalismaSaati = ayarSayisi('gunlukCalismaSaati', 7.5);
             const pazarMesaiSaati = String(ozet.pazarMesaiSaatiManuel) === 'true' ? Number(ozet.pazarMesaiSaati || 0) : pazarCalisma * gunlukCalismaSaati;
-            const resmiTatilMesaiSaati = String(ozet.resmiTatilMesaiSaatiManuel) === 'true' ? Number(ozet.resmiTatilMesaiSaati || 0) : resmiTatilCalisma * gunlukCalismaSaati;
+            const resmiTatilMesaiSaati = String(ozet.resmiTatilMesaiSaatiManuel) === 'true' ? Number(ozet.resmiTatilMesaiSaati || 0) : resmiTatilCalisma * gunlukCalismaSaati + magicpassAylikYarimResmiTatilMesaiSaati(p, ay, yil);
             const primVar = p.primVar === 'Evet' && primDurumu.hakkiVar;
             const primTutari = String(ozet.primTutariManuel) === 'true' ? Number(ozet.primTutari || 0) : (primVar ? primSabitTutar : 0);
             const avansKesintisi = personelAylikAvansKesintisi(p.id, ay, yil);
@@ -18599,10 +18605,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try{await ekOdemeleriKaydet(true);ekOdemeCizelgesiniHazirla();ekOdemeHareketleriniAc(ekOdemeHareketPersonelId);showToast('Ek ödeme hareketi silindi.');}catch(error){alert('Ek ödeme hareketi silinemedi: '+(error.message||error));}
     };
     const MAGICPASS_2026_DINI_BAYRAMLAR=new Set(['2026-03-20','2026-03-21','2026-03-22','2026-05-27','2026-05-28','2026-05-29','2026-05-30']);
+    const MAGICPASS_2026_DINI_AREFELER=new Set(['2026-03-19','2026-05-26']);
+    function magicpassYarimGunResmiTatilMi(tarihKey){const tarih=String(tarihKey||'');return tarih.slice(5)==='10-28'||MAGICPASS_2026_DINI_AREFELER.has(tarih);}
     function magicpassOtomatikResmiTatilMi(tarihKey){return sabitResmiTatiller.includes(String(tarihKey).slice(5))||MAGICPASS_2026_DINI_BAYRAMLAR.has(String(tarihKey));}
     function magicpassGenelGunTuruKaydi(tarihKey){return magicpassKayitlari('magicpassGunTuruGenel').filter(k=>String(k.tarih)===String(tarihKey)).sort((a,b)=>Number(b.zaman||0)-Number(a.zaman||0))[0]||null;}
     magicpassGunTuruBul=function(personel,tarihKey){
-        const genel=magicpassGenelGunTuruKaydi(tarihKey);if(genel)return genel.gunTuru==='normal'?'':genel.gunTuru;
+        if(magicpassYarimGunResmiTatilMi(tarihKey))return 'yarimResmiTatil';const genel=magicpassGenelGunTuruKaydi(tarihKey);if(genel)return genel.gunTuru==='normal'?'':genel.gunTuru;
         if(magicpassOtomatikResmiTatilMi(tarihKey))return 'resmiTatil';if(new Date(String(tarihKey)+'T12:00:00').getDay()===0)return 'pazar';return '';
     };
     magicpassSeciliGunlereGunTuruAta=async function(gunTuru){
@@ -18821,7 +18829,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const manuel=magicpassGenelGunTuruKaydi(tarih);return String(manuel?.tatilAdi||dini[tarih]||sabit[md]||'Resmî Tatil');
     }
 
-    magicpassOtomatikResmiTatilMi=function(tarihKey){return magicpassResmiTatilAdi(tarihKey)!=='Resmî Tatil';};
+    magicpassOtomatikResmiTatilMi=function(tarihKey){return !magicpassYarimGunResmiTatilMi(tarihKey)&&magicpassResmiTatilAdi(tarihKey)!=='Resmî Tatil';};
 
     function magicpassAralikDakikasi(bas,bit,aralikBas,aralikBit){
         if(!bas||!bit||!aralikBas||!aralikBit)return 0;
@@ -19105,7 +19113,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const tbody=document.querySelector('#magicpassAylikTablo tbody');if(!tbody)return;const personel=personeller.find(p=>String(p.id)===String(document.getElementById('magicpassPersonel')?.value));magicpassSeciliGunler.clear();const baslik=document.getElementById('magicpassSeciliPersonelBaslik'),bilgi=document.getElementById('magicpassSeciliPersonelBilgi');
         if(!personel){tbody.innerHTML='<tr><td colspan="11" style="padding:24px;color:#64748b">Personel seçin.</td></tr>';document.getElementById('magicpassOzet').innerHTML='';if(baslik)baslik.textContent='Personel seçin';if(bilgi)bilgi.textContent='';return;}
         if(baslik)baslik.textContent=personel.ad||'Personel';if(bilgi)bilgi.textContent=(personel.sube||'Merkez')+' · '+(personel.gorev||'-')+' · Cihaz No: '+(personel.cihazPersonelNo||'tanımsız');magicpassPersonelListesiCiz();const liste=magicpassAylikCizelgeVerisi(personel);
-        tbody.innerHTML=liste.map(k=>{const eksik=['Giriş Yok','Çıkış Yok'].includes(String(k.durum||'')),pazarCalisti=Boolean(k.gunTuru==='pazar'&&(k.giris||k.cikis)),tatilBos=Boolean((k.gunTuru==='pazar'||k.gunTuru==='resmiTatil')&&!k.giris&&!k.cikis),gelmedi=String(k.durum||'')==='Gelmedi',izinSinif=magicpassIzinSatirSinifi(k.izin),sinif=(gelmedi?'magicpass-gelmedi ':'')+(k.gunTuru==='pazar'?' magicpass-pazar'+(pazarCalisti?' magicpass-pazar-calisti':''):(k.gunTuru==='resmiTatil'?' magicpass-resmi-tatil':''))+izinSinif,durumSinif=String(k.durum||'')==='Planlandı'?'planlandi':(k.seviye==='hata'?'hata':(k.seviye==='uyari'?'uyari':'tamam')),uyariMetni=k.uyarilar?.length?k.uyarilar.join(' · '):'',uyarilar='',durumGosterimi=pazarCalisti?'Pazar Çalıştı':(['Tamam','Uyarı'].includes(String(k.durum||''))?'✓':String(k.durum||'')),gunHam=new Date(k.tarih+'T12:00:00').toLocaleDateString('tr-TR',{weekday:'long'}),gun=gunHam.charAt(0).toLocaleUpperCase('tr-TR')+gunHam.slice(1),manuel=k.duzeltme?'<span class="magicpass-manuel-isaret" title="Giriş veya çıkış saati manuel değiştirildi">✎ MANUEL</span>':'',brutBaslik=k.brutMesai!==k.mesai?'Brüt fazla mesai: '+magicpassDakikaMetni(k.brutMesai):'',brut='',hamAdet=magicpassGunHamHareketleriBul(personel,k.tarih).length,sil=hamAdet&&!isPersonelUser()?'<button type="button" class="magicpass-gun-islem sil" data-html2canvas-ignore="true" title="Bu günün ham saat hareketlerini sil" onclick="magicpassGunHamHareketleriniSil(\''+k.tarih+'\')">🗑</button>':'';
+        tbody.innerHTML=liste.map(k=>{const eksik=['Giriş Yok','Çıkış Yok'].includes(String(k.durum||'')),pazarCalisti=Boolean(k.gunTuru==='pazar'&&(k.giris||k.cikis)),tatilBos=Boolean((k.gunTuru==='pazar'||k.gunTuru==='resmiTatil')&&!k.giris&&!k.cikis),gelmedi=String(k.durum||'')==='Gelmedi',izinSinif=magicpassIzinSatirSinifi(k.izin),sinif=(gelmedi?'magicpass-gelmedi ':'')+(k.gunTuru==='pazar'?' magicpass-pazar'+(pazarCalisti?' magicpass-pazar-calisti':''):(k.gunTuru==='resmiTatil'?' magicpass-resmi-tatil':(k.gunTuru==='yarimResmiTatil'?' magicpass-yarim-resmi-tatil':'')))+izinSinif,durumSinif=String(k.durum||'')==='Planlandı'?'planlandi':(k.seviye==='hata'?'hata':(k.seviye==='uyari'?'uyari':'tamam')),uyariMetni=k.uyarilar?.length?k.uyarilar.join(' · '):'',uyarilar='',durumGosterimi=pazarCalisti?'Pazar Çalıştı':(['Tamam','Uyarı'].includes(String(k.durum||''))?'✓':String(k.durum||'')),gunHam=new Date(k.tarih+'T12:00:00').toLocaleDateString('tr-TR',{weekday:'long'}),gun=gunHam.charAt(0).toLocaleUpperCase('tr-TR')+gunHam.slice(1),manuel=k.duzeltme?'<span class="magicpass-manuel-isaret" title="Giriş veya çıkış saati manuel değiştirildi">✎ MANUEL</span>':'',brutBaslik=k.brutMesai!==k.mesai?'Brüt fazla mesai: '+magicpassDakikaMetni(k.brutMesai):'',brut='',hamAdet=magicpassGunHamHareketleriBul(personel,k.tarih).length,sil=hamAdet&&!isPersonelUser()?'<button type="button" class="magicpass-gun-islem sil" data-html2canvas-ignore="true" title="Bu günün ham saat hareketlerini sil" onclick="magicpassGunHamHareketleriniSil(\''+k.tarih+'\')">🗑</button>':'';
             const secim=isPersonelUser()?'<span aria-hidden="true">—</span>':'<input class="magicpass-gun-sec" type="checkbox" aria-label="'+escapeDashboardText(tarihFormati(k.tarih))+' tarihini seç" onchange="magicpassGunSecildi(\''+k.tarih+'\',this.checked)">';
             return '<tr class="'+sinif.trim()+'" data-tarih="'+k.tarih+'" oncontextmenu="magicpassGunMenuAc(event,\''+k.tarih+'\')"><td data-label="Seç">'+secim+'</td><td class="magicpass-tarih-hucre" data-label="Tarih / Gün">'+tarihFormati(k.tarih)+'<small class="magicpass-tarih-gun">'+escapeDashboardText(gun)+'</small></td><td data-label="Vardiya">'+escapeDashboardText(magicpassVardiyaSaatEtiketi(k.vardiya))+'</td><td data-label="Giriş">'+magicpassSaatHucresiHtml(k,'giris')+'</td><td data-label="Çıkış">'+magicpassSaatHucresiHtml(k,'cikis')+'</td><td data-label="Normal" title="Vardiya içinde çalışılan süre; tanımlı yemek arası düşülür">'+(tatilBos?'-':magicpassDakikaMetni(k.normal))+'</td><td data-label="Geç">'+(tatilBos?'-':magicpassDakikaMetni(k.gec))+'</td><td data-label="Erken">'+(tatilBos?'-':magicpassDakikaMetni(k.erken))+'</td><td data-label="Fazla Mesai"><strong title="'+escapeDashboardText(brutBaslik)+'">'+(tatilBos?'-':magicpassDakikaMetni(k.mesai))+'</strong>'+brut+'</td><td data-label="Durum / Uyarı" style="position:relative;text-align:center"><span class="magicpass-durum-hizasi'+(['Tamam','Uyarı'].includes(String(k.durum||''))?' magicpass-tik-hizasi':'')+'" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:auto"><span class="magicpass-durum '+durumSinif+'" title="'+escapeDashboardText(uyariMetni||k.durum||'')+'">'+(eksik?'⚠ ':'')+escapeDashboardText(durumGosterimi)+'</span>'+manuel+'</span>'+uyarilar+'</td><td data-label="İşlem"><span class="magicpass-gun-islemler"><button type="button" class="magicpass-gun-islem duzenle" title="Giriş ve çıkış saatlerini düzenle" aria-label="Giriş ve çıkış saatlerini düzenle" onclick="magicpassGunDuzenle(\''+k.tarih+'\')">&#9998;</button>'+sil+'</span></td></tr>';
         }).join('');
@@ -19752,6 +19760,25 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         let normal=Math.max(0,Math.round((cikis-giris)/60000));if(typeof magicpassAralikDakikasi==='function')normal=Math.max(0,normal-magicpassAralikDakikasi(giris,cikis,saatler.yemekBas,saatler.yemekBit));
         return{...temel,vardiya,giris,cikis,normal,gec:0,erken:0,brutMesai:0,mesai:0,durum:kod==='PZ'?'Pazar Çalışması':kod==='RC'?'Resmî Tatil Çalışması':'Çalıştı',seviye:'tamam',uyarilar:[],puantajManuel:true};
     };
+
+    const fdMagicpassArefeOncesi=magicpassGunHesapla;
+    function magicpassArefeSabahDakikasi(tarihKey,vardiya){
+        const saatler=magicpassVardiyaSaatleri(vardiya,tarihKey),tatilBas=magicpassSaatliTarih(tarihKey,'13:00'),bas=new Date(Math.max(saatler.bas.getTime(),magicpassSaatliTarih(tarihKey,'00:00').getTime())),bit=new Date(Math.min(saatler.bit.getTime(),tatilBas.getTime()));
+        if(bit<=bas)return 0;let dakika=Math.round((bit-bas)/60000);if(typeof magicpassAralikDakikasi==='function')dakika=Math.max(0,dakika-magicpassAralikDakikasi(bas,bit,saatler.yemekBas,saatler.yemekBit));return dakika;
+    }
+    function magicpassArefeResmiTatilDakikasi(tarihKey,giris,cikis){
+        if(!(giris instanceof Date)||Number.isNaN(giris.getTime())||!(cikis instanceof Date)||Number.isNaN(cikis.getTime()))return 0;
+        const bas=magicpassSaatliTarih(tarihKey,'13:00'),sonrakiGun=magicpassSaatliTarih(tarihKey,'00:00',true),calismaBas=new Date(Math.max(giris.getTime(),bas.getTime())),calismaBit=new Date(Math.min(cikis.getTime(),sonrakiGun.getTime()));return calismaBit>calismaBas?Math.round((calismaBit-calismaBas)/60000):0;
+    }
+    magicpassGunHesapla=function(personel,tarihKey){
+        const sonuc=fdMagicpassArefeOncesi(personel,tarihKey);if(!magicpassYarimGunResmiTatilMi(tarihKey)||sonuc?.izin||sonuc?.istihdamDisi)return sonuc;
+        const vardiya=sonuc?.vardiya||magicpassGunVardiyasi(personel,tarihKey),normal=magicpassArefeSabahDakikasi(tarihKey,vardiya),resmiTatilMesaiDakika=magicpassArefeResmiTatilDakikasi(tarihKey,sonuc?.giris,sonuc?.cikis),uyarilar=[];
+        if(sonuc?.giris&&!sonuc?.cikis)uyarilar.push('Çıkış Yok');else if(!sonuc?.giris&&sonuc?.cikis)uyarilar.push('Giriş Yok');
+        return{...sonuc,vardiya,gunTuru:'yarimResmiTatil',tatilAdi:magicpassResmiTatilAdi(tarihKey),normal,gec:0,erken:0,brutMesai:0,mesai:resmiTatilMesaiDakika,resmiTatilMesaiDakika,durum:'Öğleden Sonra Resmî Tatil',seviye:uyarilar.length?'uyari':'tamam',uyarilar};
+    };
+    function magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil){
+        const ayDegeri=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0'),dakika=magicpassAylikCizelgeVerisi(personel,ayDegeri).reduce((toplam,kayit)=>toplam+Number(kayit.resmiTatilMesaiDakika||0),0);return typeof mesaiSaatiniYukariYarimaYuvarla==='function'?mesaiSaatiniYukariYarimaYuvarla(dakika/60):Math.round(dakika/30)/2;
+    }
 
     const fdMagicpassGunHesaplaHam = magicpassGunHesapla;
     magicpassGunHesapla = function(personel, tarihKey) {
@@ -22262,13 +22289,13 @@ document.addEventListener('click',function(e){
                 if(tarihNesnesi.getDay()===0)harf='HS';if(sabitResmiTatiller.includes(`${ayMetni}-${gunMetni}`))harf='RT';
                 const izinKodu=izinKoduBul(tarih),tatil=harf==='HS'||harf==='RT';
                 if(izinKodu==='Y'||izinKodu==='Ü'){if(!tatil)harf=izinKodu}else if(['R','Z','M'].includes(izinKodu))harf=izinKodu;else if(tatil){const onceki=new Date(yil,ay,gun-1),oncekiTarih=`${onceki.getFullYear()}-${String(onceki.getMonth()+1).padStart(2,'0')}-${String(onceki.getDate()).padStart(2,'0')}`,oncekiKod=izinKoduBul(oncekiTarih);if(['R','Z','M'].includes(oncekiKod))harf=oncekiKod}
-                const cihazGunTuru=typeof magicpassGunTuruBul==='function'?magicpassGunTuruBul(personel,tarih):'';if(!izinKodu&&cihazGunTuru==='pazar')harf='HS';else if(!izinKodu&&cihazGunTuru==='resmiTatil')harf='RT';
-                if(!izinKodu&&tarihNesnesi<=bugun){const cihazGunu=magicpassGunHesapla(personel,tarih),hareket=Boolean(cihazGunu.giris||cihazGunu.cikis);if(hareket)harf=harf==='HS'?'PZ':(harf==='RT'?'RC':'X');else if(cihazGunu.pazarHakkiYok)harf='M';else if(cihazGunu.durum==='Gelmedi'&&harf!=='HS'&&harf!=='RT')harf='M';else if(harf!=='HS'&&harf!=='RT')harf=''}
+                const cihazGunTuru=typeof magicpassGunTuruBul==='function'?magicpassGunTuruBul(personel,tarih):'';if(!izinKodu&&cihazGunTuru==='pazar')harf='HS';else if(!izinKodu&&cihazGunTuru==='resmiTatil')harf='RT';else if(!izinKodu&&cihazGunTuru==='yarimResmiTatil')harf='X';
+                if(!izinKodu&&tarihNesnesi<=bugun){const cihazGunu=magicpassGunHesapla(personel,tarih),hareket=Boolean(cihazGunu.giris||cihazGunu.cikis);if(cihazGunTuru==='yarimResmiTatil')harf='X';else if(hareket)harf=harf==='HS'?'PZ':(harf==='RT'?'RC':'X');else if(cihazGunu.pazarHakkiYok)harf='M';else if(cihazGunu.durum==='Gelmedi'&&harf!=='HS'&&harf!=='RT')harf='M';else if(harf!=='HS'&&harf!=='RT')harf=''}
                 const elle=manuel.get(tarih);if(elle?.durum)harf=String(elle.durum).toUpperCase();
             }
             if(harf==='X')toplamX++;else if(harf==='HS'||harf==='PZ'){if(tarihNesnesi<=bugun){toplamPazar++;if(harf==='PZ')pazarCalisma++}}else if(harf==='RT'||harf==='RC'){if(tarihNesnesi<=bugun){toplamResmiTatil++;if(harf==='RC')resmiTatilCalisma++}}else if(harf==='Y')toplamY++;else if(harf==='Ü')toplamU++;
         }
-        const ozet=maasOzetKaydiBul(personel.id,ay,yil)||{},gunluk=personelGunlukUcretiniGetir(personel),ucretGunu=toplamX+toplamPazar+toplamResmiTatil+toplamY+toplamU,calismaSaati=ayarSayisi('gunlukCalismaSaati',7.5),fazla=String(ozet.fazlaMesaiSaatiManuel)==='true'?Number(ozet.fazlaMesaiSaati||0):magicpassAylikMesaiSaati(personel,ay,yil),pazar=String(ozet.pazarMesaiSaatiManuel)==='true'?Number(ozet.pazarMesaiSaati||0):pazarCalisma*calismaSaati,resmi=String(ozet.resmiTatilMesaiSaatiManuel)==='true'?Number(ozet.resmiTatilMesaiSaati||0):resmiTatilCalisma*calismaSaati,primDurumu=personelPrimDurumu(personel,ay,yil),prim=String(ozet.primTutariManuel)==='true'?Number(ozet.primTutari||0):(personel.primVar==='Evet'&&primDurumu.hakkiVar?primSabitTutariniGetir():0),avans=personelAylikAvansKesintisi(personel.id,ay,yil),icra=personelIcraKayitlari(personel.id).length?personelAylikIcraKesintisi(personel.id,ay,yil):Number(ozet.icraKesintisi||0),bes=Math.max(0,Number(ozet.besKesintisi||0)),saatlik=gunluk/calismaSaati*ayarSayisi('mesaiKatsayisi',1.5);
+        const ozet=maasOzetKaydiBul(personel.id,ay,yil)||{},gunluk=personelGunlukUcretiniGetir(personel),ucretGunu=toplamX+toplamPazar+toplamResmiTatil+toplamY+toplamU,calismaSaati=ayarSayisi('gunlukCalismaSaati',7.5),fazla=String(ozet.fazlaMesaiSaatiManuel)==='true'?Number(ozet.fazlaMesaiSaati||0):magicpassAylikMesaiSaati(personel,ay,yil),pazar=String(ozet.pazarMesaiSaatiManuel)==='true'?Number(ozet.pazarMesaiSaati||0):pazarCalisma*calismaSaati,resmi=String(ozet.resmiTatilMesaiSaatiManuel)==='true'?Number(ozet.resmiTatilMesaiSaati||0):resmiTatilCalisma*calismaSaati+magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil),primDurumu=personelPrimDurumu(personel,ay,yil),prim=String(ozet.primTutariManuel)==='true'?Number(ozet.primTutari||0):(personel.primVar==='Evet'&&primDurumu.hakkiVar?primSabitTutariniGetir():0),avans=personelAylikAvansKesintisi(personel.id,ay,yil),icra=personelIcraKayitlari(personel.id).length?personelAylikIcraKesintisi(personel.id,ay,yil):Number(ozet.icraKesintisi||0),bes=Math.max(0,Number(ozet.besKesintisi||0)),saatlik=gunluk/calismaSaati*ayarSayisi('mesaiKatsayisi',1.5);
         return Number((ucretGunu*gunluk+saatlik*(fazla+pazar+resmi)+prim-avans-icra-bes).toFixed(2));
     }
     function bordroMaasKarsilastirmaModaliniKur(){
@@ -24004,14 +24031,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v191';
+      const anahtar='fd-pwa-yenileme-v192';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=191',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=192',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
