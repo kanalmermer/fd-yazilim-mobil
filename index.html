@@ -19777,7 +19777,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return{...sonuc,vardiya,gunTuru:'yarimResmiTatil',tatilAdi:magicpassResmiTatilAdi(tarihKey),normal,gec:0,erken:0,brutMesai:0,mesai:resmiTatilMesaiDakika,resmiTatilMesaiDakika,durum:'Öğleden Sonra Resmî Tatil',seviye:uyarilar.length?'uyari':'tamam',uyarilar};
     };
     function magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil){
-        const ayDegeri=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0'),dakika=magicpassAylikCizelgeVerisi(personel,ayDegeri).reduce((toplam,kayit)=>toplam+Number(kayit.resmiTatilMesaiDakika||0),0);return typeof mesaiSaatiniYukariYarimaYuvarla==='function'?mesaiSaatiniYukariYarimaYuvarla(dakika/60):Math.round(dakika/30)/2;
+        const ayDegeri=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0'),dakika=magicpassAylikCizelgeVerisi(personel,ayDegeri).reduce((toplam,kayit)=>toplam+Number(kayit.resmiTatilMesaiDakika||0),0);return Math.round(dakika/60*100)/100;
     }
 
     const fdMagicpassGunHesaplaHam = magicpassGunHesapla;
@@ -24031,14 +24031,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v193';
+      const anahtar='fd-pwa-yenileme-v194';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=193',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=194',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
