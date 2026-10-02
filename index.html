@@ -14850,7 +14850,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     }
 
                     const foundObj = manuelPuantajByGun.get(`${String(p.id)}|${dateKey}`);
-                    if (foundObj && foundObj.durum) harf = String(foundObj.durum).toUpperCase();
+                    if (foundObj && foundObj.durum && !(primGorunumu && izinKodu)) harf = String(foundObj.durum).toUpperCase();
+                    if (primGorunumu && izinKodu && currDate > bugun && (['R', 'Z', 'M'].includes(izinKodu) || !pazarVeyaResmiTatil)) harf = izinKodu;
                     if (primBugunTamamlanmadi && !izinKodu && harf !== 'HS' && harf !== 'RT') harf = '';
                 }
 
@@ -24003,14 +24004,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v189';
+      const anahtar='fd-pwa-yenileme-v190';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=189',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=190',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
