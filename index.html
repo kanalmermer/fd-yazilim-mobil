@@ -880,17 +880,17 @@
     #magicpass-tab-liste .magicpass-ozet span{font-size:.59rem}
     #magicpass-tab-liste .magicpass-ozet strong{margin-top:1px;font-size:.78rem}
     #magicpass-tab-liste .magicpass-rapor-panel>.table-wrapper+small{margin-top:4px!important;font-size:.59rem}
-    #magicpassAylikTablo tr.magicpass-izin-yillik td{background:#eff6ff}
+    #magicpassAylikTablo tr.magicpass-izin-yillik td{background:#dbeafe}
     #magicpassAylikTablo tr.magicpass-izin-yillik td:first-child{box-shadow:inset 4px 0 #3b82f6}
-    #magicpassAylikTablo tr.magicpass-izin-rapor td{background:#f5f3ff}
+    #magicpassAylikTablo tr.magicpass-izin-rapor td{background:#ede9fe}
     #magicpassAylikTablo tr.magicpass-izin-rapor td:first-child{box-shadow:inset 4px 0 #8b5cf6}
-    #magicpassAylikTablo tr.magicpass-izin-ucretsiz td{background:#fff7ed}
+    #magicpassAylikTablo tr.magicpass-izin-ucretsiz td{background:#ffedd5}
     #magicpassAylikTablo tr.magicpass-izin-ucretsiz td:first-child{box-shadow:inset 4px 0 #f59e0b}
-    #magicpassAylikTablo tr.magicpass-izin-ucretli td{background:#fdf2f8}
+    #magicpassAylikTablo tr.magicpass-izin-ucretli td{background:#fce7f3}
     #magicpassAylikTablo tr.magicpass-izin-ucretli td:first-child{box-shadow:inset 4px 0 #ec4899}
-    #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td{background:#fef2f2}
+    #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td{background:#fee2e2}
     #magicpassAylikTablo tr.magicpass-izin-mazeretsiz td:first-child{box-shadow:inset 4px 0 #ef4444}
-    #magicpassAylikTablo tr.magicpass-izin-diger td{background:#f0fdfa}
+    #magicpassAylikTablo tr.magicpass-izin-diger td{background:#ccfbf1}
     #magicpassAylikTablo tr.magicpass-izin-diger td:first-child{box-shadow:inset 4px 0 #14b8a6}
     #magicpassVardiyaMenu { position:fixed; z-index:130000; display:none; min-width:210px; padding:7px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; box-shadow:0 16px 35px rgba(15,23,42,.2); }
     #magicpassVardiyaMenu button { display:block; width:100%; padding:9px 10px; border:0; border-radius:7px; background:transparent; text-align:left; cursor:pointer; font-weight:750; }
@@ -24004,14 +24004,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v190';
+      const anahtar='fd-pwa-yenileme-v191';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=190',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=191',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
