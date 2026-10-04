@@ -590,6 +590,7 @@
         .p-u { background-color: #8b5cf6; color: #ffffff; }
         .p-hs { background-color: #94a3b8; color: #ffffff; font-weight: 700; }
         .p-rt { background-color: #0284c7; color: #ffffff; font-weight: 700; }
+        .p-yt { background-color: #fef3c7; color: #92400e; font-weight: 700; }
         .p-rc { background-color: #0d9488; color: #ffffff; font-weight: 700; }
         .p-pz { background-color: #ea580c; color: #ffffff; font-weight: 700; }
         .p-m { background-color: #b91c1c; color: #ffffff; font-weight: 700; }
@@ -2689,7 +2690,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <span style="background:#b91c1c; color:white; padding:2px 6px; border-radius:4px;"><strong>M:</strong> Gelmedi / Mazeretsiz</span>
                     <span style="background:#94a3b8; color:white; padding:2px 6px; border-radius:4px;"><strong>HS:</strong> Hafta Sonu</span>
                     <span style="background:#0284c7; color:white; padding:2px 6px; border-radius:4px;"><strong>RT:</strong> Resmi Tatil</span>
-                    <span style="background:#0d9488; color:white; padding:2px 6px; border-radius:4px;"><strong>RC:</strong> RT. Çalışma</span>
+                    <span style="background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:4px;"><strong>YT:</strong> Yarım Gün Resmî Tatil</span>
+                    <span style="background:#0d9488; color:white; padding:2px 6px; border-radius:4px;"><strong>RC:</strong> Resmî Tatilde Çalışma</span>
                     <span style="background:#ea580c; color:white; padding:2px 6px; border-radius:4px;"><strong>PZ:</strong> Pazar Çalışma</span>
                 </div>
 
@@ -14342,9 +14344,20 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (val === 'Ü') return 'p-cell p-u';
         if (val === 'HS') return 'p-cell p-hs';
         if (val === 'RT') return 'p-cell p-rt';
+        if (val === 'YT') return 'p-cell p-yt';
         if (val === 'RC') return 'p-cell p-rc';
         if (val === 'PZ') return 'p-cell p-pz';
         return 'p-cell p-x';
+    }
+
+    function primGunTatilGosterimi(personel, tarihKey, hesapKodu) {
+        if (!['X', ''].includes(hesapKodu) || typeof magicpassYarimGunResmiTatilMi !== 'function' || !magicpassYarimGunResmiTatilMi(tarihKey)) return { kod:hesapKodu, aciklama:'' };
+        const gecmisVeyaBugun = String(tarihKey) <= magicpassTarihAnahtari(new Date());
+        const gun = gecmisVeyaBugun ? magicpassGunHesapla(personel, tarihKey) : null;
+        const tatildeCalisti = !gun?.izin && Number(gun?.resmiTatilMesaiDakika || 0) > 0;
+        return tatildeCalisti
+            ? { kod:'RC', aciklama:'Resmî Tatilde Çalışma — Öğleden sonraki çalışma süresi giriş–çıkış saatlerinden hesaplanır.' }
+            : { kod:'YT', aciklama:'Yarım Gün Resmî Tatil — Öğleden Sonra Resmî Tatil. Ücret ve prim hakkı korunur.' };
     }
 
     function primGunuTamamlandiMi(personel, tarihKey, simdi = new Date()) {
@@ -14871,8 +14884,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 else if (harf === 'M') toplamM++;
 
                 if (primGorunumu) {
-                    const cellClass = getPuantajCellClass(harf);
-                    rowHtml += `<td class="p-gun-hucresi"><input type="text" maxlength="2" class="${cellClass}" value="${harf}" disabled></td>`;
+                    const gosterim = primGunTatilGosterimi(p, dateKey, harf);
+                    const cellClass = getPuantajCellClass(gosterim.kod);
+                    rowHtml += `<td class="p-gun-hucresi" title="${escapeHtml(gosterim.aciklama)}"><input type="text" maxlength="2" class="${cellClass}" value="${gosterim.kod}" title="${escapeHtml(gosterim.aciklama)}" disabled></td>`;
                 } else if (!puantajGunlerGizli) {
                     const cellClass = getPuantajCellClass(harf);
                     rowHtml += `<td class="p-gun-hucresi"><input type="text" maxlength="2" class="${cellClass}" value="${harf}" ${calismaDisiTarih || isPersonelUser() ? 'disabled' : `oninput="puantajHucreDegisti('${p.id}', '${dateKey}', this)" oncontextmenu="openContextMenu(event, this, '${p.id}', '${dateKey}')"`}></td>`;
@@ -21122,12 +21136,12 @@ tapuCksArayuzunuKur();
         const hakEl=document.getElementById('genelToplamHakDeger'),kulEl=document.getElementById('genelToplamKullanilanDeger'),kalEl=document.getElementById('genelToplamKalanDeger');if(hakEl)hakEl.textContent=hak+' Gün';if(kulEl)kulEl.textContent=kullanilan+' Gün';if(kalEl)kalEl.textContent=kalan+' Gün';
     };
     exportBakiyeToPDF=function(){return window.fdTabloPdfOnizle(document.getElementById('bakiyeTablo'),'KALAN YILLIK İZİN BAKİYELERİ · '+new Date().toLocaleDateString('tr-TR'),'Kalan_Yillik_Izinler.pdf',{yon:'landscape'});};
-    const FD_PUANTAJ_RENK_VARSAYILAN={X:['#ffffff','#0f172a'],Y:['#10b981','#ffffff'],R:['#ef4444','#ffffff'],'Ü':['#8b5cf6','#ffffff'],Z:['#f59e0b','#ffffff'],M:['#b91c1c','#ffffff'],HS:['#94a3b8','#ffffff'],RT:['#0284c7','#ffffff'],RC:['#0d9488','#ffffff'],PZ:['#ea580c','#ffffff'],'-':['#f8fafc','#64748b']};
-    const FD_PUANTAJ_RENK_SINIF={X:'p-x',Y:'p-y',R:'p-r','Ü':'p-u',Z:'p-z',M:'p-m',HS:'p-hs',RT:'p-rt',RC:'p-rc',PZ:'p-pz','-':'p-eksi'};
+    const FD_PUANTAJ_RENK_VARSAYILAN={X:['#ffffff','#0f172a'],Y:['#10b981','#ffffff'],R:['#ef4444','#ffffff'],'Ü':['#8b5cf6','#ffffff'],Z:['#f59e0b','#ffffff'],M:['#b91c1c','#ffffff'],HS:['#94a3b8','#ffffff'],RT:['#0284c7','#ffffff'],YT:['#fef3c7','#92400e'],RC:['#0d9488','#ffffff'],PZ:['#ea580c','#ffffff'],'-':['#f8fafc','#64748b']};
+    const FD_PUANTAJ_RENK_SINIF={X:'p-x',Y:'p-y',R:'p-r','Ü':'p-u',Z:'p-z',M:'p-m',HS:'p-hs',RT:'p-rt',YT:'p-yt',RC:'p-rc',PZ:'p-pz','-':'p-eksi'};
     function fdRenkHex(v,d){return /^#[0-9a-f]{6}$/i.test(String(v||''))?String(v):d;}
     function fdPuantajRenkleri(){const gelen=uygulamaAyarlari?.puantajRenkleri||{};return Object.fromEntries(Object.entries(FD_PUANTAJ_RENK_VARSAYILAN).map(([k,d])=>[k,[fdRenkHex(gelen[k]?.[0],d[0]),fdRenkHex(gelen[k]?.[1],d[1])]]));}
     function fdPuantajRenkleriniUygula(){const renkler=fdPuantajRenkleri();let stil=document.getElementById('fdPuantajRenkStili');if(!stil){stil=document.createElement('style');stil.id='fdPuantajRenkStili';document.head.appendChild(stil);}stil.textContent=Object.entries(renkler).map(([k,r])=>'.'+FD_PUANTAJ_RENK_SINIF[k]+'{background:'+r[0]+'!important;color:'+r[1]+'!important;border-color:'+r[0]+'!important}').join('');document.querySelectorAll('#puantajApp span').forEach(s=>{const kod=s.querySelector('strong')?.textContent?.replace(':','').trim();if(!renkler[kod])return;s.dataset.puantajKod=kod;s.style.background=renkler[kod][0];s.style.color=renkler[kod][1];});}
-    function fdPuantajRenkAyarlariniKur(){const panel=document.getElementById('ayarlarPanelPersonel')||document.getElementById('uygulamaAyarlariForm');if(!panel||document.getElementById('fdPuantajRenkAyari'))return;const detay=document.createElement('details');detay.id='fdPuantajRenkAyari';detay.className='profile-section';const adlar={X:'Çalıştı',Y:'Yıllık İzin',R:'Rapor','Ü':'Ücretli İzin',Z:'Ücretsiz İzin',M:'Gelmedi / Mazeretsiz',HS:'Hafta Sonu',RT:'Resmi Tatil',RC:'Resmi Tatil Çalışma',PZ:'Pazar Çalışma','-':'Boş'};const renkler=fdPuantajRenkleri();detay.innerHTML='<summary>Puantaj ve Prim Hücre Renkleri</summary><div><p style="margin:0 0 10px;color:#64748b">Hücre ve yazı renkleri puantaj ile prim tablolarına birlikte uygulanır.</p><div style="display:grid;gap:7px">'+Object.keys(adlar).map(k=>'<div style="display:grid;grid-template-columns:minmax(150px,1fr) 92px 92px;gap:8px;align-items:center"><strong>'+k+' · '+adlar[k]+'</strong><label style="font-size:.72rem">Hücre <input type="color" data-pr-kod="'+k+'" data-pr-tip="0" value="'+renkler[k][0]+'"></label><label style="font-size:.72rem">Yazı <input type="color" data-pr-kod="'+k+'" data-pr-tip="1" value="'+renkler[k][1]+'"></label></div>').join('')+'</div><div style="display:flex;justify-content:flex-end;margin-top:12px"><button type="button" class="btn-submit" style="width:auto;margin:0" onclick="fdPuantajRenkleriniKaydet()">Renkleri Kaydet</button></div></div>';panel.prepend(detay);}
+    function fdPuantajRenkAyarlariniKur(){const panel=document.getElementById('ayarlarPanelPersonel')||document.getElementById('uygulamaAyarlariForm');if(!panel||document.getElementById('fdPuantajRenkAyari'))return;const detay=document.createElement('details');detay.id='fdPuantajRenkAyari';detay.className='profile-section';const adlar={X:'Çalıştı',Y:'Yıllık İzin',R:'Rapor','Ü':'Ücretli İzin',Z:'Ücretsiz İzin',M:'Gelmedi / Mazeretsiz',HS:'Hafta Sonu',RT:'Resmi Tatil',YT:'Yarım Gün Resmî Tatil',RC:'Resmi Tatil Çalışma',PZ:'Pazar Çalışma','-':'Boş'};const renkler=fdPuantajRenkleri();detay.innerHTML='<summary>Puantaj ve Prim Hücre Renkleri</summary><div><p style="margin:0 0 10px;color:#64748b">Hücre ve yazı renkleri puantaj ile prim tablolarına birlikte uygulanır.</p><div style="display:grid;gap:7px">'+Object.keys(adlar).map(k=>'<div style="display:grid;grid-template-columns:minmax(150px,1fr) 92px 92px;gap:8px;align-items:center"><strong>'+k+' · '+adlar[k]+'</strong><label style="font-size:.72rem">Hücre <input type="color" data-pr-kod="'+k+'" data-pr-tip="0" value="'+renkler[k][0]+'"></label><label style="font-size:.72rem">Yazı <input type="color" data-pr-kod="'+k+'" data-pr-tip="1" value="'+renkler[k][1]+'"></label></div>').join('')+'</div><div style="display:flex;justify-content:flex-end;margin-top:12px"><button type="button" class="btn-submit" style="width:auto;margin:0" onclick="fdPuantajRenkleriniKaydet()">Renkleri Kaydet</button></div></div>';panel.prepend(detay);}
     async function fdPuantajRenkleriniKaydet(){const renkler=fdPuantajRenkleri();document.querySelectorAll('#fdPuantajRenkAyari input[type=color]').forEach(x=>renkler[x.dataset.prKod][Number(x.dataset.prTip)]=fdRenkHex(x.value,renkler[x.dataset.prKod][Number(x.dataset.prTip)]));try{await sirketUygulamaAyarParcasiKaydet({puantajRenkleri:renkler});if(SUPABASE_MODE&&activeUser?.sirketId){const {error}=await supabaseClient.from('portal_settings').upsert({company_id:activeUser.sirketId,setting_key:'puantaj_renkleri',value:renkler},{onConflict:'company_id,setting_key'});if(error)throw error;}uygulamaAyarlari.puantajRenkleri=renkler;fdPuantajRenkleriniUygula();showToast('Puantaj ve prim renkleri kalıcı olarak kaydedildi.');}catch(e){showToast('Renkler kaydedilemedi: '+(e.message||e),'error');}}
     function icraListePdfAl(){return aracTabloDisariAktar('icraListeBody','pdf',document.getElementById('icraListeBaslik')?.textContent||'İcra Listesi','ICRA_LISTESI');}
     const fdRenkAyarOpenOnceki=openAyarlarApp;openAyarlarApp=function(){const r=fdRenkAyarOpenOnceki.apply(this,arguments);setTimeout(()=>{fdPuantajRenkAyarlariniKur();fdPuantajRenkleriniUygula();},0);return r;};
@@ -24048,14 +24062,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v195';
+      const anahtar='fd-pwa-yenileme-v196';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=195',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=196',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
