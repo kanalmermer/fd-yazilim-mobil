@@ -8171,7 +8171,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const stil=(el,degerler)=>Object.entries(degerler).forEach(([anahtar,deger])=>el.style.setProperty(anahtar,deger,'important'));
         sahne.setAttribute('data-fd-vardiya-goruntu','');
         sahne.style.cssText='position:fixed;left:0;top:0;width:900px;margin:0;padding:0;background:#fff;pointer-events:none;z-index:1';
-        kopya.querySelectorAll('.vardiya-aciklamalar,button,[data-html2canvas-ignore],.vardiya-satir-kontrolleri').forEach(el=>el.remove());
+        kopya.querySelectorAll('button,[data-html2canvas-ignore],.vardiya-satir-kontrolleri').forEach(el=>el.remove());
+        const notlar=kopya.querySelector('#vardiyaNotlar'),aciklama=String(alan.querySelector('#vardiyaNotlar')?.innerText||'').trim();
+        if (notlar) {
+            if (!aciklama) notlar.remove();
+            else {
+                notlar.textContent=aciklama;notlar.removeAttribute('data-placeholder');
+                stil(notlar,{height:'auto','min-height':'0','max-height':'none',padding:'6px 8px',border:'1px solid #cbd5e1','border-radius':'7px',background:'#fff',color:'#0f172a','font-size':'11.2px','line-height':'1.45','white-space':'pre-wrap','overflow-wrap':'anywhere',overflow:'visible'});
+            }
+        }
         [kopya,...kopya.querySelectorAll('[id]')].forEach(el=>el.removeAttribute('id'));
         kopya.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
         stil(kopya,{width:'900px','min-width':'900px','max-width':'none',height:'auto','min-height':'0','max-height':'none',overflow:'visible',margin:'0',padding:'8px',background:'#fff','box-sizing':'border-box','box-shadow':'none'});
@@ -24061,14 +24069,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v197';
+      const anahtar='fd-pwa-yenileme-v198';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=197',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=198',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
