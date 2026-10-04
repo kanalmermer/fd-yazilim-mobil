@@ -8165,33 +8165,32 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const aoa=[['PERSONEL VARDİYA LİSTESİ'],[`${tarihFormati(kayit.haftaBaslangic)} - ${tarihFormati(vardiyaHaftaBitisi(kayit.haftaBaslangic))}`],[kayit.sube],[],['#','Vardiya','Personel','Görev Yeri'],...vardiyaRaporSatirlari(),[],['Notlar'],...String(kayit.notlar||'').split('\\n').map(x=>[x])];
         const ws=XLSX.utils.aoa_to_sheet(aoa),wb=XLSX.utils.book_new();ws['!cols']=[{wch:5},{wch:18},{wch:28},{wch:28}];XLSX.utils.book_append_sheet(wb,ws,'Vardiya');XLSX.writeFile(wb,`Vardiya_${kayit.haftaBaslangic}_${kayit.sube}.xlsx`);
     }
+    async function vardiyaGoruntuCanvasHazirla(alan) {
+        if (!alan) throw new Error('Vardiya tablosu bulunamadı.');
+        const sahne=document.createElement('div'),kopya=alan.cloneNode(true);
+        const stil=(el,degerler)=>Object.entries(degerler).forEach(([anahtar,deger])=>el.style.setProperty(anahtar,deger,'important'));
+        sahne.setAttribute('data-fd-vardiya-goruntu','');
+        sahne.style.cssText='position:fixed;left:0;top:0;width:900px;margin:0;padding:0;background:#fff;pointer-events:none;z-index:1';
+        kopya.querySelectorAll('.vardiya-aciklamalar,button,[data-html2canvas-ignore],.vardiya-satir-kontrolleri').forEach(el=>el.remove());
+        [kopya,...kopya.querySelectorAll('[id]')].forEach(el=>el.removeAttribute('id'));
+        kopya.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+        stil(kopya,{width:'900px','min-width':'900px','max-width':'none',height:'auto','min-height':'0','max-height':'none',overflow:'visible',margin:'0',padding:'8px',background:'#fff','box-sizing':'border-box','box-shadow':'none'});
+        kopya.querySelectorAll('.vardiya-board').forEach(el=>stil(el,{width:'100%','min-width':'0',height:'auto','min-height':'0','max-height':'none',overflow:'visible','box-shadow':'none'}));
+        kopya.querySelectorAll('.vardiya-dinamik-grid,.vardiya-pair').forEach(el=>stil(el,{display:'grid','grid-template-columns':'repeat(2,minmax(0,1fr))',height:'auto','min-height':'0','max-height':'none'}));
+        kopya.querySelectorAll('.vardiya-satir').forEach(el=>stil(el,{display:'grid','grid-template-columns':'27px minmax(125px,1.12fr) minmax(110px,.88fr)'}));
+        sahne.appendChild(kopya);document.body.appendChild(sahne);
+        try {
+            await document.fonts?.ready;
+            await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+            const genislik=Math.ceil(kopya.getBoundingClientRect().width),yukseklik=Math.ceil(kopya.getBoundingClientRect().height);
+            return await html2canvas(kopya,{scale:2,backgroundColor:'#fff',useCORS:true,width:genislik,height:yukseklik,windowWidth:900,windowHeight:Math.max(yukseklik,900),scrollX:0,scrollY:0});
+        } finally { sahne.remove(); }
+    }
     async function vardiyaGoruntusuAl() {
         try {
             const kayit=vardiyaAktifKayit(false);if(!kayit)return;
             const alan=document.getElementById('vardiyaCiktiAlani');
-            const eskiStil={width:alan.style.width,maxWidth:alan.style.maxWidth,overflow:alan.style.overflow};
-            let canvas;
-            try {
-                alan.style.width='900px';
-                alan.style.maxWidth='none';
-                alan.style.overflow='visible';
-                await new Promise(requestAnimationFrame);
-                canvas=await html2canvas(alan,{
-                    scale:2,
-                    backgroundColor:'#fff',
-                    useCORS:true,
-                    width:alan.scrollWidth,
-                    height:alan.scrollHeight,
-                    windowWidth:Math.max(alan.scrollWidth,900),
-                    windowHeight:alan.scrollHeight,
-                    scrollX:0,
-                    scrollY:0
-                });
-            } finally {
-                alan.style.width=eskiStil.width;
-                alan.style.maxWidth=eskiStil.maxWidth;
-                alan.style.overflow=eskiStil.overflow;
-            }
+            const canvas=await vardiyaGoruntuCanvasHazirla(alan);
             const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
             if(!blob)throw new Error('Görüntü oluşturulamadı.');
             if(navigator.clipboard?.write&&window.ClipboardItem) {
@@ -24062,14 +24061,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v196';
+      const anahtar='fd-pwa-yenileme-v197';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=196',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=197',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
