@@ -14700,7 +14700,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         fdMagicpassHaftalikVardiyaCache = onceki.haftalik || null;
     }
 
-    function renderPuantajMatrisi() {
+    function renderPuantajMatrisi(secenekler = {}) {
         const oncekiOnbellek = fdPuantajHesapOnbelleginiBaslat();
         try {
         const ay = parseInt(document.getElementById('puanAySec').value);
@@ -14770,7 +14770,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         });
 
         const mobilPersonelSecimi = document.getElementById('puanMobilPersonel');
-        const mobilTekPersonel = !isPersonelUser() && window.matchMedia('(max-width:760px)').matches;
+        const mobilTekPersonel = !secenekler.tumPersoneller && !isPersonelUser() && window.matchMedia('(max-width:760px)').matches;
         if (mobilPersonelSecimi && mobilTekPersonel) {
             const oncekiSecim = String(mobilPersonelSecimi.value || '');
             mobilPersonelSecimi.innerHTML = aktifPersoneller.map(p => `<option value="${escapeHtml(String(p.id))}">${escapeHtml(p.ad || 'Personel')} · ${escapeHtml(p.sube || 'Merkez')}</option>`).join('');
@@ -19550,6 +19550,22 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const enFazlaGenislik=2200,enFazlaYukseklik=7000,oran=Math.min(1,enFazlaGenislik/canvas.width,enFazlaYukseklik/canvas.height),hedef=document.createElement('canvas');hedef.width=Math.max(1,Math.round(canvas.width*oran));hedef.height=Math.max(1,Math.round(canvas.height*oran));const ctx=hedef.getContext('2d',{alpha:false});if(!ctx)throw new Error('PNG çizim alanı açılamadı.');ctx.fillStyle='#fff';ctx.fillRect(0,0,hedef.width,hedef.height);ctx.drawImage(canvas,0,0,hedef.width,hedef.height);
         return fetch(hedef.toDataURL('image/png')).then(yanit=>{if(!yanit.ok)throw new Error('PNG verisi okunamadı.');return yanit.blob();}).then(blob=>{if(!blob||blob.type!=='image/png'||!blob.size)throw new Error('Geçerli PNG dosyası oluşturulamadı.');return blob;});
     }
+    function magicpassGunlukPrimRaporTablosunuDuzenle(tablo){
+        const stil=(el,degerler)=>Object.entries(degerler).forEach(([anahtar,deger])=>el.style.setProperty(anahtar,deger,'important'));
+        tablo.setAttribute('data-fd-prim-rapor','');
+        stil(tablo,{display:'table',width:'1425px','min-width':'1425px','max-width':'none','table-layout':'fixed','border-collapse':'separate','border-spacing':'0',background:'#fff'});
+        tablo.querySelectorAll('thead,tbody,tfoot').forEach(el=>stil(el,{display:el.tagName==='THEAD'?'table-header-group':el.tagName==='TFOOT'?'table-footer-group':'table-row-group',width:'auto',gap:'0',position:'static',transform:'none'}));
+        [...tablo.rows].forEach(satir=>{
+            stil(satir,{display:'table-row',width:'auto',height:'30px','min-height':'0',overflow:'visible',border:'0','border-radius':'0','box-shadow':'none',position:'static',transform:'none'});
+            [...satir.cells].forEach((hucre,index)=>{
+                const baslik=hucre.tagName==='TH',genislik=index===0?'38px':index===1?'210px':hucre.classList.contains('p-gun-baslik')||hucre.classList.contains('p-gun-hucresi')?'25px':index===satir.cells.length-1?'106px':index===satir.cells.length-3?'92px':'74px';
+                stil(hucre,{display:'table-cell',position:'static',left:'auto',top:'auto',inset:'auto',transform:'none','z-index':'auto',width:genislik,'min-width':genislik,'max-width':genislik,height:'auto','min-height':'0',padding:'2px 3px','font-size':'12px','line-height':'1.2','white-space':index===1?'normal':'nowrap','text-align':index===1?'left':'center','vertical-align':'middle','border-radius':'0','box-shadow':'none',overflow:'hidden'});
+                if(baslik)stil(hucre,{background:'#475569',color:'#fff'});
+                else if(index===1)stil(hucre,{background:'#f8fbff',color:'#0f172a'});
+                hucre.querySelectorAll('input').forEach(input=>stil(input,{width:'calc(100% - 4px)','min-width':'0','max-width':'none',height:'24px','min-height':'0',margin:'0',padding:'0','font-size':'12px','text-align':'center',transform:'none'}));
+            });
+        });
+    }
     async function magicpassGunlukPrimCanvasHazirla(tarihKey){
         const tablo=document.getElementById('puantajTablosu'),aySec=document.getElementById('puanAySec'),yilSec=document.getElementById('puanYilSec'),primFiltre=document.getElementById('puanPrimFiltre'),personelAra=document.getElementById('puanPersonelAra');
         if(!tablo||!aySec||!yilSec||typeof renderPuantajMatrisi!=='function'||typeof puantajCanvasOlustur!=='function')throw new Error('Prim tablosu hazırlanamadı.');
@@ -19559,12 +19575,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             if(![...yilSec.options].some(option=>String(option.value)===String(tarih.getFullYear()))){eklenenYil=document.createElement('option');eklenenYil.value=String(tarih.getFullYear());eklenenYil.textContent=String(tarih.getFullYear());yilSec.appendChild(eklenenYil);}
             yuklenenVeriler.delete('puantaj');
             puantajGorunumu='prim';aySec.value=String(tarih.getMonth());yilSec.value=String(tarih.getFullYear());if(primFiltre)primFiltre.value='tum';if(personelAra)personelAra.value='';
-            renderPuantajMatrisi();
+            renderPuantajMatrisi({tumPersoneller:true});
             const kopya=tablo.cloneNode(true),ayAdi=tarih.toLocaleDateString('tr-TR',{month:'long'}).toLocaleUpperCase('tr-TR');
             puantajGorunumu=durum.gorunum;aySec.value=durum.ay;yilSec.value=durum.yil;if(primFiltre)primFiltre.value=durum.primFiltre;if(personelAra)personelAra.value=durum.personelAra;renderPuantajMatrisi();
             tablo.id='puantajTablosuGizliKaynak';kopya.id='puantajTablosu';
-            kopya.style.setProperty('width','1425px','important');kopya.style.setProperty('min-width','1425px','important');kopya.style.setProperty('max-width','1425px','important');kopya.style.setProperty('table-layout','fixed','important');
-            sahne=document.createElement('div');sahne.style.cssText='position:fixed;left:0;top:0;z-index:1;width:1425px;padding:0;background:#fff;pointer-events:none;';sahne.appendChild(kopya);document.body.appendChild(sahne);
+            magicpassGunlukPrimRaporTablosunuDuzenle(kopya);
+            sahne=document.createElement('div');sahne.style.cssText='position:fixed;left:0;top:0;z-index:1;width:1425px;padding:0;background:#fff;pointer-events:none;';
+            const raporStili=document.createElement('style');raporStili.textContent='#puantajTablosu[data-fd-prim-rapor] td::before{display:none!important;content:none!important}';sahne.appendChild(raporStili);sahne.appendChild(kopya);document.body.appendChild(sahne);
             return await puantajCanvasOlustur(kopya,1.5,`AYLIK PRİM HAKEDİŞ ÇİZELGESİ — ${ayAdi} ${tarih.getFullYear()}`);
         }finally{
             sahne?.remove();tablo.id='puantajTablosu';
@@ -24031,14 +24048,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v194';
+      const anahtar='fd-pwa-yenileme-v195';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=194',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=195',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
