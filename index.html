@@ -871,12 +871,14 @@
     #magicpassAylikTablo th:nth-child(9),#magicpassAylikTablo td:nth-child(9){width:68px}
     #magicpassAylikTablo th:nth-child(10),#magicpassAylikTablo td:nth-child(10){width:86px}
     #magicpassAylikTablo th:nth-child(11),#magicpassAylikTablo td:nth-child(11){width:145px;overflow:hidden;text-overflow:ellipsis}
-    #magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:54px}
+    #magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:84px}
     #magicpassAylikTablo .magicpass-gun-sec{width:13px;height:13px;margin:0}
     #magicpassAylikTablo .magicpass-durum{min-width:20px;justify-content:center;padding:2px 5px;font-size:.71rem;line-height:1}
     #magicpassAylikTablo .magicpass-uyari-detay{display:inline-block;max-width:72px;margin-left:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;color:#64748b;font-size:.66rem}
     #magicpassAylikTablo .magicpass-eksik-saat{padding:0;font-size:.64rem;line-height:1}
     #magicpassAylikTablo .magicpass-gun-islemler{grid-template-columns:22px 22px;gap:3px;width:47px}
+    #magicpassAylikTablo .magicpass-gun-islemler.has-manuel{grid-template-columns:repeat(3,22px);width:72px}
+    #magicpassAylikTablo .magicpass-gun-islemler .magicpass-manuel-kalem{position:static;margin:0;width:22px;height:22px;transform:none}
     #magicpassAylikTablo .magicpass-gun-islem{width:22px!important;min-width:22px!important;height:22px!important;border-radius:6px!important;font-size:.68rem!important;box-shadow:none}
     #magicpassAylikTablo .magicpass-gun-islem.duzenle,#magicpassAylikTablo .magicpass-gun-islem.duzenle:hover{background:transparent!important;color:#f59e0b!important;box-shadow:none!important;filter:none!important}
     #magicpassAylikTablo .magicpass-gun-islem.sil,#magicpassAylikTablo .magicpass-gun-islem.sil:hover{background:transparent!important;color:#ef4444!important;box-shadow:none!important;filter:none!important}
@@ -1266,7 +1268,7 @@
 #magicpassAylikTablo th:nth-child(9),#magicpassAylikTablo td:nth-child(9){width:68px}
 #magicpassAylikTablo th:nth-child(10),#magicpassAylikTablo td:nth-child(10){width:86px}
 #magicpassAylikTablo th:nth-child(11),#magicpassAylikTablo td:nth-child(11){width:145px;overflow:hidden;text-overflow:ellipsis}
-#magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:54px}
+#magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:84px}
 .magicpass-gunluk-tarih-nav{display:grid;grid-template-columns:34px minmax(145px,1fr) 34px;gap:5px;align-items:center}
 .magicpass-gunluk-tarih-nav button{height:37px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f766e;font-size:1.35rem;font-weight:900;line-height:1;cursor:pointer;box-shadow:0 2px 7px rgba(15,23,42,.07)}
 .magicpass-gunluk-tarih-nav button:hover{background:#ecfeff;border-color:#14b8a6}
@@ -19425,9 +19427,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             };
             isaret.onclick = ac;
             isaret.onkeydown = event => {
-                if (event.key === 'Enter' || event.key === ' ') ac(event);
+                if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); ac(event); }
             };
-            satir.cells[9]?.appendChild(isaret);
+            const islemler = satir.querySelector('td[data-label="İşlem"] .magicpass-gun-islemler');
+            if (islemler) {
+                islemler.classList.add('has-manuel');
+                islemler.prepend(isaret);
+            }
         });
 
         const liste = magicpassAylikCizelgeVerisi(personel);
@@ -24144,14 +24150,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v200';
+      const anahtar='fd-pwa-yenileme-v201';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=200',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=201',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
