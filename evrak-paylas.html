@@ -12,8 +12,8 @@
 </head>
 <body>
 <main>
-  <header><h1>WhatsApp ile Dosya Paylaş</h1><p id="recipient"></p><p class="muted">Evraklar gerçek dosya olarak hazırlanır. Dosyalar bu sayfada yalnızca bellekte tutulur; sunucuya veya tarayıcı deposuna kaydedilmez.</p></header>
-  <section class="card"><div id="status" class="status" role="status" aria-live="polite">Dosyaların uygulamadan aktarılması bekleniyor…</div><div id="files" class="files"></div><div class="actions"><button id="shareAll" class="share" disabled>Tüm Dosyaları Paylaş</button><button id="openChat" disabled>WhatsApp Sohbetini Aç</button></div><p class="muted">Paylaşım penceresinde WhatsApp’ı, sonra alıcıyı seçin. Cihazda WhatsApp dosya paylaşımı yoksa her dosyanın “İndir” düğmesini kullanın; WhatsApp Web’de sohbeti açıp belge ekleme bölümünden dosyaları seçin. Paylaşım penceresi veya sohbet açılması, mesajın gönderildiği anlamına gelmez.</p></section>
+  <header><h1>WhatsApp ile Dosya Paylaş</h1><p id="recipient"></p></header>
+  <section class="card"><div id="status" class="status" role="status" aria-live="polite">Dosyalar hazırlanıyor…</div><div id="files" class="files"></div><div class="actions"><button id="shareAll" class="share" disabled>Tüm Dosyaları Paylaş</button><button id="openChat" disabled>WhatsApp Sohbetini Aç</button></div></section>
 </main>
 <script>
 (() => {
@@ -25,17 +25,17 @@
   const canShare=list=>{try{const policy=document.permissionsPolicy||document.featurePolicy;return !!navigator.share&&!!navigator.canShare?.({files:list})&&(!policy?.allowsFeature||policy.allowsFeature('web-share'))}catch(e){return false}};
   const update=()=>{document.getElementById('shareAll').disabled=busy||!files.length||!canShare(files);document.getElementById('openChat').disabled=busy||!recipient;document.querySelectorAll('[data-share]').forEach(b=>b.disabled=busy||!canShare([files[Number(b.dataset.share)]]))};
   async function share(list){
-    if(busy||!list.length)return;if(!canShare(list)){message('Cihaz bu dosyaları doğrudan paylaşamıyor. Dosyaları indirip WhatsApp’a ekleyin.');return}
+    if(busy||!list.length)return;if(!canShare(list)){message('Paylaşım desteklenmiyor. Dosyaları indirip WhatsApp’a ekleyin.');return}
     busy=true;update();
-    try{await navigator.share({files:list});message('Dosyalar cihazın paylaşım ekranına aktarıldı. WhatsApp içinde gönderimi tamamlayın. Mesajın gönderildiği veya ulaştığı doğrulanmadı.')}
-    catch(e){message(e.name==='AbortError'?'Paylaşım kapatıldı. Dosyalar hazır; tekrar deneyebilirsiniz.':'Dosya paylaşımı açılamadı: '+(e.message||e)+'. İndir düğmelerini kullanıp dosyaları WhatsApp’a ekleyebilirsiniz.')}
+    try{await navigator.share({files:list});message('Gönderimi WhatsApp’ta tamamlayın.')}
+    catch(e){message(e.name==='AbortError'?'Paylaşım kapatıldı.':'Paylaşım açılamadı. Dosyaları indirip WhatsApp’a ekleyin.')}
     finally{busy=false;update()}
   }
   document.getElementById('shareAll').onclick=()=>share(files);
   document.getElementById('openChat').onclick=()=>{if(recipient)window.open('https://wa.me/'+recipient.phone,'_blank','noopener,noreferrer')};
   if(!window.opener||!/^[0-9a-f-]{36}$/i.test(nonce)){message('Bu pencereyi Evrak Takip bölümündeki “Dosyaları Paylaş” düğmesinden açın.');return}
   const ready=()=>window.opener?.postMessage({type:'fd-evrak-ready',nonce},'*');
-  const interval=setInterval(ready,250),timeout=setTimeout(()=>{clearInterval(interval);if(!received)message('Dosyalar alınamadı. Uygulamaya dönüp paylaşım penceresini yeniden açın. Hiçbir mesaj gönderilmedi.');},20000);
+  const interval=setInterval(ready,250),timeout=setTimeout(()=>{clearInterval(interval);if(!received)message('Dosyalar alınamadı. Uygulamadan tekrar deneyin.');},20000);
   window.addEventListener('message',event=>{
     if(received||event.source!==window.opener||!allowedOrigin(event.origin)||event.data?.nonce!==nonce||event.data?.type!=='fd-evrak-files')return;
     const incoming=event.data.files,person=event.data.recipient;
@@ -44,7 +44,7 @@
     document.getElementById('recipient').textContent='Alıcı: '+recipient.name+' · +'+recipient.phone;
     const container=document.getElementById('files');
     files.forEach((f,i)=>{const row=document.createElement('div');row.className='file';const info=document.createElement('div');info.className='name';const name=document.createElement('strong');name.textContent=f.name;const size=document.createElement('small');size.textContent=(f.size/1024/1024).toLocaleString('tr-TR',{maximumFractionDigits:2})+' MB';info.append(name,size);const button=document.createElement('button');button.className='share';button.dataset.share=String(i);button.textContent='Paylaş';button.onclick=()=>share([f]);const link=document.createElement('a');link.className='button';link.textContent='İndir';link.download=f.name;link.href=URL.createObjectURL(f);urls.push(link.href);row.append(info,button,link);container.appendChild(row)});
-    message(files.length+' gerçek dosya hazır. '+(canShare(files)?'“Tüm Dosyaları Paylaş”a basın; WhatsApp’ı ve '+recipient.name+' kişisini seçin.':'Bu cihazda toplu dosya paylaşımı desteklenmiyor. Satırdaki Paylaş veya İndir düğmeleriyle evrakları ayrı ayrı iletebilirsiniz.'));
+    message(files.length+' dosya hazır.'+(canShare(files)?'':files.some(f=>canShare([f]))?' Dosyaları tek tek paylaşın.':' Paylaşım desteklenmiyor. Dosyaları indirip WhatsApp’a ekleyin.'));
     update();
   });
   window.addEventListener('pagehide',()=>{clearInterval(interval);clearTimeout(timeout);urls.forEach(url=>URL.revokeObjectURL(url));files=[]});
