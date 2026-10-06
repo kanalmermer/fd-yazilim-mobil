@@ -1238,6 +1238,18 @@
 @media(max-width:900px){.evrak-hero{grid-template-columns:1fr}.evrak-actions{justify-content:flex-start}.evrak-layout{grid-template-columns:1fr}.evrak-kategori-list{display:flex;max-height:none;overflow:auto}.evrak-kategori{min-width:230px}.evrak-table-wrap{max-height:none}.evrak-stats{grid-template-columns:1fr}}
 </style>
 <style id="evrakOnizlemeStilleri">
+#evrakTakipApp .evrak-table{min-width:960px;table-layout:fixed}
+#evrakTakipApp .evrak-table th:nth-child(1){width:42px}
+#evrakTakipApp .evrak-table th:nth-child(2){width:auto}
+#evrakTakipApp .evrak-table th:nth-child(3){width:24%}
+#evrakTakipApp .evrak-table th:nth-child(4){width:65px}
+#evrakTakipApp .evrak-table th:nth-child(5){width:114px}
+#evrakTakipApp .evrak-table th:nth-child(6){width:140px}
+#evrakTakipApp .evrak-table th:nth-child(7){width:200px}
+#evrakTakipApp .evrak-table td:nth-child(2),#evrakTakipApp .evrak-table td:nth-child(3){white-space:normal;overflow-wrap:anywhere;line-height:1.5}
+#evrakTakipApp .evrak-doc-name>span:last-child{min-width:0;flex:1}
+#evrakTakipApp .evrak-doc-name strong,#evrakTakipApp .evrak-doc-name small{white-space:normal;overflow-wrap:anywhere}
+#evrakTakipApp .evrak-table td:nth-child(4),#evrakTakipApp .evrak-table td:nth-child(5){white-space:nowrap}
 #evrakTakipApp .evrak-row-actions{flex-wrap:nowrap;gap:5px;justify-content:flex-end}
 #evrakTakipApp .evrak-icon-btn{display:inline-grid;place-items:center;flex:0 0 31px;width:31px;min-width:31px;height:31px;padding:0;font-size:.88rem;line-height:1;border-radius:8px}
 .evrak-preview-modal .modal-card{width:min(1120px,96vw);max-width:1120px;height:min(900px,94vh);display:flex;flex-direction:column}
@@ -24339,14 +24351,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v205';
+      const anahtar='fd-pwa-yenileme-v206';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=205',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=206',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
