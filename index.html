@@ -15513,6 +15513,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function switchIzinTab(tabId, btn) {
+        if (tabId === 'i-tab-bakiye') renderBakiyeTable();
         document.querySelectorAll('#izinTakipApp .tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('#izinTakipApp .nav-btn').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('#izinTakipApp .module-subnav button').forEach(el => el.classList.remove('active'));
@@ -16775,6 +16776,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
         select.value = eslesen.value;
         kutu.value = eslesen.dataset.etiket || eslesen.textContent;
+        if (String(kutu.dataset.seciliPersonel || '') === String(select.value)) return;
         personelSecildi(select.value);
     }
 
@@ -16848,6 +16850,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function personelSecildi(pId) {
         const secimKutusu = document.getElementById('izinPersonelSecimKutusu');
         const gizliSelect = document.getElementById('izinPersonelSelect');
+        if (secimKutusu) secimKutusu.dataset.seciliPersonel = String(pId || '');
         if (pId) {
             gizliSelect.value = String(pId);
             const option = [...gizliSelect.options].find(item => String(item.value) === String(pId));
@@ -17183,7 +17186,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <td class="action-btns">
                         <button class="btn-modern btn-edit-modern" onclick='izinDuzenle(${JSON.stringify(i)})'>✏️ Düzenle</button>
                         ${i.tur === 'Sağlık / Rapor' ? '' : `<button class="btn-modern btn-print-modern" onclick='dilekceTekrarBas(${JSON.stringify(i)})'>📄 ${i.tur === 'Mazeretsiz İzin' ? 'Tutanak' : 'Dilekçe'}</button>`}
-                        <button class="btn-modern btn-del-modern" onclick="izinSil(${i.id})">🗑️ Sil</button>
+                        <button type="button" class="btn-modern btn-del-modern" onclick="izinSil('${escapeDashboardText(String(i.id))}',this)">🗑️ Sil</button>
                     </td>
                 </tr>
             `;
@@ -18251,28 +18254,71 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         window.print();
     }
 
-    async function izinSil(id) {
+    function izinTekKaydiSil(kayit) {
+        if (!SUPABASE_MODE) return (async () => {
+            const onceki = izinler;
+            izinler = izinler.filter(i => String(i.id) !== String(kayit.id));
+            try { await verileriKaydet(); } catch (error) { izinler = onceki; throw error; }
+            await personelIzinBildiriminiIptalEt(kayit.pId);
+        })();
+        supabaseKaydetmeBekleyen++;
+        const islem = supabaseKaydetmeKuyrugu.catch(() => {}).then(async () => {
+            if (!activeUser?.sirketId || !aktifSirketeAit(kayit)) throw new Error('Şirket oturumu doğrulanamadı.');
+            const legacyId = supabaseKayitAnahtari('izinler', kayit, izinler.indexOf(kayit));
+            const kontrol = new AbortController(), zamanlayici = setTimeout(() => kontrol.abort(), 15000);
+            try {
+                // Silme ve eski WhatsApp kuyruğunun iptali aynı veritabanı işlemindedir.
+                const { data, error } = await supabaseClient.from('portal_records').delete()
+                    .eq('company_id', activeUser.sirketId).eq('module', 'izinler').eq('legacy_id', legacyId)
+                    .select('legacy_id').abortSignal(kontrol.signal);
+                if (error) throw error;
+                if (!data?.length) {
+                    const dogrulama = await supabaseClient.from('portal_records').select('legacy_id')
+                        .eq('company_id', activeUser.sirketId).eq('module', 'izinler').eq('legacy_id', legacyId)
+                        .maybeSingle().abortSignal(kontrol.signal);
+                    if (dogrulama.error) throw dogrulama.error;
+                    if (dogrulama.data) throw new Error('İzin kaydı silinemedi. Yetkinizi kontrol edin.');
+                }
+                izinler = izinler.filter(i => String(i.id) !== String(kayit.id));
+                try {
+                    const onceki = JSON.parse(veriSonKayitGoruntuleri.get('izinler') || '[]');
+                    veriSonKayitGoruntuleri.set('izinler', JSON.stringify(onceki.filter((i,index) => supabaseKayitAnahtari('izinler',i,index) !== legacyId)));
+                    izinBekleyenKayitlariniSil([kayit]);
+                    veriOnbelleginiKaydet();
+                } catch (error) { console.warn('Silinen iznin yerel önbelleği yenilenemedi:', error); }
+            } finally { clearTimeout(zamanlayici); }
+        }).finally(() => { supabaseKaydetmeBekleyen = Math.max(0, supabaseKaydetmeBekleyen - 1); });
+        supabaseKaydetmeKuyrugu = islem;
+        return islem;
+    }
+
+    async function izinSil(id, buton = null) {
         if (isPersonelUser()) {
             showToast('Personel hesabının kayıt silme yetkisi yoktur.', 'warning');
             return;
         }
         if (izinIslemde) return;
-        if (await fdYuzerOnaySor("Bu izni silmek istiyor musunuz?")) {
-            izinIslemde = true;
-            showGlobalOverlay('İzin siliniyor', 'Kayıt E-Tablo’dan kaldırılıyor...');
-            try {
-                const silinenIzin = izinler.find(i => i.id === id);
-                izinler = izinler.filter(i => i.id !== id);
-                await verileriKaydet();
-                if (silinenIzin?.pId) await personelIzinBildiriminiIptalEt(silinenIzin.pId);
-                initUI();
-                const pId = document.getElementById('izinPersonelSelect').value;
-                if(pId) personelSecildi(pId);
-                showToast('İzin kaydı silindi; bekleyen eski WhatsApp mesajı iptal edildi.', 'success');
-            } finally {
-                izinIslemde = false;
-                hideGlobalOverlay();
-            }
+        const silinenIzin = izinler.find(i => String(i.id) === String(id));
+        if (!silinenIzin) return showToast('İzin kaydı bulunamadı. Listeyi yenileyin.', 'warning');
+        izinIslemde = true;
+        const oncekiYazi = buton?.textContent;
+        if (buton) { buton.disabled = true; buton.textContent = 'Onay bekleniyor…'; }
+        let katmanAcik = false;
+        try {
+            if (!await fdYuzerOnaySor('Bu izin kaydı silinsin mi? Bekleyen eski WhatsApp bildirimi de iptal edilecek.', 'İzin Kaydını Sil', 'Sil')) return;
+            if (buton) buton.textContent = 'Siliniyor…';
+            showGlobalOverlay('İzin siliniyor', 'Yalnızca seçilen izin kaydı kaldırılıyor...');katmanAcik = true;
+            await izinTekKaydiSil(silinenIzin);
+            renderIzinDashAndTables();
+            const pId = document.getElementById('izinPersonelSelect')?.value;
+            if (pId) personelSecildi(pId);
+            showToast('İzin kaydı silindi; bekleyen eski WhatsApp mesajı iptal edildi.', 'success');
+        } catch (error) {
+            showToast('İzin silinemedi veya silme doğrulanamadı: ' + (error.message || 'Bağlantıyı kontrol edip listeyi yenileyin.'), 'error');
+        } finally {
+            izinIslemde = false;
+            if (buton?.isConnected) { buton.disabled = false; buton.textContent = oncekiYazi; }
+            if (katmanAcik) hideGlobalOverlay();
         }
     }
 
@@ -24153,14 +24199,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v202';
+      const anahtar='fd-pwa-yenileme-v203';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=202',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=203',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
