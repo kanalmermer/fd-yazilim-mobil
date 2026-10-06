@@ -18161,7 +18161,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const seciliSube = document.getElementById('fBakiyeSube').value;
         const seciliDonem = document.getElementById('fBakiyeDonem').value;
 
-        personeller.filter(p => (!p.cikisTarihi || p.cikisTarihi === "null") && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo))).forEach(p => {
+        personeller.filter(p => (!p.cikisTarihi || p.cikisTarihi === "null") && (!isPersonelUser() || String(p.id) === String(activeUser.tcNo)))
+            .sort((a, b) => String(a.sube || 'Merkez').localeCompare(String(b.sube || 'Merkez'), 'tr-TR', { sensitivity: 'base' })
+                || String(a.ad || '').localeCompare(String(b.ad || ''), 'tr-TR', { sensitivity: 'base' })
+                || String(a.id).localeCompare(String(b.id)))
+            .forEach(p => {
             if (arama && !p.ad.toLowerCase().includes(arama) && !String(p.id).includes(arama)) return;
             if (seciliSube && p.sube !== seciliSube) return;
 
@@ -23824,6 +23828,7 @@ document.addEventListener('click',function(e){
     .fd-ft-edit-btn{border-color:#bfdbfe!important;background:linear-gradient(135deg,#eff6ff,#e0f2fe)!important;color:#075985!important}.fd-ft-edit-btn:hover{border-color:#38bdf8!important;transform:translateY(-1px)}
     .fd-ft-delete-btn{border-color:#fecaca!important;background:linear-gradient(135deg,#fff1f2,#fff7ed)!important;color:#b91c1c!important}.fd-ft-delete-btn:hover{border-color:#fb7185!important;transform:translateY(-1px)}
     .fd-ft-export-btn{min-height:32px!important;padding:6px 11px!important;border-radius:8px!important;font-size:.7rem!important;font-weight:850!important;white-space:nowrap}
+    .fd-ft-image-btn{border-color:#0284c7!important;background:#0284c7!important;color:#fff!important}.fd-ft-image-btn:hover{background:#0369a1!important}.fd-ft-export-btn:disabled{opacity:.55!important;cursor:wait!important}
     .fd-ft-excel-btn{border-color:#a7f3d0!important;background:linear-gradient(135deg,#ecfdf5,#d1fae5)!important;color:#047857!important}.fd-ft-excel-btn:hover{border-color:#34d399!important;transform:translateY(-1px)}
     .fd-ft-pdf-btn{border-color:#fecaca!important;background:linear-gradient(135deg,#fff1f2,#fff7ed)!important;color:#be123c!important}.fd-ft-pdf-btn:hover{border-color:#fb7185!important;transform:translateY(-1px)}
     .fd-ft-docs{margin-top:16px;padding:14px;border:1px solid #dbe7e2;border-radius:12px;background:#f8fafc}.fd-ft-docs-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.fd-ft-docs-head h4{margin:0;color:#0f172a}.fd-ft-docs-head p{margin:4px 0 0;color:#64748b;font-size:.7rem}.fd-ft-doc-list{display:grid;gap:7px}.fd-ft-doc{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid #e2e8f0;border-radius:9px;background:#fff}.fd-ft-doc-main{display:flex;align-items:center;gap:9px;min-width:0}.fd-ft-doc-icon{display:grid;place-items:center;flex:0 0 35px;height:35px;border-radius:9px;background:#e0f2fe;color:#0369a1;font-size:.65rem;font-weight:900}.fd-ft-doc-text{min-width:0}.fd-ft-doc-text b,.fd-ft-doc-text small{display:block}.fd-ft-doc-text b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#0f172a;font-size:.76rem}.fd-ft-doc-text small{margin-top:3px;color:#94a3b8;font-size:.64rem}.fd-ft-doc-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
@@ -23866,7 +23871,7 @@ document.addEventListener('click',function(e){
     function sayfaUrunDegisimi(s,u){if(!s||!u)return{degisti:false,etiket:''};const onceki=dosyaSayfalari(s.dosyaId).filter(x=>x.tarih<s.tarih).sort((a,b)=>String(b.tarih).localeCompare(String(a.tarih)))[0],eski=onceki?.urunler.find(x=>x.id===u.id);if(!eski)return{degisti:true,etiket:'Yeni ürün'};if(Number(eski.fiyat)!==Number(u.fiyat)||paraBirimi(eski.paraBirimi)!==paraBirimi(u.paraBirimi))return{degisti:true,etiket:''};return{degisti:false,etiket:''}}
     function dosyalariCiz(){const alan=document.getElementById('fdFtDosyalar');if(!alan)return;const q=trAnahtar(dosyaArama),liste=dosyalar.filter(d=>!q||trAnahtar([firmaAdi(d),d.aciklama].join(' ')).includes(q));alan.innerHTML=liste.length?liste.map(d=>{const n=dosyaSayfalari(d.id).length;return'<button class="fd-ft-file '+(d.id===seciliDosyaId?'active':'')+'" type="button" onclick="fdFiyatV2DosyaSec(\''+html(d.id)+'\')"><b>'+html(firmaAdi(d))+'</b><span>Verilen fiyatlar</span><small>'+n+' tarihli fiyat sayfası</small></button>'}).join(''):'<div class="fd-ft-empty">Aramanıza uygun firma bulunamadı.</div>'}
     function urunTablosu(s,tarihsel=false){if(!s)return'<div class="fd-ft-empty">Bu firmada henüz fiyat sayfası yok. “Fiyat Güncelle” ile başlayabilirsiniz.</div>';const q=trAnahtar(urunArama),urunler=s.urunler.filter(u=>!q||trAnahtar([u.ad,u.birim,u.aciklama].join(' ')).includes(q));const baslik=tarihsel?'Fiyat':'Güncel Fiyat';return'<div class="fd-ft-toolbar"><input type="search" value="'+html(urunArama)+'" placeholder="Ürün adı, açıklama veya birim ara" oninput="fdFiyatV2UrunAra(this.value)"><span class="fd-ft-badge">'+urunler.length+' / '+s.urunler.length+' ürün</span></div><div class="fd-ft-table-wrap"><table class="fd-ft-table"><thead><tr><th>Ürün</th><th>Açıklama</th><th>Birim</th><th>'+baslik+'</th><th>Son Değişiklik</th><th></th></tr></thead><tbody>'+(urunler.length?urunler.map(u=>{const g=degisiklikGecmisi(u.id),son=g[g.length-1],d=tarihsel?sayfaUrunDegisimi(s,u):{degisti:false,etiket:''};return'<tr class="'+(d.degisti?'fd-ft-row-changed':'')+'" onclick="fdFiyatV2GecmisAc(\''+html(u.id)+'\')"><td data-label="Ürün"><span class="fd-ft-product">'+html(u.ad)+'</span>'+(d.etiket?'<span class="fd-ft-change-chip">● '+html(d.etiket)+'</span>':'')+'</td><td data-label="Açıklama">'+html(u.aciklama||'-')+'</td><td data-label="Birim">'+html(u.birim||'-')+'</td><td data-label="'+baslik+'"><span class="fd-ft-price">'+html(fiyatMetni(u))+'</span></td><td data-label="Son Değişiklik">'+html(tarihGoster(tarihsel?s.tarih:son?.tarih||s.tarih))+'</td><td data-label="Geçmiş"><button class="btn-modern btn-detail-modern fd-ft-history-btn" type="button" onclick="event.stopPropagation();fdFiyatV2GecmisAc(\''+html(u.id)+'\')">◷ Geçmiş</button></td></tr>'}).join(''):'<tr><td colspan="6" class="fd-ft-empty">Aramanıza uygun ürün bulunamadı.</td></tr>')+'</tbody></table></div>'}
-    function ciktiButonlari(s){return s?'<button class="btn-modern fd-ft-export-btn fd-ft-excel-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Excel(\''+html(s.id)+'\')">▦ Excel</button><button class="btn-modern fd-ft-export-btn fd-ft-pdf-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Pdf(\''+html(s.id)+'\')">▤ PDF</button>':''}
+    function ciktiButonlari(s){return s?'<button class="btn-modern fd-ft-export-btn fd-ft-image-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Goruntu(\''+html(s.id)+'\',this)">▣ Görüntü Al</button><button class="btn-modern fd-ft-export-btn fd-ft-excel-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Excel(\''+html(s.id)+'\',this)">▦ Excel</button><button class="btn-modern fd-ft-export-btn fd-ft-pdf-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Pdf(\''+html(s.id)+'\',this)">▤ PDF</button>':''}
     function guncelCiz(){const s=guncelSayfa();return'<div class="fd-ft-section-head"><div><h4>Güncel Fiyat Listesi</h4><p>'+(s?html(tarihGoster(s.tarih)+' tarihli sayfa · '+s.urunler.length+' ürün'):'Henüz fiyat kaydı bulunmuyor.')+'</p></div><div class="fd-ft-actions">'+ciktiButonlari(s)+'</div></div>'+urunTablosu(s,false)}
     function sayfaListesiCiz(){const q=trAnahtar(sayfaArama),liste=dosyaSayfalari().filter(s=>!q||trAnahtar([s.tarih,tarihGoster(s.tarih),s.baslik].join(' ')).includes(q));return'<div class="fd-ft-toolbar"><input type="search" value="'+html(sayfaArama)+'" placeholder="Tarih veya sayfa başlığı ara" oninput="fdFiyatV2SayfaAra(this.value)"><span class="fd-ft-badge">'+liste.length+' fiyat sayfası</span></div><div class="fd-ft-pages-grid">'+(liste.length?liste.map((s,i)=>'<article class="fd-ft-page-card" onclick="fdFiyatV2SayfaAc(\''+html(s.id)+'\')"><b>'+(i===0&&!q?'Güncel · ':'')+html(tarihGoster(s.tarih))+'</b><span>'+html(s.baslik||'Fiyat Listesi')+'</span><small>'+s.urunler.length+' ürün · '+s.belgeler.length+' belge</small></article>').join(''):'<div class="fd-ft-empty">Aramanıza uygun tarihli sayfa bulunamadı.</div>')+'</div>'}
     function belgeAlani(s){if(!s)return'';const liste=s.belgeler||[];return'<section class="fd-ft-docs"><div class="fd-ft-docs-head"><div><h4>Belgeler</h4><p>Bu fiyat sayfasıyla ilgili PDF ve görseller Drive’da saklanır.</p></div><button class="btn-modern fd-ft-action-btn fd-ft-edit-btn" data-ft-yazma type="button" onclick="fdFiyatV2BelgeSec(\''+html(s.id)+'\')">＋ PDF / Resim Yükle</button></div><div class="fd-ft-doc-list">'+(liste.length?liste.map((b,i)=>{const pdf=/pdf/i.test(b.mimeType)||/\.pdf$/i.test(b.ad),tur=pdf?'PDF':'RESİM';return'<article class="fd-ft-doc"><div class="fd-ft-doc-main"><span class="fd-ft-doc-icon">'+tur+'</span><div class="fd-ft-doc-text"><b title="'+html(b.ad)+'">'+html(b.ad)+'</b><small>'+(b.yuklemeTarihi?html(new Date(b.yuklemeTarihi).toLocaleString('tr-TR')):'Drive belgesi')+'</small></div></div><div class="fd-ft-doc-actions"><button class="btn-modern fd-ft-action-btn fd-ft-edit-btn" type="button" onclick="fdFiyatV2BelgeAc(\''+html(s.id)+'\','+i+')">◉ Önizle</button><button class="btn-modern fd-ft-action-btn fd-ft-delete-btn" data-ft-yazma type="button" onclick="fdFiyatV2BelgeSil(\''+html(s.id)+'\','+i+')">⌫ Sil</button></div></article>'}).join(''):'<div class="fd-ft-empty" style="padding:20px 12px">Bu fiyat sayfasına henüz belge eklenmedi.</div>')+'</div></section>'}
@@ -23880,10 +23885,90 @@ document.addEventListener('click',function(e){
     window.fdFiyatV2Gorunum=v=>{gorunum=String(v||'guncel');urunArama='';anaCiz()};
     window.fdFiyatV2SayfaAc=id=>{seciliSayfaId=String(id);gorunum='detay';urunArama='';anaCiz()};
     function ciktiSayfasi(id=''){return id?sayfalar.find(x=>x.id===String(id)):guncelSayfa()}
-    function ciktiDosyaAdi(s,uzanti){return slug(firmaAdi(seciliDosya())+'-'+String(s?.tarih||'')+'-'+String(s?.baslik||'fiyat-listesi'))+'.'+uzanti}
-    function ciktiTablosu(s){const alan=document.createElement('div');alan.innerHTML='<table><thead><tr><th>Sıra</th><th>Ürün</th><th>Açıklama</th><th>Birim</th><th>Fiyat</th><th>Para Birimi</th></tr></thead><tbody>'+s.urunler.map((u,i)=>'<tr><td>'+(i+1)+'</td><td>'+html(u.ad)+'</td><td>'+html(u.aciklama||'-')+'</td><td>'+html(u.birim||'-')+'</td><td>'+html(para(u.fiyat))+'</td><td>'+html(({TRY:'TL',USD:'Dolar',EUR:'Euro'}[paraBirimi(u.paraBirimi)]||paraBirimi(u.paraBirimi)))+'</td></tr>').join('')+'</tbody></table>';return alan.querySelector('table')}
-    window.fdFiyatV2Excel=id=>{const s=ciktiSayfasi(id);if(!s)return alert('Excel için fiyat sayfası bulunamadı.');if(!s.urunler.length)return alert('Excel için aktarılacak ürün bulunmuyor.');if(typeof XLSX==='undefined')return alert('Excel bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');try{const satirlar=[['Firma',firmaAdi(seciliDosya())],['Tarih',tarihGoster(s.tarih)],['Fiyat Sayfası',s.baslik||'Fiyat Listesi'],[],['Sıra','Ürün','Açıklama','Birim','Fiyat','Para Birimi'],...s.urunler.map((u,i)=>[i+1,u.ad,u.aciklama||'',u.birim||'',Number(u.fiyat||0),({TRY:'TL',USD:'Dolar',EUR:'Euro'}[paraBirimi(u.paraBirimi)]||paraBirimi(u.paraBirimi))])],ws=XLSX.utils.aoa_to_sheet(satirlar);ws['!cols']=[{wch:8},{wch:34},{wch:42},{wch:14},{wch:16},{wch:14}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Fiyat Listesi');XLSX.writeFile(wb,ciktiDosyaAdi(s,'xlsx'))}catch(e){console.error(e);alert('Excel hazırlanamadı: '+(e.message||e))}};
-    window.fdFiyatV2Pdf=id=>{const s=ciktiSayfasi(id);if(!s)return alert('PDF için fiyat sayfası bulunamadı.');if(!s.urunler.length)return alert('PDF için gösterilecek ürün bulunmuyor.');const baslik=firmaAdi(seciliDosya())+' · '+(s.baslik||'Fiyat Listesi');return window.fdTabloPdfOnizle?.(ciktiTablosu(s),baslik,ciktiDosyaAdi(s,'pdf'),{donem:tarihGoster(s.tarih),yon:'landscape',altBaslik:'Fiyat ve Teklifler'})};
+    function ciktiDosyaAdi(s,uzanti){return slug(firmaAdi(dosyalar.find(d=>d.id===s?.dosyaId))+'-'+String(s?.tarih||'')+'-'+String(s?.baslik||'fiyat-listesi'))+'.'+uzanti}
+    let ciktiMesgul=false;
+    // A copied price page is not a price change. Build dates in this file only,
+    // up to the exported page, so historical reports cannot contain future dates.
+    function ciktiVerisi(s){
+        const sonlar=new Map(),gecmis=dosyaSayfalari(s.dosyaId).slice().reverse();
+        for(const sayfa of gecmis){
+            if(sayfa.tarih>s.tarih)continue;
+            for(const u of sayfa.urunler){const once=sonlar.get(u.id),kur=paraBirimi(u.paraBirimi);if(!once||once.fiyat!==Number(u.fiyat)||once.kur!==kur)sonlar.set(u.id,{fiyat:Number(u.fiyat),kur,tarih:sayfa.tarih})}
+            if(sayfa.id===s.id)break;
+        }
+        const satirlar=s.urunler.map((u,i)=>({...u,sira:i+1,fiyat:Number(u.fiyat||0),kur:paraBirimi(u.paraBirimi),sonDegisiklik:sonlar.get(u.id)?.tarih||s.tarih}));
+        return{firma:firmaAdi(dosyalar.find(d=>d.id===s.dosyaId)),baslik:s.baslik||'Fiyat Listesi',tarih:s.tarih,
+            sonDegisiklik:satirlar.map(u=>u.sonDegisiklik).sort().at(-1)||s.tarih,satirlar};
+    }
+    function ciktiRaporu(v,satirlar=v.satirlar){
+        const alan=document.createElement('div');alan.style.cssText='box-sizing:border-box;width:1120px;padding:24px;background:#fff;color:#172b40;font:13px/1.45 Arial,sans-serif';
+        const hucre='padding:10px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top;overflow-wrap:anywhere;white-space:normal;';
+        alan.innerHTML='<div style="display:flex;justify-content:space-between;gap:24px;margin-bottom:18px;border-bottom:2px solid #14847b;padding-bottom:14px"><div style="min-width:0"><div style="font-size:11px;color:#14847b;letter-spacing:1px;margin-bottom:5px">FİYAT LİSTESİ</div><h2 style="margin:0;font-size:23px;line-height:1.3;overflow-wrap:anywhere">'+html(v.firma)+'</h2><div style="margin-top:4px;color:#64748b;overflow-wrap:anywhere">'+html(v.baslik)+'</div></div><div style="flex:0 0 235px;text-align:right;font-size:12px;color:#526579"><div>Liste tarihi: <b>'+html(tarihGoster(v.tarih))+'</b></div><div style="margin-top:4px">Son fiyat değişikliği: <b>'+html(tarihGoster(v.sonDegisiklik))+'</b></div><div style="margin-top:4px">'+v.satirlar.length+' ürün</div></div></div>'+
+            '<table style="width:100%;border-collapse:collapse;table-layout:fixed;font:13px/1.45 Arial,sans-serif;color:#172b40"><colgroup>'+[5,25,29,8,13,8,12].map(w=>'<col style="width:'+w+'%">').join('')+'</colgroup><thead><tr>'+['Sıra','Ürün','Açıklama','Birim','Fiyat','Para Birimi','Son Değişiklik'].map((t,i)=>'<th style="'+hucre+'background:#e9f4f2;color:#175e5a;font-weight:700;text-align:'+(i===4?'right':'left')+'">'+t+'</th>').join('')+'</tr></thead><tbody>'+satirlar.map(u=>'<tr style="background:'+(u.sira%2===0?'#f7f9fc':'#fff')+'">'+[u.sira,u.ad,u.aciklama||'—',u.birim||'—',para(u.fiyat),({TRY:'TL',USD:'USD',EUR:'EUR'}[u.kur]),tarihGoster(u.sonDegisiklik)].map((t,i)=>'<td style="'+hucre+'text-align:'+(i===4?'right':'left')+';'+(i===4?'font-weight:700;white-space:nowrap;':'')+'">'+html(t)+'</td>').join('')+'</tr>').join('')+'</tbody></table><div data-fiyat-cikti-alt style="padding-top:12px;font-size:11px;color:#64748b;display:flex;justify-content:space-between;gap:12px"><span>Fiyat ve Teklifler · Tutarlar belirtilen para birimindedir.</span><span></span></div>';
+        // Reports live outside the module. Override the application's global
+        // table borders/fonts so exports stay identical on desktop and mobile.
+        const tablo=alan.querySelector('table');tablo.style.setProperty('border','0','important');
+        tablo.querySelector('thead tr').cells[5].innerHTML='Para<br>Birimi';
+        alan.querySelectorAll('th,td').forEach(c=>{c.style.setProperty('font','13px/1.45 Arial,sans-serif','important');c.style.setProperty('padding','10px 9px','important');c.style.setProperty('white-space',c.tagName==='TD'&&c.cellIndex===4?'nowrap':'normal','important');c.style.setProperty('overflow-wrap','anywhere','important');c.style.setProperty('vertical-align','top','important');c.style.setProperty('border','0','important');c.style.setProperty('border-bottom','1px solid #e2e8f0','important');c.style.setProperty('position','static','important');if(c.tagName==='TH'||c.cellIndex===4)c.style.setProperty('font-weight','700','important')});
+        alan.querySelectorAll('*').forEach(el=>{el.style.setProperty('font-family','Arial,sans-serif','important');el.style.setProperty('letter-spacing','normal','important')});
+        return alan;
+    }
+    function ciktiSahnesi(){const alan=document.createElement('div');alan.dataset.fdFiyatCikti='true';alan.style.cssText='position:fixed;left:-16000px;top:0;width:1120px;background:#fff;pointer-events:none;';document.body.appendChild(alan);return alan}
+    async function ciktiCanvas(alan){await document.fonts?.ready;return html2canvas(alan,{backgroundColor:'#ffffff',scale:Math.min(2,Math.sqrt(24000000/(1120*Math.max(1,alan.scrollHeight)))),width:1120,height:alan.scrollHeight,windowWidth:1200,windowHeight:900,scrollX:0,scrollY:0,logging:false})}
+    async function ciktiCalistir(id,buton,islem){
+        if(ciktiMesgul)return;
+        const s=ciktiSayfasi(id);if(!s||!s.urunler.length)return alert('Çıktı için aktarılacak fiyat listesi bulunmuyor.');
+        ciktiMesgul=true;const yazi=buton?.innerHTML;if(buton){buton.disabled=true;buton.textContent='Hazırlanıyor…'}
+        try{await islem(ciktiVerisi(s),s)}catch(e){console.error(e);alert('Çıktı hazırlanamadı: '+(e.message||e))}finally{ciktiMesgul=false;if(buton){buton.disabled=false;buton.innerHTML=yazi}}
+    }
+    window.fdFiyatV2Excel=(id,buton)=>ciktiCalistir(id,buton,async(v,s)=>{
+        if(typeof ExcelJS==='undefined')throw new Error('Excel bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
+        const wb=new ExcelJS.Workbook();wb.creator='FD Yazılım';wb.created=new Date();
+        const ws=wb.addWorksheet('Fiyat Listesi',{views:[{showGridLines:false,state:'frozen',ySplit:6}]});
+        ws.columns=[{width:7},{width:35},{width:44},{width:12},{width:19},{width:13},{width:19}];
+        ws.mergeCells('A1:G1');ws.getCell('A1').value=v.firma;ws.getCell('A1').font={name:'Arial',size:17,bold:true,color:{argb:'FF172B40'}};ws.getRow(1).height=30;
+        ws.mergeCells('A2:G2');ws.getCell('A2').value=v.baslik;ws.getCell('A2').font={name:'Arial',size:11,color:{argb:'FF526579'}};ws.getRow(2).height=23;
+        const tarihHucre=iso=>iso?new Date(String(iso).slice(0,10)+'T00:00:00Z'):null;
+        ws.mergeCells('A3:B3');ws.getCell('A3').value='Liste tarihi';ws.getCell('C3').value=tarihHucre(v.tarih);ws.getCell('C3').numFmt='dd.mm.yyyy';
+        ws.mergeCells('D3:F3');ws.getCell('D3').value='Son fiyat değişikliği';ws.getCell('G3').value=tarihHucre(v.sonDegisiklik);ws.getCell('G3').numFmt='dd.mm.yyyy';
+        ws.getRow(3).height=24;ws.getRow(3).eachCell(c=>{c.font={name:'Arial',size:10,color:{argb:'FF526579'}};c.alignment={vertical:'middle',horizontal:'left'}});
+        ws.mergeCells('A4:G4');ws.getCell('A4').value=v.satirlar.length+' ürün · Tutarlar belirtilen para birimindedir.';ws.getCell('A4').font={name:'Arial',size:10,color:{argb:'FF64748B'}};
+        ws.getRow(5).height=10;
+        const baslik=ws.getRow(6);baslik.values=['Sıra','Ürün','Açıklama','Birim','Fiyat','Para Birimi','Son Değişiklik'];baslik.height=30;
+        baslik.eachCell(c=>{c.font={name:'Arial',size:10,bold:true,color:{argb:'FF175E5A'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE9F4F2'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};c.border={bottom:{style:'thin',color:{argb:'FF9ECBC5'}}}});
+        await document.fonts?.ready;const olcu=document.createElement('canvas').getContext('2d');olcu.font='13.3333px Arial';
+        const metinSatiri=(t,genislik)=>String(t||'').split(/\r?\n/).reduce((top,l)=>{let satir=1,satirMetni='';for(const kelime of l.split(/\s+/)){const aday=satirMetni?satirMetni+' '+kelime:kelime;if(olcu.measureText(aday).width>genislik&&satirMetni){satir++;satirMetni=kelime}else satirMetni=aday;if(olcu.measureText(satirMetni).width>genislik){satir+=Math.floor(olcu.measureText(satirMetni).width/genislik);satirMetni=''}}return top+satir},0);
+        for(const u of v.satirlar){const r=ws.addRow([u.sira,u.ad,u.aciklama||null,u.birim||null,u.fiyat,({TRY:'TL',USD:'USD',EUR:'EUR'}[u.kur]),tarihHucre(u.sonDegisiklik)]);
+            r.height=Math.max(27,Math.max(metinSatiri(u.ad,225),metinSatiri(u.aciklama,290),metinSatiri(u.birim,65))*12+10);
+            r.eachCell({includeEmpty:true},c=>{c.font={name:'Arial',size:10,color:{argb:'FF172B40'}};c.alignment={vertical:'middle',wrapText:true,horizontal:'left'};c.border={bottom:{style:'hair',color:{argb:'FFE2E8F0'}}};if(u.sira%2===0)c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF7F9FC'}}});
+            r.getCell(5).numFmt='#,##0.00';r.getCell(5).alignment={vertical:'middle',horizontal:'right'};r.getCell(5).font={name:'Arial',size:10,bold:true,color:{argb:'FF172B40'}};r.getCell(7).numFmt='dd.mm.yyyy';
+        }
+        ws.autoFilter='A6:G'+ws.rowCount;ws.pageSetup={paperSize:9,orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0,printTitlesRow:'1:6',printArea:'A1:G'+ws.rowCount,margins:{left:.3,right:.3,top:.35,bottom:.35,header:.15,footer:.15}};
+        ws.headerFooter={oddFooter:'&LFiyat Listesi&C&P / &N'};
+        const blob=new Blob([await wb.xlsx.writeBuffer()],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),ad=ciktiDosyaAdi(s,'xlsx');
+        if(typeof fdCiktiOnizlemeAc==='function'&&typeof fdCiktiBlobBagla==='function'){const m=fdCiktiOnizlemeAc('excel',ad);fdCiktiBlobBagla(m,blob,ad);m.querySelector('[data-cikti-icerik]').replaceChildren(ciktiRaporu(v))}
+        else{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=ad;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+    });
+    window.fdFiyatV2Pdf=(id,buton)=>ciktiCalistir(id,buton,async(v,s)=>{
+        if(typeof html2canvas!=='function'||!window.jspdf?.jsPDF)throw new Error('PDF bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
+        const sahne=ciktiSahnesi();try{
+            await document.fonts?.ready;
+            const dolu=ciktiRaporu(v);sahne.appendChild(dolu);const satirlar=[...dolu.querySelectorAll('tbody tr')],sayfaSatirlari=[];let grup=[],yukseklik=dolu.offsetHeight-dolu.querySelector('tbody').offsetHeight;
+            const taban=yukseklik,azami=735;
+            for(const [n,tr] of satirlar.entries()){const h=tr.getBoundingClientRect().height;if(grup.length&&yukseklik+h>azami){sayfaSatirlari.push(grup);grup=[];yukseklik=taban}grup.push(v.satirlar[n]);yukseklik+=h}if(grup.length)sayfaSatirlari.push(grup);
+            const pdf=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+            for(let i=0;i<sayfaSatirlari.length;i++){const rapor=ciktiRaporu(v,sayfaSatirlari[i]);rapor.querySelector('[data-fiyat-cikti-alt] span:last-child').textContent='Sayfa '+(i+1)+' / '+sayfaSatirlari.length;sahne.replaceChildren(rapor);const canvas=await ciktiCanvas(rapor);if(i)pdf.addPage();const genislik=pdf.internal.pageSize.getWidth()-24,yuk=pdf.internal.pageSize.getHeight()-24,oran=Math.min(genislik/canvas.width,yuk/canvas.height);pdf.addImage(canvas.toDataURL('image/png'),'PNG',12,12,canvas.width*oran,canvas.height*oran,undefined,'FAST')}
+            if(typeof fdCiktiPdfOnizle!=='function')throw new Error('PDF önizleme penceresi bulunamadı.');fdCiktiPdfOnizle(pdf.output('blob'),ciktiDosyaAdi(s,'pdf'));
+        }finally{sahne.remove()}
+    });
+    window.fdFiyatV2Goruntu=(id,buton)=>ciktiCalistir(id,buton,async v=>{
+        if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined')throw new Error('Bu tarayıcı panoya görsel kopyalamayı desteklemiyor. Güncel Chrome veya Safari ile deneyin.');
+        if(typeof html2canvas!=='function')throw new Error('Görüntü bileşeni yüklenemedi.');
+        const png=(async()=>{const sahne=ciktiSahnesi();try{const rapor=ciktiRaporu(v);sahne.appendChild(rapor);const canvas=await ciktiCanvas(rapor);return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Tablo görüntüsü oluşturulamadı.')),'image/png'))}finally{sahne.remove()}})();
+        // Start clipboard write in the click event: Safari requires user activation.
+        try{await navigator.clipboard.write([new ClipboardItem({'image/png':png})])}catch(e){await png.catch(()=>{});throw e}
+        window.showToast?.('Fiyat listesinin tamamı panoya kopyalandı.','success');
+    });
     function fiyatBelgeMime(dosya){const m=String(dosya?.type||'').toLowerCase(),ad=String(dosya?.name||'').toLowerCase();if(m)return m;if(ad.endsWith('.pdf'))return'application/pdf';if(ad.endsWith('.jpg')||ad.endsWith('.jpeg'))return'image/jpeg';if(ad.endsWith('.png'))return'image/png';if(ad.endsWith('.webp'))return'image/webp';return''}
     window.fdFiyatV2BelgeSec=id=>{if(!yazabilir())return;const input=document.getElementById('fdFtBelgeInput');if(!input)return;input.value='';input.dataset.sayfaId=String(id||seciliSayfaId);input.click()};
     window.fdFiyatV2BelgeAc=(id,index)=>{const s=sayfalar.find(x=>x.id===String(id)),b=s?.belgeler?.[Number(index)],modal=document.getElementById('fdFtBelgeModal'),cerceve=document.getElementById('fdFtBelgeFrame');if(!b?.id)return alert('Drive belgesi bulunamadı.');if(!modal||!cerceve)return alert('Belge önizleme penceresi hazırlanamadı. Sayfayı yenileyip tekrar deneyin.');aktifBelge=b;document.getElementById('fdFtBelgeBaslik').textContent=b.ad||'Belge Önizleme';document.getElementById('fdFtBelgeBilgi').textContent=(/pdf/i.test(b.mimeType)||/\.pdf$/i.test(b.ad)?'PDF belgesi':'Görsel')+(b.yuklemeTarihi?' · '+new Date(b.yuklemeTarihi).toLocaleString('tr-TR'):'');cerceve.src='https:\x2f\x2fdrive.google.com/file/d/'+encodeURIComponent(b.id)+'/preview';modal.style.display='flex'};
@@ -24254,14 +24339,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v204';
+      const anahtar='fd-pwa-yenileme-v205';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=204',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=205',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
