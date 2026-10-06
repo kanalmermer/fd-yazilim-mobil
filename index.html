@@ -2748,7 +2748,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             <button type="button" id="btnAvansYeniSekme" onclick="avansYeniKayitAc()">➕ Yeni Avans</button>
             <button type="button" id="btnAvansKayitlarSekme" class="active" onclick="avansSekmeDegistir('kayitlar', this)">📋 Kaydedilen Avanslar</button>
             <button type="button" id="btnAvansAylikSekme" onclick="avansSekmeDegistir('aylik', this)">📅 Aylık Kesinti Listesi</button>
-            <button type="button" id="btnAvansGelecekSekme" onclick="avansSekmeDegistir('gelecek', this)">📆 Gelecek Kesintiler</button>
+            <button type="button" id="btnAvansGelecekSekme" onclick="avansSekmeDegistir('gelecek', this)">📆 Kesinti Planı</button>
         </div>
         <div id="avansKayitCard" class="card" style="max-width:1120px; margin:0 auto 18px;">
             <div class="card-header"><h2>💳 Personel Avans Kaydı</h2></div>
@@ -2806,16 +2806,20 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         </div>
         <div id="avansGelecekCard" class="card" style="max-width:1120px; margin:0 auto; display:none;">
             <div class="card-header avans-gelecek-baslik">
-                <div><h2 style="margin:0;">📆 Önümüzdeki Avans Kesintileri</h2><small id="avansGelecekOzet" style="color:#64748b;font-weight:700;"></small></div>
-                <div class="action-btns avans-gelecek-aksiyonlar"><select id="avansGelecekAySayisi" onchange="renderAvansGelecekKesintileri()"><option value="3">Önümüzdeki 3 ay</option><option value="6">Önümüzdeki 6 ay</option><option value="12">Önümüzdeki 12 ay</option><option value="year">Tüm yıl</option><option value="0" selected>Tüm plan</option></select><button type="button" class="btn-export avans-goruntu-btn" onclick="avansGelecekGoruntuAl(this)">Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansGelecekBody','excel','GELECEK AVANS KESİNTİLERİ','GELECEK_AVANS_KESINTILERI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div>
+                <div><h2 style="margin:0;">📆 Avans Kesinti Planı</h2><small id="avansGelecekOzet" style="color:#64748b;font-weight:700;"></small></div>
+                <div class="action-btns avans-gelecek-aksiyonlar"><div class="avans-ay-araligi"><label for="avansGelecekBaslangicAy">Başlangıç ayı<input id="avansGelecekBaslangicAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label><label for="avansGelecekBitisAy">Bitiş ayı<input id="avansGelecekBitisAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label></div><div class="avans-plan-ciktilari"><button type="button" class="btn-export avans-goruntu-btn" onclick="avansGelecekGoruntuAl(this)">Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="avansGelecekExcelAl()">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div></div>
             </div>
+            <p id="avansGelecekDonemHatasi" role="status" aria-live="polite" style="display:none;color:#b91c1c;margin:0 0 12px;"></p>
             <style>
-                #avansGelecekCard .avans-gelecek-baslik{display:grid;grid-template-columns:minmax(280px,1fr) auto;align-items:center;gap:14px;flex-wrap:nowrap!important}
-                #avansGelecekCard .avans-gelecek-aksiyonlar{width:auto;max-width:none;display:flex;align-items:center;justify-content:flex-end;flex-wrap:nowrap!important;gap:7px}
-                #avansGelecekCard .avans-gelecek-aksiyonlar>*{flex:0 0 auto;min-height:44px;margin:0;white-space:nowrap}
-                #avansGelecekCard .avans-gelecek-aksiyonlar select{width:232px;padding:7px 10px}
+                #avansGelecekCard .avans-gelecek-baslik{display:grid;grid-template-columns:minmax(230px,1fr) auto;align-items:center;gap:14px;flex-wrap:nowrap!important}
+                #avansGelecekCard .avans-gelecek-aksiyonlar{width:auto;max-width:none;display:flex;align-items:end;justify-content:flex-end;flex-wrap:wrap!important;gap:12px}
+                #avansGelecekCard .avans-ay-araligi,#avansGelecekCard .avans-plan-ciktilari{display:flex;gap:7px;align-items:end}
+                #avansGelecekCard .avans-ay-araligi label{display:grid;gap:4px;margin:0;color:#475569;font-size:12px;font-weight:600}
+                #avansGelecekCard .avans-ay-araligi input{width:160px;min-height:44px;margin:0;padding:7px 10px;box-sizing:border-box}
+                #avansGelecekCard .avans-plan-ciktilari button{flex:0 0 auto;min-height:44px;margin:0;white-space:nowrap}
                 #avansGelecekCard .avans-goruntu-btn{min-width:112px;background:#0284c7!important;color:#fff!important;justify-content:center}
-                @media(max-width:760px){#avansGelecekCard .avans-gelecek-baslik{grid-template-columns:1fr}#avansGelecekCard .avans-gelecek-aksiyonlar{width:100%;justify-content:flex-start;overflow-x:auto;padding-bottom:3px}#avansGelecekCard .avans-gelecek-aksiyonlar select{width:180px}}
+                @media(max-width:980px){#avansGelecekCard .avans-gelecek-baslik{grid-template-columns:1fr}#avansGelecekCard .avans-gelecek-aksiyonlar{width:100%;justify-content:flex-start}}
+                @media(max-width:480px){#avansGelecekCard .avans-ay-araligi{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#avansGelecekCard .avans-ay-araligi input{width:100%;min-width:0}#avansGelecekCard .avans-plan-ciktilari{width:100%;flex-wrap:wrap}}
                 #avansGelecekCard .avans-matris{min-width:760px;border-collapse:separate;border-spacing:0}
                 #avansGelecekCard .avans-matris th,#avansGelecekCard .avans-matris td{padding:10px 12px;text-align:right;border-bottom:1px solid #dbe4ec;border-right:1px solid #e2e8f0;white-space:nowrap}
                 #avansGelecekCard .avans-matris thead th{background:#0f766e;color:#fff;text-align:center;font-size:12px;letter-spacing:.02em;position:sticky;top:0;z-index:2}
@@ -10422,36 +10426,84 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return yilGoster?ad+' '+y:ad;
     }
 
+    function avansGelecekDonemi() {
+        const ilkAy=document.getElementById('avansGelecekBaslangicAy')?.value||'',sonAy=document.getElementById('avansGelecekBitisAy')?.value||'',gecerliAy=ay=>/^\d{4}-(0[1-9]|1[0-2])$/.test(ay)&&Number(ay.slice(0,4))>=100;
+        let hata='';
+        if(!gecerliAy(ilkAy)||!gecerliAy(sonAy))hata='Başlangıç ve bitiş ayını seçin.';
+        else if(ilkAy>sonAy)hata='Bitiş ayı, başlangıç ayından önce olamaz.';
+        else if(aySirasi(sonAy)-aySirasi(ilkAy)>=1200)hata='Lütfen 100 yıldan kısa bir ay aralığı seçin.';
+        return {ilkAy,sonAy,hata,baslik:hata?'':avansAyBasligi(ilkAy,true)+(ilkAy===sonAy?'':' — '+avansAyBasligi(sonAy,true))};
+    }
+
+    function avansGelecekPlanVerisi(ilkAy,sonAy) {
+        const aylar=[],kesintiler=[],personelHarita=new Map();
+        for(let ay=ilkAy;ay<=sonAy;ay=avansAyEkle(ay,1))aylar.push(ay);
+        avanslar.filter(avansAktifSirketinMi).forEach(a=>{
+            const baslangic=String(a.baslangicAy||''),taksit=Number(a.taksitSayisi||1);
+            if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(baslangic)||!Number.isInteger(taksit)||taksit<1)return;
+            // Kapalı / tamamlanmış avansların geçmiş planını da göster; ödeme kayıtlarını değiştirme.
+            const ilkSira=Math.max(0,aySirasi(ilkAy)-aySirasi(baslangic)),sonSira=Math.min(taksit-1,aySirasi(sonAy)-aySirasi(baslangic));
+            for(let i=ilkSira;i<=sonSira;i++){
+                const ay=avansAyEkle(baslangic,i),plan=avansAylikKesinti(a,ay);
+                if(plan&&Number.isFinite(Number(plan.kesinti)))kesintiler.push({ay,avans:a,kuruş:Math.round(Number(plan.kesinti)*100)});
+            }
+        });
+        kesintiler.forEach(x=>{const id=String(x.avans.pId||x.avans.personelAd||''),mevcut=personelHarita.get(id)||{id,ad:x.avans.personelAd||'-',sube:x.avans.sube||'',aylar:{},toplam:0};mevcut.aylar[x.ay]=(mevcut.aylar[x.ay]||0)+x.kuruş;mevcut.toplam+=x.kuruş;personelHarita.set(id,mevcut);});
+        const kisiler=[...personelHarita.values()].sort((a,b)=>String(a.sube||'').localeCompare(String(b.sube||''),'tr-TR',{sensitivity:'base'})||String(a.ad||'').localeCompare(String(b.ad||''),'tr-TR',{sensitivity:'base'})),ayToplamlari=Object.fromEntries(aylar.map(ay=>[ay,0]));
+        kisiler.forEach(k=>aylar.forEach(ay=>ayToplamlari[ay]+=Number(k.aylar[ay]||0)));
+        const genelToplam=kisiler.reduce((t,k)=>t+k.toplam,0)/100;
+        kisiler.forEach(k=>{k.toplam/=100;Object.keys(k.aylar).forEach(ay=>k.aylar[ay]/=100);});
+        aylar.forEach(ay=>ayToplamlari[ay]/=100);
+        return {aylar,kisiler,ayToplamlari,genelToplam};
+    }
+
     function renderAvansGelecekKesintileri() {
         const body=document.getElementById('avansGelecekBody'),head=document.getElementById('avansGelecekHead'),foot=document.getElementById('avansGelecekToplam');if(!body||!head||!foot)return;
-        const buAy=new Date().toISOString().slice(0,7),donemSecimi=String(document.getElementById('avansGelecekAySayisi')?.value||'12'),tumYil=donemSecimi==='year',aySayisi=Number(donemSecimi),ilkAy=tumYil?buAy.slice(0,4)+'-01':buAy,sonAy=tumYil?(Number(buAy.slice(0,4))+1)+'-01':(aySayisi>0?avansAyEkle(buAy,aySayisi):''),kesintiler=[];
-        avanslar.filter(avansAktifSirketinMi).filter(a=>tumYil||!['kapandı','kapandi'].includes(String(a.durum||'').trim().toLocaleLowerCase('tr-TR'))).forEach(a=>{
-            const taksit=Number(a.taksitSayisi||1);
-            for(let i=0;i<taksit;i++){const ay=avansAyEkle(a.baslangicAy,i);if(!ay||ay<ilkAy||(sonAy&&ay>=sonAy))continue;const plan=avansAylikKesinti(a,ay);if(plan)kesintiler.push({ay,avans:a,tutar:Number(plan.kesinti||0)});}
-        });
-        const aylar=[...new Set(kesintiler.map(x=>x.ay))].sort(),yillar=new Set(aylar.map(x=>x.slice(0,4))),yilGoster=yillar.size>1,personelHarita=new Map();
-        kesintiler.forEach(x=>{const id=String(x.avans.pId||x.avans.personelAd||''),mevcut=personelHarita.get(id)||{id,ad:x.avans.personelAd||'-',sube:x.avans.sube||'',aylar:{},toplam:0};mevcut.aylar[x.ay]=(mevcut.aylar[x.ay]||0)+x.tutar;mevcut.toplam+=x.tutar;personelHarita.set(id,mevcut);});
-        const kisiler=[...personelHarita.values()].sort((a,b)=>String(a.sube||'').localeCompare(String(b.sube||''),'tr-TR',{sensitivity:'base'})||String(a.ad||'').localeCompare(String(b.ad||''),'tr-TR',{sensitivity:'base'})),ayToplamlari=Object.fromEntries(aylar.map(ay=>[ay,0]));kisiler.forEach(k=>aylar.forEach(ay=>ayToplamlari[ay]+=Number(k.aylar[ay]||0)));const genelToplam=kisiler.reduce((t,k)=>t+k.toplam,0),kolon=aylar.length+2;
+        const card=document.getElementById('avansGelecekCard'),baslangic=document.getElementById('avansGelecekBaslangicAy'),bitis=document.getElementById('avansGelecekBitisAy');
+        if(!baslangic||!bitis)return false;
+        if(card.dataset.goruntuHazirlaniyor==='1')return false;
+        if(card.dataset.donemHazir!=='1'){
+            const planlar=avanslar.filter(avansAktifSirketinMi).filter(a=>/^\d{4}-(0[1-9]|1[0-2])$/.test(String(a.baslangicAy||''))&&Number.isInteger(Number(a.taksitSayisi||1))&&Number(a.taksitSayisi||1)>0),bugun=new Date(),buAy=bugun.getFullYear()+'-'+String(bugun.getMonth()+1).padStart(2,'0');
+            baslangic.value=baslangic.value||planlar.map(a=>a.baslangicAy).sort()[0]||buAy;
+            bitis.value=bitis.value||planlar.map(a=>avansAyEkle(a.baslangicAy,Number(a.taksitSayisi||1)-1)).sort().pop()||baslangic.value;
+            card.dataset.donemHazir='1';
+        }
+        const donem=avansGelecekDonemi(),hata=document.getElementById('avansGelecekDonemHatasi');
+        if(hata){hata.textContent=donem.hata;hata.style.display=donem.hata?'':'none';}
+        card.querySelectorAll('.avans-plan-ciktilari button').forEach(b=>b.disabled=!!donem.hata);
+        if(donem.hata){head.innerHTML='';body.innerHTML='';foot.innerHTML='';document.getElementById('avansGelecekOzet').textContent='';return false;}
+        const {aylar,kisiler,ayToplamlari,genelToplam}=avansGelecekPlanVerisi(donem.ilkAy,donem.sonAy),yilGoster=true,kolon=aylar.length+2;
         head.innerHTML='<tr><th>AD SOYAD</th>'+aylar.map(ay=>'<th>'+escapeHtml(avansAyBasligi(ay,yilGoster))+'</th>').join('')+'<th>TOPLAM</th></tr>';
         body.innerHTML=kisiler.map(k=>'<tr><td><strong>'+escapeHtml(k.ad)+'</strong>'+(k.sube?'<br><small style="color:#64748b">'+escapeHtml(k.sube)+'</small>':'')+'</td>'+aylar.map(ay=>{const tutar=Number(k.aylar[ay]||0);return '<td class="avans-ay-tutar">'+(tutar?paraFormatla(tutar):'')+'</td>';}).join('')+'<td class="avans-satir-toplam">'+paraFormatla(k.toplam)+'</td></tr>').join('')||'<tr><td colspan="'+kolon+'" style="text-align:center!important;padding:28px;color:#64748b;position:static">Seçilen dönem için planlanmış avans kesintisi bulunmuyor.</td></tr>';
         foot.innerHTML=kisiler.length?'<tr><th>TOPLAM</th>'+aylar.map(ay=>'<th>'+paraFormatla(ayToplamlari[ay])+'</th>').join('')+'<th>'+paraFormatla(genelToplam)+'</th></tr>':'';
         document.getElementById('avansGelecekOzet').textContent=kisiler.length+' personel · '+aylar.length+' ay · '+paraFormatla(genelToplam);
+        return true;
+    }
+
+    function avansGelecekExcelAl() {
+        if(!renderAvansGelecekKesintileri())return;
+        const donem=avansGelecekDonemi();
+        return aracTabloDisariAktar('avansGelecekBody','excel','AVANS KESİNTİ PLANI — '+donem.baslik,'Avans_Kesinti_Plani_'+donem.ilkAy+'_'+donem.sonAy);
     }
 
     function avansGelecekPdfAl() {
-        const tablo=document.querySelector('#avansGelecekCard .avans-matris'),secim=document.getElementById('avansGelecekAySayisi'),donem=secim?.selectedOptions?.[0]?.textContent?.trim()||'Tüm plan';
-        return window.fdTabloPdfOnizle?.(tablo,'GELECEK AVANS KESİNTİLERİ','Gelecek_Avans_Kesintileri_'+new Date().getFullYear()+'.pdf',{donem:donem.toLocaleUpperCase('tr-TR'),format:'a3',genislik:'400mm',ilkKolonGenislik:'16%',altBaslik:'Gelecek Avans Kesintileri'});
+        if(!renderAvansGelecekKesintileri())return;
+        const tablo=document.querySelector('#avansGelecekCard .avans-matris'),donem=avansGelecekDonemi();
+        return window.fdTabloPdfOnizle?.(tablo,'AVANS KESİNTİ PLANI','Avans_Kesinti_Plani_'+donem.ilkAy+'_'+donem.sonAy+'.pdf',{donem:donem.baslik,format:'a3',genislik:'400mm',ilkKolonGenislik:'16%',altBaslik:'Avans Kesinti Planı'});
     }
 
     async function avansGelecekGoruntuAl(button) {
+        if(!renderAvansGelecekKesintileri())return;
         const tablo=document.querySelector('#avansGelecekCard .avans-matris');
         if(!tablo||!tablo.rows.length)return alert('Görüntüsü alınacak gelecek kesinti tablosu bulunmuyor.');
-        const secim=document.getElementById('avansGelecekAySayisi'),donem=secim?.selectedOptions?.[0]?.textContent?.trim()||'Tüm plan',ozet=document.getElementById('avansGelecekOzet')?.textContent?.trim()||'',eskiMetin=button?.innerHTML||'';
+        const donem=avansGelecekDonemi().baslik,ozet=document.getElementById('avansGelecekOzet')?.textContent?.trim()||'',eskiMetin=button?.innerHTML||'';
+        const card=document.getElementById('avansGelecekCard');card.dataset.goruntuHazirlaniyor='1';
+        card.querySelectorAll('.avans-gelecek-aksiyonlar input,.avans-plan-ciktilari button').forEach(el=>el.disabled=true);
         if(button){button.disabled=true;button.innerHTML='⏳ Hazırlanıyor';}
         showGlobalOverlay('Görüntü hazırlanıyor','Gelecek kesintiler tablosunun tamamı resme aktarılıyor...');
         try{
             await document.fonts?.ready;
-            const enBuyukBoyut=Math.max(tablo.scrollWidth,tablo.scrollHeight+72,1),olcek=Math.min(2,15000/enBuyukBoyut),baslik='GELECEK AVANS KESİNTİLERİ — '+donem.toLocaleUpperCase('tr-TR')+(ozet?' · '+ozet:''),canvas=await puantajCanvasOlustur(tablo,olcek,baslik);
+            const enBuyukBoyut=Math.max(tablo.scrollWidth,tablo.scrollHeight+72,1),olcek=Math.min(2,15000/enBuyukBoyut),baslik='AVANS KESİNTİ PLANI — '+donem.toLocaleUpperCase('tr-TR')+(ozet?' · '+ozet:''),canvas=await puantajCanvasOlustur(tablo,olcek,baslik);
             if(!canvas||canvas.width<2||canvas.height<2)throw new Error('Görüntü boş oluştu.');
             const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
             if(!blob)throw new Error('PNG görüntüsü oluşturulamadı.');
@@ -10461,7 +10513,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }catch(error){
             hideGlobalOverlay();console.error('Gelecek avans kesintileri görüntüsü alınamadı:',error);alert('Görüntü alınamadı: '+(error?.message||error));
         }finally{
-            if(button){button.disabled=false;button.innerHTML=eskiMetin;}
+            delete card.dataset.goruntuHazirlaniyor;
+            card.querySelectorAll('.avans-gelecek-aksiyonlar input').forEach(el=>el.disabled=false);
+            if(button)button.innerHTML=eskiMetin;
+            renderAvansGelecekKesintileri();
         }
     }
 
@@ -24199,14 +24254,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v203';
+      const anahtar='fd-pwa-yenileme-v204';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=203',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=204',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
