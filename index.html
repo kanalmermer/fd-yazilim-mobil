@@ -24805,6 +24805,14 @@ body.fd-vk-detail-open{overflow:hidden}
 .fd-kira-total td{background:#edf5f8!important;border-top:2px solid #c0dbe5!important;font-weight:650;padding:13px 10px!important;color:#204b61!important}
 .fd-kira-report-detail{max-width:260px;font-size:11px;line-height:1.7}
 .fd-kira-report-detail summary{cursor:pointer;color:#51738c}
+#kiraTakipApp #kiraRaporTablo,#modalKiraSahipDetay #fdKiraSahipDetayTablo{width:100%!important;table-layout:fixed;min-width:760px}
+#kiraTakipApp #kiraRaporTablo th,#modalKiraSahipDetay #fdKiraSahipDetayTablo th{height:48px;box-sizing:border-box;vertical-align:middle;padding:10px 14px;line-height:1.45;letter-spacing:0}
+#kiraTakipApp #kiraRaporTablo th:first-child,#modalKiraSahipDetay #fdKiraSahipDetayTablo th:first-child{width:16%}
+#kiraTakipApp #kiraRaporTablo th:nth-child(n+2):nth-child(-n+5),#modalKiraSahipDetay #fdKiraSahipDetayTablo th:nth-child(n+2):nth-child(-n+5){width:16%;text-align:right}
+#kiraTakipApp #kiraRaporTablo th:nth-child(4),#modalKiraSahipDetay #fdKiraSahipDetayTablo th:nth-child(4){width:18%!important}
+#kiraTakipApp #kiraRaporTablo th:last-child,#modalKiraSahipDetay #fdKiraSahipDetayTablo th:last-child{width:18%}
+#kiraTakipApp #kiraRaporTablo td,#modalKiraSahipDetay #fdKiraSahipDetayTablo td{padding:12px 14px;line-height:1.5}
+#kiraTakipApp #kiraRaporTablo .fd-kira-report-detail,#modalKiraSahipDetay #fdKiraSahipDetayTablo .fd-kira-report-detail{max-width:100%;overflow-wrap:anywhere}
 .fd-kira-export{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
 .fd-kira-image{background:#0284c7!important;color:#fff!important;border:0;cursor:pointer}
 #modalKiraDaireDetay>.modal-card,#modalKiraSahipDetay>.modal-card{width:min(1200px,calc(100vw - 32px))!important;max-width:1200px!important;max-height:calc(100dvh - 32px)!important;border-radius:13px;box-shadow:0 16px 48px #0f172a25}
@@ -24918,14 +24926,14 @@ body.fd-vk-detail-open{overflow:hidden}
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v214';
+      const anahtar='fd-pwa-yenileme-v215';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=214',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=215',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
