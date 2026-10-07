@@ -21041,79 +21041,19 @@ tapuCksArayuzunuKur();
     function evrakWhatsappTopluSeciminiAc(){const belgeler=evrakWhatsappSepetBelgeleri();if(!belgeler.length)return alert('Göndermek için en az bir evrak seçin.');evrakWhatsappGonderilecekIds=belgeler.map(x=>String(x.id));evrakWhatsappKisiSeciminiGoster('💬 '+belgeler.length+' Evrakı Gönder');}
     async function evrakWhatsappSepetiTopluIndir(){const belgeler=evrakWhatsappSepetBelgeleri(),btn=document.getElementById('evrakSepetIndirBtn');if(!belgeler.length)return alert('İndirmek için en az bir evrak seçin.');if(typeof JSZip==='undefined')return alert('Toplu indirme hazırlanamadı.');btn.disabled=true;try{const zip=new JSZip();for(let i=0;i<belgeler.length;i++){const evrak=belgeler[i];btn.textContent='Hazırlanıyor '+(i+1)+' / '+belgeler.length;const dosya=await fdYazilimDriveDosyaIndir(evrak.dosya.id,'EVRAK TAKİP'),ad=dosya.ad||evrak.dosya.ad||((evrak.evrakAdi||'evrak')+'.pdf');zip.file(String(i+1).padStart(2,'0')+'_'+ad,dosya.base64,{base64:true});}const arsiv=await zip.generateAsync({type:'blob'},bilgi=>{btn.textContent='Arşivleniyor %'+Math.round(bilgi.percent);}),adres=URL.createObjectURL(arsiv),a=document.createElement('a');a.href=adres;a.download='EVRAKLAR_'+new Date().toISOString().slice(0,10)+'.zip';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(adres),1500);evrakWhatsappSepetiniTemizle();evrakBildirim(belgeler.length+' evrak indirildi.');}catch(hata){console.error(hata);alert('Seçilen evraklar indirilemedi. Lütfen tekrar deneyin.');}finally{btn.disabled=false;evrakWhatsappSepetiniGuncelle();}}
     function evrakWhatsappSeciminiAc(id){const kayit=evrakBelgeleri().find(x=>String(x.id)===String(id));if(!kayit?.dosya?.id&&!kayit?.dosya?.url)return alert('Bu evrakın gönderilecek dosya bağlantısı bulunamadı.');evrakWhatsappGonderilecekIds=[String(kayit.id)];evrakWhatsappKisiSeciminiGoster('💬 '+(kayit.evrakAdi||'Evrak')+' Gönder');}
-    let evrakWhatsappDosyaPaketi=null;
-    const EVRAK_PAYLASIM_ADRESI='https:\x2f\x2fkanalmermer.github.io/fd-yazilim-mobil/evrak-paylas.html?v=209';
-    function evrakWhatsappDosyaModaliniKur(){
-        let m=document.getElementById('modalEvrakDosyaPaylas');if(m)return m;
-        m=document.createElement('div');m.id='modalEvrakDosyaPaylas';m.className='modal-overlay';
-        m.innerHTML='<div class="modal-card" style="width:min(760px,96vw);max-width:760px;max-height:92vh;display:flex;flex-direction:column"><div class="modal-header"><h3>WhatsApp ile Dosya Paylaş</h3><button class="modal-close" type="button" onclick="evrakWhatsappDosyaPaylasiminiKapat()">✕</button></div><div class="modal-body" style="overflow:auto;min-height:0"><p id="evrakDosyaPaylasKisi" style="margin:0 0 10px"></p><div id="evrakDosyaPaylasDurum" role="status" aria-live="polite" style="padding:12px;border:1px solid #bae6fd;border-radius:10px;background:#f0f9ff;color:#075985;line-height:1.5"></div><div id="evrakDosyaPaylasListe" style="margin:12px 0;display:grid;gap:8px"></div><div style="display:flex;flex-wrap:wrap;gap:8px"><button id="evrakDosyaPaylasBtn" class="btn-modern" style="background:#16a34a;color:white" type="button" onclick="evrakWhatsappDosyalariPaylas()" disabled>💬 Dosyaları Paylaş</button><button id="evrakDosyaZipBtn" class="btn-modern" style="background:#0284c7;color:white" type="button" onclick="evrakWhatsappDosyalariZipIndir()" disabled>⬇ ZIP İndir</button><button id="evrakDosyaSohbetBtn" class="btn-modern btn-detail-modern" type="button" onclick="evrakWhatsappDosyaSohbetiniAc()" disabled>WhatsApp Sohbetini Aç</button></div></div></div>';
-        document.body.appendChild(m);return m;
-    }
-    function evrakWhatsappDosyaDurumu(metin){const alan=document.getElementById('evrakDosyaPaylasDurum');if(alan)alan.textContent=metin}
-    function evrakWhatsappDosyaDugmeleri(p){const hazir=!!p?.hazir&&!p.mesgul;for(const id of ['evrakDosyaPaylasBtn','evrakDosyaZipBtn','evrakDosyaSohbetBtn']){const b=document.getElementById(id);if(b)b.disabled=!hazir}document.querySelectorAll('#evrakDosyaPaylasListe button').forEach(b=>b.disabled=!hazir)}
-    function evrakWhatsappDosyaPaylasiminiKapat(){const p=evrakWhatsappDosyaPaketi;evrakWhatsappDosyaPaketi=null;if(p){p.iptal=true;p.dosyalar=[];p.kopruTemizle?.()}modalKapat('modalEvrakDosyaPaylas')}
-    function evrakWhatsappDosyaPaketiGecerli(p){return !!p&&!p.iptal&&p===evrakWhatsappDosyaPaketi&&p.sirketId===String(activeUser?.sirketId||'')}
-    function evrakWhatsappHazirDosyaPaketi(){const p=evrakWhatsappDosyaPaketi;if(!evrakWhatsappDosyaPaketiGecerli(p)||!p.hazir){evrakWhatsappDosyaPaylasiminiKapat();alert('Dosya hazırlığı geçerli değil. Evrakları yeniden seçin.');return null}return p}
-    function evrakWhatsappDosyaAdi(ad){return String(ad||'evrak.pdf').replace(/[\\/:*?"<>|\u0000-\u001f]/g,'_').trim()||'evrak.pdf'}
-    function evrakWhatsappDosyaMime(ad,mime){const tur=String(mime||'').split(';')[0].trim().toLowerCase();if(tur&&tur!=='application/octet-stream')return tur;return({pdf:'application/pdf',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',doc:'application/msword',docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',xls:'application/vnd.ms-excel',xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}[String(ad).split('.').at(-1).toLowerCase()]||'application/octet-stream')}
-    async function evrakWhatsappGonder(kisiId){
-        if(evrakWhatsappDosyaPaketi&&!evrakWhatsappDosyaPaketi.hazir&&!evrakWhatsappDosyaPaketi.iptal)return;
-        const kisi=evrakWhatsappKisileri().find(x=>String(x.id)===String(kisiId)),ids=[...new Set(evrakWhatsappGonderilecekIds.map(String))],belgeler=ids.map(id=>evrakBelgeleri().find(x=>String(x.id)===id));
-        if(!kisi||!ids.length)return;if(!activeUser?.sirketId)return alert('Şirket oturumu bulunamadı.');
+    function evrakWhatsappGonder(kisiId){
+        if(!activeUser?.sirketId)return alert('Şirket oturumu bulunamadı.');
         if(typeof anaMenuModulErisimiVar==='function'&&!anaMenuModulErisimiVar('evrak'))return alert('Evrak paylaşma yetkiniz yok.');
-        if(belgeler.some(x=>!x?.dosya?.id))return alert('Seçilen evraklardan birinin Drive dosyası bulunamadı. Seçimi kontrol edin.');
+        const kisi=evrakWhatsappKisileri().find(x=>String(x.id)===String(kisiId)),ids=[...new Set(evrakWhatsappGonderilecekIds.map(String))],belgeler=ids.map(id=>evrakBelgeleri().find(x=>String(x.id)===id));
+        if(!kisi||!ids.length)return;
+        if(belgeler.some(x=>!x||(!x.dosya?.id&&!x.dosya?.url&&!x.dosya?.webViewLink)))return alert('Seçilen evraklardan birinin dosya bağlantısı bulunamadı. Seçimi kontrol edin.');
         const telefon=evrakWhatsappNumarasi(kisi.telefon);if(!/^[1-9]\d{9,14}$/.test(telefon))return alert('Kişi numarası geçerli değil.');
-        if(belgeler.reduce((t,x)=>t+Math.max(0,Number(x.dosya.boyut)||0),0)>100*1024*1024)return alert('Tek seferde en fazla 100 MB dosya hazırlanabilir. Evrakları daha küçük gruplar halinde seçin.');
-        evrakWhatsappDosyaPaylasiminiKapat();const p={sirketId:String(activeUser.sirketId),kisi:{ad:String(kisi.ad||''),telefon},dosyalar:[],hazir:false,mesgul:false,iptal:false};evrakWhatsappDosyaPaketi=p;
-        const modal=evrakWhatsappDosyaModaliniKur();document.getElementById('evrakDosyaPaylasKisi').textContent='Alıcı: '+p.kisi.ad+' · +'+telefon;document.getElementById('evrakDosyaPaylasListe').replaceChildren();evrakWhatsappDosyaDugmeleri(p);modal.style.display='flex';modalKapat('modalEvrakWhatsappGonder');
-        try{
-            let toplam=0;
-            for(const [i,kayit] of belgeler.entries()){
-                if(!evrakWhatsappDosyaPaketiGecerli(p))return;
-                evrakWhatsappDosyaDurumu('Dosyalar hazırlanıyor: '+(i+1)+' / '+belgeler.length+'.');
-                const d=await fdYazilimDriveDosyaIndir(String(kayit.dosya.id),'EVRAK TAKİP');
-                if(!evrakWhatsappDosyaPaketiGecerli(p))return;
-                if(!d?.base64)throw new Error((kayit.evrakAdi||'Evrak')+' dosyası alınamadı.');
-                if(String(d.base64).length>Math.ceil(20*1024*1024/3)*4+4)throw new Error('Bir evrak 20 MB dosya sınırını aşıyor.');
-                const ham=atob(d.base64),bytes=new Uint8Array(ham.length);if(!bytes.length||bytes.length>20*1024*1024)throw new Error('Evrak boş veya 20 MB sınırını aşıyor.');
-                toplam+=bytes.length;if(toplam>100*1024*1024)throw new Error('Toplam dosya boyutu 100 MB sınırını aşıyor. Daha küçük bir grup seçin.');
-                for(let n=0;n<ham.length;n++)bytes[n]=ham.charCodeAt(n);
-                const ad=evrakWhatsappDosyaAdi(d.ad||kayit.dosya.ad||((kayit.evrakAdi||'evrak')+'.pdf')),mime=evrakWhatsappDosyaMime(ad,d.mimeType||kayit.dosya.mimeType);
-                p.dosyalar.push(new File([bytes],ad,{type:mime}));
-            }
-            if(!evrakWhatsappDosyaPaketiGecerli(p))return;p.hazir=true;
-            document.getElementById('evrakDosyaPaylasListe').innerHTML=p.dosyalar.map((d,i)=>'<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px;border:1px solid #dbe5ef;border-radius:9px;background:#fff"><div style="flex:1;min-width:150px;overflow-wrap:anywhere"><strong style="font-size:.8rem">'+escapeDashboardText(d.name)+'</strong><small style="display:block;color:#64748b">'+(d.size/1024/1024).toLocaleString('tr-TR',{maximumFractionDigits:2})+' MB</small></div><button class="btn-modern" style="background:#16a34a;color:white" type="button" onclick="evrakWhatsappDosyalariPaylas('+i+')">Paylaş</button><button class="btn-modern btn-detail-modern" type="button" onclick="evrakWhatsappHazirDosyayiIndir('+i+')">İndir</button></div>').join('');
-            evrakWhatsappDosyaDurumu(p.dosyalar.length+' dosya hazır.');evrakWhatsappDosyaDugmeleri(p);
-        }catch(e){if(evrakWhatsappDosyaPaketiGecerli(p)){p.dosyalar=[];evrakWhatsappDosyaDurumu('Dosyalar hazırlanamadı: '+(e.message||e)+'. Pencereyi kapatıp tekrar deneyin.')}}
-        finally{if(evrakWhatsappDosyaPaketi===p&&!evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaPaylasiminiKapat()}
+        const satirlar=belgeler.map((kayit,i)=>(belgeler.length>1?(i+1)+'. ':'')+(kayit.evrakAdi||'Evrak')+(kayit.yil?' ('+kayit.yil+')':'')+'\n'+evrakDosyaBaglantisi(kayit.dosya));
+        const mesaj='Merhaba,\n'+(belgeler.length>1?'İstediğiniz evrakları gönderiyorum:':'Evrakı iletiyorum:')+'\n\n'+satirlar.join('\n\n');
+        // Open synchronously from the user's click; no file preparation or helper.
+        window.open('https:\x2f\x2fwa.me/'+telefon+'?text='+encodeURIComponent(mesaj),'_blank','noopener,noreferrer');
+        modalKapat('modalEvrakWhatsappGonder');
     }
-    function evrakWhatsappPaylasimKoprusu(p,dosyalar){
-        if(p.kopruTemizle&&p.kopruPencere&&!p.kopruPencere.closed){evrakWhatsappDosyaDurumu('Paylaşım penceresi zaten açılıyor. Lütfen yeni pencereyi kontrol edin.');return}
-        p.kopruTemizle?.();const nonce=crypto.randomUUID(),origin=new URL(EVRAK_PAYLASIM_ADRESI).origin;let pencere,zaman;
-        const temizle=()=>{clearTimeout(zaman);window.removeEventListener('message',dinle);if(p.kopruTemizle===temizle){p.kopruTemizle=null;p.kopruPencere=null}};
-        const dinle=event=>{if(event.origin!==origin||event.source!==pencere||event.data?.nonce!==nonce||event.data?.type!=='fd-evrak-ready')return;temizle();if(!evrakWhatsappDosyaPaketiGecerli(p))return;pencere.postMessage({type:'fd-evrak-files',nonce,files:dosyalar,recipient:p.kisi},origin);evrakWhatsappDosyaDurumu('Paylaşım penceresi açıldı. Gönderimi WhatsApp’ta tamamlayın.');};
-        window.addEventListener('message',dinle);p.kopruTemizle=temizle;
-        // A top-level page avoids Google Apps Script iframe web-share restrictions.
-        pencere=window.open(EVRAK_PAYLASIM_ADRESI+'#'+nonce,'_blank');
-        p.kopruPencere=pencere;
-        if(!pencere){temizle();evrakWhatsappDosyaDurumu('Paylaşım penceresi engellendi. Açılır pencerelere izin verin veya dosyaları indirin.');return}
-        evrakWhatsappDosyaDurumu('Paylaşım penceresi açılıyor…');
-        zaman=setTimeout(()=>{temizle();if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDurumu('Dosyalar aktarılamadı. Tekrar deneyin veya dosyaları indirin.');},20000);
-    }
-    async function evrakWhatsappDosyalariPaylas(index=-1){
-        const p=evrakWhatsappHazirDosyaPaketi();if(!p||p.mesgul)return;const dosyalar=index===-1?p.dosyalar:p.dosyalar.slice(Number(index),Number(index)+1);if(!dosyalar.length)return;
-        const politika=document.permissionsPolicy||document.featurePolicy;
-        let destek=false;try{destek=!!navigator.share&&!!navigator.canShare?.({files:dosyalar})&&(!politika?.allowsFeature||politika.allowsFeature('web-share'))}catch(e){destek=false}
-        if(!destek){evrakWhatsappPaylasimKoprusu(p,dosyalar);return}
-        p.mesgul=true;evrakWhatsappDosyaDugmeleri(p);
-        try{await navigator.share({files:dosyalar});if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDurumu('Gönderimi WhatsApp’ta tamamlayın.')}
-        catch(e){if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDurumu(e.name==='AbortError'?'Paylaşım kapatıldı.':'Paylaşım açılamadı. Dosyaları indirip WhatsApp’a ekleyin.');}
-        finally{p.mesgul=false;if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDugmeleri(p)}
-    }
-    function evrakWhatsappBlobIndir(blob,ad){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=ad;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
-    function evrakWhatsappHazirDosyayiIndir(index){const p=evrakWhatsappHazirDosyaPaketi(),d=p?.dosyalar[Number(index)];if(d)evrakWhatsappBlobIndir(d,d.name)}
-    async function evrakWhatsappDosyalariZipIndir(){const p=evrakWhatsappHazirDosyaPaketi();if(!p||p.mesgul)return;if(typeof JSZip==='undefined')return alert('ZIP bileşeni yüklenemedi. Evrakları satırdaki İndir düğmeleriyle ayrı ayrı indirebilirsiniz.');p.mesgul=true;evrakWhatsappDosyaDugmeleri(p);try{const zip=new JSZip();for(const [i,d] of p.dosyalar.entries())zip.file(String(i+1).padStart(2,'0')+'_'+d.name,await d.arrayBuffer());const blob=await zip.generateAsync({type:'blob'});if(evrakWhatsappDosyaPaketiGecerli(p)){evrakWhatsappBlobIndir(blob,'EVRAKLAR_'+new Date().toISOString().slice(0,10)+'.zip');evrakWhatsappDosyaDurumu('ZIP indirildi.')}}catch(e){if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDurumu('ZIP hazırlanamadı: '+(e.message||e))}finally{p.mesgul=false;if(evrakWhatsappDosyaPaketiGecerli(p))evrakWhatsappDosyaDugmeleri(p)}}
-    function evrakWhatsappDosyaSohbetiniAc(){const p=evrakWhatsappHazirDosyaPaketi();if(!p)return;const w=window.open('https:\x2f\x2fwa.me/'+p.kisi.telefon,'_blank','noopener,noreferrer');evrakWhatsappDosyaDurumu('İndirilen dosyaları WhatsApp sohbetine ekleyin.');}
     async function evrakVerileriniYukle(){
         if(!activeUser?.sirketId)throw new Error('Şirket oturumu bulunamadı.');
         const tum=[];const boyut=1000;
@@ -24423,14 +24363,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v209';
+      const anahtar='fd-pwa-yenileme-v210';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=209',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=210',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });

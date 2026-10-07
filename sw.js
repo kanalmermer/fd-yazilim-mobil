@@ -1,5 +1,5 @@
-const SURUM='fd-yazilim-mobil-v209';
-const KABUK=['./','./index.html','./evrak-paylas.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
+const SURUM='fd-yazilim-mobil-v210';
+const KABUK=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(SURUM).then(cache=>cache.addAll(KABUK)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==SURUM).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
