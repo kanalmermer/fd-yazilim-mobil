@@ -21042,7 +21042,7 @@ tapuCksArayuzunuKur();
     async function evrakWhatsappSepetiTopluIndir(){const belgeler=evrakWhatsappSepetBelgeleri(),btn=document.getElementById('evrakSepetIndirBtn');if(!belgeler.length)return alert('İndirmek için en az bir evrak seçin.');if(typeof JSZip==='undefined')return alert('Toplu indirme hazırlanamadı.');btn.disabled=true;try{const zip=new JSZip();for(let i=0;i<belgeler.length;i++){const evrak=belgeler[i];btn.textContent='Hazırlanıyor '+(i+1)+' / '+belgeler.length;const dosya=await fdYazilimDriveDosyaIndir(evrak.dosya.id,'EVRAK TAKİP'),ad=dosya.ad||evrak.dosya.ad||((evrak.evrakAdi||'evrak')+'.pdf');zip.file(String(i+1).padStart(2,'0')+'_'+ad,dosya.base64,{base64:true});}const arsiv=await zip.generateAsync({type:'blob'},bilgi=>{btn.textContent='Arşivleniyor %'+Math.round(bilgi.percent);}),adres=URL.createObjectURL(arsiv),a=document.createElement('a');a.href=adres;a.download='EVRAKLAR_'+new Date().toISOString().slice(0,10)+'.zip';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(adres),1500);evrakWhatsappSepetiniTemizle();evrakBildirim(belgeler.length+' evrak indirildi.');}catch(hata){console.error(hata);alert('Seçilen evraklar indirilemedi. Lütfen tekrar deneyin.');}finally{btn.disabled=false;evrakWhatsappSepetiniGuncelle();}}
     function evrakWhatsappSeciminiAc(id){const kayit=evrakBelgeleri().find(x=>String(x.id)===String(id));if(!kayit?.dosya?.id&&!kayit?.dosya?.url)return alert('Bu evrakın gönderilecek dosya bağlantısı bulunamadı.');evrakWhatsappGonderilecekIds=[String(kayit.id)];evrakWhatsappKisiSeciminiGoster('💬 '+(kayit.evrakAdi||'Evrak')+' Gönder');}
     let evrakWhatsappDosyaPaketi=null;
-    const EVRAK_PAYLASIM_ADRESI='https:\x2f\x2fkanalmermer.github.io/fd-yazilim-mobil/evrak-paylas.html';
+    const EVRAK_PAYLASIM_ADRESI='https:\x2f\x2fkanalmermer.github.io/fd-yazilim-mobil/evrak-paylas.html?v=209';
     function evrakWhatsappDosyaModaliniKur(){
         let m=document.getElementById('modalEvrakDosyaPaylas');if(m)return m;
         m=document.createElement('div');m.id='modalEvrakDosyaPaylas';m.className='modal-overlay';
@@ -24423,14 +24423,14 @@ document.addEventListener('click',function(e){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v208';
+      const anahtar='fd-pwa-yenileme-v209';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=208',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=209',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
