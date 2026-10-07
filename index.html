@@ -10108,7 +10108,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const benzersiz = new Map((Array.isArray(bildirimler) ? bildirimler : [])
             .filter(item => item?.personelId && item?.mesaj).map(item => [String(item.personelId), item]));
         const sonuc = { toplam:benzersiz.size, kuyrukta:0, gonderilen:0, atlanan:0, basarisiz:0, hatalar:[] };
-        for (const item of benzersiz.values()) {
+        const items=[...benzersiz.values()];let cursor=0;
+        const worker=async()=>{while(cursor<items.length){
+            const item=items[cursor++];
             try {
                 if (typeof window.fdxPlanliBildirimApi !== 'function') throw new Error('Planlı WhatsApp bağlantısı hazır değil.');
                 const cevap = await window.fdxPlanliBildirimApi({ action:'schedule-payslip-upsert', employeeId:String(item.personelId),
@@ -10121,7 +10123,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             } catch (error) {
                 sonuc.basarisiz++; sonuc.hatalar.push({ personelId:String(item.personelId), hata:String(error?.message || error) });
             }
-        }
+        }};
+        await Promise.all(Array.from({length:Math.min(4,items.length)},()=>worker()));
         if (sonuc.kuyrukta) { const alan=document.getElementById('fdWhatsappKuyrukListesi'); if(alan)delete alan.dataset.loaded; }
         return sonuc;
     }
@@ -22424,7 +22427,7 @@ document.addEventListener('click',function(e){
         if(!sonuc.satirlar.length)throw new Error('Maaş listesindeki personel ve yatacak maaş tutarları okunamadı. Dosyada personel adı veya T.C. ile “Net Ücret / Yatacak” sütunu bulunmalıdır.');
         return{satirlar:sonuc.satirlar,sorunlar:sonuc.sorunlar||[],okumaTarihi:new Date().toISOString(),dosyaAdi:String(dosya.name||'Maaş Listesi')};
     }
-    async function ucretPusulalariniAyir(dosya,d){
+    async function ucretPusulalariniAyir(dosya,d,ilerleme){
         if(!window.pdfjsLib)throw new Error('PDF okuma bileşeni yüklenemedi.');
         if(!window.PDFLib?.PDFDocument)throw new Error('PDF ayırma bileşeni yüklenemedi.');
         window.pdfjsLib.GlobalWorkerOptions.workerSrc='https:\x2f\x2fcdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -22435,6 +22438,7 @@ document.addEventListener('click',function(e){
         const bulunanlar=[],sorunlar=[],kullanilan=new Set(),baslikMetinleri=[];
         try{
             for(let sayfaNo=1;sayfaNo<=okuma.numPages;sayfaNo++){
+                if(typeof ilerleme==='function')ilerleme(sayfaNo,okuma.numPages);
                 const sayfa=await okuma.getPage(sayfaNo),icerik=await sayfa.getTextContent(),satirlar=bordroPdfSatirlari(icerik.items);
                 const basliklar=satirlar.filter(satir=>{const n=bordroMetinAnahtari(satir.metin);return n.endsWith('UCRET PUSULASI')&&!n.includes('HESAP')}).filter((satir,index,dizi)=>index===0||Math.abs(dizi[index-1].y-satir.y)>8);
                 baslikMetinleri.push(...basliklar.map(x=>x.metin));
@@ -22482,23 +22486,56 @@ document.addEventListener('click',function(e){
             pusulaCache.set(onbellekAnahtari,harita);return harita;
         }finally{pusulaYuklenenAnahtar=''}
     }
+    async function bordroGrupServisi(veri,tekrar=true){
+        const body=JSON.stringify({...veri,modul:KLASOR});let sonHata;
+        for(let deneme=0;deneme<(tekrar?3:1);deneme++){
+            const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),90000);
+            try{
+                const response=await fetch(GOOGLE_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body,signal:controller.signal});
+                const metin=await response.text();let sonuc;
+                try{sonuc=JSON.parse(metin)}catch(_){throw new Error('Google dosya servisi geçici olarak yanıt veremedi.')}
+                if(!response.ok||!sonuc?.basarili||!sonuc.sonuc)throw new Error(sonuc?.hata||'Bordro dosya servisi yanıt vermedi.');
+                return sonuc.sonuc;
+            }catch(e){sonHata=e;if(deneme<(tekrar?2:0))await new Promise(resolve=>setTimeout(resolve,(deneme+1)*1500))}
+            finally{clearTimeout(timer)}
+        }
+        throw new Error(sonHata?.name==='AbortError'?'Google dosya servisi çok uzun süre yanıt vermedi. Tamamlanan kayıtlar korunuyor.':sonHata?.message||'Bordro grubu yüklenemedi.');
+    }
+    async function bordroBekleyenDosyalariTemizle(ids){
+        const benzersiz=[...new Set((ids||[]).filter(Boolean).map(String))];if(!benzersiz.length)return;
+        for(let i=0;i<benzersiz.length;i+=100){
+            try{const sonuc=await bordroGrupServisi({islem:'bordroTopluDosyaSil',dosyaIds:benzersiz.slice(i,i+100)},false);
+                if(sonuc.hatalar?.length)showToast?.('Belgeler kaydedildi; '+sonuc.hatalar.length+' eski Drive dosyası temizlenemedi.','warning');
+            }catch(e){console.warn('Bordro eski dosya temizliği:',e);showToast?.('Belgeler kaydedildi; eski Drive dosyaları temizlenemedi.','warning')}
+        }
+    }
     async function pusulaKayitlariniKaydet(ayrilan,d,kaynakDosya,btn){
-        const eskiler=await pusulaKayitlariniYukle(d,true),yeniler=new Map(),toplam=ayrilan.bulunanlar.length;
-        for(let i=0;i<toplam;i++){
-            const parca=ayrilan.bulunanlar[i],eski=eskiler.get(parca.tc),ad='UCRET_PUSULASI_'+d.anahtar+'_'+parca.tc+'_'+bordroDosyaAnahtari(parca.personelAd)+'.pdf';
-            bordroIlerlet(btn,35+((i+1)/Math.max(1,toplam))*58,'Pusulalar yükleniyor '+(i+1)+' / '+toplam);
-            const base64=await dosyayiBase64Oku(new Blob([parca.baytlar],{type:'application/pdf'}));
-            const yuklenen=await fdYazilimDriveDosyaYukle(base64,ad,'application/pdf','',KLASOR);
-            const kayit={id:d.anahtar+'_'+parca.tc,kayitTipi:'ucretPusulasi',ay:d.anahtar,yil:d.yil,ayNo:d.ay+1,pId:parca.tc,personelAd:parca.personelAd,icraKesintisi:Number(parca.icraKesintisi||0),icraKesintisiOkundu:Boolean(parca.icraKesintisiBulundu),besKesintisi:Number(parca.besKesintisi||0),besKesintisiOkundu:Boolean(parca.besKesintisiBulundu),dosya:{id:yuklenen.id,url:yuklenen.url||'',ad:yuklenen.ad||ad,mimeType:'application/pdf',boyut:Number(yuklenen.boyut||parca.baytlar.length)},kaynakDosyaId:kaynakDosya.id,guncellemeTarihi:new Date().toISOString()};
-            const satir={company_id:aktifSirketId(),module:'bordropusulalari',legacy_id:kayit.id,record_year:d.yil,employee_legacy_id:parca.tc,data:kayit};
-            const{error}=await supabaseClient.from('portal_records').upsert(satir,{onConflict:'company_id,module,legacy_id'});if(error){try{await fdYazilimDriveDosyaSil(yuklenen.id,KLASOR)}catch(_){}throw error}
-            if(eski?.dosya?.id&&String(eski.dosya.id)!==String(yuklenen.id)){try{await fdYazilimDriveDosyaSil(eski.dosya.id,KLASOR)}catch(hata){console.warn('Eski personel pusulası silinemedi:',hata)}}
-            yeniler.set(parca.tc,kayit);
+        const eskiler=await pusulaKayitlariniYukle(d,true),yeniler=new Map(),toplam=ayrilan.bulunanlar.length,temizlikler=[];
+        ayrilan.temizlikDosyaIds=temizlikler;
+        for(let i=0;i<toplam;){
+            const grup=[];let boyut=0;
+            while(i<toplam&&grup.length<4){const p=ayrilan.bulunanlar[i];if(grup.length&&boyut+p.baytlar.length>20*1024*1024)break;grup.push(p);boyut+=p.baytlar.length;i++}
+            bordroIlerlet(btn,35+(yeniler.size/Math.max(1,toplam))*58,'Pusulalar yükleniyor · '+yeniler.size+' / '+toplam);
+            const hazir=await Promise.all(grup.map(async parca=>({parca,ad:'UCRET_PUSULASI_'+d.anahtar+'_'+parca.tc+'_'+bordroDosyaAnahtari(parca.personelAd)+'.pdf',base64:await dosyayiBase64Oku(new Blob([parca.baytlar],{type:'application/pdf'}))})));
+            const sonuc=await bordroGrupServisi({islem:'bordroTopluDosyaYukle',yuklemeId:String(kaynakDosya.id),dosyalar:hazir.map(x=>({dosyaAdi:x.ad,base64:x.base64}))});
+            const yuklenenler=new Map((sonuc.dosyalar||[]).map(x=>[x.ad,x])),kayitlar=[],satirlar=[];
+            for(const x of hazir){
+                const parca=x.parca,yuklenen=yuklenenler.get(x.ad);if(!yuklenen?.id)continue;
+                const kayit={id:d.anahtar+'_'+parca.tc,kayitTipi:'ucretPusulasi',ay:d.anahtar,yil:d.yil,ayNo:d.ay+1,pId:parca.tc,personelAd:parca.personelAd,icraKesintisi:Number(parca.icraKesintisi||0),icraKesintisiOkundu:Boolean(parca.icraKesintisiBulundu),besKesintisi:Number(parca.besKesintisi||0),besKesintisiOkundu:Boolean(parca.besKesintisiBulundu),dosya:{id:yuklenen.id,url:yuklenen.url||'',ad:yuklenen.ad||x.ad,mimeType:'application/pdf',boyut:Number(yuklenen.boyut||parca.baytlar.length)},kaynakDosyaId:kaynakDosya.id,guncellemeTarihi:new Date().toISOString()};
+                kayitlar.push(kayit);satirlar.push({company_id:aktifSirketId(),module:'bordropusulalari',legacy_id:kayit.id,record_year:d.yil,employee_legacy_id:parca.tc,data:kayit});
+            }
+            if(satirlar.length){
+                const{error}=await supabaseClient.from('portal_records').upsert(satirlar,{onConflict:'company_id,module,legacy_id'});if(error)throw error;
+                for(const kayit of kayitlar){yeniler.set(kayit.pId,kayit);const eski=eskiler.get(kayit.pId);if(eski?.dosya?.id&&eski.dosya.id!==kayit.dosya.id)temizlikler.push(eski.dosya.id)}
+                pusulaCache.set(pusulaOnbellekAnahtari(d),new Map([...eskiler,...yeniler]));
+                bordroIlerlet(btn,35+(yeniler.size/Math.max(1,toplam))*58,'Pusulalar kaydedildi · '+yeniler.size+' / '+toplam);
+            }
+            if(sonuc.hatalar?.length||kayitlar.length!==grup.length)throw new Error(yeniler.size+' / '+toplam+' pusula kaydedildi; tamamlanan kayıtlar korunuyor. '+(sonuc.hatalar?.[0]?.hata||'Bazı dosyalar yüklenemedi.'));
         }
         const kaldirilacak=[...eskiler.entries()].filter(([tc])=>!yeniler.has(tc));
-        for(const[tc,eski]of kaldirilacak){
-            const{error}=await supabaseClient.from('portal_records').delete().eq('company_id',aktifSirketId()).eq('module','bordropusulalari').eq('legacy_id',String(eski.id||d.anahtar+'_'+tc));if(error)throw error;
-            if(eski?.dosya?.id){try{await fdYazilimDriveDosyaSil(eski.dosya.id,KLASOR)}catch(hata){console.warn('Eski personel pusulası silinemedi:',hata)}}
+        if(kaldirilacak.length){const kimlikler=kaldirilacak.map(([tc,k])=>String(k.id||d.anahtar+'_'+tc));
+            const{error}=await supabaseClient.from('portal_records').delete().eq('company_id',aktifSirketId()).eq('module','bordropusulalari').in('legacy_id',kimlikler);if(error)throw error;
+            for(const[,eski]of kaldirilacak)if(eski?.dosya?.id)temizlikler.push(eski.dosya.id);
         }
         pusulaCache.set(pusulaOnbellekAnahtari(d),yeniler);return yeniler;
     }
@@ -22621,7 +22658,7 @@ document.addEventListener('click',function(e){
         if(!secilen.length)return alert('Yüklenecek en az bir belge seçin.');
         const max=20*1024*1024;
         for(const x of secilen){if(!uzanti(x.f))return alert(x.t.ad+' için yalnızca PDF veya Excel dosyası seçebilirsiniz.');if(x.f.size>max)return alert(x.t.ad+' dosyası en fazla 20 MB olabilir.')}
-        const d=donem(),uploadedAt=new Date().toISOString(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[],temizlikler=[];let icraIslenen=0,besIslenen=0,whatsappKuyrukta=0,belgeAyariDegisti=false;
+        const d=donem(),uploadedAt=new Date().toISOString(),k=JSON.parse(JSON.stringify(kayit(d))),btn=document.getElementById('bordroTopluKaydet'),uyarilar=[],bordroBildirilecekler=[],temizlikler=[],eskiPusulaDosyalari=[];let icraIslenen=0,besIslenen=0,whatsappKuyrukta=0,belgeAyariDegisti=false;
         islemde=true;btn.disabled=true;btn.classList.add('yukleniyor');
         try{
             for(let i=0;i<secilen.length;i++){
@@ -22629,7 +22666,7 @@ document.addEventListener('click',function(e){
                 let ayrilan=null,maasKarsilastirma=null;
                 if(t.kod==='ucret_pusulasi'&&ext==='pdf'){
                     bordroIlerlet(btn,5,'Ücret pusulaları inceleniyor...');
-                    ayrilan=await ucretPusulalariniAyir(f,d);
+                    ayrilan=await ucretPusulalariniAyir(f,d,(sayfa,toplam)=>bordroIlerlet(btn,5+20*sayfa/Math.max(1,toplam),'Pusulalar inceleniyor · '+sayfa+' / '+toplam+' sayfa'));
                     bordroIlerlet(btn,25,ayrilan.bulunanlar.length+' personel pusulası bulundu');
                 }else if(t.kod==='banka_maas'){
                     bordroIlerlet(btn,8,'Maaş listesi karşılaştırma için okunuyor...');
@@ -22642,6 +22679,7 @@ document.addEventListener('click',function(e){
                 belgeAyariDegisti=true;
                 if(ayrilan){
                     const kaydedilen=await pusulaKayitlariniKaydet(ayrilan,d,yeni,btn);
+                    eskiPusulaDosyalari.push(...(ayrilan.temizlikDosyaIds||[]));
                     bordroIlerlet(btn,94,'İcra kesintileri kaydediliyor...');
                     const icraSonucu=await bordroIcraKesintileriniKaydet(ayrilan.bulunanlar,d);icraIslenen+=icraSonucu.islenen;
                     if(icraSonucu.acikDosyaYok.length)uyarilar.push('Ücret pusulasında icra kesintisi okundu ancak açık icra dosyası bulunamadı:\n'+icraSonucu.acikDosyaYok.join(', '));
@@ -22660,6 +22698,8 @@ document.addEventListener('click',function(e){
             }
             await ayariKaydet(d,k);
             belgeAyariDegisti=false;
+            bordroIlerlet(btn,95,'Eski dosyalar topluca temizleniyor...');
+            await bordroBekleyenDosyalariTemizle(eskiPusulaDosyalari);
             await Promise.all(temizlikler.map(islem=>bordroEskiBelgeleriTemizle(islem.yeniId,islem.dosyaAdi,islem.eskiId)));
             temizlikler.length=0;
             if(bordroBildirilecekler.length){bordroIlerlet(btn,96,'WhatsApp bildirimleri saat 20.00 için planlanıyor...');const bildirimSonucu=await personelBordroBildirimleriniPlanla(bordroBildirilecekler,d,uploadedAt);whatsappKuyrukta=Number(bildirimSonucu.kuyrukta||0);if(bildirimSonucu.basarisiz)uyarilar.push(bildirimSonucu.basarisiz+' personele ücret pusulası WhatsApp bildirimi planlanamadı.\n'+bildirimSonucu.hatalar.slice(0,5).map(x=>x.hata).join('\n'))}
@@ -22668,7 +22708,7 @@ document.addEventListener('click',function(e){
             if(uyarilar.length)setTimeout(()=>alert(uyarilar.join('\n\n')),550);
         }catch(e){
             if(belgeAyariDegisti){try{await ayariKaydet(d,k);belgeAyariDegisti=false;await Promise.all(temizlikler.map(islem=>bordroEskiBelgeleriTemizle(islem.yeniId,islem.dosyaAdi,islem.eskiId)))}catch(kayitHatasi){console.error('Kısmi bordro kaydı korunamadı:',kayitHatasi)}}
-            console.error(e);alert('Belgeler kaydedilemedi: '+(e.message||e));panelCiz()
+            console.error(e);alert('Yükleme tamamlanamadı; kaydedilen belgeler korunuyor. '+(e.message||e));panelCiz()
         }
         finally{islemde=false;btn.disabled=false;btn.classList.remove('yukleniyor')}
     };
@@ -24743,14 +24783,14 @@ body.fd-vk-detail-open{overflow:hidden}
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v212';
+      const anahtar='fd-pwa-yenileme-v213';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=212',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=213',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
