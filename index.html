@@ -24901,10 +24901,12 @@ body.fd-vk-detail-open{overflow:hidden}
 </script>
 <style id="fdPersonelTasarimV217Style">
 :is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{background:#e8eef4;border:1px solid #e0e7ef;border-radius:10px;box-shadow:none;padding:5px;gap:5px;flex-wrap:wrap!important;overflow:visible}
-:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{font-size:11px;font-weight:500;padding:9px 11px;border-radius:7px;box-shadow:none;color:#65788b;flex:0 0 auto}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{font-size:13px!important;font-weight:600;padding:10px 12px!important;border-radius:7px;box-shadow:none;color:#51677b;flex:0 0 auto;transform:none!important;line-height:20px;min-height:42px;transition:background .15s,color .15s}
 :is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active{background:#fff!important;color:#155e75!important;box-shadow:0 2px 5px #0f172a0a}
 #personelApp,#personelDashboardApp{background:#f3f6fa;color:#334155}
-#personelApp .app-header-bar,#personelDashboardApp .app-header-bar{padding:13px 22px;background:#fff;border-bottom:1px solid #dfe7ef;box-shadow:none;justify-content:center}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:12px 22px!important;background:#fff;border-bottom:1px solid #dfe7ef;box-shadow:none;justify-content:flex-start;gap:0;flex-wrap:nowrap;min-width:0}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{width:100%;max-width:1596px;margin:0 auto!important;justify-content:flex-start;min-width:0;box-sizing:border-box}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>:not(.workspace-nav){display:none!important}
 #personelApp .app-layout>main,#personelDashboardApp>main{width:100%;max-width:1640px!important;padding:18px 22px 30px!important;margin:0 auto}
 .fd-personel-intro{margin:0 0 15px}.fd-personel-intro h2{font-size:19px;font-weight:650;margin:0;color:#20374e}.fd-personel-intro p{margin:5px 0 0;font-size:12px;color:#7c8a9c}
 #personelApp .module-subnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap!important;padding:0;margin:0 0 16px;background:transparent;border:0;box-shadow:none}
@@ -24919,11 +24921,11 @@ body.fd-vk-detail-open{overflow:hidden}
 #personelApp .personel-summary-card span{font-size:10px;font-weight:500;letter-spacing:.2px;color:#758599}
 #personelApp .personel-summary-card strong{font-size:21px;font-weight:650;color:#20374e;margin-top:5px}
 .fd-personel-branches{margin-top:12px;border:1px solid #dde5ee;border-radius:10px;overflow:hidden;background:#fff}
-.fd-personel-branches>summary{padding:11px 14px;font-size:11px;color:#63798e;cursor:pointer;font-weight:500}
+.fd-personel-branches>h3{padding:12px 15px;font-size:13px;color:#46647a;font-weight:600;margin:0 0 12px;border-bottom:1px solid #edf1f6;background:#f8fafc}
 #personelApp .branch-summary-list{padding:0 12px 12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
 #personelApp .branch-summary-card{padding:11px;border:1px solid #e6ecf3;border-radius:8px;background:#f9fbfe}
-#personelApp .branch-summary-card h4{font-size:11px;font-weight:600;margin:0 0 8px;color:#476079}
-#personelApp .branch-summary-metrics b{font-size:13px;font-weight:600}.fd-personel-branches[open]>summary{border-bottom:1px solid #edf1f6;margin-bottom:11px}
+#personelApp .branch-summary-card h4{font-size:13px;font-weight:600;margin:0 0 10px;color:#476079}
+#personelApp .branch-summary-metrics b{font-size:17px;font-weight:600;color:#155e75}#personelApp .branch-summary-metrics span{font-size:11px;color:#64748b}
 #personelApp .card{border:1px solid #dce5ee;border-radius:12px;box-shadow:0 3px 14px #0f172a04;background:#fff;padding:0!important;overflow:hidden}
 #personelApp .card-header{padding:15px 17px;border-bottom:1px solid #e5ebf2;background:#fff;gap:10px}
 #personelApp .card-header h2{font-size:14px;font-weight:650;color:#20374e;margin:0}
@@ -24964,7 +24966,9 @@ body.fd-vk-detail-open{overflow:hidden}
 @media(max-width:1150px){#personelApp .filter-bar{grid-template-columns:minmax(200px,1.5fr) repeat(2,minmax(150px,1fr))}}
 @media(max-width:700px){
 :is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{width:100%;overflow:auto!important;flex-wrap:nowrap!important;padding:5px;scrollbar-width:thin}
-:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{padding:8px 10px!important;font-size:11px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{padding:9px 11px!important;font-size:13px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:10px 12px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{margin:0!important;order:0}
 #personelApp .app-layout>main,#personelDashboardApp>main{padding:12px!important}
 #personelApp .module-subnav>button{flex:1 1 110px!important;min-width:0!important;white-space:normal}
 #personelApp .personel-export-actions{width:100%;margin:3px 0 0;justify-content:flex-start!important}#personelApp .personel-export-actions button{flex:1;min-width:0}
@@ -24992,7 +24996,7 @@ body.fd-vk-detail-open{overflow:hidden}
     }
     function personelDuzeniKur(){
         navlariKur();const main=document.querySelector('#personelApp .app-layout>main');if(main&&!main.querySelector('.fd-personel-intro')){const intro=document.createElement('header');intro.className='fd-personel-intro';intro.innerHTML='<h2>Personel Kayıtları</h2><p>Aktif ve ayrılan personeller, şube toplamları ve özlük bilgileri</p>';main.prepend(intro);}
-        for(const id of ['personelSubeOzet','ayrilanSubeOzet']){const el=document.getElementById(id);if(!el||el.parentElement.matches('details.fd-personel-branches'))continue;const oldTitle=el.previousElementSibling,details=document.createElement('details'),summary=document.createElement('summary');details.className='fd-personel-branches';summary.textContent=oldTitle?.textContent||'Şube bazında toplamlar';el.before(details);details.append(summary,el);if(oldTitle?.classList.contains('personel-summary-title'))oldTitle.remove();}
+        for(const id of ['personelSubeOzet','ayrilanSubeOzet']){const el=document.getElementById(id);if(!el||el.parentElement.matches('section.fd-personel-branches'))continue;const oldTitle=el.previousElementSibling,section=document.createElement('section'),heading=document.createElement('h3');section.className='fd-personel-branches';heading.textContent=oldTitle?.textContent||'Şube bazında toplamlar';el.before(section);section.append(heading,el);if(oldTitle?.classList.contains('personel-summary-title'))oldTitle.remove();}
         listeleriDuzenle();
     }
     const eskiRender=window.renderPersonelTables;
@@ -25020,14 +25024,14 @@ body.fd-vk-detail-open{overflow:hidden}
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v217';
+      const anahtar='fd-pwa-yenileme-v218';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=217',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=218',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
