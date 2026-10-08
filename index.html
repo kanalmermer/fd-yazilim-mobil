@@ -4366,12 +4366,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 degisenler.push({ company_id: activeUser.sirketId, module: anahtar, legacy_id: legacyId, record_year: supabaseKayitYili(anahtar, kayit), employee_legacy_id: supabasePersonelKimligi(kayit, anahtar) || null, data: kayit });
             });
             if (degisenler.length) {
-                const { error } = await supabaseClient.from('portal_records').upsert(degisenler, { onConflict: 'company_id,module,legacy_id' });
+                let donemKayitIstegi = supabaseClient.from('portal_records').upsert(degisenler, { onConflict: 'company_id,module,legacy_id' });
+                if (anahtar === 'personeller') donemKayitIstegi = donemKayitIstegi.select('module,legacy_id,data');
+                const { error, data:kaydedilenSatirlar } = await donemKayitIstegi;
+                if (!error && anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatirlar);
                 if (!error) basariliKayitSayisi += degisenler.length;
                 if (error && !supabaseKapaliDonemHatasiMi(error)) throw error;
                 if (error) {
                     for (const satir of degisenler) {
-                        const { error: satirHatasi } = await supabaseClient.from('portal_records').upsert(satir, { onConflict: 'company_id,module,legacy_id' });
+                        let donemSatirIstegi = supabaseClient.from('portal_records').upsert(satir, { onConflict: 'company_id,module,legacy_id' });
+                        if (anahtar === 'personeller') donemSatirIstegi = donemSatirIstegi.select('module,legacy_id,data');
+                        const { error: satirHatasi, data:kaydedilenSatir } = await donemSatirIstegi;
+                        if (!satirHatasi && anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatir);
                         if (!satirHatasi) { basariliKayitSayisi++; continue; }
                         if (!supabaseKapaliDonemHatasiMi(satirHatasi)) throw satirHatasi;
                         atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(satirHatasi));
@@ -7354,9 +7360,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try {
             const { data:sirket, error:okumaHatasi } = await supabaseClient.from('companies').select('data').eq('id',aktifSirketId()).maybeSingle();
             if (okumaHatasi) throw okumaHatasi;
-            const { error } = await supabaseClient.from('companies').update({ data:{ ...(sirket?.data || {}), uygulamaAyarlari:yeniAyarlar } }).eq('id',aktifSirketId());
+            const { error, data:kayitliSirket } = await supabaseClient.from('companies').update({ data:{ ...(sirket?.data || {}), uygulamaAyarlari:yeniAyarlar } }).eq('id',aktifSirketId()).select('data').single();
             if (error) throw error;
-            uygulamaAyarlari = { ...VARSAYILAN_UYGULAMA_AYARLARI, ...yeniAyarlar };
+            uygulamaAyarlari = { ...VARSAYILAN_UYGULAMA_AYARLARI, ...kayitliSirket.data.uygulamaAyarlari };
             magicpassAylikCizelgeyiCiz();
             showToast('Vardiya tanımı ve saatleri kaydedildi.');
         } catch(error) {
@@ -18894,9 +18900,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try {
             const {data:sirket,error:okumaHatasi}=await supabaseClient.from('companies').select('data').eq('id',aktifSirketId()).maybeSingle();
             if(okumaHatasi)throw okumaHatasi;
-            const {error}=await supabaseClient.from('companies').update({data:{...(sirket?.data||{}),uygulamaAyarlari:yeniAyarlar}}).eq('id',aktifSirketId());
+            const {error,data:kayitliSirket}=await supabaseClient.from('companies').update({data:{...(sirket?.data||{}),uygulamaAyarlari:yeniAyarlar}}).eq('id',aktifSirketId()).select('data').single();
             if(error)throw error;
-            uygulamaAyarlari={...VARSAYILAN_UYGULAMA_AYARLARI,...yeniAyarlar};
+            uygulamaAyarlari={...VARSAYILAN_UYGULAMA_AYARLARI,...kayitliSirket.data.uygulamaAyarlari};
             vardiyaTanimListesiniCiz();vardiyaCiz();magicpassAylikCizelgeyiCiz();
             showToast(mesaj || 'Vardiya tanımı kaydedildi.');
             return true;
@@ -22565,7 +22571,8 @@ document.addEventListener('click',function(e){
         if(islenen)await verileriKaydet();
         return{islenen};
     }
-    function bordroPuantajToplamMaasiniHesapla(personel,d){
+    function bordroPuantajToplamMaasiniHesapla(personel,d){return fdHesapDonemindeCalistir(puantajAyAnahtari(d.ay,d.yil),()=>bordroPuantajToplamMaasiniHesaplaDonem(fdPersonelDonemVerisi(personel,puantajAyAnahtari(d.ay,d.yil)),d));}
+    function bordroPuantajToplamMaasiniHesaplaDonem(personel,d){
         const ay=d.ay,yil=d.yil,gunSayisi=new Date(yil,ay+1,0).getDate(),bugun=new Date();bugun.setHours(0,0,0,0);
         const iseGiris=tarihInputDegeri(personel.girisTarihi),isCikis=tarihInputDegeri(personel.cikisTarihi),pIzinleri=izinler.filter(i=>aktifSirketeAit(i)&&String(i.pId)===String(personel.id));
         const izinKoduBul=tarih=>{const izin=pIzinleri.find(i=>tarih>=i.baslangic&&tarih<=i.bitis);if(!izin)return'';if(izin.tur==='Yıllık İzin')return'Y';if(izin.tur==='Sağlık / Rapor')return'R';if(['Ücretli İzin','Düğün İzni','Ölüm İzni','Doğum İzni','Evlenme İzni'].includes(izin.tur))return'Ü';if(izin.tur==='Ücretsiz İzin')return'Z';if(izin.tur==='Mazeretsiz İzin')return'M';return''};
@@ -25005,6 +25012,45 @@ body.fd-vk-detail-open{overflow:hidden}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',kur);else kur();
 })();
 </script>
+<style id="fdPersonelOkunurlukV220">
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button:hover{background:#dceef8!important;color:#164e63!important;border-color:#bad8e8!important;box-shadow:none!important;transform:none!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active:hover{background:#e5f3f8!important;color:#155e75!important}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{font-size:14px!important;line-height:1.4;padding:11px 10px}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th{font-size:12px!important;padding:12px 10px;color:#466078}
+#personelApp td .badge{font-size:12px;padding:4px 7px}#personelApp td .btn-modern{font-size:12px;padding:7px 9px}
+#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:13px}
+#magicpassAylikTablo thead th:nth-child(n),#magicpassGunlukTablo thead th:nth-child(n){position:sticky!important;top:0!important;z-index:12!important;background:#eef3f8!important;color:#334155!important}
+#magicpassAylikTablo thead .magicpass-tarih-baslik{left:30px!important;z-index:13!important}
+#magicpassAylikTablo tbody td{top:auto!important}
+@media(max-width:700px){#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:14px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{padding:6px 7px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td::before{font-size:11px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(4){font-size:16px!important}}
+@media(max-width:760px){#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:68dvh!important;overflow:auto!important}}
+</style>
+<script id="fdHesapDonemKorumaV220">
+// Only synchronous calculation boundaries are scoped. Never retain a global
+// historical settings object across an await, write, or company change.
+const FD_DONEM_AYAR_ALANLARI=['primTutari','primDevamsizlikSiniri','primYarimGunEksikMesaiDakika','gunlukCalismaSaati','mesaiKatsayisi','mesaiYuvarlamaAdimi','vardiyaTanimlari','vardiyaGunduzBaslik','vardiyaGeceBaslik','magicpassGunduzBaslangic','magicpassGunduzBitis','magicpassGunduzMesaiSiniri','magicpassGeceBaslangic','magicpassGeceBitis','magicpassGeceMesaiSiniri','magicpassMukerrerBasimDakika','magicpassGunlukMesaiEsikDakika','magicpassGunlukMesaiEsikAyarlandiV2','magicpassGunlukEksikMesaiEsikDakika'];
+const FD_DONEM_UCRET_ALANLARI=['ucret','gunlukUcret','gunlukYevmiye','ucretTutari','maas','maasTutari','primVar'];
+let fdHesapAktifDonem='';
+function fdDonemSurumuBul(history,month){return (Array.isArray(history)?history:[]).filter(x=>/^\d{4}-\d{2}$/.test(String(x.from||''))&&String(x.from)<=String(month)&&x.values&&typeof x.values==='object').sort((a,b)=>String(b.from).localeCompare(String(a.from)))[0]||null;}
+function fdDonemAlanlariniUygula(current,version,keys,defaults={}){if(!version)return current;const result={...current};for(const key of keys){delete result[key];if(Object.hasOwn(defaults,key))result[key]=defaults[key];}Object.assign(result,JSON.parse(JSON.stringify(version.values)));return result;}
+function fdPersonelDonemVerisi(personel,month=fdHesapAktifDonem){if(!month)return personel;return fdDonemAlanlariniUygula(personel,fdDonemSurumuBul(personel?.fdUcretDonemleri,month),FD_DONEM_UCRET_ALANLARI);}
+function fdHesapDonemindeCalistir(month,calculate){
+    if(!/^\d{4}-\d{2}$/.test(String(month)))return calculate();
+    const settings=uygulamaAyarlari,previous=fdHesapAktifDonem;fdHesapAktifDonem=String(month);
+    uygulamaAyarlari=fdDonemAlanlariniUygula(settings,fdDonemSurumuBul(settings.fdHesapDonemleri,month),FD_DONEM_AYAR_ALANLARI,VARSAYILAN_UYGULAMA_AYARLARI);
+    try{return calculate();}finally{uygulamaAyarlari=settings;fdHesapAktifDonem=previous;}
+}
+function fdUcretDonemleriniYereldeGuncelle(rows){for(const row of rows||[]){if(row.module!=='personeller')continue;const p=personeller.find(x=>String(x.id)===String(row.data?.id||row.legacy_id));if(p){if(Array.isArray(row.data?.fdUcretDonemleri))p.fdUcretDonemleri=row.data.fdUcretDonemleri;else delete p.fdUcretDonemleri;}}}
+(function(){
+    for(const name of ['magicpassGunHesapla','magicpassGunVardiyasi','magicpassVardiyaSaatleri']){const original=window[name];window[name]=function(p,date){return fdHesapDonemindeCalistir(String(date||'').slice(0,7),()=>original.apply(this,arguments));};}
+    for(const name of ['personelPrimHakkiVarMi','personelPrimDurumu','personelPrimCalisilmayanGunSayisi','magicpassAylikMesaiSaati','magicpassAylikYarimResmiTatilMesaiSaati']){const original=window[name];if(typeof original!=='function')continue;window[name]=function(p,ay,yil){const month=puantajAyAnahtari(ay,yil);return fdHesapDonemindeCalistir(month,()=>original.call(this,fdPersonelDonemVerisi(p,month),ay,yil));};}
+    const salary=personelGunlukUcretiniGetir;window.personelGunlukUcretiniGetir=function(p,ay,yil){const month=ay!==undefined&&yil!==undefined?puantajAyAnahtari(ay,yil):fdHesapAktifDonem;return salary(fdPersonelDonemVerisi(p,month));};
+    const render=renderPuantajMatrisi;window.renderPuantajMatrisi=function(){const ay=Number(document.getElementById('puanAySec')?.value),yil=Number(document.getElementById('puanYilSec')?.value),month=puantajAyAnahtari(ay,yil),originalPeople=personeller;return fdHesapDonemindeCalistir(month,()=>{personeller=originalPeople.map(p=>fdPersonelDonemVerisi(p,month));try{return render.apply(this,arguments);}finally{personeller=originalPeople;}});};
+    const preview=maasSatiriniOnizle;window.maasSatiriniOnizle=function(){return fdHesapDonemindeCalistir(puantajAyAnahtari(Number(document.getElementById('puanAySec')?.value),Number(document.getElementById('puanYilSec')?.value)),()=>preview.apply(this,arguments));};
+    function note(){const panel=document.getElementById('ayarlarPanelPersonel');if(panel&&!document.getElementById('fdDonemKorumaNotu'))panel.insertAdjacentHTML('afterbegin','<div id="fdDonemKorumaNotu" style="padding:12px 14px;margin-bottom:14px;border:1px solid #b9dce9;border-radius:9px;background:#f0f9fc;color:#315b72;font-size:13px;line-height:1.5">Vardiya, mesai, prim ve ücret değişiklikleri kaydedildiği aydan itibaren geçerlidir. Önceki aylar kendi ayarlarıyla hesaplanır; geçmiş kayıtlar geriye dönük değiştirilmez.</div>');}
+    const settingsOpen=window.openAyarlarApp;if(typeof settingsOpen==='function')window.openAyarlarApp=function(){const r=settingsOpen.apply(this,arguments);note();return r;};
+})();
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -25024,14 +25070,14 @@ body.fd-vk-detail-open{overflow:hidden}
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v219';
+      const anahtar='fd-pwa-yenileme-v220';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=219',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=220',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
