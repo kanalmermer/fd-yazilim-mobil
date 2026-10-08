@@ -785,7 +785,9 @@
     .magicpass-gunluk-durum.eksik { background:#f97316;color:#fff;box-shadow:0 0 0 3px rgba(249,115,22,.16); }
     .magicpass-eksik-saat { display:inline-flex;align-items:center;gap:4px;padding:0;border:0;background:transparent;color:#dc2626;font-size:.68rem;font-weight:950;letter-spacing:.02em;box-shadow:none; }
     .magicpass-saat-islem { display:inline-flex;align-items:center;justify-content:center;gap:5px; }
-    .magicpass-coklu-saat{display:inline-flex;flex-direction:column;vertical-align:middle;min-width:46px;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:18px;text-align:center;}
+    #magicpassAylikTablo tbody td{vertical-align:middle!important;}
+    .magicpass-coklu-saat{display:flex;flex-direction:column;width:max-content;margin:0 auto;min-width:46px;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:18px;text-align:center;}
+    .magicpass-coklu-saat::before{content:"";display:block;height:23px;flex:none;}
     .magicpass-aralik-satiri{display:block;min-height:18px;line-height:18px;}
     .magicpass-aralik-satiri+.magicpass-aralik-satiri{border-top:1px solid #cbd5e1;}
     .magicpass-aralik-toplam{display:block;margin-top:3px;padding-top:3px;border-top:1px solid #94a3b8;color:#334155;font-size:10px;font-weight:600;line-height:16px;}
@@ -25070,14 +25072,14 @@ function fdUcretDonemleriniYereldeGuncelle(rows){for(const row of rows||[]){if(r
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v220';
+      const anahtar='fd-pwa-yenileme-v221';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=220',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=221',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
