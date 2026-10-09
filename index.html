@@ -4091,7 +4091,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return [`${temiz}@fd-yazilim.local`, `${temiz}@kanalportal.local`];
     }
 
+    function fdPortalVeriOturumu() { return String(activeUser?.supabaseUserId || '') + '|' + String(activeUser?.sirketId || '') + '|' + String(activeUser?.rol || ''); }
+    function fdPortalVeriOturumuGecerli(oturum) { return oturum === fdPortalVeriOturumu() && !!activeUser?.sirketId && !['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol); }
     function supabaseDiziAta(anahtar, kayitlar) {
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return false;
         if (anahtar === 'personeller') personeller = kayitlar.map(item => ({ ...item, id: String(item.id) }));
         if (anahtar === 'izinler') {
             const sunucuIdleri = new Set(kayitlar.map(item => String(item.id)));
@@ -4124,7 +4127,10 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function supabaseSirketiYukle() {
         if (!activeUser?.sirketId) return;
+        const fdVeriOturumu = fdPortalVeriOturumu();
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
         const { data, error } = await supabaseClient.from('companies').select('id,short_name,title,data').eq('id', activeUser.sirketId).maybeSingle();
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
         if (error) throw error;
         const sirket = data ? { ...(data.data || {}), id: data.id, kisaAd: data.short_name || data.data?.kisaAd || '', unvan: data.title || data.data?.unvan || '' } : null;
         sirketler = sirket ? [sirket] : [];
@@ -4132,14 +4138,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (['Admin','Yonetici'].includes(activeUser?.rol)) {
             try {
                 const { data:ortakYedek } = await supabaseClient.from('portal_settings').select('value').eq('company_id',activeUser.sirketId).eq('setting_key','bulut_yedekleme').maybeSingle();
+                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
                 if (ortakYedek?.value && !data?.data?.uygulamaAyarlari?.yedekleme) uygulamaAyarlari.yedekleme = { ...VARSAYILAN_UYGULAMA_AYARLARI.yedekleme, ...ortakYedek.value };
             } catch (error) { console.warn('Ortak yedekleme ayarı okunamadı:', error); }
         }
         try {
             const { data:ortakRenk, error:renkHatasi } = await supabaseClient.from('portal_settings').select('value').eq('company_id',activeUser.sirketId).eq('setting_key','puantaj_renkleri').maybeSingle();
+            if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
             if (renkHatasi) throw renkHatasi;
             if (ortakRenk?.value) uygulamaAyarlari.puantajRenkleri = ortakRenk.value;
         } catch (error) { console.warn('Puantaj renk ayarı ayrı kayıttan okunamadı:', error); }
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
         if (typeof fdPuantajRenkleriniUygula === 'function') fdPuantajRenkleriniUygula();
         izinAyarEtiketleriniGuncelle();
         const izinSebepAlani = document.getElementById('izinSebep');
@@ -4154,6 +4163,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             kullanicilar = [];
             return;
         }
+        const fdVeriOturumu = fdPortalVeriOturumu();
         const tumKayitlar = [];
         const paketBoyutu = 1000;
         for (let baslangic = 0; ; baslangic += paketBoyutu) {
@@ -4162,6 +4172,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 .eq('company_id', activeUser.sirketId)
                 .order('legacy_username')
                 .range(baslangic, baslangic + paketBoyutu - 1);
+            if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
             if (error) throw error;
             const paket = data || [];
             tumKayitlar.push(...paket);
@@ -4237,6 +4248,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     async function supabasePortalModulKayitlariniTumunuGetir(anahtar, yil) {
+        const fdVeriOturumu = fdPortalVeriOturumu();
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return [];
         const tumKayitlar = [];
         const paketBoyutu = 1000;
         for (let baslangic = 0; ; baslangic += paketBoyutu) {
@@ -4255,6 +4268,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             if (anahtar === 'puantaj') sorgu = sorgu.eq('record_year', yil);
             const { data, error } = await sorgu;
+            if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return [];
             if (error) throw error;
             const paket = data || [];
             tumKayitlar.push(...paket);
@@ -4264,6 +4278,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
     async function supabaseVerileriniYukle(modul = 'giris', kayitYili = '', secenekler = {}) {
         if (!activeUser?.sirketId) return false;
+        // Dedicated ISG accounts use the branch-filtered projection endpoint, never payroll/portal records.
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return false;
+        const fdVeriOturumu = fdPortalVeriOturumu();
         let veriDegisti = false;
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
@@ -4278,6 +4295,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             try { await sirketYuklemeSozu; veriDegisti = true; }
             finally { if (fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari) === sirketYuklemeSozu) fdSirketYuklemeSozleri.delete(sirketOnbellekAnahtari); }
         }
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return false;
         const anahtarlar = SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat();
         const benzersiz = [...new Set(anahtarlar)];
         await Promise.all(benzersiz.map(async anahtar => {
@@ -4289,6 +4307,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             let dogrulananUzakImza = '';
             if (secenekler.onbellekKullan !== false && fdUzakAnahtarSonYukleme.has(yuklemeAnahtari) && !(activeUser?.rol === 'Personel' && anahtar === 'vardiya')) {
                 dogrulananUzakImza = await fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil);
+                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
                 const oncekiImza = fdUzakVeriImzalari.get(yuklemeAnahtari);
                 if (oncekiImza === undefined || oncekiImza === dogrulananUzakImza) {
                     fdUzakVeriImzalari.set(yuklemeAnahtari, dogrulananUzakImza);
@@ -4298,6 +4317,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
             const yuklemeSozu = (async () => {
                 const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
+                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
                 const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
                 supabaseDiziAta(anahtar, kayitlar);
                 veriDegisti = true;
@@ -4336,6 +4356,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function supabaseVerileriKaydetGercek() {
         if (!activeUser?.sirketId) throw new Error('Şirket oturumu bulunamadı.');
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) throw new Error('İSG hesabı yalnızca İSG modülündeki kayıtları değiştirebilir.');
         if (activeUser?.rol === 'Personel') {
             veriOnbelleginiKaydet();
             return;
@@ -4622,7 +4643,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             throw new Error('Bu kullanıcı seçilen şirkete tanımlı değil. Şirket seçimini kontrol edin.');
         }
         supabaseProfile = profil;
-        const { data: sirket } = await supabaseClient.from('companies').select('id,short_name,title').eq('id', profil.company_id).maybeSingle();
+        const isgHesabi = ['IsgUzmani','IsyeriHekimi'].includes(profil.role);
+        const { data: sirket } = isgHesabi ? {data:null} : await supabaseClient.from('companies').select('id,short_name,title').eq('id', profil.company_id).maybeSingle();
         activeUser = { username: profil.full_name || kullanici.email, yetkiKullaniciAdi:String(kullanici.email || '').split('@')[0], rol: profil.role || 'Personel', tcNo: String(profil.employee_legacy_id || ''), sirketId: profil.company_id, sirketAdi: sirket?.short_name || sirket?.title || '', supabaseUserId: kullanici.id, sifreDegismeli:Boolean(profil.must_change_password) };
         if (profil.role === 'Admin' && String(kullanici.email || '').toLowerCase() === 'admin@kanalportal.local') {
             try {
@@ -4637,14 +4659,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
         sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
         await kullaniciOturumunuBaslat();
-        await supabaseVerileriniYukle('baslangic');
-        await supabaseKullanicilariYukle();
+        if (isgHesabi) await window.fdIsgPrepareSession();
+        else {
+            await supabaseVerileriniYukle('baslangic');
+            await supabaseKullanicilariYukle();
+        }
         const acikModulKorunacak = typeof fdAktifUygulamaSekmesi !== 'undefined' && fdAktifUygulamaSekmesi !== 'home' && Boolean(fdGorunenUygulamaAlaniniBul());
         if (acikModulKorunacak) fdSekmeCubugunuGuncelle();
         else showHub();
-        initUI();
+        if (!isgHesabi) initUI();
         setTimeout(()=>window.fdBekleyenBildirimiGoster?.(),350);
-        if (activeUser.rol === 'Personel' && activeUser.sifreDegismeli) setTimeout(zorunluSifreModaliniGoster, 50);
+        if ((activeUser.rol === 'Personel' || isgHesabi) && activeUser.sifreDegismeli) setTimeout(zorunluSifreModaliniGoster, 50);
     }
 
     async function supabaseKayitliOturumuGeriYukle() {
@@ -4892,6 +4917,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function veriOnbelleginiKaydet() {
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return;
         const veri = {
             zaman: Date.now(),
             personeller,
@@ -15579,6 +15605,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function hideGlobalOverlay() { const katman=document.getElementById('globalOverlay'),ilerleme=document.getElementById('overlayProgress'),dolgu=document.getElementById('overlayProgressFill');if(katman)katman.style.display='none';if(ilerleme)ilerleme.style.display='none';if(dolgu)dolgu.style.width='0%'; }
 
     function initUI() {
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return;
         puantajYilSecenekleriniGuncelle();
         filtreDropdownlariDoldur();
         syncSubeDatalist();
@@ -18493,11 +18520,14 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const zorunluDegisiklik = sifreDegistirmeZorunluMu;
         if (!yeni.length) return showToast('Yeni şifre boş bırakılamaz.','warning');
         if (yeni.length < 6) return showToast('Yeni şifre en az 6 karakter olmalıdır.','warning');
+        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol) && yeni.length < 10) return showToast('İSG hesabının şifresi en az 10 karakter olmalıdır.','warning');
         if (yeni !== tekrar) return showToast('Yazdığınız yeni şifreler aynı değil.','warning');
         if (yeni === String(activeUser?.tcNo || '').slice(0,6)) return showToast('Geçici şifrenizden farklı bir şifre belirleyin.','warning');
         showGlobalOverlay('Şifre değiştiriliyor','Yeni şifreniz güvenli biçimde kaydediliyor...');
         try {
-            const { data, error } = await supabaseClient.functions.invoke('manage-user', { body:{ action:'change-own-password', password:yeni, companyId:aktifSirketId() } });
+            const { data, error } = ['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)
+                ? {data:await window.fdIsgApi('password-change',{password:yeni}),error:null}
+                : await supabaseClient.functions.invoke('manage-user', { body:{ action:'change-own-password', password:yeni, companyId:aktifSirketId() } });
             if (error) throw error;
             if (!data?.success) throw new Error(data?.message || 'Şifre değiştirilemedi.');
             const kullaniciAdi = String(activeUser?.yetkiKullaniciAdi || activeUser?.tcNo || '').trim();
@@ -18517,6 +18547,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             await girisParolasiniGuvenliKaydet(kullaniciAdi, yeni);
             document.getElementById('modalZorunluSifre').style.display = 'none';
             showToast('Şifreniz değiştirildi. Uygulamayı kullanmaya devam edebilirsiniz.');
+            if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) await window.fdIsgPrepareSession();
             if (zorunluDegisiklik) setTimeout(() => window.fdKvkkErisimKontrolu?.(true), 80);
         } catch (error) {
             let mesaj = error?.message || String(error);
@@ -20531,7 +20562,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function fdSekmeCubugunuGuncelle(kaydir=true){const b=document.getElementById('fdAppTabBar'),l=document.getElementById('fdAppTabList'),t=document.getElementById('portalTopbar');if(!b||!l)return;b.style.display=activeUser&&t&&getComputedStyle(t).display!=='none'?'flex':'none';b.querySelector('[data-fd-tab="home"]')?.classList.toggle('active',fdAktifUygulamaSekmesi==='home');l.replaceChildren();fdAcikUygulamaSekmeleri.forEach(s=>{const d=fdUygulamaSekmeTanimlari[s.anahtar]||{ad:s.anahtar,ikon:'[]'},a=document.createElement('button');a.type='button';a.className='fd-app-tab'+(fdAktifUygulamaSekmesi===s.anahtar?' active':'');a.dataset.fdTab=s.anahtar;a.title=d.ad;a.onclick=()=>fdUygulamaSekmesineGec(s.anahtar);const i=document.createElement('span');i.className='fd-app-tab-icon';i.textContent=d.ikon;const y=document.createElement('span');y.className='fd-app-tab-label';y.textContent=d.ad;const k=document.createElement('span');k.className='fd-app-tab-close';k.title=d.ad+' sekmesini kapat';k.textContent='x';k.onclick=e=>fdUygulamaSekmesiniKapat(e,s.anahtar);a.append(i,y,k);l.appendChild(a)});if(kaydir)requestAnimationFrame(()=>b.querySelector('.fd-app-tab.active')?.scrollIntoView({behavior:'auto',block:'nearest',inline:'nearest'}))}
     function fdSekmeyiKaydet(a,f){let s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s){s={anahtar:a,fonksiyonAdi:f||fdUygulamaSekmeTanimlari[a]?.acilis||'',alanId:''};fdAcikUygulamaSekmeleri.push(s)}if(f)s.fonksiyonAdi=f;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();return s}
     function fdSekmeGorunumunuYakala(a){const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s||fdAktifUygulamaSekmesi!==a)return;const id=fdGorunenUygulamaAlaniniBul();if(id)s.alanId=id;fdSekmeCubugunuGuncelle()}
-    async function fdUygulamaSekmesineGec(a){if(a==='home'){fdAnaEkranaHafifDon();return}const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s)return;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();document.querySelectorAll('.modal-overlay').forEach(e=>{if(e.id!=='modalZorunluSifre')e.style.display='none'});fdTumUygulamaAlanlariniGizle();if(s.alanId&&document.getElementById(s.alanId)){document.getElementById(s.alanId).style.display='block';anaMenuDonusButonunuGoster();return}const f=fdSekmeOrijinaller[s.fonksiyonAdi||fdUygulamaSekmeTanimlari[a]?.acilis];if(!f)return;fdSekmeSistemGecisi=true;try{await f()}finally{fdSekmeSistemGecisi=false;fdSekmeGorunumunuYakala(a)}}
+async function fdUygulamaSekmesineGec(a){if(a==='home'){fdAnaEkranaHafifDon();return}if(['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)&&(a!=='isg'||!anaMenuModulErisimiVar('isg')))return showToast('Bu sekmeye erişim yetkiniz yok.','warning');const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s)return;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();document.querySelectorAll('.modal-overlay').forEach(e=>{if(e.id!=='modalZorunluSifre')e.style.display='none'});fdTumUygulamaAlanlariniGizle();if(s.alanId&&document.getElementById(s.alanId)){document.getElementById(s.alanId).style.display='block';anaMenuDonusButonunuGoster();return}const f=fdSekmeOrijinaller[s.fonksiyonAdi||fdUygulamaSekmeTanimlari[a]?.acilis];if(!f)return;fdSekmeSistemGecisi=true;try{await f()}finally{fdSekmeSistemGecisi=false;fdSekmeGorunumunuYakala(a)}}
     async function fdUygulamaSekmesiniKapat(e,a){e?.preventDefault?.();e?.stopPropagation?.();if(fdSekmeKapatiliyor)return;const i=fdAcikUygulamaSekmeleri.findIndex(x=>x.anahtar===a);if(i<0)return;fdSekmeKapatiliyor=true;try{const aktif=fdAktifUygulamaSekmesi===a;fdAcikUygulamaSekmeleri.splice(i,1);fdSekmeAgirIceriginiTemizle(a);if(!aktif){fdSekmeCubugunuGuncelle(false);return}const s=fdAcikUygulamaSekmeleri[Math.min(i,fdAcikUygulamaSekmeleri.length-1)];if(s){await fdUygulamaSekmesineGec(s.anahtar);return}fdAnaEkranaHafifDon()}finally{fdSekmeKapatiliyor=false;hideGlobalOverlay?.();document.documentElement.style.pointerEvents='';document.body.style.pointerEvents=''}}
     function fdSekmeSisteminiKur(){Object.entries(fdSekmeFonksiyonlari).forEach(([f,a])=>{const o=window[f];if(typeof o!=='function'||o.__fdSekmeli)return;fdSekmeOrijinaller[f]=o;const w=function(...args){if(fdSekmeSistemGecisi)return o.apply(this,args);fdSekmeyiKaydet(a,f);let r;try{r=o.apply(this,args)}catch(e){fdSekmeGorunumunuYakala(a);throw e}if(r&&typeof r.then==='function')return r.finally(()=>fdSekmeGorunumunuYakala(a));setTimeout(()=>fdSekmeGorunumunuYakala(a),0);return r};w.__fdSekmeli=true;window[f]=w});const c=window.closeAppsToHub;if(typeof c==='function'&&!c.__fdSekmeli){fdSekmeOrijinaller.closeAppsToHub=c;const w=function(...a){if(fdSekmeSistemGecisi)return c.apply(this,a);fdAnaEkranaHafifDon()};w.__fdSekmeli=true;window.closeAppsToHub=w}const q=window.logout;if(typeof q==='function'&&!q.__fdSekmeli){const w=async function(...a){try{return await q.apply(this,a)}finally{fdAcikUygulamaSekmeleri=[];fdAktifUygulamaSekmesi='home';fdSekmeCubugunuGuncelle()}};w.__fdSekmeli=true;window.logout=w}const t=document.getElementById('portalTopbar');if(t)new MutationObserver(fdSekmeCubugunuGuncelle).observe(t,{attributes:true,attributeFilter:['style','class']});fdSekmeCubugunuGuncelle()}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fdSekmeSisteminiKur);else fdSekmeSisteminiKur();
@@ -23123,7 +23154,7 @@ document.addEventListener('click',function(e){
     }
     window.fdKvkkErisimKontrolu=async function(zorla=false){
         if(!activeUser||!SUPABASE_MODE){document.getElementById('modalKvkkAydinlatma').style.display='none';return true}
-        if(activeUser.rol==='Personel'&&activeUser.sifreDegismeli){document.getElementById('modalKvkkAydinlatma').style.display='none';return false}
+        if(['Personel','IsgUzmani','IsyeriHekimi'].includes(activeUser.rol)&&activeUser.sifreDegismeli){document.getElementById('modalKvkkAydinlatma').style.display='none';return false}
         if(kontrolSozu&&!zorla)return kontrolSozu;
         kontrolSozu=(async()=>{
             try{
@@ -25920,9 +25951,12 @@ function fdAracListeCiz(){
     }
 
     async function pdf(input, options = {}) {
+        const checkScope = () => { if (options.isCurrent && !options.isCurrent()) throw new Error('Çıktı işlemi oturum değiştiği için iptal edildi.'); };
+        checkScope();
         const JsPDF = root.jspdf?.jsPDF || root.jsPDF;
         if (!JsPDF) throw new Error('PDF bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
         await root.document.fonts?.ready;
+        checkScope();
         const measure = browserMeasure(), sections = reports(input).map(model => plan(model, options, measure));
         const layout = sections[0], name = filename(layout.model, 'pdf', options.filename), pageCount = total(sections.map(section => section.pages.length));
         const modal = options.preview !== false && typeof root.fdCiktiOnizlemeAc === 'function' ? root.fdCiktiOnizlemeAc('pdf', name) : null;
@@ -25931,6 +25965,7 @@ function fdAracListeCiz(){
             document.setProperties({ title: layout.model.title, subject: layout.model.subtitle, creator: 'FD YAZILIM' });
             let completed = 0;
             for (const section of sections) for (let index = 0; index < section.pages.length; index++) {
+                checkScope();
                 if (completed) document.addPage('a4', section.orientation);
                 const canvas = drawPage(section, index, clamp(Number(options.scale) || 3, 2, 4), completed + 1, pageCount);
                 document.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, section.pageWidth, section.pageHeight, undefined, 'FAST');
@@ -25940,6 +25975,7 @@ function fdAracListeCiz(){
                 await new Promise(resolve => root.setTimeout(resolve, 0));
             }
             const blob = document.output('blob');
+            checkScope();
             if (!blob || blob.size < 100) throw new Error('PDF dosyası oluşturulamadı.');
             if (options.preview !== false && typeof root.fdCiktiPdfOnizle === 'function') root.fdCiktiPdfOnizle(blob, name, modal);
             else if (modal) modal.remove();
@@ -25999,7 +26035,7 @@ function fdAracListeCiz(){
         if (!root.navigator?.clipboard?.write || typeof root.ClipboardItem !== 'function') throw new Error('Bu cihazda panoya görüntü kopyalama desteklenmiyor.');
         // Start the clipboard write in the click gesture. Promised PNG data works in Safari too.
         let result;
-        const pending = build().then(value => { result = value; return value.blob; });
+        const pending = build().then(value => { if (options.isCurrent && !options.isCurrent()) throw new Error('Çıktı işlemi oturum değiştiği için iptal edildi.'); result = value; return value.blob; });
         pending.catch(() => {});
         await root.navigator.clipboard.write([new root.ClipboardItem({ 'image/png': pending })]);
         await pending; return result;
@@ -26103,12 +26139,14 @@ function fdAracListeCiz(){
             ws.headerFooter.oddFooter = '&L&"Arial"&8FD YAZILIM&R&"Arial"&8Sayfa &P / &N';
         });
         const name = filename(models[0], 'xlsx', options.filename), bytes = await book.xlsx.writeBuffer(), blob = new root.Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        if (options.isCurrent && !options.isCurrent()) throw new Error('Çıktı işlemi oturum değiştiği için iptal edildi.');
         if (options.preview !== false && typeof root.fdCiktiExcelJsOnizle === 'function') root.fdCiktiExcelJsOnizle(book, blob, name);
         if (options.download === true && typeof root.fdCiktiDogrudanKaydet === 'function') root.fdCiktiDogrudanKaydet(blob, name);
         return { blob, filename: name, workbook: book };
     }
 
     async function excel(input, options = {}) {
+        if (options.isCurrent && !options.isCurrent()) throw new Error('Çıktı işlemi oturum değiştiği için iptal edildi.');
         if (root.ExcelJS?.Workbook && options.styled !== false) return styledExcel(input, options);
         const prepared = reports(input).map(model => workbook(model)), name = filename(prepared[0].model, 'xlsx', options.filename);
         const book = prepared.length === 1 ? prepared[0].workbook : root.XLSX.utils.book_new(), names = new Set();
@@ -26144,7 +26182,7 @@ function fdAracListeCiz(){
 (function (root) {
     'use strict';
     const groups = new WeakMap(), liveGroups = new Set();
-    let preparing = false, current = null, observer, scanTimer, sequence = 0;
+    let preparing = false, current = null, observer, scanTimer, sequence = 0, sessionEpoch = 0;
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const norm = value => String(value || '').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i');
     const message = (text, type = 'warning') => typeof root.showToast === 'function' ? root.showToast(text, type) : root.alert(text);
@@ -26384,6 +26422,7 @@ function fdAracListeCiz(){
 
     async function open(group) {
         if (preparing || current?.rendering) return;
+        const epoch = sessionEpoch;
         const m = modal(); current = { group, models: [], rendering: false }; preparing = true;
         m.hidden = false; group.trigger.disabled = true;
         m.querySelector('[data-output-fields]').replaceChildren(); m.querySelector('[data-output-search]').value = '';
@@ -26391,13 +26430,14 @@ function fdAracListeCiz(){
         status('Listenin tamamı hazırlanıyor…'); updateCount();
         try {
             const models = prepareModels(await acquire(group), group);
+            if (epoch !== sessionEpoch || (group.isCurrent && !group.isCurrent())) return;
             if (!models.length || models.some(model => !model.columns?.length || !Array.isArray(model.rows))) throw new Error('Aktarılacak alanlar hazırlanamadı.');
             current.models = models;
             m.querySelector('[data-output-fields]').innerHTML = models.map((model, sheet) => '<section class="fd-output-sheet" data-output-sheet="' + sheet + '"><h4>' + escape(model.title || model.sheetName || 'Tablo') + '<small>' + model.rows.length + ' satır</small></h4><div class="fd-output-field-grid">' + model.columns.map((column, index) => '<label class="fd-output-field"><input type="checkbox" data-output-field="' + index + '" checked><span>' + escape(column.label || column) + '</span></label>').join('') + '</div></section>').join('');
             status(models.every(model => !model.rows.length) ? 'Bu seçimde kayıt bulunmuyor.' : 'Seçtiğiniz alanlar aktarılır. Görüntü panoya kopyalanır.');
             m.querySelector('[data-output-description]').textContent = titleFor(group) + ' · ' + models.reduce((sum, model) => sum + model.rows.length, 0) + ' satır';
-        } catch (error) { status(error.message || String(error), true); }
-        finally { preparing = false; group.trigger.disabled = false; updateCount(); m.querySelector('[data-output-close]').focus(); }
+        } catch (error) { if (epoch === sessionEpoch) status(error.message || String(error), true); }
+        finally { group.trigger.disabled = false; if (epoch === sessionEpoch) { preparing = false; updateCount(); m.querySelector('[data-output-close]').focus(); } }
     }
 
     function excelPreview(models, result) {
@@ -26422,25 +26462,723 @@ function fdAracListeCiz(){
 
     async function render(format) {
         if (!current || current.rendering || preparing) return;
+        const epoch = sessionEpoch, group = current.group;
+        const isCurrent = () => epoch === sessionEpoch && (!group.isCurrent || group.isCurrent());
         const models = selectedModels(); if (!models.length) return status('En az bir alan seçin.', true);
         current.rendering = true; updateCount(); status(format === 'image' ? 'Görüntü panoya kopyalanıyor…' : 'Çıktı hazırlanıyor…');
         const title = current.models[0]?.title || titleFor(current.group);
         const filename = title.replace(/[\\/:*?"<>|]/g, '_').slice(0, 100) + (format === 'pdf' ? '.pdf' : '.xlsx');
         try {
             // Clipboard write is initiated synchronously in this click handler.
-            if (format === 'image') { await root.fdOutputRenderers.copyImage(models); status('Tablo görüntüsü panoya kopyalandı.'); message('Tablo görüntüsü panoya kopyalandı.', 'success'); }
-            else if (format === 'pdf') { await root.fdOutputRenderers.pdf(models, { filename, preview: true, onProgress: progress => status('PDF hazırlanıyor: ' + progress.completed + ' / ' + progress.total + ' sayfa') }); }
-            else { const result = await root.fdOutputRenderers.excel(models, { filename, preview: false }); excelPreview(models, result); }
+            if (format === 'image') { await root.fdOutputRenderers.copyImage(models, {isCurrent}); if (!isCurrent()) return; status('Tablo görüntüsü panoya kopyalandı.'); message('Tablo görüntüsü panoya kopyalandı.', 'success'); }
+            else if (format === 'pdf') { await root.fdOutputRenderers.pdf(models, { filename, preview: true, isCurrent, onProgress: progress => { if (isCurrent()) status('PDF hazırlanıyor: ' + progress.completed + ' / ' + progress.total + ' sayfa'); } }); }
+            else { const result = await root.fdOutputRenderers.excel(models, { filename, preview: false, isCurrent }); if (!isCurrent()) return; excelPreview(models, result); }
+            if (!isCurrent()) return;
             if (format !== 'image') modal().hidden = true;
-        } catch (error) { status(error.message || String(error), true); }
-        finally { if (current) current.rendering = false; updateCount(); }
+        } catch (error) { if (isCurrent()) status(error.message || String(error), true); }
+        finally { if (isCurrent()) { if (current) current.rendering = false; updateCount(); } }
     }
 
-    root.fdUnifiedOutput = { scan, open, acquire, selectedModels, capture, kind, excelPreview, groups: () => Array.from(liveGroups) };
+    function clear() { sessionEpoch++; if (current?.group?.trigger) current.group.trigger.disabled = false; current = null; preparing = false; document.getElementById('fdUnifiedOutputModal')?.remove(); document.getElementById('fdOrtakCiktiOnizleme')?.remove(); }
+
+    root.fdUnifiedOutput = { scan, open, acquire, selectedModels, capture, kind, excelPreview, clear, groups: () => Array.from(liveGroups) };
     function start() {
         scan(); observer = new MutationObserver(schedule); observer.observe(document.body, { childList: true, subtree: true });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
+})(window);
+</script>
+<style id="fdIsgStyleV228">
+/* Scoped ISG workspace: compact records, readable tables, centered dialogs. */
+#isgApp,.isg-dialog{font-family:Arial,sans-serif;color:#183348;font-size:13px;box-sizing:border-box}
+#isgApp *, .isg-dialog *{box-sizing:border-box}
+#isgApp [hidden],.isg-dialog [hidden]{display:none!important}
+#isgApp{max-width:1580px;margin:0 auto;padding:18px 20px 30px;min-height:65vh}
+#isgApp button,.isg-dialog button{font:inherit;cursor:pointer;border:1px solid #d5e2e9;border-radius:8px;padding:9px 13px;background:#fff;color:#244559;line-height:1.3;min-height:36px}
+#isgApp button:hover,.isg-dialog button:hover{background:#eef7fa;border-color:#8bb6c5}
+#isgApp button:focus-visible,.isg-dialog button:focus-visible,#isgApp input:focus-visible,.isg-dialog input:focus-visible,.isg-dialog textarea:focus-visible,.isg-dialog select:focus-visible{outline:3px solid #91d7e8;outline-offset:2px}
+#isgApp button:disabled,.isg-dialog button:disabled{opacity:.55;cursor:wait}
+#isgApp .isg-primary,.isg-dialog .isg-primary{background:#087f8c;border-color:#087f8c;color:#fff;font-weight:700}
+#isgApp .isg-primary:hover,.isg-dialog .isg-primary:hover{background:#066b77}
+#isgApp .isg-danger,.isg-dialog .isg-danger{color:#b42332;border-color:#efc6ca}
+#isgApp input,#isgApp select,.isg-dialog input,.isg-dialog select,.isg-dialog textarea{font:inherit;color:#183348;border:1px solid #cfdfe6;border-radius:7px;background:#fff;min-height:38px;padding:8px 10px;width:100%;max-width:100%}
+.isg-dialog input[type=checkbox],#isgApp input[type=checkbox]{width:16px;min-height:16px;height:16px;margin:0;accent-color:#087f8c}
+.isg-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px}
+.isg-header h2{font-size:20px;letter-spacing:-.3px;margin:0 0 5px;font-weight:700}
+.isg-header p,.isg-muted{color:#698090;margin:0;font-size:12px;line-height:1.5}
+.isg-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.isg-nav{display:flex;gap:5px;overflow-x:auto;padding:6px;background:#e8f0f4;border:1px solid #dae6ed;border-radius:11px;margin-bottom:14px;scrollbar-width:thin}
+#isgApp .isg-nav button{white-space:nowrap;background:transparent;border-color:transparent;padding:9px 11px;flex:0 0 auto}
+#isgApp .isg-nav button[aria-current=page]{background:#fff;border-color:#d1e2e9;color:#087580;box-shadow:0 2px 6px #18334809;font-weight:700}
+.isg-strip{display:flex;gap:0;border:1px solid #dbe6ec;border-radius:10px;background:#fff;overflow:auto;margin-bottom:14px}
+#isgApp .isg-strip button{border:none;border-right:1px solid #e2ebef;border-radius:0;min-width:130px;flex:1;text-align:left;padding:12px 15px;background:#fff}
+.isg-strip strong{display:block;font-size:21px;margin-bottom:3px;color:#183348}
+.isg-strip span{font-size:12px;color:#607e90}
+.isg-strip .isg-late strong{color:#ba3c34}
+.isg-strip .isg-soon strong{color:#a77514}
+.isg-panel{border:1px solid #d9e5ed;border-radius:11px;background:#fff;overflow:hidden;box-shadow:0 4px 15px #18334803}
+.isg-panel-head{padding:14px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #e3ebef}
+.isg-panel-head h3{font-size:15px;margin:0 0 4px}
+.isg-filters{padding:12px 15px;display:grid;grid-template-columns:minmax(200px,2.3fr) minmax(130px,1fr) minmax(130px,1fr) minmax(125px,.8fr) minmax(125px,.8fr) auto;gap:8px;background:#f8fbfc;border-bottom:1px solid #e0eaef}
+.isg-filters label,.isg-field>span{font-size:11px;font-weight:700;color:#536c7c;display:block;margin-bottom:5px}
+.isg-filters .isg-filter-clear{align-self:end}
+.isg-table-wrap{overflow:auto;max-height:calc(100dvh - 350px);min-height:170px;overscroll-behavior:contain}
+#isgApp table,.isg-dialog table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:12px}
+#isgApp th,.isg-dialog th{position:sticky;top:0;background:#eef4f7;color:#426176;font-size:11px;text-align:left;padding:10px 12px;z-index:2;border-bottom:1px solid #d4e2e9;font-weight:700}
+#isgApp td,.isg-dialog td{vertical-align:middle;padding:11px 12px;border-bottom:1px solid #e6eef2;overflow-wrap:anywhere;line-height:1.45}
+#isgApp tr:nth-child(even) td{background:#fbfdfe}
+#isgApp tr:hover td{background:#f1f8fa}
+#isgApp .isg-record-title,.isg-dialog .isg-record-title{border:none;background:none;text-align:left;padding:0;min-height:0;font-weight:400;max-width:100%;color:inherit;text-decoration:none;border-radius:2px;overflow-wrap:anywhere}
+#isgApp .isg-record-title:hover{text-decoration:underline;color:#087580}
+.isg-row-sub{display:block;font-size:11px;color:#748b99;margin-top:3px}
+.isg-badge{display:inline-block;border-radius:5px;padding:3px 7px;font-size:11px;line-height:1.3;background:#edf2f5;color:#577286;white-space:normal}
+.isg-badge.completed{background:#e4f5ec;color:#24734f}
+.isg-badge.in_progress{background:#e4f2f9;color:#27657e}
+.isg-badge.pending{background:#fff2d6;color:#87601b}
+.isg-badge.overdue{background:#ffe9e6;color:#ac3f33}
+.isg-badge.cancelled{background:#f2f0f2;color:#7c6c77}
+.isg-empty{padding:36px 20px;text-align:center;color:#708592;line-height:1.8}
+.isg-empty strong{display:block;color:#34566a;font-size:14px;margin-bottom:4px}
+.isg-error{padding:12px 14px;border:1px solid #efc5c7;background:#fff4f4;color:#a8343b;border-radius:8px;margin-bottom:12px;line-height:1.5}
+.isg-notice{padding:11px 13px;border:1px solid #d5e6f0;background:#f1f8fc;color:#496b82;border-radius:8px;margin-bottom:14px;line-height:1.5;font-size:12px}
+.isg-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 15px;border-top:1px solid #e1eaef;color:#738b9b;font-size:11px}
+.isg-overlay{position:fixed;inset:0;z-index:210500;background:#122b42a3;display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(2px)}
+.isg-dialog{background:#fff;width:min(920px,100%);max-height:92dvh;border:1px solid #d9e4eb;border-radius:13px;display:flex;flex-direction:column;box-shadow:0 20px 70px #0c203d4d;overflow:hidden}
+.isg-dialog.isg-wide{width:min(1160px,100%)}
+.isg-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:#f6fafc;border-bottom:1px solid #dce8ef}
+.isg-dialog-head h3{margin:0;font-size:17px}
+.isg-dialog-body{padding:18px 20px;overflow:auto;overscroll-behavior:contain}
+.isg-dialog-foot{padding:12px 20px;border-top:1px solid #e0eaef;display:flex;align-items:center;gap:8px;justify-content:flex-end;background:#fafcfd;flex-wrap:wrap}
+.isg-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.isg-field{display:block;margin:0;min-width:0}
+.isg-field.isg-full{grid-column:1/-1}
+.isg-field small{display:block;font-size:11px;color:#718998;line-height:1.5;margin-top:5px}
+.isg-section-title{font-size:13px;margin:18px 0 11px;padding-top:16px;border-top:1px solid #e0eaee;color:#315365;font-weight:700}
+.isg-people-tools{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.isg-people-tools input{flex:1;min-width:160px}
+.isg-people-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:245px;overflow:auto;border:1px solid #dce7ec;padding:9px;border-radius:8px;background:#f9fcfd}
+.isg-person-option{display:flex;align-items:flex-start;gap:9px;padding:8px;background:#fff;border:1px solid #e0e9ee;border-radius:6px;font-size:12px;line-height:1.4}
+.isg-person-option span{display:block;overflow-wrap:anywhere}
+.isg-person-option small{display:block;color:#7b919f;font-size:10px}
+.isg-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.isg-details div{padding:11px 12px;background:#f7fafc;border:1px solid #e2ebf0;border-radius:8px;line-height:1.5;overflow-wrap:anywhere}
+.isg-details small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.35px;color:#698393;margin-bottom:5px}
+.isg-details .isg-full{grid-column:1/-1}
+.isg-dialog .isg-attachment{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #e4ecf0}
+.isg-history{padding:0;list-style:none;margin:0}
+.isg-history li{padding:10px 0;border-bottom:1px solid #e4edf1;line-height:1.6}
+.isg-history small{display:block;color:#788f9e}
+.isg-attendance-wrap{max-height:310px;overflow:auto;border:1px solid #dce8ee;border-radius:7px;margin-top:10px}
+.isg-attendance-wrap table{min-width:440px}
+.isg-dialog .isg-attendance-wrap th,.isg-dialog .isg-attendance-wrap td{padding:8px}
+.isg-form-state{margin-right:auto;font-size:12px;color:#6c8293}
+.isg-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.isg-settings-grid section{padding:17px;border:1px solid #dce6ed;background:#fff;border-radius:10px}
+.isg-settings-grid h3{margin:0 0 12px;font-size:14px}
+.isg-matrix th:not(:first-child),.isg-matrix td:not(:first-child){text-align:center}
+.isg-matrix th:first-child,.isg-matrix td:first-child{position:sticky;left:0;z-index:1;background:#fff;border-right:1px solid #e0e8ed}
+.isg-matrix th:first-child{z-index:3;background:#eef4f7}
+.isg-check{display:flex;align-items:center;gap:8px;line-height:1.5;margin:9px 0;font-size:12px}
+@media(max-width:1050px){.isg-filters{grid-template-columns:2fr 1fr 1fr}.isg-filters .isg-filter-clear{align-self:end}.isg-details{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#isgApp{padding:12px 10px 24px}.isg-header{align-items:flex-start;flex-direction:column}.isg-header h2{font-size:18px}.isg-header .isg-actions{width:100%}.isg-header .isg-actions button{flex:1}.isg-nav{margin-bottom:10px}.isg-panel-head{align-items:flex-start}.isg-filters{padding:10px;grid-template-columns:1fr 1fr;gap:8px}.isg-filters>label:first-child{grid-column:1/-1}.isg-table-wrap{max-height:65dvh}.isg-table-wrap table{min-width:900px}.isg-table-wrap table.isg-matrix{min-width:1000px}.isg-overlay{padding:8px}.isg-dialog{max-height:calc(100dvh - 16px);border-radius:10px}.isg-dialog-head{padding:13px}.isg-dialog-body{padding:14px}.isg-dialog-foot{padding:10px 14px}.isg-form-grid,.isg-settings-grid{grid-template-columns:1fr}.isg-people-list{grid-template-columns:1fr}.isg-details{grid-template-columns:1fr}.isg-strip button{min-width:120px!important;padding:10px 12px!important}.isg-strip strong{font-size:19px}.isg-footer{align-items:flex-start;flex-direction:column;gap:5px}.isg-dialog-foot button{flex:1}.isg-dialog-foot .isg-form-state{flex:0 0 100%}}
+</style>
+<script id="fdIsgWorkspaceV228">
+/* Authenticated, branch-scoped ISG workspace. No production records are invented here. */
+(function(root){
+ 'use strict';
+ const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const norm=v=>String(v??'').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ı/g,'i');
+ const statuses={draft:'Taslak',planned:'Planlandı',open:'Açık',in_progress:'Devam ediyor',pending:'Doğrulama bekliyor',completed:'Tamamlandı',approved:'Onaylandı',closed:'Kapandı',cancelled:'İptal edildi',expired:'Süresi geçti'};
+ const F=(key,label,type='text',options=null,required=false)=>({key,label,type,options,required});
+ const schemas={
+  task:{label:'İş / hatırlatma',group:'tasks',fields:[F('category','Konu','select',{general:'Genel',training:'Eğitim',health:'Sağlık',inspection:'Kontrol',emergency:'Acil durum',document:'Evrak'}),F('priority','Öncelik','select',{normal:'Normal',high:'Yüksek',critical:'Kritik'}),F('description','Yapılacak iş','textarea',null,true),F('completionEvidence','Tamamlanma bilgisi / kanıt','textarea'),F('verificationNote','Kontrol / doğrulama notu','textarea')]},
+  personDocument:{label:'Personel belgesi / sağlık durumu',group:'people',fields:[F('kind','Belge türü','select',{training:'İSG eğitimi',medical:'Sağlık uygunluk durumu',vocational:'Mesleki yeterlilik',operator:'Operatör belgesi',firstAid:'İlk yardım',other:'Diğer'},true),F('documentNo','Belge numarası'),F('issuer','Düzenleyen kişi / kurum'),F('validFrom','Belge / muayene tarihi','date'),F('validUntil','Geçerlilik / sonraki kontrol','date'),F('fitStatus','Sağlık uygunluk durumu','select',{assessmentPending:'Değerlendirme bekliyor',suitable:'Uygun',restricted:'Hekim değerlendirmesi gerekli'}),F('notes','Not','textarea')]},
+  training:{label:'Eğitim',group:'training',fields:[F('subject','Eğitim konusu','textarea',null,true),F('hours','Süre (saat)','number',null,true),F('trainer','Eğitmen adı','text',null,true),F('trainerQualification','Eğitmen yetkisi / unvanı'),F('method','Yöntem','select',{classroom:'Yüz yüze',practice:'Uygulamalı',distance:'Uzaktan',mixed:'Karma'}),F('location','Eğitim yeri'),F('trainingVerified','Eğitim gerçekleşti; katılım ve değerlendirme kontrol edildi','checkbox'),F('notes','Eğitim notu','textarea')]},
+  equipment:{label:'Ekipman',group:'equipment',fields:[F('category','Ekipman türü','select',{lifting:'Kaldırma / iletme',pressure:'Basınçlı kap',electrical:'Elektrik tesisatı',grounding:'Topraklama',fire:'Yangın ekipmanı',machine:'İş makinesi',other:'Diğer'}),F('serialNo','Seri / ekipman numarası'),F('location','Bulunduğu yer','text',null,true),F('manufacturer','Üretici'),F('model','Model'),F('inServiceDate','Kullanıma giriş','date'),F('vehicleId','İlgili araç','vehicle'),F('notes','Ekipman notu','textarea')]},
+  inspection:{label:'Periyodik kontrol',group:'equipment',fields:[F('controlKind','Kontrol konusu'),F('inspectionDate','Gerçek kontrol tarihi','date',null,true),F('reportNo','Kontrol rapor numarası'),F('controller','Kontrolü yapan kişi / kuruluş'),F('controllerRegistration','Yetki / kayıt numarası'),F('qualified','Kontrolü yapanın yetkisi doğrulandı','checkbox'),F('result','Kontrol sonucu','select',{pending:'Rapor bekleniyor',suitable:'Uygun',conditional:'Koşullu / takip gerekli',unsuitable:'Uygun değil'}),F('findings','Tespit / uygunsuzluklar','textarea'),F('notes','Not','textarea')]},
+  risk:{label:'Risk / uygunsuzluk',group:'risks',fields:[F('hazard','Tehlike','textarea',null,true),F('consequence','Olası sonuç','textarea',null,true),F('probability','Olasılık (1–5)','number',null,true),F('severity','Şiddet (1–5)','number',null,true),F('existingMeasures','Mevcut önlemler','textarea'),F('measures','Alınacak önlemler','textarea',null,true),F('reviewDate','Yeniden değerlendirme','date'),F('notes','Not','textarea')]},
+  action:{label:'Düzeltici faaliyet',group:'risks',fields:[F('relatedRecordId','İlgili risk / kayıt','record'),F('actionText','Yapılacak düzeltme','textarea',null,true),F('completionEvidence','Yapılan iş / kanıt','textarea'),F('verificationNote','Doğrulama / kapanış notu','textarea')]},
+  emergencyTeam:{label:'Acil durum ekibi',group:'emergency',fields:[F('role','Ekip görevi','select',{firstAid:'İlk yardım',fire:'Yangınla mücadele',evacuation:'Tahliye',searchRescue:'Arama / kurtarma',other:'Diğer'},true),F('leaderId','Ekip sorumlusu','person'),F('notes','Görevlendirme / yeterlilik notu','textarea')]},
+  drill:{label:'Tatbikat',group:'emergency',fields:[F('scenario','Senaryo','textarea',null,true),F('location','Tatbikat yeri','text',null,true),F('startTime','Başlangıç saati','time'),F('minutes','Süre (dakika)','number'),F('coordinator','Koordinatör'),F('findings','Gözlemler / eksikler','textarea'),F('improvements','İyileştirmeler','textarea'),F('notes','Not','textarea')]},
+  incident:{label:'İş kazası / ramak kala',group:'incidents',fields:[F('kind','Olay türü','select',{accident:'İş kazası',nearMiss:'Ramak kala'},true),F('eventTime','Olay saati','time'),F('location','Olay yeri','text',null,true),F('description','Olay açıklaması','textarea',null,true),F('injuryStatus','Sağlık değerlendirmesi','select',{none:'Yaralanma bildirilmedi',medicalAssessmentRequired:'Hekim değerlendirmesi gerekli',handledByDoctor:'Hekime yönlendirildi'}),F('affectedCount','Etkilenen kişi sayısı','number'),F('immediateMeasures','İlk alınan önlemler','textarea'),F('rootCause','Kök neden / inceleme','textarea'),F('correctiveAction','Önleyici faaliyet','textarea'),F('sgkRequired','SGK bildirim takibi gerekiyor','checkbox'),F('sgkDeadline','Uzman tarafından belirlenen bildirim son tarihi','date'),F('sgkStatus','SGK takip durumu','select',{notRequired:'Gerekli değil',pending:'Bildirim bekliyor',submitted:'Bildirim yapıldı',verified:'Bildirim doğrulandı'}),F('sgkReference','Bildirim referansı'),F('sgkNotificationDate','Bildirim tarihi','date'),F('notes','Takip notu','textarea')]},
+  measurement:{label:'Ortam ölçümü',group:'measurements',fields:[F('kind','Ölçüm türü','select',{dust:'Toz',noise:'Gürültü',vibration:'Titreşim',lighting:'Aydınlatma',chemical:'Kimyasal',thermal:'Termal konfor',other:'Diğer'},true),F('location','Ölçüm yeri','text',null,true),F('lab','Laboratuvar / kuruluş'),F('reportNo','Rapor numarası'),F('measuredValue','Ölçüm değeri'),F('unit','Birim'),F('referenceValue','Rapordaki referans / sınır'),F('result','Rapor sonucu','select',{pending:'Değerlendirme bekliyor',suitable:'Uygun',followUp:'İyileştirme / takip gerekli'}),F('notes','Uzman değerlendirmesi','textarea')]},
+  provider:{label:'OSGB / hizmet sağlayıcı',group:'providers',fields:[F('providerName','Kuruluş / kişi','text',null,true),F('serviceKind','Hizmet','select',{osgb:'OSGB',specialist:'İSG uzmanı',doctor:'İşyeri hekimi',lab:'Laboratuvar',inspection:'Kontrol kuruluşu',other:'Diğer'}),F('contactName','İlgili kişi'),F('phone','Telefon','tel'),F('email','E-posta','email'),F('contractStart','Sözleşme başlangıcı','date'),F('contractEnd','Sözleşme bitişi','date'),F('notes','Hizmet notu','textarea')]},
+  visit:{label:'Uzman / hekim ziyareti',group:'providers',fields:[F('providerId','Hizmet sağlayıcı','provider'),F('visitKind','Ziyaret türü','select',{specialist:'İSG uzmanı',doctor:'İşyeri hekimi',other:'Diğer'}),F('hours','Süre (saat)','number'),F('recommendations','Öneri / yapılacak işler','textarea',null,true),F('notes','Ziyaret notu','textarea')]},
+  annualPlan:{label:'Yıllık çalışma / eğitim planı',group:'providers',fields:[F('year','Yıl','number',null,true),F('planKind','Plan türü','select',{work:'Yıllık çalışma planı',training:'Yıllık eğitim planı',evaluation:'Yıllık değerlendirme'}),F('notes','Plan açıklaması','textarea')]},
+  document:{label:'İSG evrakı',group:'documents',fields:[F('kind','Belge konusu','select',{riskAssessment:'Risk değerlendirmesi',emergencyPlan:'Acil durum planı',instruction:'Talimat',contract:'Sözleşme',other:'Diğer'}),F('documentNo','Belge numarası'),F('issuer','Düzenleyen'),F('validFrom','Düzenlenme tarihi','date'),F('validUntil','Gözden geçirme / geçerlilik','date'),F('notes','Açıklama','textarea')]}
+ };
+ const tabs=[['overview','Takip'],['people','Personel'],['training','Eğitimler'],['equipment','Ekipman / Kontroller'],['risks','Risk / Faaliyet'],['emergency','Acil Durum'],['incidents','Olaylar'],['measurements','Ölçümler'],['providers','OSGB / Plan'],['documents','Evrak / Formlar'],['settings','Ayarlar']];
+ const S={records:[],people:[],branches:[],vehicles:[],kkd:[],users:[],activity:[],settings:{},permissions:{},view:'overview',filters:{query:'',branch:'',status:'',from:'',to:'',type:'',archive:false,deadline:''},loaded:false,loading:false,busy:false,error:'',company:'',revision:0};
+ let app=null,dialog=null,previousFocus=null,loadSequence=0,sessionEpoch=0;
+ const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const displayDate=v=>/^\d{4}-\d{2}-\d{2}/.test(v||'')?String(v).slice(0,10).split('-').reverse().join('.'):v||'—';
+ const personName=p=>p?.name||p?.adSoyad||p?.adsoyad||[p?.ad,p?.soyad].filter(Boolean).join(' ')||p?.isim||'İsimsiz personel';
+ const personBranch=p=>p?.branch||p?.sube||p?.subeAdi||'';
+ const personId=p=>String(p?.id??p?.personelId??p?.personel_id??'');
+ const branchName=b=>typeof b==='string'?b:b?.name||b?.ad||b?.subeAdi||b?.id||'';
+ const userName=id=>{const u=S.users.find(x=>String(x.id)===String(id));return u?.name||u?.adSoyad||u?.username||S.people.find(x=>personId(x)===String(id))&&personName(S.people.find(x=>personId(x)===String(id)))||'—';};
+ const can=(key)=>S.permissions.read===true&&!S.permissions.mustChangePassword&&S.permissions[key]===true;
+ const mayEdit=()=>S.permissions.read===true&&S.permissions.write===true&&!S.permissions.mustChangePassword;
+ const active=r=>!r.archivedAt&&r.status!=='cancelled';
+ const done=r=>['completed','approved','closed','cancelled'].includes(r.status);
+ function deadline(r){if(!r.dueDate||done(r))return '';const now=today();if(r.dueDate<now)return 'overdue';const days=Math.round((Date.parse(r.dueDate+'T12:00:00Z')-Date.parse(now+'T12:00:00Z'))/86400000);const reminder=Array.isArray(S.settings.reminderDays)?Math.max(0,...S.settings.reminderDays):Number(S.settings.reminderDays)||30;return days<=reminder?'soon':'';}
+ function notice(text,type='success'){if(typeof root.showToast==='function')root.showToast(text,type);else if(app){app.querySelector('[data-isg-message]').textContent=text;}}
+ async function api(action,payload={}){if(typeof root.fdIsgApi!=='function')throw new Error('İSG bağlantısı hazır değil. Uygulamayı yenileyin.');const epoch=sessionEpoch,result=await root.fdIsgApi(action,payload);if(epoch!==sessionEpoch)throw new Error('Oturum değişti. İSG sayfasını yeniden açın.');if(result?.success===false||result?.error)throw Object.assign(new Error(result.message||result.error?.message||result.error||'İşlem tamamlanamadı.'),{code:result.code||result.error?.code});return result?.result??result;}
+ function mount(host){app=document.getElementById('isgApp');if(!app){app=document.createElement('div');app.id='isgApp';(host instanceof Element?host:document.body).appendChild(app);}app.style.display='block';app.onclick=onAppClick;app.oninput=onAppInput;app.onchange=onAppChange;return app;}
+ async function open(host){mount(host);if(S.loaded){render();return;}await refresh();}
+ async function refresh(){if(S.loading)return;S.loading=true;S.error='';const seq=++loadSequence;render();try{const b=await api('bootstrap');if(seq!==loadSequence)return;S.records=Array.isArray(b.records)?b.records:[];S.people=Array.isArray(b.people)?b.people:[];S.branches=(Array.isArray(b.branches)?b.branches:[]).map(branchName).filter(Boolean);S.users=b.users||b.owners||[];S.vehicles=b.vehicles||[];S.kkd=b.kkd||[];S.settings=b.settings||{};S.permissions=b.permissions||{};S.activity=b.activity||[];S.company=typeof b.company==='object'?b.company.name||'İşyeri':b.company||root.firmaAdi||'İşyeri';S.revision=b.settings?.revision||0;S.loaded=true;if(S.filters.branch&&!S.branches.includes(S.filters.branch))S.filters.branch='';if(S.view==='settings'&&!can('manageSettings')&&!can('manageUsers'))S.view='overview';}catch(err){if(seq===loadSequence)S.error=err.message;}finally{if(seq===loadSequence){S.loading=false;render();}}}
+ function options(values,value,empty='Seçiniz'){const list=Array.isArray(values)?values.map(x=>[x,x]):Object.entries(values||{});return (empty===null?'':`<option value="">${e(empty)}</option>`)+list.map(([k,v])=>`<option value="${e(k)}" ${String(value??'')===String(k)?'selected':''}>${e(v)}</option>`).join('');}
+ function filtered(){const f=S.filters;return S.records.filter(r=>{if(Boolean(r.archivedAt)!==f.archive)return false;if(S.view!=='overview'&&S.view!=='people'&&S.view!=='settings'&&schemas[r.type]?.group!==S.view)return false;if(f.branch&&r.branch!==f.branch)return false;if(f.type&&r.type!==f.type)return false;if(f.status&&r.status!==f.status)return false;if(f.deadline==='overdue'&&deadline(r)!=='overdue')return false;if(f.deadline==='soon'&&deadline(r)!=='soon')return false;if(f.deadline==='open'&&done(r))return false;if(f.from&&(r.recordDate||'')<f.from)return false;if(f.to&&(r.recordDate||'')>f.to)return false;if(f.query&&!norm([r.title,r.branch,schemas[r.type]?.label,userName(r.ownerId),...Object.values(r.data||{}).filter(x=>typeof x!=='object'),...(r.personIds||[]).map(id=>personName(S.people.find(p=>personId(p)===String(id))))].join(' ')).includes(norm(f.query)))return false;return true;}).sort((a,b)=>{const aa=deadline(a)==='overdue'?0:done(a)?2:1,bb=deadline(b)==='overdue'?0:done(b)?2:1;return aa-bb||String(a.dueDate||'9999').localeCompare(String(b.dueDate||'9999'))||String(b.recordDate||'').localeCompare(String(a.recordDate||''));});}
+ function statusHtml(r){const late=deadline(r)==='overdue';return `<span class="isg-badge ${e(late?'overdue':r.status)}">${e(late?'Gecikmiş · '+(statuses[r.status]||r.status):statuses[r.status]||r.status||'Planlandı')}</span>`;}
+ function render(){if(!app)return;const availableTabs=tabs.filter(([k])=>k!=='settings'||can('manageSettings')||can('manageUsers'));app.innerHTML=`<header class="isg-header"><div><h2>İş Sağlığı ve Güvenliği</h2><p>Şube, personel ve ekipman bazında işler, belgeler ve tamamlanma takibi.</p></div><div class="isg-actions"><button data-act="refresh" ${S.loading?'disabled':''}>${S.loading?'Yenileniyor…':'Yenile'}</button><button data-act="output" data-fd-output-own="true">Çıktı</button>${mayEdit()?'<button class="isg-primary" data-act="new">+ Yeni Kayıt</button>':''}</div></header><nav class="isg-nav" aria-label="İSG bölümleri">${availableTabs.map(([k,t])=>`<button data-act="tab" data-view="${k}" ${S.view===k?'aria-current="page"':''}>${t}</button>`).join('')}</nav><div data-isg-message role="status" class="isg-muted" aria-live="polite"></div>${S.error?`<div class="isg-error" role="alert">${e(S.error)} <button data-act="refresh">Tekrar dene</button></div>`:''}${!S.loaded?`<div class="isg-panel isg-empty"><strong>${S.loading?'İSG kayıtları yükleniyor…':'İSG kayıtları yüklenemedi'}</strong>${S.loading?'Lütfen bekleyin.':'Bağlantıyı yenileyerek tekrar deneyebilirsiniz.'}</div>`:S.view==='settings'?renderSettings():renderMain()}`;}
+ function renderMain(){const records=S.records.filter(active).filter(r=>!S.filters.branch||r.branch===S.filters.branch);const counters=[['open','Açık işler',records.filter(r=>!done(r)).length,''],['overdue','Geciken',records.filter(r=>deadline(r)==='overdue').length,'isg-late'],['soon','Yaklaşan tarihler',records.filter(r=>deadline(r)==='soon').length,'isg-soon'],['review','Doğrulama bekliyor',records.filter(r=>r.status==='pending').length,'']];const list=filtered();const title=tabs.find(x=>x[0]===S.view)?.[1]||'Takip';return `${S.view==='overview'?`<section class="isg-strip" aria-label="İSG durum özeti">${counters.map(([k,l,n,c])=>`<button data-act="counter" data-value="${k}" class="${c}"><strong>${n}</strong><span>${l}</span></button>`).join('')}</section>`:''}${S.view==='people'?'<div class="isg-notice">Bu ekran belge ve sağlık uygunluk durumlarını gösterir. Tanı, tetkik ve ayrıntılı sağlık dosyaları yalnız yetkili işyeri hekimine açıktır.</div>':''}${S.view==='equipment'?'<div class="isg-notice">Periyodik kontrol kayıtları bakım kaydından ayrıdır. Kontrol raporu, yetkili kontrolör ve rapor sonucuyla takip edilir.</div>':''}${S.view==='incidents'?'<div class="isg-notice">Olay ve SGK bildirim durumunu takip edin. Bu ekranda kayıt oluşturmak resmî bildirim yerine geçmez; bildirim ayrı kanaldan yapılmalıdır.</div>':''}<section class="isg-panel"><div class="isg-panel-head"><div><h3>${e(title==='Takip'?'Yapılacak İşler ve Kayıtlar':title)}</h3><p class="isg-muted">${S.view==='people'?'Personel bazında eksik ve süresi yaklaşan belgeler.':S.filters.archive?'Arşivlenen kayıtlar; geçmiş korunur.':'Kaydın üzerine basarak ayrıntı, ekler ve değişiklik geçmişini açın.'}</p></div><div class="isg-actions">${S.view==='people'?'<button data-act="person-list">Belge Kayıtları</button>':''}${S.view==='documents'?'<button data-act="forms">Form Hazırla</button>':''}<label class="isg-check"><input data-filter="archive" type="checkbox" ${S.filters.archive?'checked':''}> Arşiv</label></div></div>${filterHtml()}<div class="isg-table-wrap">${S.view==='people'&&!S.filters.archive&&!S.filters.type?renderMatrix():recordTable(list)}</div><footer class="isg-footer"><span>${S.view==='people'&&!S.filters.type?matrixPeople().length+' personel':list.length+' kayıt'} · Son tarihler uzman / hekim tarafından doğrulanmalıdır.</span><span>Kaydetmek belgeyi imzalamış veya işlemi gerçekleştirmiş saymaz.</span></footer></section>`;}
+ function filterHtml(){const f=S.filters;const types=Object.entries(schemas).filter(([,v])=>S.view==='overview'||S.view==='people'?S.view!=='people'||v.group==='people':v.group===S.view).map(([k,v])=>[k,v.label]);return `<div class="isg-filters"><label>Ara<input data-filter="query" value="${e(f.query)}" placeholder="İş, personel, ekipman veya belge ara"></label><label>Şube<select data-filter="branch">${options(S.branches,f.branch,'Tüm şubeler')}</select></label><label>Durum<select data-filter="status">${options(statuses,f.status,'Tüm durumlar')}</select></label><label>Başlangıç<input data-filter="from" type="date" value="${e(f.from)}"></label><label>Bitiş<input data-filter="to" type="date" value="${e(f.to)}"></label><button class="isg-filter-clear" data-act="clear">Temizle</button><label>Kayıt türü<select data-filter="type">${options(Object.fromEntries(types),f.type,'Tüm türler')}</select></label>${f.deadline?`<span class="isg-check isg-muted">${e({open:'Açık işler',overdue:'Geciken işler',soon:'Yaklaşan tarihler'}[f.deadline])}</span>`:''}</div>`;}
+ function recordTable(list){return `<table><colgroup><col style="width:10%"><col style="width:26%"><col style="width:13%"><col style="width:13%"><col style="width:10%"><col style="width:13%"><col style="width:15%"></colgroup><thead><tr><th>Tür</th><th>Kayıt / Yapılacak İş</th><th>Şube</th><th>Sorumlu</th><th>Son Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${list.length?list.map(r=>`<tr><td>${e(schemas[r.type]?.label||r.type)}</td><td><button class="isg-record-title" data-act="detail" data-id="${e(r.id)}">${e(r.title)}</button><span class="isg-row-sub">${displayDate(r.recordDate)}${r.personIds?.length?' · '+r.personIds.length+' personel':''}</span></td><td>${e(r.branch)}</td><td>${e(userName(r.ownerId))}</td><td>${displayDate(r.dueDate)}</td><td>${statusHtml(r)}</td><td><div class="isg-actions"><button data-act="detail" data-id="${e(r.id)}">Aç</button>${mayEdit()&&!r.archivedAt?`<button data-act="edit" data-id="${e(r.id)}">Düzenle</button>`:''}${mayEdit()&&r.archivedAt?`<button data-act="restore" data-id="${e(r.id)}">Geri Al</button>`:''}</div></td></tr>`).join(''):'<tr><td colspan="7"><div class="isg-empty"><strong>Kayıt bulunmuyor</strong>Yeni kayıt ekleyebilir veya filtreleri değiştirebilirsiniz.</div></td></tr>'}</tbody></table>`;}
+ function latestDocument(id,kind){return S.records.filter(r=>!r.archivedAt&&r.status!=='cancelled'&&(r.personIds||[]).some(p=>String(p)===String(id))&&((r.type==='personDocument'&&r.data?.kind===kind)||(kind==='training'&&r.type==='training'&&['completed','approved','closed'].includes(r.status)&&r.data?.trainingVerified&&r.data?.attendance?.some(a=>String(a.personId)===String(id)&&a.attended&&a.passed&&a.approved)))).sort((a,b)=>String(b.data?.validFrom||b.recordDate||'').localeCompare(String(a.data?.validFrom||a.recordDate||'')))[0];}
+ function matrixPeople(){const f=S.filters;return S.people.filter(p=>(!f.branch||personBranch(p)===f.branch)&&(!f.query||norm(personName(p)+' '+personBranch(p)+' '+(p.jobTitle||p.job||p.gorev||'')).includes(norm(f.query)))).sort((a,b)=>personBranch(a).localeCompare(personBranch(b),'tr')||personName(a).localeCompare(personName(b),'tr'));}
+ function documentStatus(r){if(!r)return {label:'Kayıt yok',status:'missing'};if(['draft','planned','open','in_progress'].includes(r.status))return {label:'Bekliyor',status:'pending'};const date=r.data?.validUntil||r.dueDate;if(date&&date<today())return {label:'Süresi geçti',status:'overdue'};if(r.status==='pending')return {label:'Doğrulama bekliyor',status:'pending'};return {label:date?displayDate(date):r.type==='training'?displayDate(r.recordDate)+' · Doğrulandı':'Süre belirtilmedi',status:done(r)?'completed':'pending'};}
+ function renderMatrix(){const kinds={training:'İSG Eğitimi',medical:'Sağlık Uygunluğu',vocational:'Mesleki Yeterlilik',operator:'Operatör',firstAid:'İlk Yardım'};const people=matrixPeople();return `<table class="isg-matrix"><colgroup><col style="width:26%">${Object.keys(kinds).map(()=>'<col style="width:14.8%">').join('')}</colgroup><thead><tr><th>Personel / Şube</th>${Object.values(kinds).map(t=>`<th>${t}</th>`).join('')}</tr></thead><tbody>${people.length?people.map(p=>`<tr><td><button class="isg-record-title" data-act="person" data-id="${e(personId(p))}">${e(personName(p))}</button><span class="isg-row-sub">${e(personBranch(p))} · ${e(p.job||p.gorev||'')}</span></td>${Object.keys(kinds).map(kind=>{const r=latestDocument(personId(p),kind),s=documentStatus(r);return `<td><button class="isg-record-title" data-act="${r?'detail':'new-person'}" data-id="${e(r?.id||personId(p))}" data-kind="${kind}"><span class="isg-badge ${e(s.status)}">${e(s.label)}</span></button></td>`;}).join('')}</tr>`).join(''):'<tr><td colspan="6"><div class="isg-empty">Bu filtreye uygun personel bulunmuyor.</div></td></tr>'}</tbody></table>`;}
+ function onAppInput(event){const key=event.target.dataset.filter;if(key!=='query')return;S.filters.query=event.target.value;const oldStart=event.target.selectionStart;render();const input=app.querySelector('[data-filter=query]');input.focus();input.setSelectionRange(oldStart,oldStart);}
+ function onAppChange(event){const k=event.target.dataset.filter;if(!k)return;S.filters[k]=event.target.type==='checkbox'?event.target.checked:event.target.value;render();}
+ async function onAppClick(event){const b=event.target.closest('[data-act]');if(!b||b.disabled)return;const r=S.records.find(x=>String(x.id)===b.dataset.id);switch(b.dataset.act){case'refresh':return refresh();case'tab':S.view=b.dataset.view;S.filters.type='';S.filters.deadline='';S.filters.status='';render();break;case'clear':S.filters={query:'',branch:'',status:'',from:'',to:'',type:'',archive:false,deadline:''};render();break;case'counter':S.filters.status=b.dataset.value==='review'?'pending':'';S.filters.deadline=b.dataset.value==='review'?'':b.dataset.value;S.filters.archive=false;render();break;case'new':return newPicker();case'detail':return detail(r);case'edit':return edit(r?.type,r);case'restore':return archive(r,true);case'output':return output(b);case'forms':return forms();case'person':return personDetail(b.dataset.id);case'new-person':return edit('personDocument',null,{personIds:[b.dataset.id],data:{kind:b.dataset.kind}});case'person-list':S.filters.type=S.filters.type?'':'personDocument';render();break;case'settings-save':return saveSettings(b);case'new-user':return userForm();case'access-edit':return accessForm(S.users.find(u=>String(u.id)===b.dataset.id));}}
+ function closeDialog(force=false){if(dialog?.busy&&!force)return;dialog?.overlay.remove();dialog=null;document.removeEventListener('keydown',dialogKey);previousFocus?.focus?.();}
+ function dialogKey(ev){if(!dialog)return;if(ev.key==='Escape'){ev.preventDefault();closeDialog();}if(ev.key==='Tab'){const all=Array.from(dialog.overlay.querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href]')).filter(x=>x.offsetParent!==null);if(!all.length)return;const first=all[0],last=all[all.length-1];if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus();}else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus();}}}
+ function modal(title,body,foot='',wide=false){closeDialog(true);previousFocus=document.activeElement;const overlay=document.createElement('div');overlay.className='isg-overlay';overlay.innerHTML=`<section role="dialog" aria-modal="true" aria-labelledby="isgDialogTitle" class="isg-dialog ${wide?'isg-wide':''}"><header class="isg-dialog-head"><h3 id="isgDialogTitle">${e(title)}</h3><button type="button" data-close aria-label="Kapat">✕</button></header><div class="isg-dialog-body">${body}</div>${foot?`<footer class="isg-dialog-foot">${foot}</footer>`:''}</section>`;document.body.appendChild(overlay);dialog={overlay,busy:false};overlay.querySelector('[data-close]').onclick=()=>closeDialog();overlay.onclick=ev=>{if(ev.target===overlay)closeDialog();};document.addEventListener('keydown',dialogKey);setTimeout(()=>overlay.querySelector('input:not([type=checkbox]),select,button')?.focus(),0);return dialog;}
+ function modalError(err){const body=dialog?.overlay.querySelector('.isg-dialog-body');if(!body)return;body.querySelector('[data-form-error]')?.remove();const x=document.createElement('div');x.className='isg-error';x.dataset.formError='true';x.setAttribute('role','alert');x.textContent=['REVISION_CONFLICT','VERSION_CONFLICT'].includes(err?.code)?'Bu kayıt başka bir kullanıcı tarafından değiştirildi. Pencereyi kapatıp Yenile ile son kaydı alın; değişiklikleriniz kaydedilmedi.':err.message||String(err);body.prepend(x);body.scrollTop=0;}
+ function busy(value,message='Kaydediliyor…'){if(!dialog)return;dialog.busy=value;dialog.overlay.querySelectorAll('button,input,select,textarea').forEach(x=>{if(value){x.dataset.wasDisabled=x.disabled?'yes':'no';x.disabled=true;}else{x.disabled=x.dataset.wasDisabled==='yes';delete x.dataset.wasDisabled;}});const status=dialog.overlay.querySelector('[data-save-state]');if(status)status.textContent=value?message:'';}
+ function newPicker(){if(!mayEdit())return;const types=Object.entries(schemas).filter(([,s])=>S.view==='overview'||S.view==='people'?S.view!=='people'||s.group==='people':S.view==='settings'||s.group===S.view);const d=modal('Yeni İSG Kaydı',`<p class="isg-muted" style="margin-bottom:13px">Kaydetmek istediğiniz kayıt türünü seçin.</p><div class="isg-form-grid">${types.map(([k,s])=>`<button data-type="${k}" style="text-align:left;padding:13px">${e(s.label)}</button>`).join('')}</div>`);d.overlay.querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>edit(b.dataset.type));}
+ function fieldHtml(f,value){let input='';const required=f.required?'required':'';if(f.type==='textarea')input=`<textarea name="data.${e(f.key)}" rows="3" ${required}>${e(value)}</textarea>`;else if(f.type==='checkbox')return `<label class="isg-check isg-field isg-full"><input name="data.${e(f.key)}" type="checkbox" ${value?'checked':''}> ${e(f.label)}</label>`;else if(['select','person','vehicle','provider','record'].includes(f.type)){let values=f.options;if(f.type==='person')values=Object.fromEntries(S.people.map(p=>[personId(p),personName(p)]));if(f.type==='vehicle')values=Object.fromEntries(S.vehicles.map(v=>[String(v.id),v.plaka||v.plate||v.title||String(v.id)]));if(f.type==='provider')values=Object.fromEntries(S.records.filter(r=>r.type==='provider'&&active(r)).map(r=>[r.id,r.title]));if(f.type==='record')values=Object.fromEntries(S.records.filter(r=>['risk','task','inspection','incident'].includes(r.type)&&active(r)).map(r=>[r.id,r.title]));input=`<select name="data.${e(f.key)}" ${required}>${options(values,value)}</select>`;}else input=`<input name="data.${e(f.key)}" type="${e(f.type)}" value="${e(value)}" ${f.type==='number'?'step="any" min="0"':''} ${required}>`;return `<label class="isg-field ${f.type==='textarea'?'isg-full':''}" data-field="${e(f.key)}"><span>${e(f.label)}${f.required?' *':''}</span>${input}</label>`;}
+ function peoplePicker(ids,branch){const selected=new Set((ids||[]).map(String));return `<div class="isg-section-title">İlgili Personeller <span class="isg-muted" data-person-count></span></div><div class="isg-people-tools"><input data-person-search placeholder="Personel ara"><button type="button" data-people="all">Görünenleri Seç</button><button type="button" data-people="none">Seçimi Temizle</button></div><div class="isg-people-list">${S.people.map(p=>`<label class="isg-person-option" data-person-option data-branch="${e(personBranch(p))}" data-search="${e(norm(personName(p)+' '+personBranch(p)))}" ${branch&&personBranch(p)!==branch?'hidden':''}><input type="checkbox" name="personIds" value="${e(personId(p))}" ${selected.has(personId(p))?'checked':''}><span>${e(personName(p))}<small>${e(personBranch(p))} · ${e(p.job||p.gorev||'')}</small></span></label>`).join('')}</div>`;}
+ function edit(type,record,seed={}){if(!mayEdit()||!schemas[type])return;const schema=schemas[type],original=record?JSON.parse(JSON.stringify(record)):null;const r=original||{type,branch:S.filters.branch||S.branches[0]||'',title:'',status:'planned',ownerId:'',recordDate:today(),dueDate:'',personIds:[],data:{},attachments:[],...seed};r.data={...(r.data||{}),...(seed.data||{})};const owners=Object.fromEntries(S.users.filter(u=>u.active!==false).map(u=>[u.id,u.name||u.adSoyad||u.username||u.id]));let content=`<form id="isgRecordForm"><div class="isg-notice">Kayıt tamamlandığında kanıtı ve doğrulama notunu ekleyin. Ayrıntılı sağlık bilgilerini bu forma yazmayın.</div><div class="isg-form-grid"><label class="isg-field"><span>Kayıt başlığı *</span><input name="title" value="${e(r.title)}" required maxlength="240"></label><label class="isg-field"><span>Şube *</span><select name="branch" required>${options(S.branches,r.branch)}</select></label><label class="isg-field"><span>Kayıt / gerçekleşme tarihi *</span><input name="recordDate" type="date" value="${e(r.recordDate)}" required></label><label class="isg-field"><span>Son tarih / sonraki takip</span><input name="dueDate" type="date" value="${e(r.dueDate)}"></label><label class="isg-field"><span>Sorumlu kullanıcı</span><select name="ownerId">${options(owners,r.ownerId,'Atanmadı')}</select></label><label class="isg-field"><span>Durum</span><select name="status">${options(statuses,r.status,null)}</select></label>${type==='inspection'?`<label class="isg-field isg-full"><span>Ekipman *</span><select name="equipmentId" required>${options(Object.fromEntries(S.records.filter(x=>x.type==='equipment'&&active(x)).map(x=>[x.id,x.title+' · '+x.branch])),r.equipmentId)}</select></label>`:''}</div><h4 class="isg-section-title">${e(schema.label)} Bilgileri</h4><div class="isg-form-grid">${schema.fields.map(f=>fieldHtml(f,r.data[f.key])).join('')}</div>${type!=='equipment'&&type!=='provider'&&type!=='annualPlan'?peoplePicker(r.personIds,r.branch):''}${type==='training'?'<div data-attendance></div>':''}${type==='annualPlan'?'<h4 class="isg-section-title">Plan Kalemleri</h4><div data-plan-items></div><button type="button" data-add-plan>+ Plan Kalemi Ekle</button>':''}</form>`;const d=modal((record?'Düzenle · ':'Yeni · ')+schema.label,content,'<span class="isg-form-state" role="status" data-save-state></span><button type="button" data-cancel>Vazgeç</button><button type="submit" form="isgRecordForm" class="isg-primary">Kaydet</button>');const form=d.overlay.querySelector('form');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();const planned=JSON.parse(JSON.stringify(r.data.items||[]));function drawPlans(){const div=form.querySelector('[data-plan-items]');if(!div)return;div.innerHTML=planned.map((x,i)=>`<div class="isg-form-grid" style="margin-bottom:9px" data-plan-index="${i}"><input data-plan="title" placeholder="Yapılacak iş" value="${e(x.title)}" required><div class="isg-actions"><input data-plan="dueDate" type="date" value="${e(x.dueDate)}" style="flex:1"><button type="button" data-plan-remove="${i}">Kaldır</button></div></div>`).join('');div.oninput=ev=>{const row=ev.target.closest('[data-plan-index]');if(row&&ev.target.dataset.plan)planned[Number(row.dataset.planIndex)][ev.target.dataset.plan]=ev.target.value;};div.onclick=ev=>{const b=ev.target.closest('[data-plan-remove]');if(b){planned.splice(Number(b.dataset.planRemove),1);drawPlans();}};}
+  if(type==='annualPlan'){drawPlans();form.querySelector('[data-add-plan]').onclick=()=>{planned.push({title:'',dueDate:'',status:'planned'});drawPlans();};}
+  let attendance=new Map((r.data.attendance||[]).map(x=>[String(x.personId),{...x}]));function drawAttendance(){const box=form.querySelector('[data-attendance]');if(!box)return;const ids=Array.from(form.querySelectorAll('[name=personIds]:checked')).map(x=>x.value);box.innerHTML=`<h4 class="isg-section-title">Katılım ve Değerlendirme</h4><p class="isg-muted">Katılım ve başarı bilgisi gerçek eğitim kayıtlarına göre işaretlenmelidir. Katılım belgesi yalnız doğrulanan personel için hazırlanır.</p><div class="isg-attendance-wrap"><table><thead><tr><th>Personel</th><th>Katıldı</th><th>Başarılı</th><th>Doğrulandı</th></tr></thead><tbody>${ids.map(id=>{const a=attendance.get(id)||{};return `<tr><td>${e(personName(S.people.find(p=>personId(p)===id)))}</td>${['attended','passed','approved'].map(k=>`<td><input type="checkbox" data-attend="${k}" data-person="${e(id)}" ${a[k]?'checked':''} aria-label="${e(personName(S.people.find(p=>personId(p)===id))+' '+k)}"></td>`).join('')}</tr>`;}).join('')||'<tr><td colspan="4">Personel seçildiğinde katılım satırları açılır.</td></tr>'}</tbody></table></div>`;box.onchange=ev=>{if(!ev.target.dataset.attend)return;const id=ev.target.dataset.person,a=attendance.get(id)||{personId:id,attended:false,passed:false,approved:false};a[ev.target.dataset.attend]=ev.target.checked;attendance.set(id,a);};}
+  function refreshPeople(){const branch=form.elements.branch.value,query=norm(form.querySelector('[data-person-search]')?.value);form.querySelectorAll('[data-person-option]').forEach(x=>{x.hidden=(!!branch&&x.dataset.branch!==branch)||(!!query&&!x.dataset.search.includes(query));});const count=form.querySelector('[data-person-count]');if(count)count.textContent='· '+form.querySelectorAll('[name=personIds]:checked').length+' seçili';}
+  function medicalFields(){if(type!=='personDocument')return;const medical=form.elements['data.kind'].value==='medical';form.querySelector('[data-field=fitStatus]').hidden=!medical;form.querySelector('[data-field=notes]').hidden=medical;}
+  if(['personDocument','training','inspection'].includes(type)){const button=document.createElement('button');button.type='button';button.textContent='Ayarlara Göre Takip Tarihi Öner';button.style.marginTop='12px';form.append(button);button.onclick=()=>{const kind=type==='personDocument'?form.elements.namedItem('data.kind').value:type;const rule=(S.settings.documentRenewals||[]).find(x=>x.kind===kind&&x.branch===form.elements.branch.value)||(S.settings.documentRenewals||[]).find(x=>x.kind===kind&&!x.branch);if(!rule?.months){modalError(new Error('Bu kayıt türü için ayarlarda süre önerisi tanımlanmamış. Son tarihi uzman / hekim değerlendirmesine göre yazın.'));return;}const start=form.elements.namedItem('data.validFrom')?.value||form.elements.namedItem('data.inspectionDate')?.value||form.elements.recordDate.value;if(!start){modalError(new Error('Önce gerçekleşme / belge tarihini seçin.'));return;}const date=new Date(start+'T12:00:00Z'),day=date.getUTCDate();date.setUTCDate(1);date.setUTCMonth(date.getUTCMonth()+Number(rule.months));const last=new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth()+1,0)).getUTCDate();date.setUTCDate(Math.min(day,last));const value=date.toISOString().slice(0,10),target=type==='personDocument'?form.elements.namedItem('data.validUntil'):form.elements.dueDate;target.value=value;target.focus();};}
+  form.oninput=ev=>{if(ev.target.hasAttribute('data-person-search'))refreshPeople();};form.onchange=ev=>{if(ev.target.name==='branch'){form.querySelectorAll('[name=personIds]').forEach(x=>{if(x.closest('[data-person-option]').dataset.branch!==form.elements.branch.value)x.checked=false;});refreshPeople();drawAttendance();}if(ev.target.name==='personIds'){refreshPeople();drawAttendance();}if(ev.target.name==='data.kind')medicalFields();};form.querySelectorAll('[data-people]').forEach(b=>b.onclick=()=>{form.querySelectorAll('[data-person-option]').forEach(x=>{if(b.dataset.people==='none'||!x.hidden)x.querySelector('input').checked=b.dataset.people==='all';});refreshPeople();drawAttendance();});refreshPeople();drawAttendance();medicalFields();
+  form.onsubmit=async ev=>{ev.preventDefault();if(d.busy||!form.reportValidity())return;const get=k=>form.elements.namedItem(k)?.value||'';const selected=Array.from(form.querySelectorAll('[name=personIds]:checked')).map(x=>x.value);const data={};schema.fields.forEach(f=>{if(type==='personDocument'&&get('data.kind')==='medical'&&f.key==='notes')return;if(type==='personDocument'&&get('data.kind')!=='medical'&&f.key==='fitStatus')return;const input=form.elements.namedItem('data.'+f.key);data[f.key]=f.type==='checkbox'?Boolean(input?.checked):f.type==='number'?(input?.value===''?null:Number(input?.value)):input?.value||'';});if(type==='training')data.attendance=selected.map(id=>attendance.get(id)||{personId:id,attended:false,passed:false,approved:false});if(type==='emergencyTeam')data.members=selected;if(type==='risk'){if(![data.probability,data.severity].every(x=>Number.isInteger(x)&&x>=1&&x<=5)){modalError(new Error('Olasılık ve şiddet 1–5 arasında tam sayı olmalıdır.'));return;}data.score=data.probability*data.severity;}if(type==='annualPlan')data.items=planned;const next={id:r.id||null,type,title:get('title').trim(),branch:get('branch'),recordDate:get('recordDate'),dueDate:get('dueDate')||null,status:get('status'),ownerId:get('ownerId')||null,personIds:selected,equipmentId:r.equipmentId||null,data};if(type==='inspection')next.equipmentId=get('equipmentId');try{validateRecord(next);busy(true);const saved=await api('save',{record:next,expectedRevision:r.revision||0,idempotencyKey:r.id||d.idempotencyKey||(d.idempotencyKey=globalThis.crypto?.randomUUID?.()||'isg-'+Date.now()+'-'+Math.random().toString(36).slice(2))});const recordValue=saved.record||saved;replaceRecord(recordValue);closeDialog(true);render();notice('İSG kaydı kaydedildi.');}catch(err){busy(false);modalError(err);}};
+ }
+ function validateRecord(r){if(!r.title||!r.branch)throw new Error('Başlık ve şube zorunludur.');const d=r.data||{};if(r.type==='personDocument'&&d.kind==='medical'&&r.personIds?.length!==1)throw new Error('Sağlık durumu kaydını tek personel için oluşturun. Hekim dosyası kişiye özel tutulur.');if(r.type==='personDocument'&&!r.personIds?.length)throw new Error('En az bir personel seçin.');if(r.type==='personDocument'&&d.validFrom&&d.validUntil&&d.validUntil<d.validFrom)throw new Error('Belgenin bitiş tarihi başlangıçtan önce olamaz.');if(r.type==='training'){if(d.trainingVerified&&(!d.trainer||!d.trainerQualification))throw new Error('Eğitimi doğrulamak için eğitmen ve yeterlilik bilgisi gereklidir.');if(!(d.hours>0))throw new Error('Eğitim süresi sıfırdan büyük olmalıdır.');if(['completed','approved','closed'].includes(r.status)&&(!d.trainingVerified||!r.personIds?.length||!d.attendance?.some(a=>a.attended)))throw new Error('Tamamlanan eğitim için gerçekleşme doğrulaması ve katılım kaydı gereklidir.');if(d.attendance?.some(a=>a.approved&&(!a.attended||!a.passed)))throw new Error('Katılmayan veya değerlendirmeyi geçmeyen personelin belgesi doğrulanamaz.');}if(r.type==='inspection'&&['completed','approved','closed'].includes(r.status)&&(!d.reportNo||!d.controller||!d.qualified||d.result==='pending'))throw new Error('Kontrolü tamamlamak için rapor, kontrolör, yetki doğrulaması ve sonuç gereklidir.');if(['task','action'].includes(r.type)&&['completed','approved','closed'].includes(r.status)&&(!d.completionEvidence||!d.verificationNote))throw new Error('Tamamlandı olarak kapatmak için yapılan işin kanıtı ve doğrulama notu gereklidir.');if(r.type==='incident'&&['submitted','verified'].includes(d.sgkStatus)&&(!d.sgkReference||!d.sgkNotificationDate))throw new Error('Bildirim yapıldı durumu için referans ve bildirim tarihi gereklidir.');if(r.type==='provider'&&d.contractStart&&d.contractEnd&&d.contractEnd<d.contractStart)throw new Error('Sözleşme bitişi başlangıçtan önce olamaz.');if(r.type==='annualPlan'&&(!Number.isInteger(d.year)||d.year<2000||d.year>2200))throw new Error('Geçerli bir plan yılı yazın.');if(r.type==='risk'&&r.status==='completed')throw new Error('Risk değerlendirmesi kayıt olarak tutulur; önlemi tamamlamak için bağlı düzeltici faaliyet açın.');}
+ function replaceRecord(record){if(!record?.id)throw new Error('Sunucu kayıt numarası dönmedi; tekrar kaydetmeden önce Yenile ile kontrol edin.');const i=S.records.findIndex(x=>x.id===record.id);if(i>=0)S.records[i]=record;else S.records.push(record);}
+ function detail(r){if(!r)return;const schema=schemas[r.type]||{label:r.type,fields:[]},data=r.data||{};const values=[['Tür',schema.label],['Şube',r.branch],['Sorumlu',userName(r.ownerId)],['Kayıt tarihi',displayDate(r.recordDate)],['Son tarih',displayDate(r.dueDate)],['Durum',statuses[r.status]||r.status],...schema.fields.filter(f=>f.type!=='checkbox'||data[f.key]).filter(f=>r.type!=='personDocument'||data.kind!=='medical'||f.key!=='notes').filter(f=>r.type!=='personDocument'||data.kind==='medical'||f.key!=='fitStatus').map(f=>[f.label,f.type==='date'?displayDate(data[f.key]):f.type==='checkbox'?'Evet':f.options?.[data[f.key]]||data[f.key]||'—'])];const d=modal(r.title,`<div class="isg-details">${values.map(([k,v])=>`<div class="${String(v).length>100?'isg-full':''}"><small>${e(k)}</small>${e(v)}</div>`).join('')}</div>${r.personIds?.length?`<h4 class="isg-section-title">İlgili Personeller</h4><p>${r.personIds.map(id=>e(personName(S.people.find(p=>personId(p)===String(id))))).join(', ')}</p>`:''}${r.type==='training'?`<h4 class="isg-section-title">Katılım</h4><div class="isg-attendance-wrap"><table><thead><tr><th>Personel</th><th>Katıldı</th><th>Başarılı</th><th>Doğrulandı</th></tr></thead><tbody>${(data.attendance||[]).map(a=>`<tr><td>${e(personName(S.people.find(p=>personId(p)===String(a.personId))))}</td><td>${a.attended?'Evet':'Hayır'}</td><td>${a.passed?'Evet':'Hayır'}</td><td>${a.approved?'Evet':'Hayır'}</td></tr>`).join('')}</tbody></table></div>`:''}${r.type==='annualPlan'?`<h4 class="isg-section-title">Plan Kalemleri</h4><ul>${(data.items||[]).map(x=>`<li>${e(x.title)} · ${displayDate(x.dueDate)} · ${e(statuses[x.status]||x.status)}</li>`).join('')}</ul>`:''}<h4 class="isg-section-title">Ekler / İmzalı Nüshalar</h4><div data-attachments>${attachmentsHtml(r)}</div>${mayEdit()&&!r.archivedAt&&(r.type!=='personDocument'||r.data?.kind!=='medical'||can('medical'))?'<label class="isg-field" style="margin-top:12px"><span>Belge / fotoğraf ekle</span><input type="file" data-upload accept="application/pdf,image/jpeg,image/png,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small>En fazla 20 MB. Ayrıntılı sağlık dosyalarını genel İSG kaydına yüklemeyin.</small></label>':''}<h4 class="isg-section-title">Değişiklik Geçmişi</h4><div data-history class="isg-muted">Geçmiş yükleniyor…</div>`,`<span class="isg-form-state" data-save-state></span><button data-form>Form Hazırla</button>${['risk','inspection','incident'].includes(r.type)&&mayEdit()&&!r.archivedAt?'<button data-action>Faaliyet Aç</button>':''}${mayEdit()&&!r.archivedAt?'<button data-edit>Düzenle</button><button class="isg-danger" data-archive>Arşivle</button>':''}${mayEdit()&&r.archivedAt?'<button data-restore>Geri Al</button>':''}`);d.overlay.querySelector('[data-form]').onclick=()=>forms(r);if(r.type==='personDocument'&&r.data?.kind==='medical'&&can('medical')){const button=document.createElement('button');button.textContent='Hekim Kaydı';button.onclick=()=>medicalForm(r);d.overlay.querySelector('.isg-dialog-foot').prepend(button);}d.overlay.querySelector('[data-edit]')?.addEventListener('click',()=>edit(r.type,r));d.overlay.querySelector('[data-action]')?.addEventListener('click',()=>edit('action',null,{branch:r.branch,title:r.title+' · Düzeltici faaliyet',personIds:r.personIds,data:{relatedRecordId:r.id}}));d.overlay.querySelector('[data-archive]')?.addEventListener('click',()=>archive(r));d.overlay.querySelector('[data-restore]')?.addEventListener('click',()=>archive(r,true));d.overlay.querySelector('[data-upload]')?.addEventListener('change',ev=>upload(r,ev.target.files[0],d));d.overlay.querySelector('[data-attachments]').onclick=ev=>{const b=ev.target.closest('[data-download]');if(b)download(r.id,b.dataset.download,b);};api('history',{id:r.id}).then(res=>{if(dialog!==d)return;const items=res.items||res.history||res.events||res.activity||[];const versions=res.versions||[];d.overlay.querySelector('[data-history]').innerHTML=items.length?`<ol class="isg-history">${items.map(x=>`<li>${e(x.action||x.eventType||'Değişiklik')}<small>${e(x.actorName||userName(x.actor_id||x.actorId)||'')} · ${e(displayDate(x.created_at||x.createdAt||x.at))} · ${e(x.reason||x.details?.reason||'')}</small></li>`).join('')}</ol>`:'Henüz değişiklik geçmişi bulunmuyor.';if(versions.length)d.overlay.querySelector('[data-history]').innerHTML+='<h4 class="isg-section-title">Önceki Kayıt Sürümleri</h4>'+versions.map(v=>'<details style="padding:8px 0;border-bottom:1px solid #e3edf2"><summary style="cursor:pointer">Sürüm '+e(v.revision)+' · '+e(displayDate(v.createdAt))+' · '+e(userName(v.actorId))+'</summary><p>'+e(v.record?.title)+' · '+e(statuses[v.record?.status]||v.record?.status)+' · '+e(v.record?.branch)+'</p><dl>'+Object.entries(v.record?.data||{}).filter(([k,val])=>typeof val!=="object"&&!(v.record?.type==='personDocument'&&v.record?.data?.kind==='medical'&&k==='notes')).map(([k,val])=>'<dt>'+e(schemas[v.record?.type]?.fields.find(f=>f.key===k)?.label||k)+'</dt><dd>'+e(val)+'</dd>').join('')+'</dl></details>').join('');}).catch(err=>{if(dialog===d)d.overlay.querySelector('[data-history]').textContent='Geçmiş okunamadı: '+err.message;});}
+ function attachmentsHtml(r){return (r.attachments||[]).length?r.attachments.map(a=>`<div class="isg-attachment"><span>${e(a.filename||a.name||'Belge')}<small class="isg-muted">${a.size?(a.size/1024/1024).toFixed(2)+' MB':''}</small></span><button data-download="${e(a.id)}">Aç</button></div>`).join(''):'<p class="isg-muted">Henüz belge yüklenmedi.</p>';}
+async function upload(r,file,d){if(!file||d.busy)return;if(file.size>20*1024*1024){modalError(new Error('Dosya 20 MB sınırını aşıyor.'));return;}try{busy(true,'Dosya yükleniyor…');const init=await api('upload-init',{recordId:r.id,filename:file.name,mimeType:file.type||'application/octet-stream',size:file.size,expectedRevision:r.revision,medical:r.type==='personDocument'&&r.data?.kind==='medical'});if(typeof root.fdIsgUploadFile!=='function')throw new Error('Güvenli dosya yükleme bileşeni hazır değil. Uygulamayı yenileyin.');await root.fdIsgUploadFile(init,file);const result=await api('upload-finish',{uploadId:init.uploadId});if(result.record){replaceRecord(result.record);Object.assign(r,result.record);}else {r.attachments=[...(r.attachments||[]),result.attachment||result];if(result.revision)r.revision=result.revision;}busy(false);d.overlay.querySelector('[data-attachments]').innerHTML=attachmentsHtml(result.record||r);d.overlay.querySelector('[data-upload]').value='';notice('Dosya kayda eklendi.');}catch(err){busy(false);modalError(err);}}
+ async function download(recordId,id,button){const popup=root.open('about:blank','_blank');try{button.disabled=true;const result=await api('download',{recordId,attachmentId:id});if(!/^https:\/\//.test(result.signedUrl||''))throw new Error('Belge bağlantısı alınamadı.');if(popup){popup.opener=null;popup.location.href=result.signedUrl;}else {const link=document.createElement('a');link.href=result.signedUrl;link.target='_blank';link.rel='noopener';link.textContent='Belgeyi Aç';button.after(link);}}catch(err){popup?.close();modalError(err);}finally{button.disabled=false;}}
+ function archive(r,restore=false){if(!r||!mayEdit())return;const d=modal(restore?'Arşivden Geri Al':'Kaydı Arşivle',`<p>${e(r.title)}</p><div class="isg-notice">${restore?'Kayıt etkin listeye geri alınır.':'Kayıt listeden kaldırılır; evrakları ve değişiklik geçmişi korunur.'}</div><label class="isg-field"><span>İşlem nedeni *</span><textarea data-reason required rows="3"></textarea></label>`,'<span class="isg-form-state" data-save-state></span><button data-cancel>Vazgeç</button><button class="isg-primary" data-confirm>Onayla</button>');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();d.overlay.querySelector('[data-confirm]').onclick=async()=>{if(d.busy)return;const reason=d.overlay.querySelector('[data-reason]').value.trim();if(!reason){modalError(new Error('İşlem nedenini yazın.'));return;}try{busy(true);const res=await api(restore?'restore':'archive',{id:r.id,expectedRevision:r.revision,reason});replaceRecord(res.record||res);closeDialog(true);render();notice(restore?'Kayıt geri alındı.':'Kayıt arşivlendi.');}catch(err){busy(false);modalError(err);}};}
+ function personDetail(id){
+  const p=S.people.find(x=>personId(x)===String(id));if(!p)return;const records=S.records.filter(r=>!r.archivedAt&&(r.personIds||[]).some(x=>String(x)===String(id)));const kkd=S.kkd.filter(r=>String(r.personId??r.personelId??r.personel_id??'')===String(id)),groups=new Map();kkd.forEach(x=>{const key=x.date||x.recordDate||x.tarih||x.teslimTarihi||'';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(x);});
+  const kkdHtml=Array.from(groups).sort(([a],[b])=>String(b).localeCompare(String(a))).map(([date,items])=>'<div style="padding:10px 0;border-bottom:1px solid #e2eaef"><div class="isg-actions" style="justify-content:space-between"><strong>'+e(displayDate(date))+'</strong><button data-ppe-date="'+e(date)+'">Teslim Formu</button></div><ul>'+items.map(x=>'<li>'+e(x.item||x.title||x.urunAdi||x.malzeme||x.urun||'KKD')+' · '+e(x.quantity||x.miktar||'')+'</li>').join('')+'</ul></div>').join('');
+  const d=modal(personName(p),'<p class="isg-muted">'+e(personBranch(p))+' · '+e(p.jobTitle||p.job||p.gorev||'')+'</p><h4 class="isg-section-title">İSG Belgeleri ve İşlemler</h4><div class="isg-table-wrap">'+recordTable(records)+'</div><h4 class="isg-section-title">KKD Teslim Kayıtları</h4>'+(kkdHtml||'<p class="isg-muted">İlişkili KKD kaydı bulunmuyor. KKD Takip modülünden teslim kayıtlarını yönetebilirsiniz.</p>'),mayEdit()?'<button class="isg-primary" data-new-person>+ Belge / Durum Kaydı</button>':'',true);
+  d.overlay.addEventListener('click',ev=>{const b=ev.target.closest('[data-act=detail]');if(b)detail(S.records.find(x=>x.id===b.dataset.id));const editButton=ev.target.closest('[data-act=edit]');if(editButton){const r=S.records.find(x=>x.id===editButton.dataset.id);edit(r.type,r);}const ppe=ev.target.closest('[data-ppe-date]');if(ppe){const items=groups.get(ppe.dataset.ppeDate)||[];root.fdIsgDocuments?.open({record:{id:'legacy-kkd-'+items.map(x=>x.id).join('-'),revision:0,type:'personDocument',title:'KKD Teslim Formu',recordDate:ppe.dataset.ppeDate,branch:personBranch(p),personIds:[id],status:'completed',data:{kind:'ppe',notes:'Mevcut KKD teslim kayıtlarından hazırlandı.'}},people:S.people,branch:personBranch(p),company:S.company,settings:S.settings,permissions:S.permissions,ppeItems:items.map(x=>({id:x.id,name:x.item||x.title||'KKD',item:x.item||x.title||'KKD',quantity:x.quantity||x.miktar||'',date:x.date})),sourceLegacyIds:items.map(x=>x.id)});}});
+  d.overlay.querySelector('[data-new-person]')?.addEventListener('click',()=>edit('personDocument',null,{branch:personBranch(p),personIds:[id]}));
+ }
+ function forms(record){if(!root.fdIsgDocuments?.open){notice('Belge hazırlama bölümü yüklenemedi. Uygulamayı yenileyin.','error');return;}const context={record:record||null,records:S.records,users:S.users,equipment:S.records.find(x=>x.id===record?.equipmentId),ownerName:userName(record?.ownerId),people:S.people,branch:record?.branch||S.filters.branch||S.branches[0]||'',company:S.company,settings:S.settings,permissions:S.permissions};root.fdIsgDocuments.open(context);}
+ function getExportModels(){if(S.view==='people'&&!S.filters.type){const kinds={training:'İSG Eğitimi',medical:'Sağlık Uygunluğu',vocational:'Mesleki Yeterlilik',operator:'Operatör',firstAid:'İlk Yardım'};return [{title:'Personel İSG Durumu',subtitle:S.company,columns:[{key:'name',label:'Personel',type:'text'},{key:'branch',label:'Şube',type:'text'},...Object.entries(kinds).map(([k,l])=>({key:k,label:l,type:'text'}))],rows:matrixPeople().map(p=>({name:personName(p),branch:personBranch(p),...Object.fromEntries(Object.keys(kinds).map(k=>[k,documentStatus(latestDocument(personId(p),k)).label]))})),footnotes:['Sağlık bilgileri yalnız uygunluk durumu olarak gösterilir.'] }];}return [{title:tabs.find(x=>x[0]===S.view)?.[1]||'İSG Kayıtları',subtitle:S.company+(S.filters.branch?' · '+S.filters.branch:''),columns:[{key:'type',label:'Kayıt Türü',type:'text'},{key:'title',label:'Kayıt / İş',type:'text'},{key:'branch',label:'Şube',type:'text'},{key:'owner',label:'Sorumlu',type:'text'},{key:'recordDate',label:'Kayıt Tarihi',type:'date'},{key:'dueDate',label:'Son Tarih',type:'date'},{key:'status',label:'Durum',type:'text'},{key:'people',label:'İlgili Personeller',type:'text'}],rows:filtered().map(r=>({type:schemas[r.type]?.label||r.type,title:r.title,branch:r.branch,owner:userName(r.ownerId),recordDate:r.recordDate,dueDate:r.dueDate,status:statuses[r.status]||r.status,people:(r.personIds||[]).map(id=>personName(S.people.find(p=>personId(p)===String(id)))).join(', ')})),footnotes:['Şube ve tarih filtrelerine uygun kayıtlar aktarılmıştır. Ayrıntılı sağlık verileri bu çıktıya dahil değildir.']}];}
+ function output(button){if(!S.loaded)return;if(typeof root.fdIsgOutput==='function')return root.fdIsgOutput(getExportModels(),button);notice('Ortak çıktı penceresi yüklenemedi. Uygulamayı yenileyin.','error');}
+ function renderSettings(){
+  const set=S.settings,catalog=root.fdIsgDocuments?.catalog||[],rules=set.documentRenewals||[],templates=set.templates||[],reminderDays=Array.isArray(set.reminderDays)?set.reminderDays:Number.isFinite(Number(set.reminderDays))&&Number(set.reminderDays)>0?[Number(set.reminderDays)]:[30,15,7];
+  return '<div class="isg-notice">Takip süreleri yasal onay yerine geçmez. Şube tehlike sınıfı, ekipman türü ve uzman / hekim değerlendirmesiyle belirleyin. Yeni ayarlar mevcut kayıtların tarihlerini değiştirmez.</div><form id="isgSettingsForm"><div class="isg-settings-grid">'+(can('manageSettings')?'<section><h3>Takip Kuralları</h3><label class="isg-field"><span>Yaklaşan tarih uyarıları · gün</span><input name="reminderDays" value="'+e(reminderDays.join(', '))+'" placeholder="30, 15, 7"><small>Bu süreler takip ekranındaki yaklaşan işler için kullanılır. Otomatik mesaj göndermez.</small></label><h4 class="isg-section-title">Yeni Kayıtlar İçin Süre Önerileri</h4>'+[['training','Eğitim'],['medical','Sağlık değerlendirmesi'],['vocational','Mesleki belge'],['operator','Operatör belgesi'],['inspection','Periyodik kontrol']].map(([k,l])=>'<label class="isg-field" style="margin-bottom:10px"><span>'+l+' · ay (boşsa önerme)</span><input name="rule.'+k+'" type="number" min="1" max="240" value="'+e(rules.find(r=>r.kind===k&&!r.branch)?.months||'')+'"></label>').join('')+'</section><section><h3>Şube Tehlike Sınıfları</h3>'+S.branches.map((b,i)=>{const h=(set.branchHazards||[]).find(x=>x.branch===b)||{};return '<fieldset style="border:1px solid #deeaee;border-radius:8px;padding:12px;margin:0 0 10px"><legend>'+e(b)+'</legend><label class="isg-field"><span>Tehlike sınıfı</span><select name="hazard.'+i+'">'+options({unconfirmed:'Uzman belirlesin',azTehlikeli:'Az tehlikeli',tehlikeli:'Tehlikeli',cokTehlikeli:'Çok tehlikeli'},h.hazardClass||'unconfirmed',null)+'</select></label><label class="isg-field" style="margin-top:8px"><span>NACE kodu</span><input name="nace.'+i+'" value="'+e(h.naceCode)+'"></label><label class="isg-field" style="margin-top:8px"><span>Uzman notu</span><textarea name="hazardNote.'+i+'" rows="2">'+e(h.expertNote)+'</textarea></label></fieldset>';}).join('')+'</section><section style="grid-column:1/-1"><h3>Evrak / Dilekçe / Form Şablonları</h3><p class="isg-muted">Başlık ve metinleri değiştirebilirsiniz. Alan kodları: {{firma}}, {{sube}}, {{tarih}}, {{personel}}, {{gorev}}, {{egitim}}, {{konu}}, {{aciklama}}, {{ekipman}}, {{yil}}, {{muhatap}}.</p>'+catalog.map(t=>{const custom=templates.find(x=>x.id===t.id)||{};return '<details style="border-top:1px solid #deeaef;padding:11px 0"><summary style="cursor:pointer;font-weight:700">'+e(custom.title||t.name)+'</summary><div class="isg-form-grid" style="padding-top:12px"><label class="isg-field"><span>Belge başlığı</span><input name="templateTitle.'+t.id+'" value="'+e(custom.title||t.name)+'"></label><label class="isg-check"><input type="checkbox" name="templateEnabled.'+t.id+'" '+(custom.enabled!==false?'checked':'')+'> Kullanıma açık</label><label class="isg-field isg-full"><span>Şablon metni</span><textarea name="templateBody.'+t.id+'" rows="4">'+e(custom.body??t.body??'')+'</textarea></label><label class="isg-field isg-full"><span>Alt açıklama</span><textarea name="templateFooter.'+t.id+'" rows="2">'+e(custom.footer||'')+'</textarea></label></div></details>';}).join('')+'</section>':'')+(can('manageUsers')?'<section style="grid-column:1/-1" id="isgAccessSection"><h3>İSG Uzmanı ve İşyeri Hekimi Erişimi</h3><p class="isg-muted">Uzman yalnız İSG modülüne ve verilen şubelere erişir. Maaş, banka, genel personel dosyaları ve ayrıntılı sağlık verileri açılmaz.</p><div style="margin-top:12px" class="isg-actions"><button type="button" data-act="new-user">+ İSG Kullanıcısı Aç</button></div><div style="margin-top:12px">'+(S.users.filter(u=>['IsgUzmani','IsyeriHekimi'].includes(u.role)).map(u=>'<div class="isg-attachment"><span>'+e(u.name||u.username||u.adSoyad)+'<small class="isg-muted"> '+e(u.role)+' · '+e(u.allBranches?'Tüm şubeler':(u.branches||[]).join(', '))+'</small></span><div class="isg-actions"><span class="isg-badge">'+(u.active===false?'Pasif':'Aktif')+'</span><button type="button" data-act="access-edit" data-id="'+e(u.id)+'">Yetkiler</button></div></div>').join('')||'<p class="isg-muted">Henüz uzman erişimi tanımlanmadı.</p>')+'</div></section>':'')+'</div>'+(can('manageSettings')?'<div class="isg-actions" style="justify-content:flex-end;margin-top:14px"><button class="isg-primary" type="button" data-act="settings-save">Ayarları Kaydet</button></div>':'')+'</form>';
+ }
+ async function saveSettings(button){
+  if(S.busy||!can('manageSettings'))return;const form=app.querySelector('#isgSettingsForm');if(!form.reportValidity())return;const get=k=>form.elements.namedItem(k),reminderDays=get('reminderDays').value.split(/[,; ]+/).filter(Boolean).map(Number);if(!reminderDays.length||reminderDays.some(x=>!Number.isInteger(x)||x<1||x>365)){notice('Hatırlatma günlerini 1–365 arasında, virgülle ayırarak yazın.','error');return;}
+  const documentRenewals=(S.settings.documentRenewals||[]).filter(x=>x.branch||!['training','medical','vocational','operator','inspection'].includes(x.kind));['training','medical','vocational','operator','inspection'].forEach(k=>{if(get('rule.'+k)?.value)documentRenewals.push({kind:k,branch:'',months:Number(get('rule.'+k).value),note:''});});
+  const branchHazards=S.branches.map((b,i)=>({branch:b,hazardClass:get('hazard.'+i).value,naceCode:get('nace.'+i).value,expertNote:get('hazardNote.'+i).value}));
+  const templates=(root.fdIsgDocuments?.catalog||[]).map(t=>{const old=(S.settings.templates||[]).find(x=>x.id===t.id)||{};const title=get('templateTitle.'+t.id).value,body=get('templateBody.'+t.id).value,footer=get('templateFooter.'+t.id).value,enabled=get('templateEnabled.'+t.id).checked;const changed=old.title!==title||old.body!==body||old.footer!==footer||old.enabled!==enabled;return {id:t.id,title,body,footer,enabled,version:Number(old.version||t.version||1)+(changed&&old.id?1:0)};});
+  const settings={branchHazards,reminderDays,documentRenewals,templates,companyInfo:S.settings.companyInfo||{}};S.busy=true;button.disabled=true;button.textContent='Kaydediliyor…';
+  try{const res=await api('settings-save',{settings,expectedRevision:S.revision});S.settings=res.settings||res;S.revision=S.settings.revision||S.revision+1;render();notice('İSG ayarları kaydedildi.');}catch(err){notice(err.message,'error');button.disabled=false;button.textContent='Ayarları Kaydet';}finally{S.busy=false;}
+ }
+ function userForm(){if(!can('manageUsers'))return;const d=modal('İSG Kullanıcısı Aç',`<form id="isgUserForm"><div class="isg-notice">Şifreyi güvenli bir kanaldan uzmana verin. Hesap yalnız seçili şubelerdeki İSG işlerine erişir.</div><div class="isg-form-grid"><label class="isg-field"><span>Ad soyad *</span><input name="name" required></label><label class="isg-field"><span>Kullanıcı adı *</span><input name="username" autocomplete="off" required></label><label class="isg-field"><span>İlk şifre *</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label><label class="isg-field"><span>Görev *</span><select name="role"><option value="IsgUzmani">İSG Uzmanı</option><option value="IsyeriHekimi">İşyeri Hekimi</option></select></label><div class="isg-field isg-full"><span>Yetkili Şubeler *</span>${S.branches.map(b=>`<label class="isg-check"><input type="checkbox" name="branches" value="${e(b)}"> ${e(b)}</label>`).join('')}</div></div></form>`,'<span class="isg-form-state" data-save-state></span><button data-cancel>Vazgeç</button><button type="submit" form="isgUserForm" class="isg-primary">Kullanıcı Oluştur</button>');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();const form=d.overlay.querySelector('form');form.onsubmit=async ev=>{ev.preventDefault();if(d.busy||!form.reportValidity())return;const branches=Array.from(form.querySelectorAll('[name=branches]:checked')).map(x=>x.value);if(!branches.length){modalError(new Error('En az bir yetkili şube seçin.'));return;}try{busy(true);const res=await api('access-create-user',{fullName:form.elements.namedItem('name').value.trim(),username:form.elements.username.value.trim(),password:form.elements.password.value,role:form.elements.role.value,branches,allBranches:false,active:true,write:true,idempotencyKey:d.idempotencyKey||(d.idempotencyKey=globalThis.crypto?.randomUUID?.()||'access-'+Date.now()+'-'+Math.random().toString(36).slice(2))});form.elements.password.value='';if(res.user)S.users.push(res.user);closeDialog(true);await refresh();notice('İSG kullanıcısı oluşturuldu.');}catch(err){busy(false);modalError(err);}};}
+ function accessForm(user){
+  if(!user||!can('manageUsers'))return;const d=modal('İSG Erişim Yetkileri · '+(user.name||user.username||''),`<form id="isgAccessForm"><div class="isg-notice">Erişimi durdurmak için Aktif seçimini kaldırın. Geçmiş kayıtları silinmez.</div><label class="isg-check"><input name="active" type="checkbox" ${user.active?'checked':''}> Aktif hesap</label><label class="isg-check"><input name="write" type="checkbox" ${user.write?'checked':''}> Kayıt ekleme / düzenleme yetkisi</label><label class="isg-check"><input name="allBranches" type="checkbox" ${user.allBranches?'checked':''}> Tüm şubeler</label><h4 class="isg-section-title">Yetkili Şubeler</h4>${S.branches.map(b=>`<label class="isg-check"><input name="branches" type="checkbox" value="${e(b)}" ${(user.branches||[]).includes(b)?'checked':''}> ${e(b)}</label>`).join('')}</form>`,'<span class="isg-form-state" data-save-state></span><button data-password>Şifre Sıfırla</button><button data-cancel>Vazgeç</button><button type="submit" form="isgAccessForm" class="isg-primary">Yetkileri Kaydet</button>');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();d.overlay.querySelector('[data-password]').onclick=()=>passwordForm(user);const form=d.overlay.querySelector('form');form.onsubmit=async ev=>{ev.preventDefault();if(d.busy)return;const branches=Array.from(form.querySelectorAll('[name=branches]:checked')).map(x=>x.value);if(form.elements.active.checked&&!form.elements.allBranches.checked&&!branches.length){modalError(new Error('Aktif hesap için en az bir şube seçin.'));return;}try{busy(true);await api('access-save',{userId:user.id,role:user.role,active:form.elements.active.checked,write:form.elements.write.checked,allBranches:form.elements.allBranches.checked,branches,expectedRevision:user.revision||0});closeDialog(true);await refresh();notice('İSG erişim yetkileri kaydedildi.');}catch(err){busy(false);modalError(err);}};
+ }
+ function passwordForm(user){if(!can('manageUsers'))return;const d=modal('Geçici Şifre Belirle · '+(user.name||''),'<form id="isgPasswordForm"><div class="isg-notice">Yeni şifreyi güvenli kanaldan iletin. Kullanıcı ilk girişte şifresini değiştirmek zorundadır.</div><label class="isg-field"><span>Yeni geçici şifre *</span><input type="password" name="password" minlength="12" autocomplete="new-password" required><small>En az 12 karakter; harf ve rakam içermelidir.</small></label></form>','<span class="isg-form-state" data-save-state></span><button data-cancel>Vazgeç</button><button type="submit" form="isgPasswordForm" class="isg-primary">Şifreyi Sıfırla</button>');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();const form=d.overlay.querySelector('form');form.onsubmit=async ev=>{ev.preventDefault();if(d.busy||!form.reportValidity())return;try{busy(true);await api('access-reset-password',{userId:user.id,password:form.elements.password.value});form.elements.password.value='';closeDialog(true);notice('Geçici şifre belirlendi. Kullanıcı ilk girişte değiştirecek.');}catch(err){busy(false);modalError(err);}};}
+ async function medicalForm(record){
+  if(!record||!can('medical'))return;const d=modal('Hekim Kaydı · '+record.title,'<div class="isg-notice">Bu içerik yalnız işyeri hekimine açıktır. Genel İSG listelerine, çıktılara ve mesajlara dahil edilmez.</div><div data-medical-body class="isg-muted">Hekim kaydı yükleniyor…</div>','<span class="isg-form-state" data-save-state></span><button data-cancel>Kapat</button><button type="submit" form="isgMedicalForm" class="isg-primary" data-medical-save disabled>Hekim Kaydını Kaydet</button>');d.overlay.querySelector('[data-cancel]').onclick=()=>closeDialog();
+  try{const res=await api('medical-get',{recordId:record.id});if(dialog!==d)return;const stored=res.medical||{},m=stored.data||{};const people=S.people.filter(p=>(record.personIds||[]).map(String).includes(personId(p)));const fields=[F('assessmentDate','Muayene tarihi','date',null,true),F('assessment','Hekim değerlendirmesi','textarea'),F('restrictions','Hekim tarafından belirlenen kısıtlar','textarea'),F('doctorNote','Hekim notu','textarea'),F('nextReviewDate','Sonraki değerlendirme','date')];d.overlay.querySelector('[data-medical-body]').innerHTML=`<form id="isgMedicalForm"><div class="isg-form-grid"><label class="isg-field isg-full"><span>Personel *</span><select name="personId" required>${options(Object.fromEntries(people.map(p=>[personId(p),personName(p)])),m.personId)}</select></label>${fields.map(f=>fieldHtml(f,m[f.key])).join('')}</div></form>`;d.overlay.querySelector('[data-medical-save]').disabled=!mayEdit();const form=d.overlay.querySelector('form');form.onsubmit=async ev=>{ev.preventDefault();if(d.busy||!mayEdit()||!form.reportValidity())return;const medical={personId:form.elements.personId.value};fields.forEach(f=>medical[f.key]=form.elements.namedItem('data.'+f.key).value||'');try{busy(true);await api('medical-save',{recordId:record.id,medical,expectedRevision:stored.revision||0});closeDialog(true);notice('Hekim kaydı güvenli alana kaydedildi.');}catch(err){busy(false);modalError(err);}};}catch(err){modalError(err);}
+ }
+ function reset(){sessionEpoch++;loadSequence++;closeDialog(true);root.fdIsgDocuments?.clear?.();Object.assign(S,{records:[],people:[],branches:[],vehicles:[],kkd:[],users:[],activity:[],settings:{},permissions:{},view:'overview',filters:{query:'',branch:'',status:'',from:'',to:'',type:'',archive:false,deadline:''},loaded:false,loading:false,busy:false,error:'',company:'',revision:0});if(app){app.replaceChildren();app.style.display='none';}}
+ root.openIsgApp=open;
+ root.fdIsgWorkspace={open,refresh,edit,detail,getExportModels,validateRecord,documentStatus,schemas,state:S,filtered,personName,personBranch,personId,reset,access:()=>{if(!can('manageUsers'))return;S.view='settings';render();app.querySelector('#isgAccessSection')?.scrollIntoView({block:'start'});},close:()=>{closeDialog();if(app)app.style.display='none';}};
+})(window);
+</script>
+<script id="fdIsgDocumentsV228">
+/* ISG document forms. Read-only generation; signatures and statutory reports are never fabricated. */
+(function (root) {
+    'use strict';
+    const VERSION = 1;
+    let generationEpoch = 0;
+    const safe = value => value == null ? '' : String(value).replace(/\u0000/g, '').slice(0, 50000);
+    const clone = value => JSON.parse(JSON.stringify(value || {}));
+    const nameOf = person => safe(person?.name || person?.adSoyad || person?.adsoyad || person?.adiSoyadi || person?.isim || [person?.ad, person?.soyad].filter(Boolean).join(' '));
+    const idOf = person => safe(person?.id || person?.personelId || person?.ID);
+    const branchOf = value => safe(typeof value === 'object' ? value?.name || value?.ad || value?.label : value);
+    const date = value => { const text = safe(value); const match = text.match(/^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/); return match ? `${match[3]}.${match[2]}.${match[1]}` : text || '-'; };
+    const now = () => new Date().toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul' });
+    const templates = [
+        { id: 'trainingAttendance', name: 'Eğitim Katılım ve İmza Çizelgesi', types: ['training'], roster: true },
+        { id: 'trainingMinutes', name: 'Eğitim Tutanağı', types: ['training'], body: '{{tarih}} tarihinde {{sube}} işyerinde {{egitim}} konulu eğitim gerçekleştirilmesine ilişkin kayıt ve değerlendirmeler aşağıdadır. Bu form, fiilen gerçekleştirilen eğitim ve imza kayıtlarıyla birlikte tamamlanır.' },
+        { id: 'trainingAssessment', name: 'Eğitim Değerlendirme Formu', types: ['training'], individual: true },
+        { id: 'trainingCertificate', name: 'Eğitim Katılım Belgesi', types: ['training'], individual: true, certificate: true },
+        { id: 'ppeDelivery', name: 'KKD Teslim ve Zimmet Tutanağı', types: ['personDocument', 'task'], individual: true, body: 'Aşağıda belirtilen kişisel koruyucu donanımların teslimi, kullanım bilgilendirmesi ve teslim alanın imzası ile kayıt altına alınması için düzenlenmiştir.' },
+        { id: 'medicalReferral', name: 'Sağlık Muayenesi Sevk Yazısı', types: ['personDocument', 'task'], individual: true, body: '{{personel}} adlı personelin, {{gorev}} işi kapsamında gerekli işe giriş / periyodik sağlık değerlendirmesi için yetkili sağlık birimine yönlendirilmesini rica ederiz. Bu yazı sağlık raporu veya işe uygunluk kararı değildir.' },
+        { id: 'emergencyAssignment', name: 'Acil Durum Ekibi Görevlendirme Yazısı', types: ['emergencyTeam'], roster: true, body: '{{sube}} işyerinin acil durum organizasyonu kapsamında aşağıdaki personellerin belirtilen görevler için görevlendirilmesi önerilir. Görevlendirme, yetkili onay ve personele tebliğ ile tamamlanır.' },
+        { id: 'drillAttendance', name: 'Tatbikat Katılım ve İmza Formu', types: ['drill'], roster: true },
+        { id: 'drillMinutes', name: 'Tatbikat Tutanağı', types: ['drill'], body: 'Tatbikatın amacı, gerçekleşen uygulama, gözlemler ve iyileştirme faaliyetleri aşağıda kayıt altına alınmıştır.' },
+        { id: 'nonconformity', name: 'Uygunsuzluk Tespit Formu', types: ['risk', 'action', 'inspection', 'measurement', 'task'], body: 'Tespit edilen uygunsuzluk, alınacak önlemler, sorumlu kişiler ve hedef tarihler aşağıda belirtilmiştir. Tamamlanma kaydı, gerçekleştirilen faaliyetin kontrolü ve yetkili onayı ile oluşturulur.' },
+        { id: 'correctiveAction', name: 'Düzeltici Faaliyet ve Kapanış Formu', types: ['risk', 'action', 'inspection', 'measurement', 'task'] },
+        { id: 'incident', name: 'İş Kazası / Ramak Kala Olay Tutanağı', types: ['incident'], body: 'Olayın bilinen koşulları ve tanık beyanları aşağıda kayıt altına alınmıştır. Bu tutanak, gerekli resmi bildirimlerin yerine geçmez; olayın nedeni hakkında kesin hüküm içermez.' },
+        { id: 'inspectionRequest', name: 'Periyodik Kontrol / Ölçüm Talep Yazısı', types: ['equipment', 'inspection', 'measurement'], body: '{{ekipman}} için kapsamı aşağıda belirtilen kontrol / ölçüm hizmetinin yetkili kişi veya kuruluştan alınması talep edilmektedir. Bu belge kontrol raporu veya uygunluk belgesi değildir.' },
+        { id: 'providerVisit', name: 'İSG Uzmanı / OSGB Ziyaret ve Öneri Formu', types: ['provider', 'visit'], body: 'Ziyaret sırasında ele alınan konular, tespitler, öneriler ve takip edilecek işler aşağıda belirtilmiştir. Gerekli resmi defter ve kayıt işlemleri ayrıca yürütülür.' },
+        { id: 'annualWorkPlan', name: 'Yıllık İSG Çalışma Planı', types: ['annualPlan', 'provider'], body: '{{yil}} yılı için planlanan çalışmalar, sorumlular ve hedef tarihler aşağıda gösterilmiştir. Plan, yetkili değerlendirme ve onay ile uygulanır.' },
+        { id: 'annualTrainingPlan', name: 'Yıllık Eğitim Planı', types: ['annualPlan', 'training'], body: '{{yil}} yılı için planlanan eğitimler, hedef katılımcılar, eğitmenler ve tarihler aşağıda belirtilmiştir.' },
+        { id: 'notification', name: 'Bildirim / Tebliğ Yazısı', types: ['*'], individual: true, body: 'Sayın {{personel}},\n\n{{konu}}\n\nAçıklama: {{aciklama}}\n\nBilgilerinize sunarız.' },
+        { id: 'petition', name: 'Dilekçe Taslağı', types: ['*'], individual: true, body: '{{muhatap}}\n\nKonu: {{konu}}\n\n{{aciklama}}\n\nGereğini arz / rica ederim.\n\n{{tarih}}\n{{personel}}' },
+        { id: 'recordSummary', name: 'İSG İş / Kayıt Özet Formu', types: ['*'] }
+    ];
+    const catalog = Object.freeze(templates.map(item => Object.freeze({ ...item, version: VERSION })));
+    const labels = { draft: 'Taslak', planned: 'Planlandı', pending: 'Kontrol / onay bekliyor', open: 'Açık', inProgress: 'Devam ediyor', in_progress: 'Devam ediyor', awaitingReview: 'Kontrol / onay bekliyor', review: 'Kontrol / onay bekliyor', completed: 'Tamamlandı', approved: 'Onaylandı', closed: 'Kapandı', cancelled: 'İptal edildi', expired: 'Süresi doldu' };
+    const teamLabels = { firstAid: 'İlk yardım', fire: 'Yangınla mücadele', evacuation: 'Tahliye', searchRescue: 'Arama / kurtarma' };
+    const isMedical = record => record?.type === 'personDocument' && /^(medical|health|saglik|sağlık|sağlık raporu|saglik raporu|sağlık muayenesi)$/i.test(safe(record?.data?.kind).trim());
+    function list(context = {}) { return catalog.filter(item => item.types.includes('*') || item.types.includes(context.record?.type)); }
+    function contextValues(context, person) {
+        const r = context.record || {}, d = r.data || {}, company = context.company;
+        return { firma: (safe(typeof company === 'object' ? company?.name || company?.unvan || company?.ad : company) || safe(context.settings?.companyName) || 'İşyeri').slice(0, 400), sube: (branchOf(context.branch || r.branch) || '-').slice(0, 200), tarih: date(r.recordDate || d.date), personel: person ? nameOf(person) : '-', gorev: safe(person?.job || person?.gorev || person?.unvan) || '-', egitim: safe(d.subject || r.title) || '-', konu: safe(r.title) || '-', aciklama: isMedical(r) ? 'Sağlık kaydı - ayrıntılı sağlık bilgileri bu çıktıda yer almaz.' : safe(d.description || d.notes || r.description) || '-', ekipman: safe(d.equipmentName || d.name || context.equipment?.name || r.title) || '-', yil: safe(d.year || (r.recordDate || '').slice(0, 4)), muhatap: safe(d.addressee || context.settings?.documentAddressee) || 'İLGİLİ MAKAMA' };
+    }
+    function substitute(text, values) {
+        const unknown = new Set();
+        const result = safe(text).replace(/\{\{\s*([a-zA-ZÇĞİÖŞÜçğıöşü_]+)\s*\}\}/g, (_, key) => { if (!(key in values)) { unknown.add(key); return ''; } return safe(values[key]); });
+        if (unknown.size) throw new Error('Şablonda bilinmeyen alan var: ' + Array.from(unknown).join(', '));
+        return result;
+    }
+    function configured(template, settings) {
+        const all = settings?.templates || settings?.documentTemplates || settings?.isgDocumentTemplates || {};
+        const custom = Array.isArray(all) ? all.find(item => item.id === template.id) : all[template.id];
+        if (custom?.enabled === false) throw new Error('Bu belge şablonu ayarlardan kapatılmış.');
+        return { ...template, name: safe(custom?.title || custom?.name || template.name).slice(0, 150), body: custom?.body == null ? template.body : safe(custom.body).slice(0, 20000), footer: safe(custom?.footer).slice(0, 2000), version: safe(custom?.version || template.version).slice(0, 30) };
+    }
+    function selectedPeople(context) {
+        const supplied = context.personIds || context.record?.personIds || [], ids = new Set(supplied.map(safe));
+        return (context.people || []).filter(person => ids.has(idOf(person))).map(person => ({ id: idOf(person), name: nameOf(person), branch: branchOf(person.branch || person.sube), job: safe(person.job || person.jobTitle || person.gorev || person.unvan) }));
+    }
+    function canCertificate(context, person) {
+        const r = context.record || {}, d = r.data || {}, attendee = (d.attendance || []).find(item => safe(item.personId) === person.id);
+        return r.type === 'training' && r.status === 'completed' && d.trainingVerified === true && safe(d.trainerQualification).trim().length > 0 && attendee?.attended === true && attendee?.passed === true && attendee?.approved === true;
+    }
+    function textBlock(title, text) { return { kind: 'text', title, text: safe(text) }; }
+    function table(title, columns, rows, options = {}) { return { kind: 'table', title, columns: columns.map((label, index) => ({ label, width: options.widths?.[index] || 1 })), rows: rows.map(row => row.map(safe)), minHeight: options.minHeight || 9 }; }
+    function metadata(values, extra = []) { return table('Kayıt Bilgileri', ['Alan', 'Bilgi'], [['İşyeri / şube', `${values.firma} / ${values.sube}`], ['Konu / tarih', `${values.konu} / ${values.tarih}`], ...extra], { widths: [1, 3] }); }
+    function signature(names = ['Düzenleyen', 'İşveren / Yetkili Onay', 'İlgili Personel']) { return table('İmza ve Onay', names, [names.map(() => 'Ad Soyad:\n\nTarih:\n\nİmza:')], { minHeight: 30 }); }
+    function valueFor(context, key) {
+        const r = context.record || {}, d = r.data || {}, records = context.records || [], related = records.find(item => safe(item.id) === safe(d.relatedRecordId)), equipment = context.equipment || records.find(item => safe(item.id) === safe(r.equipmentId)), provider = records.find(item => safe(item.id) === safe(d.providerId));
+        const join = (...parts) => parts.filter(part => part != null && String(part).trim()).join(' / ');
+        const aliases = { finding: d.findings || (r.type === 'risk' ? join(d.hazard, d.consequence) : related ? join(related.data?.hazard, related.data?.consequence, related.data?.findings) : d.description), measure: d.measures || d.actionText || (r.type === 'task' ? d.description : ''), responsibleName: context.ownerName || (context.users || []).find(item => safe(item.id) === safe(r.ownerId))?.name, completedAction: d.completionEvidence, reviewResult: d.verificationNote, completedDate: r.completedAt ? safe(r.completedAt).slice(0, 10) : '', equipmentName: equipment?.title || (r.type === 'equipment' ? r.title : ''), serialNo: equipment?.data?.serialNo, scope: d.controlKind || d.kind, providerName: provider?.data?.providerName || provider?.title || d.controller || d.lab, locationTime: join(d.eventTime, d.location), involvedNames: selectedPeople(context).map(p => p.name).join(', '), initialMeasures: d.immediateMeasures, followUp: d.correctiveAction, timeRange: r.type === 'visit' ? (d.hours == null ? '' : `${d.hours} saat`) : r.type === 'drill' ? join(d.startTime, d.minutes == null ? '' : `${d.minutes} dakika`) : '', meetingPoint: d.location, observations: d.findings, method: { classroom: 'Yüz yüze', practice: 'Uygulamalı', distance: 'Uzaktan', mixed: 'Karma' }[d.method] || d.method };
+        return d[key] != null && d[key] !== '' && key !== 'method' ? d[key] : aliases[key];
+    }
+    function details(context, fields) { return fields.map(([label, key]) => [label, safe(valueFor(context, key)) || '-']); }
+    function buildModel(templateId, context = {}) {
+        if (context.permissions?.read === false) throw new Error('İSG kayıtlarını görüntüleme yetkiniz yok.');
+        const found = catalog.find(item => item.id === templateId); if (!found) throw new Error('Belge şablonu bulunamadı.');
+        if (!found.types.includes('*') && !found.types.includes(context.record?.type)) throw new Error('Bu kayıt türü için belge kullanılamıyor.');
+        const t = configured(found, context.settings), r = context.record || {}, d = r.data || {}, people = selectedPeople(context);
+        if ((t.roster || t.individual) && !people.length) throw new Error('Belge için en az bir kayıtlı personel seçin.');
+        if (t.certificate && people.some(person => !canCertificate(context, person))) throw new Error('Katılım belgesi için eğitim tamamlanmış ve doğrulanmış; seçili personelin katılım, başarı ve onayı kayıtlı olmalı.');
+        const selectedIds = new Set(people.map(person => person.id));
+        if ((context.personIds || r.personIds || []).some(id => !(context.people || []).some(person => idOf(person) === safe(id)))) throw new Error('Seçili personellerden biri kayıtlı personel listesinde bulunamadı.');
+        const units = t.individual ? people.map(person => [person]) : [people];
+        const documents = units.map(unit => {
+            const p = t.individual ? unit[0] : null, v = contextValues(context, p), blocks = [metadata(v, [['Durum', labels[r.status] || safe(r.status) || '-'], ...(p ? [['Personel / görev', `${p.name} / ${p.job || '-'}`]] : [])])];
+            const body = context.bodyOverride == null ? t.body : safe(context.bodyOverride).slice(0, 20000); if (body) blocks.push(textBlock('', substitute(body, v)));
+            if (['trainingAttendance', 'trainingMinutes', 'trainingCertificate', 'trainingAssessment'].includes(t.id)) blocks.push(table('Eğitim Bilgileri', ['Alan', 'Bilgi'], details(context, [['Eğitim konusu', 'subject'], ['Eğitmen / unvan', 'trainer'], ['Eğitmen yeterliliği', 'trainerQualification'], ['Süre (saat)', 'hours'], ['Yöntem / yer', 'method'], ['Eğitim yeri', 'location'], ['Başlangıç / bitiş', 'timeRange']]), { widths: [1, 3] }));
+            if (t.id === 'trainingAttendance' || t.id === 'drillAttendance') blocks.push(table('Katılımcılar - imzalar fiilen alınır', ['#', 'Ad Soyad', 'Görev', 'Katılım / giriş imzası', 'Çıkış imzası'], unit.map((person, index) => [index + 1, person.name, person.job || '-', '', '']), { widths: [.35, 2, 1.3, 1.25, 1.25], minHeight: 14 }));
+            if (t.id === 'trainingMinutes') blocks.push(textBlock('Kapsam, uygulama ve değerlendirme', safe(d.topics || d.description || d.notes) || '........................................................................................................\n........................................................................................................'));
+            if (t.id === 'trainingAssessment') {
+                const questions = Array.isArray(d.assessmentQuestions) ? d.assessmentQuestions : [];
+                blocks.push(table('Değerlendirme', ['#', 'Soru / uygulama', 'Cevap / gözlem', 'Puan'], (questions.length ? questions : Array.from({ length: 5 }, () => '')).map((question, index) => [index + 1, typeof question === 'object' ? question.text || '' : question, '', '']), { widths: [.4, 2.4, 2, .5], minHeight: 18 }));
+                blocks.push(textBlock('Sonuç', 'Toplam puan: ....................   Değerlendiren: ........................................\nBaşarı / katılım onayı sistemde ayrıca kaydedilir.'));
+            }
+            if (t.id === 'trainingCertificate') blocks.push(textBlock('Doğrulanmış katılım', `${p.name}, ${v.tarih} tarihli ${v.egitim} eğitimine ilişkin kayıtlı katılım ve değerlendirme koşullarını sağlamıştır. Bu belge yalnızca belirtilen eğitime ait kurum içi katılım kaydıdır; mesleki yeterlilik / operatör yetkisi vermez.`));
+            if (t.id === 'ppeDelivery') {
+                const suppliedItems = Array.isArray(context.ppeItems) ? context.ppeItems : Array.isArray(d.ppeItems) ? d.ppeItems : [], items = suppliedItems.filter(item => !item.personId || safe(item.personId) === p.id);
+                blocks.push(table('Teslim Edilen KKD', ['Donanım / standart', 'Miktar', 'Ölçü / beden', 'Teslim tarihi', 'Açıklama'], (items.length ? items : [{}]).map(item => [item.name || item.item || item.equipment || '', item.quantity ?? '', item.size || '', item.date ? date(item.date) : '', item.note || '']), { widths: [2, .7, 1, 1.1, 1.5], minHeight: 14 }));
+                if (Array.isArray(context.ppeItems) && items.length) blocks.push(textBlock('Kaynak', 'Seçilmiş mevcut KKD teslim kayıtlarından hazırlanmıştır. Bu çıktı yeni bir teslim kaydı veya imza oluşturmaz.'));
+                blocks.push(textBlock('Teslim ve bilgilendirme', 'Kullanım, bakım ve muhafaza bilgileri: ...................................................................\nTeslim alanın açıklaması: ........................................................................................'));
+            }
+            if (t.id === 'medicalReferral') blocks.push(textBlock('Sevk Bilgileri', `Sevk edilen birim: ${safe(d.referralUnit) || '........................................................'}\nİş / maruziyet bilgisi: ${safe(d.exposure) || '........................................................'}\nBu formda teşhis, muayene bulgusu veya ayrıntılı sağlık verisi bulunmaz.`));
+            if (t.id === 'emergencyAssignment') blocks.push(table('Görevlendirme ve Tebliğ', ['Ad Soyad', 'Ekip / görev', 'Görev başlangıcı', 'Tebellüğ imzası'], unit.map(person => [person.name, teamLabels[d.role] || safe(d.role) || '-', date(d.startDate || r.recordDate), '']), { widths: [2, 1.5, 1.2, 1.5], minHeight: 16 }));
+            if (t.id === 'drillMinutes') blocks.push(table('Tatbikat Değerlendirmesi', ['Alan', 'Kayıt'], details(context, [['Senaryo / amaç', 'scenario'], ['Başlangıç / süre', 'timeRange'], ['Tatbikat yeri', 'meetingPoint'], ['Koordinatör', 'coordinator'], ['Gözlemler', 'observations'], ['Tespit / iyileştirme', 'improvements']]), { widths: [1, 3] }));
+            if (['nonconformity', 'correctiveAction'].includes(t.id)) blocks.push(table('Tespit ve Faaliyet', ['Alan', 'Kayıt'], [...details(context, [['Tespit / risk', 'finding'], ['Alınacak önlem', 'measure'], ['Sorumlu', 'responsibleName'], ['Gerçekleştirilen işlem', 'completedAction'], ['Kontrol / kapanış sonucu', 'reviewResult']]), ['Hedef tarih', date(r.dueDate)], ['Kapanış tarihi', date(d.completedDate)]], { widths: [1, 3] }));
+            if (t.id === 'incident') blocks.push(table('Olay Kaydı', ['Alan', 'Kayıt'], [['Olay türü', d.kind === 'nearMiss' ? 'Ramak kala' : 'İş kazası / olay'], ...details(context, [['Saat / yer', 'locationTime'], ['Olayın açıklaması', 'description'], ['İlgili kişiler', 'involvedNames'], ['Tanıklar / beyanlar', 'witnesses'], ['İlk alınan önlemler', 'initialMeasures'], ['Kök neden / inceleme', 'rootCause'], ['Takip faaliyetleri', 'followUp']]), ['Resmi bildirim takip durumu', safe(d.sgkStatus) || '-'], ['Bildirim referansı / tarihi', `${safe(d.sgkReference) || '-'} / ${date(d.sgkNotificationDate)}`]], { widths: [1, 3] }));
+            if (t.id === 'inspectionRequest') blocks.push(table('Talep Kapsamı', ['Alan', 'Bilgi'], details(context, [['Ekipman / tesisat', 'equipmentName'], ['Envanter / seri no', 'serialNo'], ['Kontrol / ölçüm kapsamı', 'scope'], ['Yetkili kişi / kuruluş', 'providerName'], ['Talep notu', 'notes']]), { widths: [1, 3] }));
+            if (t.id === 'providerVisit') blocks.push(table('Ziyaret Kaydı', ['Alan', 'Kayıt'], details(context, [['Uzman / kuruluş', 'providerName'], ['Ziyaret süresi', 'timeRange'], ['Ele alınan konular', 'topics'], ['Tespit ve öneriler', 'recommendations'], ['Takip edilecek işler', 'followUp']]), { widths: [1, 3] }));
+            if (['annualWorkPlan', 'annualTrainingPlan'].includes(t.id)) {
+                const tasks = Array.isArray(d.items) ? d.items : Array.isArray(d.planItems) ? d.planItems : [];
+                blocks.push(table('Planlanan Çalışmalar', ['Konu / faaliyet', 'Hedef tarih', 'Sorumlu / eğitmen', 'Katılımcılar / kapsam', 'Durum'], (tasks.length ? tasks : [{}]).map(item => [item.title || item.subject || '', date(item.date || item.dueDate), item.owner || item.trainer || '', item.scope || item.participants || '', labels[item.status] || safe(item.status)]), { widths: [1.9, 1.1, 1.5, 1.6, 1], minHeight: 14 }));
+            }
+            if (t.id === 'recordSummary') blocks.push(textBlock('Açıklama / takip', isMedical(r) ? 'Sağlık kaydı - ayrıntılı sağlık bilgileri bu çıktıda yer almaz.' : safe(d.description || d.notes || r.description) || '-'));
+            blocks.push(signature(t.id === 'petition' ? ['Başvuran / İmza'] : t.id === 'medicalReferral' ? ['Sevk Eden / Yetkili'] : ['Düzenleyen', 'İşveren / Yetkili Onay', ...(p ? ['İlgili Personel'] : [])]));
+            if (t.footer) blocks.push(textBlock('', substitute(t.footer, v)));
+            return { title: t.name, subtitle: `${v.firma} - ${v.sube}`, reference: `${v.konu.slice(0, 240)} / ${v.tarih}`, person: p?.name || '', blocks };
+        });
+        const generatedAt = context.generatedAt || now();
+        const snapshot = { schemaVersion: VERSION, templateId: t.id, templateVersion: t.version, sourceId: safe(r.id), sourceRevision: Number(r.revision) || 0, recordType: safe(r.type), branch: branchOf(context.branch || r.branch), selectedPersonIds: Array.from(selectedIds), sourceKkdIds: templateId === 'ppeDelivery' ? (context.ppeItems || []).filter(item => !item.personId || selectedIds.has(safe(item.personId))).map(item => safe(item.id)).filter(Boolean) : [], generatedAt, state: 'draft', documents: clone(documents) };
+        return { schemaVersion: VERSION, templateId: t.id, templateVersion: t.version, title: t.name, generatedAt, sourceId: snapshot.sourceId, sourceRevision: snapshot.sourceRevision, state: 'draft', documents, snapshot };
+    }
+    function approximateMeasure(text, pt, bold) { return Array.from(safe(text)).reduce((sum, char) => sum + (/\s/.test(char) ? .28 : /[ilIıİ.,:;'!|]/.test(char) ? .3 : /[MWĞÖÜ@%]/.test(char) ? .8 : .54), 0) * pt * 25.4 / 72 * (bold ? 1.04 : 1); }
+    function browserMeasure() { const canvas = root.document?.createElement('canvas'), ctx = canvas?.getContext('2d'); return ctx ? (text, pt, bold) => { ctx.font = `${bold ? 'bold ' : ''}${pt * 96 / 72}px Arial`; return ctx.measureText(safe(text)).width * 25.4 / 96; } : approximateMeasure; }
+    function wrap(text, width, measure, size = 10, bold = false) {
+        if (!(width > 0)) throw new Error('Belge alanı genişliği geçersiz.');
+        const lines = [];
+        safe(text).split('\n').forEach(paragraph => {
+            if (!paragraph) { lines.push(''); return; }
+            let current = '';
+            paragraph.split(/\s+/).forEach(word => {
+                const test = current ? `${current} ${word}` : word;
+                if (measure(test, size, bold) <= width) { current = test; return; }
+                if (current) { lines.push(current); current = ''; }
+                if (measure(word, size, bold) <= width) { current = word; return; }
+                for (const char of Array.from(word)) { if (current && measure(current + char, size, bold) > width) { lines.push(current); current = ''; } current += char; }
+            });
+            lines.push(current);
+        }); return lines;
+    }
+    function plan(model, measure = approximateMeasure) {
+        const pages = [], width = 182, left = 14, bottom = 278, line = 4.6, padding = 2.4, font = 10;
+        model.documents.forEach((document, documentIndex) => {
+            let page, y;
+            const headerTitles = wrap(document.title, 145, measure, 15, true), headerSubtitles = wrap(document.subtitle, 182, measure, 8.5), headerReferences = wrap(document.reference || '', 182, measure, 8), subtitleY = 17 + headerTitles.length * 6 + 3, referenceY = subtitleY + headerSubtitles.length * 3.9 + 1, headerBottom = Math.max(40, referenceY + headerReferences.length * 3.7 + 4), bodyTop = headerBottom + 4;
+            const fresh = () => { page = { documentIndex, title: document.title, subtitle: document.subtitle, person: document.person, headerTitles, headerSubtitles, headerReferences, subtitleY, referenceY, headerBottom, commands: [] }; pages.push(page); y = bodyTop; };
+            const ensure = height => { if (y + height > bottom) fresh(); };
+            const heading = title => { if (!title) return; ensure(12); page.commands.push({ kind: 'heading', x: left, y, text: title, height: 8 }); y += 9; };
+            fresh();
+            document.blocks.forEach(block => {
+                if (block.kind === 'text') {
+                    const lines = wrap(block.text, width, measure, font);
+                    ensure((block.title ? 9 : 0) + Math.min(2, lines.length) * line + 2); heading(block.title);
+                    lines.forEach(text => { ensure(line); page.commands.push({ kind: 'line', x: left, y, text, size: font, height: line }); y += line; }); y += 4; return;
+                }
+                const total = block.columns.reduce((sum, col) => sum + col.width, 0), widths = block.columns.map(col => width * col.width / total);
+                const heads = block.columns.map((col, index) => wrap(col.label, widths[index] - padding * 2, measure, 9, true));
+                const headHeight = Math.max(...heads.map(lines => lines.length)) * 4.2 + padding * 2;
+                const firstHeight = block.rows.length ? Math.max(block.minHeight, Math.min(22, Math.max(...block.rows[0].map((cell, index) => wrap(cell, widths[index] - padding * 2, measure, font).length)) * line + padding * 2)) : 0;
+                ensure((block.title ? 9 : 0) + headHeight + firstHeight); heading(block.title);
+                const drawHead = continued => { if (continued && block.title) heading(block.title + ' (devam)'); page.commands.push({ kind: 'row', x: left, y, widths, cells: heads, height: headHeight, header: true, font: 9, lineHeight: 4.2, padding }); y += headHeight; };
+                drawHead(false);
+                block.rows.forEach((row, rowIndex) => {
+                    const cells = row.map((value, index) => wrap(value, widths[index] - padding * 2, measure, font)), count = Math.max(...cells.map(lines => lines.length)), minHeight = block.minHeight;
+                    let offset = 0;
+                    while (offset < count) {
+                        const available = bottom - y, remaining = count - offset, desired = Math.max(minHeight, remaining * line + padding * 2);
+                        if (desired > available && desired <= bottom - bodyTop - headHeight - (block.title ? 9 : 0)) { fresh(); drawHead(true); continue; }
+                        const capacity = Math.floor((bottom - y - padding * 2) / line);
+                        if (capacity < 1 || (Math.max(minHeight, line + padding * 2) > bottom - y)) { fresh(); drawHead(true); continue; }
+                        const take = Math.min(remaining, capacity), height = Math.max(minHeight, take * line + padding * 2);
+                        page.commands.push({ kind: 'row', x: left, y, widths, cells: cells.map(lines => lines.slice(offset, offset + take)), height, header: false, font, lineHeight: line, padding, rowIndex, continuation: offset > 0 }); y += height; offset += take;
+                        if (offset < count) { fresh(); drawHead(true); }
+                    }
+                }); y += 5;
+            });
+        });
+        pages.forEach((page, index) => { page.number = index + 1; page.total = pages.length; });
+        return { pageWidth: 210, pageHeight: 297, left, width, bottom, pages, sourceId: model.sourceId, sourceRevision: model.sourceRevision, generatedAt: model.generatedAt, templateVersion: model.templateVersion, digest: model.digest || '' };
+    }
+    function drawPage(layout, index, scale = 8.5) {
+        if (!root.document) throw new Error('PDF çizim bileşeni yüklenemedi.');
+        const page = layout.pages[index], canvas = root.document.createElement('canvas'); canvas.width = Math.round(210 * scale); canvas.height = Math.round(297 * scale);
+        const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('PDF çizim alanı oluşturulamadı.');
+        ctx.scale(scale, scale); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 210, 297);
+        function text(value, x, y, size = 10, bold = false, color = '#203447') { ctx.font = `${bold ? 'bold ' : ''}${size * 25.4 / 72}px Arial`; ctx.fillStyle = color; ctx.textBaseline = 'top'; ctx.fillText(safe(value), x, y); }
+        text('İŞ SAĞLIĞI VE GÜVENLİĞİ', 14, 11, 8, true, '#087b80');
+        page.headerTitles.forEach((title, line) => text(title, 14, 17 + line * 6, 15, true));
+        text('İMZA İÇİN TASLAK', 158, 12, 8, true, '#6f7180');
+        page.headerSubtitles.forEach((value, line) => text(value, 14, page.subtitleY + line * 3.9, 8.5, false, '#64748b'));
+        page.headerReferences.forEach((value, line) => text(value, 14, page.referenceY + line * 3.7, 8, false, '#64748b'));
+        ctx.strokeStyle = '#b6cad4'; ctx.lineWidth = .3; ctx.beginPath(); ctx.moveTo(14, page.headerBottom); ctx.lineTo(196, page.headerBottom); ctx.stroke();
+        page.commands.forEach(command => {
+            if (command.kind === 'heading') { ctx.fillStyle = '#edf4f7'; ctx.fillRect(command.x, command.y, layout.width, command.height - 1); text(command.text, command.x + 2.3, command.y + 1.5, 10, true); return; }
+            if (command.kind === 'line') { text(command.text, command.x, command.y, command.size); return; }
+            let x = command.x;
+            command.widths.forEach((width, column) => {
+                ctx.fillStyle = command.header ? '#e4edf2' : '#ffffff'; ctx.fillRect(x, command.y, width, command.height);
+                ctx.strokeStyle = '#b9cad3'; ctx.lineWidth = .2; ctx.strokeRect(x, command.y, width, command.height);
+                (command.cells[column] || []).forEach((value, line) => text(value, x + command.padding, command.y + command.padding + line * command.lineHeight, command.font, command.header)); x += width;
+            });
+        });
+        ctx.strokeStyle = '#cbd5e1'; ctx.beginPath(); ctx.moveTo(14, 282); ctx.lineTo(196, 282); ctx.stroke();
+        text(`Kayıt: ${safe(layout.sourceId).slice(0, 28) || '-'} / rev. ${layout.sourceRevision} - Şablon v${safe(layout.templateVersion)}`, 14, 284, 7, false, '#64748b');
+        text(`${page.number} / ${page.total}`, 183, 284, 8, true, '#64748b');
+        text(`Oluşturma: ${layout.generatedAt} - Belge izi: ${safe(layout.digest).slice(0, 16) || '-'}`, 14, 289, 7, false, '#64748b');
+        return canvas;
+    }
+    function canonical(value) { if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']'; if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}'; return JSON.stringify(value); }
+    async function digest(snapshot) {
+        if (!root.crypto?.subtle || typeof TextEncoder === 'undefined') throw new Error('Belge doğrulama bileşeni kullanılamıyor. Güvenli bağlantıdan tekrar deneyin.');
+        const bytes = await root.crypto.subtle.digest('SHA-256', new TextEncoder().encode(canonical(snapshot))); return Array.from(new Uint8Array(bytes)).map(value => value.toString(16).padStart(2, '0')).join('');
+    }
+    async function buildPdf(templateId, context = {}, options = {}) {
+        const epoch = generationEpoch; const assertSession = () => { if (epoch !== generationEpoch) throw new Error('Oturum değiştiği için belge hazırlama iptal edildi.'); };
+        const model = buildModel(templateId, context); model.digest = await digest(model.snapshot);
+        const JsPDF = root.jspdf?.jsPDF || root.jsPDF; if (!JsPDF) throw new Error('PDF bileşeni yüklenemedi. Sayfayı yenileyin.');
+        await root.document?.fonts?.ready;
+        const layout = plan(model, browserMeasure()), pdf = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+        for (let index = 0; index < layout.pages.length; index++) { assertSession(); if (index) pdf.addPage('a4', 'portrait'); const canvas = drawPage(layout, index); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297, undefined, 'FAST'); canvas.width = canvas.height = 1; options.onProgress?.({ completed: index + 1, total: layout.pages.length }); await new Promise(resolve => setTimeout(resolve, 0)); }
+        pdf.setProperties({ title: model.title, subject: `ISG source ${model.sourceId} rev ${model.sourceRevision}; SHA-256 ${model.digest}`, creator: 'FD Yazılım - ISG', author: contextValues(context).firma });
+        const blob = pdf.output('blob'), filename = `${model.title}_${safe(context.record?.recordDate || '').replace(/[^0-9-]/g, '') || 'Taslak'}.pdf`.replace(/[\\/:*?"<>|]/g, '_');
+        assertSession();
+        if (options.preview !== false) { if (typeof root.fdCiktiPdfOnizle !== 'function') throw new Error('PDF önizleme penceresi bulunamadı.'); root.fdCiktiPdfOnizle(blob, filename); }
+        const result = { blob, filename, model, layout, snapshot: { ...model.snapshot, digest: model.digest } };
+        if (typeof options.onGenerated === 'function') await options.onGenerated(result.snapshot);
+        return result;
+    }
+    function open(context = {}) {
+        if (!root.document) throw new Error('Belge penceresi kullanılamıyor.');
+        if (context.permissions?.read === false) throw new Error('İSG belgelerini görüntüleme yetkiniz yok.');
+        const available = list(context).filter(t => { try { return configured(t, context.settings).enabled !== false; } catch (_) { return false; } });
+        if (!available.length) throw new Error('Kullanılabilir belge şablonu yok.');
+        const existing = root.document.querySelector('[data-isg-document-dialog]'); if (existing?._fdIsgBusy) return existing; existing?._fdIsgCleanup?.(); existing?.remove();
+        const doc = root.document, backdrop = doc.createElement('div'); backdrop.dataset.isgDocumentDialog = ''; backdrop.style.cssText = 'position:fixed;inset:0;z-index:30001;background:#0f172a66;display:flex;align-items:center;justify-content:center;padding:12px';
+        const panel = doc.createElement('section'); panel.role = 'dialog'; panel.setAttribute('aria-modal', 'true'); panel.setAttribute('aria-label', 'İSG belgesi hazırla'); panel.style.cssText = 'width:min(760px,100%);max-height:92dvh;display:flex;flex-direction:column;background:white;border-radius:15px;box-shadow:0 18px 70px #0f172a40;overflow:hidden;font:14px Arial,sans-serif;color:#203447';
+        const header = doc.createElement('div'); header.style.cssText = 'padding:17px 20px;border-bottom:1px solid #dce7ef;display:flex;align-items:center;justify-content:space-between';
+        const title = doc.createElement('strong'); title.textContent = 'İSG Belgesi Hazırla'; title.style.fontSize = '18px';
+        const close = doc.createElement('button'); close.type = 'button'; close.textContent = 'Kapat'; close.style.cssText = 'padding:7px 10px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:7px;cursor:pointer'; header.append(title, close);
+        const content = doc.createElement('div'); content.style.cssText = 'overflow:auto;overscroll-behavior:contain;padding:18px 20px;display:grid;gap:14px';
+        const selectLabel = doc.createElement('label'); selectLabel.textContent = 'Belge türü'; selectLabel.style.cssText = 'display:grid;gap:6px;font-weight:600';
+        const select = doc.createElement('select'); select.style.cssText = 'width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;background:white;font:14px Arial'; available.forEach(t => { const option = doc.createElement('option'); option.value = t.id; option.textContent = t.name; select.append(option); }); selectLabel.append(select);
+        const personArea = doc.createElement('fieldset'); personArea.style.cssText = 'margin:0;border:1px solid #dce7ef;border-radius:9px;padding:12px;display:grid;gap:7px'; const legend = doc.createElement('legend'); legend.textContent = 'Belgeye dahil edilecek personeller'; personArea.append(legend);
+        const allowedIds = new Set((context.personIds || context.record?.personIds || []).map(safe)), selectedBranch = branchOf(context.branch || context.record?.branch); const people = (context.people || []).filter(person => allowedIds.size ? allowedIds.has(idOf(person)) : !selectedBranch || branchOf(person.branch || person.sube) === selectedBranch); const checks = [];
+        const selectionTools = doc.createElement('div'); selectionTools.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap'; const all = doc.createElement('button'), clear = doc.createElement('button'); all.type = clear.type = 'button'; all.textContent = 'Tümünü seç'; clear.textContent = 'Seçimi temizle'; [all, clear].forEach(item => item.style.cssText = 'padding:6px 9px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;cursor:pointer'); all.onclick = () => checks.forEach(check => check.checked = true); clear.onclick = () => checks.forEach(check => check.checked = false); selectionTools.append(all, clear); personArea.append(selectionTools);
+        people.forEach(person => { const label = doc.createElement('label'); label.style.cssText = 'display:flex;align-items:center;gap:9px;min-height:31px'; const checkbox = doc.createElement('input'); checkbox.type = 'checkbox'; checkbox.value = idOf(person); checkbox.checked = allowedIds.has(idOf(person)); const text = doc.createElement('span'); text.textContent = nameOf(person) + (person.job ? ' - ' + safe(person.job) : ''); checks.push(checkbox); label.append(checkbox, text); personArea.append(label); });
+        const editLabel = doc.createElement('label'); editLabel.textContent = 'Belge metni'; editLabel.style.cssText = 'display:grid;gap:7px;font-weight:600'; const textarea = doc.createElement('textarea'); textarea.rows = 7; textarea.maxLength = 20000; textarea.style.cssText = 'padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:14px/1.5 Arial;resize:vertical'; editLabel.append(textarea);
+        const help = doc.createElement('p'); help.style.cssText = 'margin:0;color:#64748b;font:12px/1.5 Arial'; help.textContent = 'İmzalar boş bırakılır. İmzalı belgeyi daha sonra ilgili kayda yükleyebilirsiniz.';
+        const error = doc.createElement('p'); error.role = 'alert'; error.style.cssText = 'display:none;margin:0;padding:9px;border:1px solid #fecaca;background:#fff1f2;border-radius:7px;color:#b91c1c';
+        content.append(selectLabel, personArea, editLabel, help, error);
+        const footer = doc.createElement('div'); footer.style.cssText = 'padding:14px 20px;border-top:1px solid #dce7ef;display:flex;justify-content:flex-end;gap:9px;background:#f8fafc';
+        const button = doc.createElement('button'); button.type = 'button'; button.dataset.fdOutputOwn = '1'; button.textContent = 'PDF Hazırla / Yazdır'; button.style.cssText = 'border:0;border-radius:8px;background:#087b80;color:white;padding:11px 18px;font:bold 14px Arial;cursor:pointer'; footer.append(button); panel.append(header, content, footer); backdrop.append(panel); doc.body.append(backdrop);
+        const focused = doc.activeElement; let busy = false;
+        function remove(force = false) { if (busy && force !== true) return; backdrop.remove(); doc.removeEventListener('keydown', onKey); focused?.focus?.(); }
+        backdrop._fdIsgCleanup = remove;
+        function onKey(event) { if (event.key === 'Escape') { event.preventDefault(); remove(); } if (event.key === 'Tab') { const elements = Array.from(panel.querySelectorAll('button,input,select,textarea')).filter(element => !element.disabled && element.offsetParent !== null), first = elements[0], last = elements[elements.length - 1]; if (event.shiftKey && doc.activeElement === first) { event.preventDefault(); last?.focus(); } else if (!event.shiftKey && doc.activeElement === last) { event.preventDefault(); first?.focus(); } } }
+        function update() { const template = configured(available.find(t => t.id === select.value), context.settings); textarea.value = template.body || ''; editLabel.hidden = !template.body; personArea.hidden = !template.roster && !template.individual; error.style.display = 'none'; }
+        button.addEventListener('click', async () => {
+            if (busy) return; busy = true; backdrop._fdIsgBusy = true; button.disabled = true; close.disabled = true; error.style.display = 'none'; button.textContent = 'PDF hazırlanıyor...';
+            try { const template = available.find(t => t.id === select.value), ids = template.roster || template.individual ? checks.filter(check => check.checked).map(check => check.value) : []; const result = await buildPdf(select.value, { ...context, personIds: ids, bodyOverride: textarea.value }, { onGenerated: context.onGenerated, onProgress: status => button.textContent = `PDF hazırlanıyor ${status.completed}/${status.total}` }); context.onComplete?.(result); busy = false; remove(); }
+            catch (e) { error.textContent = e.message || 'Belge hazırlanamadı.'; error.style.display = 'block'; }
+            finally { busy = false; backdrop._fdIsgBusy = false; button.disabled = false; close.disabled = false; button.textContent = 'PDF Hazırla / Yazdır'; }
+        });
+        close.addEventListener('click', remove); backdrop.addEventListener('click', event => { if (event.target === backdrop) remove(); }); select.addEventListener('change', update); doc.addEventListener('keydown', onKey); update(); select.focus(); return backdrop;
+    }
+    function clear() { generationEpoch++; root.document?.querySelector('[data-isg-document-dialog]')?._fdIsgCleanup?.(true); }
+    root.fdIsgDocuments = { version: VERSION, catalog, list, buildModel, buildPdf, open, clear, plan, wrap, browserMeasure, drawPage, canonical, digest, canCertificate };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script id="fdIsgIntegrationV228">
+/* Integration only: ISG data remains in memory and goes through the authenticated, scoped endpoint. */
+(function (root) {
+    'use strict';
+    const roleIsg = role => ['IsgUzmani', 'IsyeriHekimi'].includes(String(role || ''));
+    const runtime = root.fdIsgRuntime = { scope: '', permissions: null, company: null };
+    const scope = () => String(activeUser?.supabaseUserId || '') + '|' + String(activeUser?.sirketId || '');
+    const toast = (text, kind = 'warning') => root.showToast?.(text, kind);
+    const clone = value => typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+
+    root.fdIsgApi = async function (action, payload = {}) {
+        if (!activeUser?.supabaseUserId || !activeUser?.sirketId || !supabaseClient) throw new Error('İSG için giriş yapmanız gerekiyor.');
+        const requestedScope = scope();
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error) throw error;
+        if (!data?.session?.access_token) throw new Error('Oturum sona erdi. Tekrar giriş yapın.');
+        const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 45000);
+        try {
+            const response = await fetch(SUPABASE_URL + '/functions/v1/isg-workspace', {
+                method: 'POST', signal: controller.signal,
+                headers: { 'Content-Type': 'application/json', apikey: SUPABASE_PUBLISHABLE_KEY, Authorization: 'Bearer ' + data.session.access_token },
+                body: JSON.stringify({ ...payload, action })
+            });
+            let result;
+            try { result = await response.json(); } catch (_) { throw new Error('İSG hizmetinden geçerli yanıt alınamadı.'); }
+            if (requestedScope !== scope()) throw new Error('Kullanıcı veya şirket değişti. İSG sayfasını yeniden açın.');
+            if (!response.ok || result?.success === false) {
+                const failure = new Error(result?.message || result?.error || 'İSG işlemi tamamlanamadı.');
+                failure.status = response.status; failure.code = result?.code; failure.details = result?.details; throw failure;
+            }
+            if (action === 'bootstrap') {
+                runtime.scope = requestedScope; runtime.permissions = result.permissions || {}; runtime.company = result.company || null;
+            }
+            return result;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                const changing = !['bootstrap', 'list', 'get', 'history', 'activity', 'download', 'access-list'].includes(action);
+                throw new Error(changing ? 'Yanıt gecikti. Kayıt durumunu Yenile ile kontrol edin; aynı işlemi tekrar göndermeyin.' : 'Bağlantı gecikti. Yeniden deneyebilirsiniz.');
+            }
+            throw error;
+        } finally { clearTimeout(timer); }
+    };
+
+    function clearPrivatePortalMemory() {
+        // Cached tab navigation can show an already-rendered page without calling its opener.
+        // Evict the previous role's visible pages and tab handles before preparing a scoped session.
+        if (typeof fdTumUygulamaAlanlariniGizle === 'function') fdTumUygulamaAlanlariniGizle();
+        if (typeof fdAcikUygulamaSekmeleri !== 'undefined') fdAcikUygulamaSekmeleri = [];
+        if (typeof fdAktifUygulamaSekmesi !== 'undefined') fdAktifUygulamaSekmesi = 'home';
+        if (typeof fdSekmeCubugunuGuncelle === 'function') fdSekmeCubugunuGuncelle(false);
+        document.querySelectorAll('.modal-overlay').forEach(modal => { if (modal.id !== 'modalZorunluSifre') modal.style.display = 'none'; });
+        const payrollFrame = document.getElementById('bordroOnizlemeFrame');
+        if (payrollFrame) payrollFrame.src = 'about:blank';
+        root.fdUnifiedOutput?.clear?.(); root.fdIsgDocuments?.clear?.();
+        const scrub = container => container.querySelectorAll('input,textarea,select').forEach(field => {
+            if (field.matches('button,input[type="button"],input[type="submit"],input[type="reset"]')) return;
+            if (field.tagName === 'SELECT') field.selectedIndex = 0;
+            else if (field.type === 'checkbox' || field.type === 'radio') field.checked = false;
+            else field.value = '';
+        });
+        document.querySelectorAll('.app-container:not(#isgApp)').forEach(scrub);
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            if (!/zorunlu.?sifre|kvkk|login|giris|oturum|auth/i.test(modal.id)) scrub(modal);
+        });
+        // Evict only reloadable cache copies, not pending uploads, edits, tokens or device credentials.
+        [VERI_ONBELLEK_ANAHTARI, ESKI_VERI_ONBELLEK_ANAHTARI].forEach(key => {
+            try { localStorage.removeItem(key); sessionStorage.removeItem(key); } catch (_) {}
+        });
+        personeller = []; izinler = []; kullanicilar = []; puantajVerileri = []; avanslar = []; ekOdemeler = [];
+        kkdKayitlari = []; vardiyaKayitlari = []; tasimaIrsaliyeleri = []; kiraKayitlari = []; ihracatFirmalari = [];
+        icralar = []; araclar = []; akaryakitKayitlari = []; sirketler = []; subeler = [];
+        izinYerelOnbellekKopyasi = []; izinKurtarmaAdaylari = []; izinYerelOnbellekZamani = 0;
+        yuklenenVeriler.clear(); veriSonKayitGoruntuleri.clear();
+        fdUzakVeriImzalari.clear(); fdUzakAnahtarSonYukleme.clear(); fdSirketSonYukleme.clear();
+        uygulamaAyarlari = clone(VARSAYILAN_UYGULAMA_AYARLARI);
+        document.querySelectorAll('.app-container:not(#isgApp) tbody,#adminUserTable tbody').forEach(body => body.replaceChildren());
+    }
+    root.fdIsgPrepareSession = async function () {
+        if (!roleIsg(activeUser?.rol)) return;
+        clearPrivatePortalMemory();
+        const result = await root.fdIsgApi('bootstrap');
+        activeUser.sirketAdi = result.company?.name || '';
+        activeUser.sifreDegismeli = Boolean(result.permissions?.mustChangePassword);
+        sessionStorage.setItem('loggedInUser', JSON.stringify(activeUser));
+        root.fdIsgWorkspace?.reset?.();
+        return result;
+    };
+    root.fdIsgUploadFile = async function (init, file) {
+        if (!init?.path || !init?.token || !file) throw new Error('Dosya yükleme oturumu geçersiz.');
+        const requestedScope = scope();
+        const { data, error } = await supabaseClient.storage.from('isg-private').uploadToSignedUrl(init.path, init.token, file, { contentType: file.type, upsert: false });
+        if (error) throw error;
+        if (requestedScope !== scope()) throw new Error('Oturum değişti. Dosya kaydını yeni oturumda kontrol edin.');
+        return data;
+    };
+
+    const previousPermission = root.anaMenuModulYetkisi;
+    root.anaMenuModulYetkisi = function (key, role = String(activeUser?.rol || 'Personel')) {
+        if (roleIsg(role)) {
+            if (key !== 'isg') return 'yok';
+            if (runtime.scope !== scope() || !runtime.permissions?.read) return 'yok';
+            return runtime.permissions.write ? 'yazma' : 'okuma';
+        }
+        return previousPermission.apply(this, arguments);
+    };
+
+    function guardModuleOpeners() {
+        const entries = new Map(Object.entries(fdSekmeFonksiyonlari));
+        VARSAYILAN_ANA_MENU_MODULLERI.forEach(module => { if (module.fonksiyon) entries.set(module.fonksiyon, module.anahtar); });
+        const guarded = (original, key) => {
+            if (typeof original !== 'function' || original.__fdIsgScopeGuard) return original;
+            const wrapper = function (...args) {
+                if (roleIsg(activeUser?.rol) && (key !== 'isg' || !anaMenuModulErisimiVar('isg'))) return toast('Bu bölüme erişim yetkiniz yok.');
+                return original.apply(this, args);
+            };
+            wrapper.__fdIsgScopeGuard = true;
+            // Do not make the existing tab installer wrap a protected tab twice.
+            if (original.__fdSekmeli) wrapper.__fdSekmeli = true;
+            return wrapper;
+        };
+        entries.forEach((key, name) => {
+            if (typeof root[name] === 'function') root[name] = guarded(root[name], key);
+            if (typeof fdSekmeOrijinaller !== 'undefined' && typeof fdSekmeOrijinaller[name] === 'function') fdSekmeOrijinaller[name] = guarded(fdSekmeOrijinaller[name], key);
+        });
+    }
+    const originalTabInstaller = root.fdSekmeSisteminiKur;
+    root.fdSekmeSisteminiKur = function (...args) {
+        const result = originalTabInstaller.apply(this, args); guardModuleOpeners(); return result;
+    };
+
+    function installModule() {
+        const definition = { anahtar: 'isg', ad: 'İş Sağlığı ve Güvenliği', aciklama: 'Eğitim, risk, kontrol, görev ve İSG evraklarını şube bazında takip edin', ikon: '🦺', renk: 'linear-gradient(135deg,#087f8c,#2a9d8f)', fonksiyon: 'openIsgApp', roller: ['Admin', 'Yonetici'], yetkiler: { Admin: 'yazma', Yonetici: 'yazma', Personel: 'yok' }, aktif: true };
+        if (!VARSAYILAN_ANA_MENU_MODULLERI.some(item => item.anahtar === 'isg')) VARSAYILAN_ANA_MENU_MODULLERI.splice(1, 0, definition);
+        ANA_MENU_MODUL_KOKLERI.isg = '#isgApp';
+        fdUygulamaSekmeTanimlari.isg = { ad: 'İş Sağlığı ve Güvenliği', ikon: '🦺', acilis: 'openIsgApp' };
+        fdSekmeFonksiyonlari.openIsgApp = 'isg';
+        if (!fdSekmeAlanlari.includes('isgApp')) fdSekmeAlanlari.push('isgApp');
+        const launcher = document.querySelector('#appHub .workspace-launcher');
+        if (launcher && !launcher.querySelector('[data-ana-menu-modul="isg"]')) {
+            const button = document.createElement('button'); button.type = 'button'; button.className = 'workspace-card'; button.dataset.anaMenuModul = 'isg';
+            button.innerHTML = '<span class="workspace-card-icon" aria-hidden="true">🦺</span><span><strong>İş Sağlığı ve Güvenliği</strong><small>Eğitim, kontrol, görev ve İSG evrakları</small></span><b>Modülü aç →</b>';
+            button.onclick = event => anaMenuModulunuAc('isg', event); launcher.append(button);
+        }
+        const originalOpen = root.openIsgApp;
+        root.openIsgApp = async function () {
+            if (!anaMenuModulErisimiVar('isg')) return toast('İSG modülüne erişim yetkiniz yok.');
+            if (runtime.scope && runtime.scope !== scope()) { root.fdIsgWorkspace?.reset?.(); runtime.scope = ''; runtime.permissions = null; runtime.company = null; }
+            fdTumUygulamaAlanlariniGizle(); personelModuluYetkiGorunumunuUygula('isg');
+            anaMenuDonusButonunuGoster?.();
+            return originalOpen.call(this);
+        };
+        anaMenuModulKartlariniUygula(); fdSekmeSisteminiKur();
+    }
+
+    const previousOutput = root.fdOutputAdapters?.get;
+    if (root.fdOutputAdapters) root.fdOutputAdapters.get = async function (group) {
+        if (group.isgModels) return clone(group.isgModels);
+        return previousOutput?.call(this, group);
+    };
+    root.fdIsgOutput = function (models, button) {
+        if (!models?.length) return toast('Çıktı alınacak kayıt bulunamadı.');
+        if (!root.fdUnifiedOutput) return toast('Çıktı bileşeni yüklenemedi.', 'error');
+        const outputScope = scope();
+        return root.fdUnifiedOutput.open({ isgModels: clone(models), parent: button.parentElement, trigger: button, items: [], isCurrent: () => outputScope === scope() && Boolean(activeUser) });
+    };
+
+    const oldCreateUser = root.supabaseKullaniciOlustur;
+    root.supabaseKullaniciOlustur = async function (options) {
+        if (!roleIsg(options?.rol)) return oldCreateUser.apply(this, arguments);
+        return root.fdIsgApi('access-create-user', { username: options.username, password: options.password, fullName: options.ad || options.username, role: options.rol, allBranches: false, branches: [], write: true, active: false });
+    };
+    // User creation remains the administrator's action; no account is created by installation.
+    const roleSelect = document.getElementById('aRol');
+    if (roleSelect) [['IsgUzmani', 'İSG Uzmanı'], ['IsyeriHekimi', 'İşyeri Hekimi']].forEach(([value, label]) => {
+        if (!Array.from(roleSelect.options).some(option => option.value === value)) { const option = document.createElement('option'); option.value = value; option.textContent = label; roleSelect.append(option); }
+    });
+    const oldRenderUsers = root.renderAdminUsers;
+    root.renderAdminUsers = function () {
+        const result = oldRenderUsers.apply(this, arguments);
+        document.querySelectorAll('#adminUserTable tbody tr').forEach(row => {
+            const select = row.querySelector('select'); if (!select) return;
+            const username = row.querySelector('td:nth-child(2) strong')?.textContent;
+            const user = kullanicilar.find(item => item.username === username);
+            if (!roleIsg(user?.rol)) return;
+            const option = document.createElement('option'); option.value = user.rol; option.textContent = user.rol === 'IsyeriHekimi' ? 'İşyeri Hekimi' : 'İSG Uzmanı'; option.selected = true;
+            select.append(option); select.disabled = true;
+            row.querySelector('td:last-child').replaceChildren();
+            const access = document.createElement('button'); access.type = 'button'; access.className = 'btn-modern btn-detail-modern'; access.textContent = 'İSG Yetkileri';
+            access.onclick = () => { closeAdminModal(); root.openIsgApp().then(() => root.fdIsgWorkspace?.access?.()); }; row.querySelector('td:last-child').append(access);
+        });
+        return result;
+    };
+
+    const oldHub = root.showHub, hiddenHub = new Map();
+    root.showHub = function () {
+        const result = oldHub.apply(this, arguments);
+        document.getElementById('isgApp')?.style.setProperty('display', 'none');
+        if (roleIsg(activeUser?.rol)) {
+            const badge = document.getElementById('userBadgeSpan'); if (badge) badge.textContent = activeUser.rol === 'IsyeriHekimi' ? 'İşyeri Hekimi' : 'İSG Uzmanı';
+            document.querySelectorAll('#appHub .workspace-launcher > :not([data-ana-menu-modul="isg"]),#fdHomeTools,#adminSessionPanel').forEach(element => { if (!hiddenHub.has(element)) hiddenHub.set(element, element.style.display); element.style.display = 'none'; });
+        } else if (hiddenHub.size) { hiddenHub.forEach((display, element) => { if (element.isConnected) element.style.display = display; }); hiddenHub.clear(); anaMenuModulKartlariniUygula(); }
+        return result;
+    };
+    const oldLogout = root.logout;
+    root.logout = async function () {
+        try { return await oldLogout.apply(this, arguments); }
+        finally { runtime.scope = ''; runtime.permissions = null; runtime.company = null; root.fdIsgWorkspace?.reset?.(); root.fdIsgDocuments?.clear?.(); root.fdUnifiedOutput?.clear?.(); document.querySelector('[data-isg-document-dialog]')?.remove(); }
+    };
+    installModule();
 })(window);
 </script>
 
@@ -26462,14 +27200,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v227';
+      const anahtar='fd-pwa-yenileme-v228';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=227',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=228',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
