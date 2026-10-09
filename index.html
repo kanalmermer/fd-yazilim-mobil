@@ -18692,7 +18692,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function fdCiktiBlobBagla(m,blob,ad){if(m._url)URL.revokeObjectURL(m._url);m._url=URL.createObjectURL(blob);m._blob=blob;m.dosyaAdi=ad;const a=m.querySelector('[data-cikti-kaydet]');a.href=m._url;a.download=ad;a.style.opacity='1';a.style.pointerEvents='auto';}
     function fdCiktiPdfOnizle(blob,ad,m=null){m=m||fdCiktiOnizlemeAc('pdf',ad);m._tur='pdf';fdCiktiBlobBagla(m,blob,ad);const alan=m.querySelector('[data-cikti-icerik]');alan.style.padding='0';alan.innerHTML='<iframe title="PDF önizleme" style="display:block;width:100%;height:100%;border:0;background:#64748b"></iframe>';alan.querySelector('iframe').src=m._url;return m;}
-    function fdCiktiTablo(satirlar){const sar=document.createElement('div'),tablo=document.createElement('table');sar.style.cssText='overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:9px';tablo.style.cssText='width:max-content;min-width:100%;border-collapse:collapse;font:12px Arial;color:#0f172a';(satirlar||[]).forEach((satir,r)=>{const tr=document.createElement('tr');(Array.isArray(satir)?satir:[]).forEach(deger=>{const td=document.createElement(r?'td':'th'),metin=deger&&typeof deger==='object'?(deger.text||deger.result||deger.formula||''):deger;td.textContent=metin==null?'':String(metin);td.style.cssText='border:1px solid #cbd5e1;padding:6px 8px;white-space:pre-wrap;vertical-align:top'+(r?'':';position:sticky;top:0;background:#e2e8f0;font-weight:800;z-index:1');tr.appendChild(td);});tablo.appendChild(tr);});sar.appendChild(tablo);return sar;}
+    function fdCiktiTablo(satirlar){const sar=document.createElement('div'),tablo=document.createElement('table');sar.style.cssText='overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:9px';tablo.style.cssText='width:max-content;min-width:100%;border-collapse:collapse;font:12px Arial;color:#0f172a';(satirlar||[]).forEach((satir,r)=>{const tr=document.createElement('tr');(Array.isArray(satir)?satir:[]).forEach(deger=>{const td=document.createElement(r?'td':'th'),metin=deger instanceof Date?deger.toLocaleDateString('tr-TR'):deger&&typeof deger==='object'?(deger.text||deger.result||deger.formula||''):deger;td.textContent=metin==null?'':String(metin);td.style.cssText='border:1px solid #cbd5e1;padding:6px 8px;white-space:pre-wrap;vertical-align:top'+(r?'':';position:sticky;top:0;background:#e2e8f0;font-weight:800;z-index:1');tr.appendChild(td);});tablo.appendChild(tr);});sar.appendChild(tablo);return sar;}
 
     function fdCiktiExcelOnizle(wb,ad,sec={}){const tur=String(ad||'').toLowerCase().endsWith('.xls')?'biff8':'xlsx',veri=XLSX.write(wb,{...sec,bookType:tur,type:'array'}),blob=new Blob([veri],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),m=fdCiktiOnizlemeAc('excel',ad),alan=m.querySelector('[data-cikti-icerik]');fdCiktiBlobBagla(m,blob,ad);alan.innerHTML='';alan.style.cssText+=';display:grid;gap:16px;align-content:start';(wb.SheetNames||[]).forEach(sayfa=>{const bolum=document.createElement('section'),h=document.createElement('h3');h.textContent=sayfa;h.style.cssText='margin:0 0 7px;color:#0f172a';bolum.append(h,fdCiktiTablo(XLSX.utils.sheet_to_json(wb.Sheets[sayfa],{header:1,defval:'',raw:false})));alan.appendChild(bolum);});return m;}
     function fdCiktiExcelJsOnizle(wb,blob,ad){const m=fdCiktiOnizlemeAc('excel',ad),alan=m.querySelector('[data-cikti-icerik]');fdCiktiBlobBagla(m,blob,ad);alan.innerHTML='';alan.style.cssText+=';display:grid;gap:16px;align-content:start';wb.worksheets.forEach(ws=>{const bolum=document.createElement('section'),h=document.createElement('h3'),satirlar=[];h.textContent=ws.name;h.style.cssText='margin:0 0 7px;color:#0f172a';ws.eachRow({includeEmpty:false},r=>satirlar.push(r.values.slice(1)));bolum.append(h,fdCiktiTablo(satirlar));alan.appendChild(bolum);});return m;}
@@ -25241,6 +25241,1208 @@ function fdAracListeCiz(){
  for(const label of document.querySelectorAll('#modalTapuKayit label,#modalTapuCksKayit label')){const alan=label.parentElement.querySelector('input,select,textarea');if(alan?.id)label.htmlFor=alan.id}
 })();
 </script>
+<style id="fdUnifiedOutputStyleV227">
+.fd-output-original{display:none!important}
+.fd-output-menu{display:inline-flex;flex:0 0 auto;vertical-align:middle;align-items:center}
+.fd-output-menu[hidden],#fdUnifiedOutputModal[hidden],#fdUnifiedOutputModal [hidden]{display:none!important}
+.fd-output-trigger{display:inline-flex!important;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:8px 15px!important;border:1px solid #b9d1df!important;border-radius:8px!important;background:#f0f7fb!important;color:#164d6a!important;font:600 13px/1.2 Arial,sans-serif!important;white-space:nowrap;cursor:pointer;box-shadow:none!important;width:auto!important;margin:0!important}
+.fd-output-trigger::before{content:'↥';font-size:17px;font-weight:500}
+.fd-output-trigger:hover{background:#e1eff7!important;border-color:#7faec9!important;color:#123d55!important}
+.fd-output-trigger:disabled{cursor:wait;opacity:.6}
+.fd-output-overlay{position:fixed;inset:0;z-index:2147483646;background:#142b456b;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overscroll-behavior:contain}
+.fd-output-card{display:flex;flex-direction:column;width:min(820px,96vw);max-height:92dvh;background:#fff;border:1px solid #d2e0e9;border-radius:14px;box-shadow:0 24px 65px #152b4a40;overflow:hidden;color:#183246;font-family:Arial,sans-serif}
+.fd-output-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid #e1eaf0;background:#f7fafc}
+.fd-output-head h3{font-size:17px!important;margin:0!important;color:#183246!important;font-weight:700!important}
+.fd-output-head p{font-size:12px;color:#60768b;margin:7px 0 0;line-height:1.5;overflow-wrap:anywhere}
+.fd-output-head>button{border:0;background:transparent;color:#536f84;font:24px/1 Arial;padding:2px 6px;cursor:pointer}
+.fd-output-body{min-height:0;overflow:auto;padding:16px 20px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.fd-output-selection-tools{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.fd-output-selection-tools input{flex:1;min-width:120px;min-height:36px;padding:8px 11px;border:1px solid #cfdee9;border-radius:7px;background:#fff;font:13px Arial;color:#183246}
+.fd-output-selection-tools button{padding:8px 10px;border:1px solid #d7e4eb;border-radius:7px;background:#f6f9fb;color:#385e74;font:600 12px Arial;cursor:pointer;white-space:nowrap}
+.fd-output-sheet{margin:0 0 18px}
+.fd-output-sheet h4{display:flex;align-items:center;gap:10px;font-size:13px;color:#365a70;margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid #e6edf2;overflow-wrap:anywhere}
+.fd-output-sheet h4 small{margin-left:auto;font-size:11px;font-weight:400;color:#74899a;flex-shrink:0}
+.fd-output-field-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.fd-output-field{display:flex;align-items:center;gap:9px;padding:10px!important;margin:0!important;border:1px solid #dce6ed;border-radius:7px;background:#fff;cursor:pointer;font:13px/1.4 Arial!important;color:#28475e!important;min-width:0}
+.fd-output-field:has(input:checked){background:#f1f8fb;border-color:#aacbde}
+.fd-output-field input{width:15px!important;height:15px!important;min-height:0!important;margin:0!important;flex:0 0 auto;accent-color:#2879a5}
+.fd-output-field span{overflow-wrap:anywhere}
+.fd-output-status{font:12px/1.5 Arial;color:#6b8193;margin:8px 0 0;min-height:18px}
+.fd-output-status.error{color:#b42332}
+.fd-output-footer{padding:14px 20px;border-top:1px solid #e0e9ef;background:#f9fbfc;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fd-output-footer>span{font-size:12px;color:#6c8395;white-space:nowrap}
+.fd-output-footer>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fd-output-footer button{padding:10px 15px;border:0;border-radius:7px;color:#fff;font:600 13px/1.2 Arial;cursor:pointer;white-space:nowrap;min-height:37px}
+.fd-output-excel{background:#159c73}.fd-output-pdf{background:#e74766}.fd-output-image{background:#168bc1}
+.fd-output-footer button:hover{filter:brightness(.94)}.fd-output-footer button:disabled{opacity:.45;cursor:not-allowed}
+.fd-output-card button:focus-visible,.fd-output-card input:focus-visible,.fd-output-trigger:focus-visible{outline:2px solid #268bbb;outline-offset:2px}
+@media(max-width:600px){.fd-output-overlay{padding:10px}.fd-output-card{width:100%;max-height:94dvh}.fd-output-head{padding:14px}.fd-output-body{padding:13px 14px}.fd-output-field-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fd-output-footer{padding:12px 14px;flex-direction:column;align-items:stretch;gap:9px}.fd-output-footer>div{display:grid;grid-template-columns:1fr 1fr}.fd-output-footer .fd-output-image{grid-column:1/-1}.fd-output-footer button{padding:11px 9px;min-height:42px}}
+</style>
+<script id="fdUnifiedOutputCoreV227">
+(function (global) {
+    'use strict';
+
+    const clean = value => String(value == null ? '' : value).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+    const norm = value => clean(value).toLocaleLowerCase('tr-TR');
+    const numericHeader = /(?:tutar|bakiye|bedel|fiyat|ücret|maaş|prim tutar|miktar|adet|litre|\blitre\b|\bl\/|\bkm\b|kilometre|metrekare|\bm²\b|\bm2\b|alan|payı|kesinti|borç|alacak|toplam|mesai|saat|gün say|ay say|yüzde|oran|net|brüt|brut|hakediş)/i;
+    const textualHeader = /(?:t\.c\.?|\btc\b|kimlik|telefon|\btel\b|\bno\b|numara|plaka|ada|parsel|abone|kod|bölüm|bolum|tarih|dönem|donem|yıl|yil|vkn|vergi|posta)/i;
+    const headerWord = /^(?:#|sıra|sira|no|ad(?:ı)?(?: soyad(?:ı)?)?|soyad(?:ı)?|personel(?: adı)?|çalışan|ürün(?:ler)?|açıklama|tarih|firma|dönem|daire|kiracı|tür|tutar|fiyat|birim(?: fiyat)?|miktar|adet|sahibi|adres|telefon|plaka|araç|vardiya|görev(?: yeri)?|durum|not(?:lar)?|bakiye|hak(?: ediş|ediş|ediş tutarı)?|borç|alacak|sıra no|t\.c\.?|tc(?: no)?|kimlik(?: no)?|depo|litre|km|alan|veren|siparişler?|teslimatlar?|kalan|toplam|başlangıç|bitiş|prim|ücret|maaş|kesinti|ay|yıl|net|brüt|brut|elektrik abone no|su abone no|doğalgaz abone no|abone no|fatura(?: no| tarihi)?|irsaliye(?: no)?|alış tarihi|vergi no|ödenen|ödenecek|alım sayısı|hesaplanan km|ortalama l\/100 km|önceki tarih|son tarih|önceki km|son km|yapılan km|alınan litre|100 km tüketim|kısa ad|abonelik türü|pol[iı]çe no|hisse durumu|taşınmaz no|nitelik|il|ilçe|mahalle|ada|parsel|bağımsız bölüm|sahip olunan alan|toplam alan)(?:\s*\([^)]*\)|\s*\/.*)?$/i;
+    const actionHeader = /^(?:işlem(?:ler)?|aksiyon(?:lar)?|seç(?:im)?|select|actions?)$/i;
+
+    function numberValue(value, locale) {
+        if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+        let text = clean(value);
+        if (!text) return null;
+        let negative = false;
+        if (/^\([\s\S]*\)$/.test(text)) { negative = true; text = text.slice(1, -1); }
+        text = text.replace(/(?:\b(?:TL|TRY|USD|EUR|GBP|KG|KM|ADET)\b|₺|\$|€|£|%|m²|m2|\bL\b)/gi, '').replace(/\s/g, '');
+        if (!/^[+-]?[\d.,]+$/.test(text)) return null;
+        if (text.includes(',') && text.includes('.')) {
+            text = text.lastIndexOf(',') > text.lastIndexOf('.') ? text.replace(/\./g, '').replace(',', '.') : text.replace(/,/g, '');
+        } else if (text.includes(',')) {
+            if (/^[+-]?\d{1,3}(?:,\d{3}){2,}$/.test(text) || (locale === 'en' && /^[+-]?\d{1,3}(?:,\d{3})+$/.test(text))) text = text.replace(/,/g, '');
+            else if ((text.match(/,/g) || []).length === 1) text = text.replace(',', '.');
+            else return null;
+        } else if (text.includes('.')) {
+            if (locale !== 'en' && /^[+-]?\d{1,3}(?:\.\d{3})+$/.test(text)) text = text.replace(/\./g, '');
+            else if ((text.match(/\./g) || []).length > 1) return null;
+        }
+        const result = Number(text);
+        return Number.isFinite(result) ? (negative ? -result : result) : null;
+    }
+
+    function display(value) {
+        if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toLocaleDateString('tr-TR');
+        if (value && typeof value === 'object') return clean(value.text ?? value.result ?? value.richText?.map(part => part.text).join('') ?? value.hyperlink ?? '');
+        return clean(value);
+    }
+
+    function canConvertNumber(value, label) {
+        if (typeof value !== 'string') return true;
+        const heading=norm(label), withoutMoney=norm(value).replace(/\b(?:tl|try|usd|eur|gbp)\b|[₺$€£]/g,'');
+        if(withoutMoney.includes('%')&&!heading.includes('%')&&!heading.includes('yüzde'))return false;
+        const units=withoutMoney.match(/[a-zçğöşüı]+[²³]?\d*/g) || [];
+        const aliases={m2:['m2','m²','metrekare'],'m²':['m2','m²','metrekare'],m3:['m3','m³','metreküp'],'m³':['m3','m³','metreküp'],km:['km','kilometre'],kg:['kg','kilogram'],l:['l','lt','litre'],lt:['l','lt','litre'],litre:['l','lt','litre']};
+        return units.every(unit=>(aliases[unit] || [unit]).some(alias=>new RegExp('(?:^|[^a-zçğöşüı])'+alias+'(?:$|[^a-zçğöşüı])','i').test(heading)));
+    }
+
+    function cellValue(cell, column) {
+        if (!cell) return '';
+        const explicit = ['data-output-value', 'data-export-value', 'data-value'].find(attribute => cell.hasAttribute(attribute));
+        if (explicit) {
+            const value = cell.getAttribute(explicit), type = cell.dataset.outputType || cell.dataset.exportType || column?.type;
+            const parsed = type === 'number' ? numberValue(value, cell.dataset.locale) : null;
+            return parsed == null ? value : parsed;
+        }
+        const input = cell.querySelector('input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="file"]):not([type="hidden"]),textarea,select');
+        if (input) {
+            if (input.tagName === 'SELECT') return clean(input.selectedOptions?.[0]?.textContent || input.value);
+            if (input.type === 'number' && String(input.value).trim()) { const parsed = Number(input.value); if (Number.isFinite(parsed)) return parsed; }
+            return input.value || '';
+        }
+        const copy = cell.cloneNode(true);
+        copy.querySelectorAll('script,style,input,[data-output-ignore],.fd-mini-actions,.action-btns,.fd-icon-btn').forEach(element => element.remove());
+        copy.querySelectorAll('button').forEach(button => {
+            const label=clean(button.textContent);
+            if (/^(?:[✎✏🗑×✕＋+−-]+|düzenle|sil|detay|görüntüle|kaydet|iptal|onayla|öde|ödeme ekle)$/i.test(norm(label))) button.remove();
+            else button.replaceWith(document.createTextNode(label));
+        });
+        copy.querySelectorAll('br').forEach(element => element.replaceWith(document.createTextNode(' ')));
+        copy.querySelectorAll('div,p,li').forEach(element => element.appendChild(document.createTextNode(' ')));
+        const text = clean(copy.textContent);
+        if (column?.type === 'number' && !textualHeader.test(norm(column.label)) && canConvertNumber(text,column.label)) { const parsed = numberValue(text); if (parsed != null) return parsed; }
+        return text;
+    }
+
+    // Expand spans into a logical grid while keeping source cells intact.
+    function tableGrid(rows) {
+        const grid = [];
+        rows.forEach((row, rowIndex) => {
+            grid[rowIndex] ||= [];
+            let columnIndex = 0;
+            [...row.cells].forEach(cell => {
+                while (grid[rowIndex][columnIndex]) columnIndex++;
+                const remaining = rows.length - rowIndex;
+                const rowSpan = cell.getAttribute('rowspan') === '0' ? remaining : Math.max(1, Math.min(Number(cell.rowSpan) || 1, remaining));
+                const columnSpan = Math.max(1, Number(cell.colSpan) || 1);
+                const entry = {cell, originRow:rowIndex, originColumn:columnIndex, rowSpan, columnSpan};
+                for (let r = 0; r < rowSpan; r++) { grid[rowIndex + r] ||= []; for (let c = 0; c < columnSpan; c++) grid[rowIndex + r][columnIndex + c] = entry; }
+                columnIndex += columnSpan;
+            });
+        });
+        return grid;
+    }
+
+    function columnType(label, values) {
+        if (textualHeader.test(norm(label))) return /tarih|date/i.test(norm(label)) ? 'date' : 'text';
+        const nonempty = values.filter(value => value !== '' && value != null);
+        if (nonempty.length && nonempty.every(value => typeof value === 'number')) return 'number';
+        if (nonempty.length && nonempty.every(value => value instanceof Date)) return 'date';
+        if (!numericHeader.test(norm(label))) return 'text';
+        return !nonempty.length || nonempty.every(value => typeof value === 'number' || canConvertNumber(value,label) && numberValue(value) != null || clean(value) === '-') ? 'number' : 'text';
+    }
+
+    function fromTable(source, options = {}) {
+        const table = typeof source === 'string' ? document.querySelector(source) : (source?.tagName === 'TABLE' ? source : source?.querySelector?.('table'));
+        if (!table) return null;
+        const allRows = [...table.rows], headerRows = table.tHead ? [...table.tHead.rows] : [];
+        if (!headerRows.length && allRows[0]?.querySelector('th')) headerRows.push(allRows[0]);
+        const bodyRows = [...table.tBodies].flatMap(body => [...body.rows]).filter(row => !headerRows.includes(row));
+        if (!table.tBodies.length) bodyRows.push(...allRows.filter(row => !headerRows.includes(row) && row.parentElement !== table.tFoot));
+        const footRows = table.tFoot ? [...table.tFoot.rows] : [], headers = tableGrid(headerRows), body = tableGrid(bodyRows), feet = tableGrid(footRows);
+        const width = Math.max(0, ...headers.map(row => row.length), ...body.map(row => row.length), ...feet.map(row => row.length));
+        const columns = [], footnotes = [...(options.footnotes || [])];
+        for (let index = 0; index < width; index++) {
+            const entries = [...new Set(headers.map(row => row[index]).filter(Boolean))];
+            const path = entries.map(entry => cellValue(entry.cell)).filter(Boolean), label = path.join(' / ') || 'Sütun ' + (index + 1);
+            const samples = body.map(row => row[index]?.cell).filter(Boolean);
+            const ignored = entries.some(entry => entry.cell.hasAttribute('data-output-ignore') || actionHeader.test(norm(cellValue(entry.cell))) || entry.cell.querySelector('input[type="checkbox"],input[type="radio"]'));
+            const allCheckbox = samples.length && samples.every(cell => cell.querySelector('input[type="checkbox"],input[type="radio"]') && !cellValue(cell));
+            const allActions = !path.length && samples.length && samples.every(cell => cell.querySelector('button,.fd-mini-actions,.action-btns') && !cellValue(cell));
+            if (ignored || allCheckbox || allActions) continue;
+            columns.push({key:'c' + index, label, path:path.length ? path : [label], type:columnType(label, []), sourceIndex:index});
+        }
+        const rows = [];
+        function readGrid(grid, originalRows) {
+            grid.forEach((logicalRow, index) => {
+                const physicalRow = originalRows[index];
+                if (physicalRow?.hasAttribute('data-output-ignore')) return;
+                const distinct = [...new Set(logicalRow.filter(Boolean))];
+                if (distinct.length === 1 && distinct[0].columnSpan > 1) {
+                    const value = cellValue(distinct[0].cell);
+                    if (/kayıt.*(?:yok|bulunamadı|bulunmuyor)|(?:listesi|liste).*boş|veri.*(?:yok|bulunmuyor)|no records/i.test(value)) return;
+                    if (/^(?:not\s*:|açıklama\s*:)/i.test(value)) { footnotes.push(value); return; }
+                }
+                const row = {};
+                columns.forEach(column => { const entry = logicalRow[column.sourceIndex]; row[column.key] = cellValue(entry?.cell, column); });
+                if (Object.values(row).some(value => value !== '' && value != null)) rows.push(row);
+            });
+        }
+        readGrid(body, bodyRows); readGrid(feet, footRows);
+        columns.forEach(column => { column.type = columnType(column.label, rows.map(row => row[column.key])); });
+        return {title:options.title || clean(table.caption?.textContent) || 'Liste', subtitle:options.subtitle || '', columns, rows, footnotes};
+    }
+
+    function rangeStart(reference) {
+        if (typeof reference !== 'string') return null;
+        const match = reference.split(':')[0].match(/\$?[A-Z]+\$?(\d+)/i);
+        return match ? Number(match[1]) - 1 : null;
+    }
+
+    function workbookGrid(sheet) {
+        // Read original coordinates directly. sheet_to_json starts at !ref's
+        // first occupied row/column, which can shift merges and header anchors.
+        const ref = sheet['!ref'] || 'A1', range = ref.split(':');
+        const decode = address => { const match = address.replace(/\$/g,'').match(/([A-Z]+)(\d+)/i); if (!match) return {r:0,c:0}; let c=0; for (const char of match[1].toUpperCase()) c=c*26+char.charCodeAt(0)-64; return {r:Number(match[2])-1,c:c-1}; };
+        const encode = (r,c) => { let result=''; for (let n=c+1;n>0;n=Math.floor((n-1)/26)) result=String.fromCharCode(65+(n-1)%26)+result; return result+(r+1); };
+        const last = decode(range.at(-1)), rows=[];
+        for (let r=0;r<=last.r;r++) { const row=[]; for (let c=0;c<=last.c;c++) { const cell=sheet[encode(r,c)]; row.push(cell?.v ?? ''); } rows.push(row); }
+        return rows;
+    }
+
+    function headerIndex(data, sheet, options) {
+        if (Number.isInteger(options.headerRow)) return options.headerRow;
+        const mergedHeaderStart = row => {
+            const merges=sheet?.['!merges'] || [];
+            let start=row, changed=true;
+            while(changed){changed=false;for(const merge of merges){if(merge.s.r<start&&merge.e.r>=start){start=merge.s.r;changed=true;}}}
+            if(start===row&&start>0){
+                const parent=data[start-1] || [], occupied=parent.map(display).filter(Boolean);
+                if(occupied.length>1&&occupied.some(value=>headerWord.test(norm(value)))&&merges.some(merge=>merge.s.r===start-1&&merge.e.r===start-1&&merge.e.c>merge.s.c))start--;
+            }
+            return start;
+        };
+        const filter = rangeStart(sheet?.['!autofilter']?.ref);
+        if (filter != null) return mergedHeaderStart(filter);
+        const frozen = Number(sheet?.['!freeze']?.ySplit || 0);
+        if (frozen > 0 && data[frozen-1]?.filter(value => display(value)).length > 1) return mergedHeaderStart(frozen - 1);
+        let best = -1, bestScore = 0;
+        data.slice(0, 40).forEach((row, index) => {
+            const cells = row.map(display).filter(Boolean), known = cells.filter(value => headerWord.test(norm(value))).length;
+            if (!cells.length || !known || (cells.length > 2 && known < 2)) return;
+            const mergedTitle = (sheet?.['!merges'] || []).some(merge => merge.s.r === index && merge.e.r === index && merge.s.c === 0 && merge.e.c >= row.length-1);
+            if (mergedTitle && cells.length === 1) return;
+            const score = known * 6 + Math.min(cells.length, 30) - index * .05;
+            if (score > bestScore) { best = index; bestScore = score; }
+        });
+        return best;
+    }
+
+    function excelHeaders(data, sheet, start, depth, width) {
+        const grid = Array.from({length:depth}, (_,index) => (data[start+index] || []).map(value => ({value, originRow:index, originColumn:0})));
+        (sheet?.['!merges'] || []).forEach(merge => {
+            if (merge.s.r < start || merge.s.r >= start+depth) return;
+            const entry = {value:data[merge.s.r]?.[merge.s.c] ?? '', originRow:merge.s.r-start, originColumn:merge.s.c};
+            for (let r=merge.s.r;r<=Math.min(merge.e.r,start+depth-1);r++) { grid[r-start] ||= []; for (let c=merge.s.c;c<=Math.min(merge.e.c,width-1);c++) grid[r-start][c]=entry; }
+        });
+        return Array.from({length:width}, (_,index) => {
+            const seen = new Set(), path = [];
+            grid.forEach(row => { const entry=row[index], text=display(entry?.value); if (!text || seen.has(entry)) return; seen.add(entry); if (path.at(-1)!==text) path.push(text); });
+            const label=path.join(' / ') || 'Sütun '+(index+1); return {key:'c'+index,label,path:path.length?path:[label],type:columnType(label,[]),sourceIndex:index};
+        });
+    }
+
+    function fromArray(data, options = {}) {
+        const rows = Array.isArray(data) ? data : [], sheet = options.sheet || {};
+        const width = Math.max(0, ...rows.map(row => Array.isArray(row) ? row.length : 0));
+        const start = headerIndex(rows, sheet, options);
+        let depth = Number(options.headerDepth) || 1;
+        if (!options.headerDepth && start >= 0) {
+            const vertical = (sheet['!merges'] || []).filter(merge => merge.s.r === start && merge.e.r > start);
+            if (vertical.length) depth = Math.min(4, Math.max(...vertical.map(merge => merge.e.r-start+1)));
+            else if ((sheet['!merges'] || []).some(merge => merge.s.r===start && merge.e.c>merge.s.c) && rows[start+1]?.some(value => /^(?:toplam|total)$/i.test(display(value)))) depth=2;
+            const anchor=rangeStart(sheet['!autofilter']?.ref) ?? (Number(sheet['!freeze']?.ySplit || 0)-1);
+            if(anchor>=start&&anchor-start<4)depth=Math.max(depth,anchor-start+1);
+        }
+        let columns;
+        if (options.columns?.length) columns = options.columns.map((column,index) => typeof column==='string' ? {key:'c'+index,label:column,path:[column],type:columnType(column,[]),sourceIndex:index} : {...column,key:column.key || 'c'+index,path:column.path || [column.label],sourceIndex:index});
+        else columns = start >= 0 ? excelHeaders(rows,sheet,start,depth,width) : Array.from({length:width},(_,index)=>({key:'c'+index,label:'Sütun '+(index+1),path:['Sütun '+(index+1)],type:'text',sourceIndex:index}));
+        columns = columns.filter(column => !actionHeader.test(norm(column.label)) && !(/^Sütun \d+$/.test(column.label) && rows.every(row=>!display(row[column.sourceIndex]))));
+        const footnotes=[...(options.footnotes || [])];
+        if (start>0) rows.slice(0,start).forEach(row=>{const text=row.map(display).filter(Boolean).join(' · ');if(text)footnotes.push(text);});
+        const output=[];
+        rows.slice(start>=0?start+depth:0).forEach(row=>{
+            if (!Array.isArray(row) || !row.some(value=>display(value))) return;
+            const record={};columns.forEach(column=>{let value=row[column.sourceIndex] ?? ''; if (value && typeof value==='object' && !(value instanceof Date)) value=value.result ?? value.text ?? value.richText?.map(part=>part.text).join('') ?? '';if(typeof value==='string'&&column.type==='number'&&!textualHeader.test(norm(column.label))&&canConvertNumber(value,column.label)){const parsed=numberValue(value);if(parsed!=null)value=parsed;}record[column.key]=value;});output.push(record);
+        });
+        columns.forEach(column=>{column.type=columnType(column.label,output.map(row=>row[column.key]));});
+        return {title:options.title || 'Liste',subtitle:options.subtitle || '',columns,rows:output,footnotes};
+    }
+
+    function fromWorkbook(workbook, filename, options = {}) {
+        if (!workbook) return [];
+        if (workbook.SheetNames && workbook.Sheets) return workbook.SheetNames.map(name=>fromArray(workbookGrid(workbook.Sheets[name]), {...options,...(/^rapor\s*bilgisi$/i.test(norm(name))?{headerRow:-1,columns:['Bilgi','Değer']}:{ }),title:name,subtitle:options.subtitle || filename || '',sheet:workbook.Sheets[name]}));
+        if (Array.isArray(workbook.worksheets)) return workbook.worksheets.map(sheet=>{
+            const data=[];sheet.eachRow({includeEmpty:true},row=>{data[row.number-1]=row.values.slice(1);});
+            const frozen=(sheet.views || []).find(view=>view.ySplit)?.ySplit, ref=typeof sheet.autoFilter==='string'?sheet.autoFilter:null;
+            return fromArray(data,{...options,title:sheet.name,subtitle:options.subtitle || filename || '',sheet:{'!freeze':frozen?{ySplit:frozen}:undefined,'!autofilter':ref?{ref}:undefined}});
+        });
+        return [];
+    }
+
+    global.fdOutputModels = Object.assign(global.fdOutputModels || {}, {fromTable,fromWorkbook,fromArray,numberValue,cellValue});
+})(window);
+
+/* Full-data adapters for reports whose original export flow opens a picker or mutates shift state. */
+(function (root) {
+    'use strict';
+
+    const text = value => value == null ? '' : typeof value === 'object' ? JSON.stringify(value) : String(value);
+    const el = id => document.getElementById(id);
+    const list = value => Array.isArray(value) ? value : [];
+
+    function source(group) {
+        const buttons = list(group?.items).map(item => item.button).filter(Boolean);
+        return [group?.key, group?.handler, group?.onclick, ...buttons.map(button => button.getAttribute?.('onclick') || String(button.onclick || ''))].filter(Boolean).join(' ');
+    }
+
+    function numeric(value) {
+        if (typeof value === 'number') return Number.isFinite(value) ? value : '';
+        if (value == null || String(value).trim() === '') return '';
+        if (root.fdOutputModels?.numberValue) return root.fdOutputModels.numberValue(value) ?? text(value);
+        const cleaned = String(value).replace(/(?:TL|₺|\s)/g, '').replace(/\./g, '').replace(',', '.');
+        const number = Number(cleaned);
+        return Number.isFinite(number) ? number : text(value);
+    }
+
+    function date(value) {
+        if (!value) return '';
+        if (typeof tarihFormati === 'function') return tarihFormati(value);
+        const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        return match ? match[3] + '.' + match[2] + '.' + match[1] : text(value);
+    }
+
+    function yes(value) {
+        if (typeof personelEvetMi === 'function') return personelEvetMi(value);
+        return value === true || value === 1 || /^(?:evet|true|1)$/i.test(String(value));
+    }
+
+    function report(title, fields, records, read, options = {}) {
+        const columns = fields.map(field => ({key:field.key,label:field.label,path:[field.label],type:field.type || (field.date ? 'date' : 'text')}));
+        return [{title,subtitle:options.subtitle || '',columns,rows:records.map(record => Object.fromEntries(fields.map(field => [field.key,read(record,field)]))),footnotes:options.footnotes || []}];
+    }
+
+    function personnel() {
+        const fields = typeof PERSONEL_EXPORT_FIELDS !== 'undefined' ? PERSONEL_EXPORT_FIELDS : root.PERSONEL_EXPORT_FIELDS;
+        if (!Array.isArray(fields) || typeof filtrelenmisAktifPersonelleriGetir !== 'function') return null;
+        const numbers = new Set(['cocukSayisi','ucret','ekOdemeTutari','yolUcreti']);
+        const clonedFields = fields.map(field => ({...field,type:numbers.has(field.key) ? 'number' : field.date ? 'date' : 'text'}));
+        return report('Aktif Personel Listesi',clonedFields,filtrelenmisAktifPersonelleriGetir(),(person,field) => {
+            let value = person[field.key];
+            if (field.key === 'mezuniyetYili') value = typeof mezuniyetYiliniDuzelt === 'function' ? mezuniyetYiliniDuzelt(person.mezuniyetYili || person.mezuniyetTarihi) : person.mezuniyetYili || person.mezuniyetTarihi || '';
+            if (field.date) return date(value);
+            if (['engelli','emekli','primVar'].includes(field.key)) return yes(value) ? 'Evet' : 'Hayır';
+            return numbers.has(field.key) ? numeric(value) : text(value);
+        });
+    }
+
+    function vehicles() {
+        const fields = typeof ARAC_EXPORT_FIELDS !== 'undefined' ? ARAC_EXPORT_FIELDS : root.ARAC_EXPORT_FIELDS;
+        const readRecords = typeof aracDisAktarimListesi === 'function' ? aracDisAktarimListesi : typeof fdAracFiltreliListe === 'function' ? fdAracFiltreliListe : null;
+        if (!Array.isArray(fields) || !readRecords) return null;
+        const mode = typeof aracListeModu !== 'undefined' ? aracListeModu : root.aracListeModu;
+        const title = mode === 'aktif' ? 'Aktif Araçlar' : mode === 'satilan' ? 'Satılan Araçlar' : 'Tüm Araçlar';
+        const clonedFields = fields.map(field => ({...field,type:field.money || field.key === 'km' ? 'number' : field.date ? 'date' : 'text'}));
+        return report(title,clonedFields,readRecords(),(record,field) => field.date ? date(record[field.key]) : field.money || field.key === 'km' ? numeric(record[field.key]) : text(record[field.key]));
+    }
+
+    function shifts() {
+        // vardiyaAktifKayit(false) still adds current-week personnel and schedules a save.
+        // Read the existing record directly, copying all normalized headings and rows.
+        const records = typeof vardiyaKayitlari !== 'undefined' ? vardiyaKayitlari : root.vardiyaKayitlari;
+        const people = typeof personeller !== 'undefined' ? personeller : root.personeller;
+        if (!Array.isArray(records)) return null;
+        const branch = String(el('vardiyaSube')?.value || ''), value = String(el('vardiyaHafta')?.value || '');
+        const week = value && typeof vardiyaPazartesi === 'function' ? vardiyaPazartesi(value) : value;
+        const record = records.find(item => !item.kayitTipi && String(item.sube) === branch && String(item.haftaBaslangic) === week && (typeof aktifSirketeAit !== 'function' || aktifSirketeAit(item)));
+        const fields = [{key:'no',label:'#',type:'number'},{key:'vardiya',label:'Vardiya'},{key:'personel',label:'Personel'},{key:'gorev',label:'Görev Yeri'}];
+        if (!record) return report('Personel Vardiya Listesi',fields,[],row => row);
+        const defaultIds = ['gunduz','gece','ana','ek'], defaultLabels = ['GÜNDÜZ','GECE','ANA BİNA','EK BİNA'];
+        const sections = list(record.bolumler).length ? record.bolumler.map(section => ({id:String(section.id),baslik:String(section.baslik || record.basliklar?.[section.id] || 'YENİ BÖLÜM').toLocaleUpperCase('tr-TR')})) : defaultIds.map((id,index) => ({id,baslik:String(record.basliklar?.[id] || defaultLabels[index]).toLocaleUpperCase('tr-TR')}));
+        const rows = list(record.satirlar).map(row => ({...row,vardiya:row.vardiya === 'genel' ? 'ana' : String(row.vardiya || '')}));
+        const sectionIds = new Set(sections.map(section => section.id));
+        rows.forEach(row => {if(row.vardiya && !sectionIds.has(row.vardiya)){sections.push({id:row.vardiya,baslik:String(record.basliklar?.[row.vardiya] || row.vardiya).toLocaleUpperCase('tr-TR')});sectionIds.add(row.vardiya);}});
+        let index = 0;
+        const output = sections.flatMap(section => rows.filter(row => row.vardiya === section.id && (row.personelId || row.personelAd || row.gorev)).sort((a,b) => Number(a.sira || 0) - Number(b.sira || 0)).map(row => {
+            const person = list(people).find(item => String(item.id) === String(row.personelId));
+            return {no:++index,vardiya:section.baslik,personel:person?.ad || row.personelAd || '-',gorev:row.gorev || '-'};
+        }));
+        const end = typeof vardiyaHaftaBitisi === 'function' ? vardiyaHaftaBitisi(week) : '';
+        const subtitle = [date(week) + (end ? ' – ' + date(end) : ''),branch].filter(Boolean).join(' · ');
+        const notes = String(el('vardiyaNotlar')?.innerText ?? record.notlar ?? '').trim();
+        return report(record.basliklar?.anaBaslik || 'Personel Vardiya Listesi',fields,output,(row,field) => row[field.key],{subtitle,footnotes:notes ? ['Notlar: ' + notes] : []});
+    }
+
+    async function get(group) {
+        const handler = source(group);
+        if (/openPersonelExportModal|exportSelectedPersonelFields|exportPersonelTo(?:Excel|PDF)|\bpersonnel\b/.test(handler)) return personnel();
+        if (/aracExportModaliniAc|aracSeciliAlanlariAktar|\bvehicle-list\b/.test(handler)) return vehicles();
+        if (/vardiya(?:ExcelAl|PdfAl|GoruntusuAl)|\bweekly-shift-list\b/.test(handler)) return shifts();
+        return null;
+    }
+
+    function filterCaptured(group, models) {
+        if (!/fdFiyatV2(?:Excel|Pdf|Goruntu)/.test(source(group))) return models;
+        const input = document.querySelector('#fdFtIcerik .fd-ft-toolbar input[type="search"]');
+        const query = String(input?.value || '').trim().toLocaleLowerCase('tr-TR');
+        if (!query) return models;
+        return models.map(model => {
+            const keys = model.columns.filter(column => /^(?:ürün(?: adı)?|açıklama|birim)$/i.test(String(column.label).trim())).map(column => column.key);
+            if (!keys.length) return model;
+            return {...model,rows:model.rows.filter(row => keys.some(key => text(row[key]).toLocaleLowerCase('tr-TR').includes(query)))};
+        });
+    }
+
+    root.fdOutputAdapters = Object.assign(root.fdOutputAdapters || {},{get,filterCaptured});
+})(window);
+
+/* Selectable leave summary fields alongside entitlement and history tables. */
+(function (root) {
+    'use strict';
+    const adapters = root.fdOutputAdapters ||= {}, previous = adapters.get;
+    const text = value => value == null ? '' : String(value);
+    const numeric = value => typeof value === 'number' && Number.isFinite(value) ? value : root.fdOutputModels?.numberValue(value) ?? 0;
+    const date = value => {
+        if (!value) return '';
+        if (typeof tarihFormati === 'function') return tarihFormati(value);
+        const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+        return match ? match[3] + '.' + match[2] + '.' + match[1] : text(value);
+    };
+    const report = (title, columns, rows) => ({title,subtitle:'',columns:columns.map(([key,label,type='text'])=>({key,label,path:[label],type})),rows,footnotes:[]});
+    const handler = group => (group?.items || []).map(item => item.button?.getAttribute?.('onclick') || String(item.button?.onclick || '')).join(' ');
+
+    function leaveSummary() {
+        if (typeof seciliPersonelIzinCiktiVerisi !== 'function') return null;
+        const value = seciliPersonelIzinCiktiVerisi();
+        if (!value?.personel) throw new Error('Çıktı için önce bir personel seçin.');
+        const person = value.personel;
+        const summary = report('Personel İzin Durumu Özeti',[
+            ['personel','Personel'],['iseGiris','İşe Giriş','date'],['sube','Şube'],
+            ['toplamKalan','Toplam Kalan Yıllık İzin (Gün)','number'],
+            ['kullanilanOzet','Kullandığı İzin Toplamları'],['izinNotu','İzinlerle İlgili Ek Not']
+        ],[{personel:text(person.ad),iseGiris:date(person.girisTarihi),sube:text(person.sube || 'Merkez'),toplamKalan:numeric(value.toplamKalan),kullanilanOzet:text(value.kullanilanOzet || 'Henüz izin kullanılmamış.'),izinNotu:text(value.izinNotu || '-')}]);
+        const entitlement = report('Aktif ve Kalan Yıllık İzin Hakedişleri',[
+            ['donem','Dönem'],['hak','Toplam Hak (Gün)','number'],['kullanilan','Kullanılan (Gün)','number'],['kalan','Kalan (Gün)','number'],['durum','Durum']
+        ],(Array.isArray(value.hakedis) ? value.hakedis : []).map(item=>({donem:text(item.donem),hak:numeric(item.hak),kullanilan:numeric(item.kullanilan),kalan:numeric(item.kalan),durum:numeric(item.kullanilan) ? 'Kısmi kullanım' : 'Tam kalan'})));
+        const history = report('Geçmiş İzinler',[
+            ['no','#','number'],['tur','İzin Türü'],['donem','Dönem'],['baslangic','Başlangıç','date'],['bitis','Bitiş','date'],['gun','Süre (Gün)','number'],['aciklama','Rapor / Açıklama']
+        ],(Array.isArray(value.gecmis) ? value.gecmis : []).map((item,index)=>({no:index+1,tur:text(item.tur || '-'),donem:text(item.donem || '-'),baslangic:date(item.baslangic),bitis:date(item.bitis),gun:numeric(item.gun),aciklama:typeof izinGecmisAciklamaMetni === 'function' ? izinGecmisAciklamaMetni(item) : [item.raporBilgisi ? 'Rapor: '+item.raporBilgisi : '',item.sebep || item.aciklama || ''].filter(Boolean).join(' · ') || '-'})));
+        return [summary,entitlement,history];
+    }
+
+    adapters.get = async function (group) {
+        if (/\bexportIzinOzet(?:Excel|Pdf)\s*\(/.test(handler(group))) {
+            const result=leaveSummary();if(result)return result;
+        }
+        return typeof previous === 'function' ? previous.call(this,group) : null;
+    };
+    adapters.leaveSummary = leaveSummary;
+})(window);
+
+/* Shared, read-only table exporters. Geometry is measured before drawing any page. */
+(function (root) {
+    'use strict';
+
+    const A4 = [595.28, 841.89], FONT = 'Arial, "Segoe UI", sans-serif';
+    const COLORS = { ink: '#16283c', muted: '#64748b', line: '#d4dfe8', head: '#e8f1f6', alt: '#f7fafc', accent: '#315b72' };
+    const numberTypes = new Set(['number', 'numeric', 'currency', 'money', 'amount', 'integer', 'percent']);
+    const text = value => value == null ? '' : value instanceof Date ? value.toLocaleDateString('tr-TR') : String(value);
+    const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+    const total = values => values.reduce((sum, value) => sum + value, 0);
+
+    function reports(input) {
+        const models = Array.isArray(input) ? input : Array.isArray(input?.models) ? input.models : [input];
+        if (!models.length) throw new Error('Çıktı için tablo bulunamadı.');
+        return models;
+    }
+
+    function normalize(model) {
+        if (!model || !Array.isArray(model.columns) || !model.columns.length) throw new Error('Çıktı için en az bir alan seçin.');
+        if (!Array.isArray(model.rows)) throw new Error('Çıktı satırları hazırlanamadı.');
+        return {
+            title: text(model.title || 'Rapor'), subtitle: text(model.subtitle),
+            identifierKey: text(model.identifierKey),
+            columns: model.columns.map((column, index) => typeof column === 'string'
+                ? { key: String(index), label: column, type: '' }
+                : { ...column, key: text(column.key ?? index), label: text(column.label || column.key || ('Alan ' + (index + 1))), type: text(column.type).toLowerCase() }),
+            rows: model.rows.map(row => model.columns.map((column, index) => Array.isArray(row) ? row[index] ?? '' : row?.[column.key] ?? '')),
+            footnotes: (Array.isArray(model.footnotes) ? model.footnotes : []).map(text).filter(Boolean)
+        };
+    }
+
+    function display(value, column) {
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            const decimals = ['currency', 'money', 'amount'].includes(column.type) ? 2 : column.type === 'integer' ? 0 : undefined;
+            return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: decimals ?? 0, maximumFractionDigits: decimals ?? 10 }).format(value);
+        }
+        return text(value).replace(/\r\n?/g, '\n').replace(/\t/g, '    ');
+    }
+
+    function fallbackMeasure(value, size, bold) {
+        return Array.from(text(value)).reduce((width, char) => width + (/\s/.test(char) ? .28 : /[ilIıİ.,:;'!|]/.test(char) ? .3 : /[MWĞÖÜ@%]/.test(char) ? .8 : .55) * size, 0) * (bold ? 1.045 : 1);
+    }
+
+    // Preserve explicit line breaks. A single long token is split at Unicode code points.
+    function wrap(value, width, measure, size, bold) {
+        const output = [], available = Math.max(1, width);
+        for (const paragraph of text(value).replace(/\r\n?/g, '\n').split('\n')) {
+            if (!paragraph.trim()) { output.push(''); continue; }
+            let line = '';
+            for (const token of paragraph.trim().split(/\s+/u)) {
+                if (measure(token, size, bold) <= available) {
+                    const joined = line ? line + ' ' + token : token;
+                    if (line && measure(joined, size, bold) > available) { output.push(line); line = token; }
+                    else line = joined;
+                    continue;
+                }
+                if (line) { output.push(line); line = ''; }
+                for (const char of Array.from(token)) {
+                    if (line && measure(line + char, size, bold) > available) { output.push(line); line = ''; }
+                    line += char;
+                }
+            }
+            output.push(line);
+        }
+        return output.length ? output : [''];
+    }
+
+    function desiredWidths(model, size, measure) {
+        return model.columns.map((column, index) => {
+            const day = column.type === 'day' || /^(?:[1-9]|[12]\d|3[01])(?:\s*\/\s*(?:[1-9]|1[0-2]))?$/.test(column.label);
+            const numeric = numberTypes.has(column.type) || model.rows.length > 0 && model.rows.every(row => row[index] === '' || typeof row[index] === 'number');
+            const widths = model.rows.map(row => Math.max(...display(row[index], column).split('\n').map(line => measure(line, size, false)))).sort((a, b) => a - b);
+            const typical = widths.length ? widths[Math.floor((widths.length - 1) * .85)] : 0;
+            const heading = measure(column.label, size, true), padding = 14;
+            if (day) return clamp(Math.max(heading, typical) + padding, 32, 43);
+            if (column.type === 'date') return clamp(Math.max(heading, typical) + padding, 76, 110);
+            if (numeric) return clamp(Math.max(heading, typical) + padding, 64, 115);
+            return clamp(Math.max(Math.min(heading, 130), typical) + padding, index === 0 ? 94 : 68, index === 0 ? 165 : 210);
+        });
+    }
+
+    function identifierIndex(model) {
+        const explicit = model.identifierKey && model.columns.findIndex(column => column.key === model.identifierKey);
+        if (typeof explicit === 'number' && explicit >= 0) return explicit;
+        if (!/^(?:#|no\.?|sıra(?:\s*no\.?)?|sıra\s*numarası)$/iu.test(model.columns[0].label.trim())) return 0;
+        const named = model.columns.findIndex(column => /personel|adı?\s*soyadı?|ad\s*soyad|plaka|ürün|kiracı|daire|taşınmaz|firma|sahibi/iu.test(column.label));
+        return named >= 0 ? named : 0;
+    }
+
+    // Pure planner: the optional measure function is the only dependency. All dimensions are PDF points.
+    function plan(input, options = {}, measure = fallbackMeasure) {
+        const model = normalize(input), fontSize = Math.max(9.5, Number(options.fontSize) || 10);
+        const widths = desiredWidths(model, fontSize, measure), margin = clamp(Number(options.margin) || 32, 20, 50);
+        const orientation = options.orientation === 'portrait' ? 'portrait' : options.orientation === 'landscape' ? 'landscape'
+            : total(widths) > A4[0] - margin * 2 ? 'landscape' : 'portrait';
+        const [pageWidth, pageHeight] = orientation === 'landscape' ? [A4[1], A4[0]] : A4;
+        const contentWidth = pageWidth - margin * 2, bottom = pageHeight - margin - 24, lineHeight = fontSize * 1.35, padding = 6;
+        const titleLines = wrap(model.title, contentWidth, measure, 17, true), subtitleLines = model.subtitle ? wrap(model.subtitle, contentWidth, measure, 9, false) : [];
+        const titleY = margin, subtitleY = titleY + titleLines.length * 22 + 4;
+        const tableY = subtitleY + subtitleLines.length * 13 + (subtitleLines.length ? 13 : 4) + 16;
+        const panels = [], identifier = identifierIndex(model);
+        if (total(widths) <= contentWidth) panels.push({ indices: widths.map((_, index) => index), widths: widths.slice() });
+        else {
+            // Every horizontal panel repeats the selected identifying column.
+            const remaining = widths.map((_, index) => index).filter(index => index !== identifier);
+            let position = 0;
+            while (position < remaining.length) {
+                const indices = [identifier], panelWidths = [Math.min(widths[identifier], contentWidth * .36)];
+                let used = panelWidths[0];
+                while (position < remaining.length) {
+                    const index = remaining[position];
+                    const width = Math.min(widths[index], contentWidth - panelWidths[0]);
+                    if (indices.length > 1 && used + width > contentWidth + .01) break;
+                    indices.push(index); position++; panelWidths.push(width); used += width;
+                }
+                panels.push({ indices, widths: panelWidths });
+            }
+            if (!panels.length) panels.push({ indices: [0], widths: [contentWidth] });
+        }
+        const pages = [];
+        panels.forEach((panel, panelIndex) => {
+            // Give short reports useful whitespace; never squeeze text to fit a wide matrix.
+            const extra = contentWidth - total(panel.widths);
+            if (extra > 0) {
+                const weights = panel.indices.map((columnIndex, i) => model.columns[columnIndex].type === 'day' ? .3 : panel.widths[i]);
+                const sum = total(weights);
+                panel.widths = panel.widths.map((width, i) => width + extra * weights[i] / sum);
+            }
+            panel.headerCells = panel.indices.map((columnIndex, i) => ({ columnIndex, lines: wrap(model.columns[columnIndex].label, panel.widths[i] - padding * 2, measure, fontSize, true) }));
+            panel.headerHeight = Math.max(...panel.headerCells.map(cell => cell.lines.length)) * lineHeight + padding * 2;
+            const bodyY = tableY + panel.headerHeight, bodyCapacity = bottom - bodyY;
+            if (bodyCapacity < lineHeight * 3 + padding * 2) throw new Error('Başlıklar sayfaya sığmayacak kadar uzun. Daha kısa bir rapor başlığı kullanın.');
+            const newPage = () => {
+                const page = { panelIndex, panelPage: pages.filter(item => item.panelIndex === panelIndex).length + 1, rows: [], notes: [], bodyY, usedY: bodyY };
+                pages.push(page); return page;
+            };
+            let page = newPage();
+            model.rows.forEach((row, rowIndex) => {
+                const cells = panel.indices.map((columnIndex, i) => ({ columnIndex, lines: wrap(display(row[columnIndex], model.columns[columnIndex]), panel.widths[i] - padding * 2, measure, fontSize, false), align: typeof row[columnIndex] === 'number' || numberTypes.has(model.columns[columnIndex].type) ? 'right' : 'left' }));
+                const count = Math.max(...cells.map(cell => cell.lines.length)), rowHeight = count * lineHeight + padding * 2;
+                if (rowHeight <= bodyCapacity) {
+                    if (page.usedY + rowHeight > bottom + .01) page = newPage();
+                    page.rows.push({ rowIndex, y: page.usedY, height: rowHeight, lineOffset: 0, lineCount: count, continuation: false, cells });
+                    page.usedY += rowHeight;
+                    return;
+                }
+                // A row taller than a whole page continues only between complete lines.
+                let offset = 0;
+                while (offset < count) {
+                    const continuation = offset > 0, markerHeight = continuation ? 11 : 0;
+                    let capacity = Math.floor((bottom - page.usedY - padding * 2 - markerHeight) / lineHeight);
+                    if (capacity < 2 || !continuation && page.rows.length) { page = newPage(); capacity = Math.floor((bodyCapacity - padding * 2 - markerHeight) / lineHeight); }
+                    const lineCount = Math.min(capacity, count - offset);
+                    const repeatedIdentifierLines = continuation && cells[0].lines.length <= 3 ? cells[0].lines.length : 0;
+                    const height = Math.max(lineCount, repeatedIdentifierLines) * lineHeight + padding * 2 + markerHeight;
+                    const fragmentCells = cells.map((cell, i) => ({ ...cell, lines: continuation && i === 0 && cell.lines.length <= 3 ? cell.lines.slice() : cell.lines.slice(offset, offset + lineCount) }));
+                    page.rows.push({ rowIndex, y: page.usedY, height, lineOffset: offset, lineCount, continuation, markerHeight, cells: fragmentCells });
+                    page.usedY += height; offset += lineCount;
+                    if (offset < count) page = newPage();
+                }
+            });
+            if (!model.rows.length) {
+                page.notes.push({ y: page.usedY + 12, lines: ['Gösterilecek kayıt bulunmuyor.'], size: fontSize, lineHeight });
+                page.usedY += 12 + lineHeight;
+            }
+            // Footnotes appear once, after the final horizontal panel, and may occupy additional pages.
+            if (panelIndex === panels.length - 1 && model.footnotes.length) {
+                page.usedY += 14;
+                model.footnotes.forEach(note => {
+                    const lines = wrap(note, contentWidth, measure, 9, false);
+                    let offset = 0;
+                    while (offset < lines.length) {
+                        let capacity = Math.floor((bottom - page.usedY) / 12);
+                        if (capacity < 1) { page = newPage(); capacity = Math.floor((bottom - page.usedY) / 12); }
+                        const slice = lines.slice(offset, offset + capacity);
+                        page.notes.push({ y: page.usedY, lines: slice, size: 9, lineHeight: 12 });
+                        page.usedY += slice.length * 12 + 6; offset += slice.length;
+                    }
+                });
+            }
+        });
+        return { model, pageWidth, pageHeight, orientation, margin, contentWidth, bottom, fontSize, lineHeight, padding, titleLines, titleY, subtitleLines, subtitleY, tableY, panels, pages };
+    }
+
+    function browserMeasure() {
+        const ctx = root.document.createElement('canvas').getContext('2d');
+        if (!ctx) throw new Error('Çıktı için görüntü alanı oluşturulamadı.');
+        return (value, size, bold) => { ctx.font = (bold ? '700 ' : '400 ') + size + 'px ' + FONT; return ctx.measureText(text(value)).width; };
+    }
+
+    function canvasAt(width, height, scale) {
+        const canvas = root.document.createElement('canvas');
+        canvas.width = Math.ceil(width * scale); canvas.height = Math.ceil(height * scale);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Çıktı için görüntü alanı oluşturulamadı.');
+        ctx.scale(scale, scale); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+        ctx.textBaseline = 'top'; return { canvas, ctx };
+    }
+
+    function drawLines(ctx, lines, x, y, size, lineHeight, color, bold, align = 'left') {
+        ctx.font = (bold ? '700 ' : '400 ') + size + 'px ' + FONT; ctx.fillStyle = color; ctx.textAlign = align;
+        lines.forEach((line, index) => ctx.fillText(line, x, y + index * lineHeight));
+    }
+
+    function drawCell(ctx, cell, x, y, width, height, settings, header, alternate, markerHeight = 0) {
+        const { padding, fontSize, lineHeight } = settings;
+        ctx.fillStyle = header ? COLORS.head : alternate ? COLORS.alt : '#ffffff'; ctx.fillRect(x, y, width, height);
+        ctx.strokeStyle = COLORS.line; ctx.lineWidth = .55; ctx.strokeRect(x, y, width, height);
+        const align = header ? 'left' : cell.align || 'left';
+        // The clip guards rounding and font fallback without splitting a planned text line.
+        ctx.save(); ctx.beginPath(); ctx.rect(x + 1, y + 1, width - 2, height - 2); ctx.clip();
+        drawLines(ctx, cell.lines, align === 'right' ? x + width - padding : x + padding, y + padding + markerHeight, fontSize, lineHeight, COLORS.ink, header, align);
+        ctx.restore();
+    }
+
+    function drawPage(layout, pageIndex, scale = 3, globalPage = pageIndex + 1, globalTotal = layout.pages.length) {
+        const page = layout.pages[pageIndex], panel = layout.panels[page.panelIndex], { canvas, ctx } = canvasAt(layout.pageWidth, layout.pageHeight, scale);
+        drawLines(ctx, layout.titleLines, layout.margin, layout.titleY, 17, 22, COLORS.accent, true);
+        drawLines(ctx, layout.subtitleLines, layout.margin, layout.subtitleY, 9, 13, COLORS.muted, false);
+        const band = layout.panels.length > 1 ? 'Sütun bölümü ' + (page.panelIndex + 1) + ' / ' + layout.panels.length : '';
+        drawLines(ctx, [band], layout.margin, layout.tableY - 15, 8, 11, COLORS.muted, false);
+        let x = layout.margin;
+        panel.headerCells.forEach((cell, index) => { drawCell(ctx, cell, x, layout.tableY, panel.widths[index], panel.headerHeight, layout, true, false); x += panel.widths[index]; });
+        page.rows.forEach(row => {
+            x = layout.margin;
+            row.cells.forEach((cell, index) => { drawCell(ctx, cell, x, row.y, panel.widths[index], row.height, layout, false, row.rowIndex % 2 === 1, row.markerHeight || 0); x += panel.widths[index]; });
+            if (row.continuation) drawLines(ctx, ['Satır ' + (row.rowIndex + 1) + ' · devam'], layout.margin + layout.padding, row.y + 3, 7, 9, COLORS.muted, false);
+        });
+        page.notes.forEach(note => drawLines(ctx, note.lines, layout.margin, note.y, note.size, note.lineHeight, COLORS.muted, false));
+        ctx.strokeStyle = COLORS.line; ctx.lineWidth = .6; ctx.beginPath(); ctx.moveTo(layout.margin, layout.pageHeight - layout.margin - 10); ctx.lineTo(layout.pageWidth - layout.margin, layout.pageHeight - layout.margin - 10); ctx.stroke();
+        drawLines(ctx, ['FD YAZILIM'], layout.margin, layout.pageHeight - layout.margin, 8, 10, COLORS.muted, true);
+        drawLines(ctx, ['Sayfa ' + globalPage + ' / ' + globalTotal], layout.pageWidth - layout.margin, layout.pageHeight - layout.margin, 8, 10, COLORS.muted, false, 'right');
+        return canvas;
+    }
+
+    function filename(model, extension, override) {
+        const name = text(override || model.title || 'Rapor').replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_').replace(/\s+/g, '_').replace(/[. ]+$/, '').slice(0, 150) || 'Rapor';
+        return name.replace(/\.(?:pdf|xlsx|png)$/i, '') + '.' + extension;
+    }
+
+    async function pdf(input, options = {}) {
+        const JsPDF = root.jspdf?.jsPDF || root.jsPDF;
+        if (!JsPDF) throw new Error('PDF bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
+        await root.document.fonts?.ready;
+        const measure = browserMeasure(), sections = reports(input).map(model => plan(model, options, measure));
+        const layout = sections[0], name = filename(layout.model, 'pdf', options.filename), pageCount = total(sections.map(section => section.pages.length));
+        const modal = options.preview !== false && typeof root.fdCiktiOnizlemeAc === 'function' ? root.fdCiktiOnizlemeAc('pdf', name) : null;
+        try {
+            const document = new JsPDF({ orientation: layout.orientation, unit: 'pt', format: 'a4', compress: true });
+            document.setProperties({ title: layout.model.title, subject: layout.model.subtitle, creator: 'FD YAZILIM' });
+            let completed = 0;
+            for (const section of sections) for (let index = 0; index < section.pages.length; index++) {
+                if (completed) document.addPage('a4', section.orientation);
+                const canvas = drawPage(section, index, clamp(Number(options.scale) || 3, 2, 4), completed + 1, pageCount);
+                document.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, section.pageWidth, section.pageHeight, undefined, 'FAST');
+                canvas.width = 1; canvas.height = 1; completed++;
+                const label = modal?.querySelector('[data-cikti-ad]'); if (label) label.textContent = name + ' · ' + completed + ' / ' + pageCount + ' hazırlanıyor';
+                options.onProgress?.({ completed, total: pageCount });
+                await new Promise(resolve => root.setTimeout(resolve, 0));
+            }
+            const blob = document.output('blob');
+            if (!blob || blob.size < 100) throw new Error('PDF dosyası oluşturulamadı.');
+            if (options.preview !== false && typeof root.fdCiktiPdfOnizle === 'function') root.fdCiktiPdfOnizle(blob, name, modal);
+            else if (modal) modal.remove();
+            return { blob, filename: name, plan: sections.length === 1 ? layout : { sections, pages: sections.flatMap((section, sectionIndex) => section.pages.map(page => ({ ...page, sectionIndex }))) } };
+        } catch (error) { modal?.remove(); throw error; }
+    }
+
+    async function imageBlob(input, options = {}) {
+        await root.document.fonts?.ready;
+        const model = normalize(input), fontSize = 13, lineHeight = 18, padding = 9, margin = 28, measure = browserMeasure();
+        const widths = desiredWidths(model, fontSize, measure).map(width => width * 1.35);
+        const minimumWidth = Number(options.width) || 1000, tableWidth = Math.max(minimumWidth - margin * 2, total(widths));
+        if (total(widths) < tableWidth) { const extra = (tableWidth - total(widths)) / widths.length; widths.forEach((width, index) => widths[index] = width + extra); }
+        const width = tableWidth + margin * 2, titleLines = wrap(model.title, tableWidth, measure, 23, true), subtitleLines = model.subtitle ? wrap(model.subtitle, tableWidth, measure, 12, false) : [];
+        const subtitleY = margin + titleLines.length * 30 + 6, tableY = subtitleY + subtitleLines.length * 17 + 16;
+        const header = model.columns.map((column, index) => ({ lines: wrap(column.label, widths[index] - padding * 2, measure, fontSize, true) }));
+        const headerHeight = Math.max(...header.map(cell => cell.lines.length)) * lineHeight + padding * 2;
+        let y = tableY + headerHeight;
+        const rows = model.rows.map((row, rowIndex) => {
+            const cells = row.map((value, index) => ({ lines: wrap(display(value, model.columns[index]), widths[index] - padding * 2, measure, fontSize, false), align: typeof value === 'number' || numberTypes.has(model.columns[index].type) ? 'right' : 'left' }));
+            const height = Math.max(...cells.map(cell => cell.lines.length)) * lineHeight + padding * 2;
+            const planned = { cells, rowIndex, y, height }; y += height; return planned;
+        });
+        const notes = model.footnotes.map(note => wrap(note, tableWidth, measure, 12, false));
+        const height = y + (notes.length ? 20 + total(notes.map(lines => lines.length * 17 + 6)) : 0) + margin;
+        const scale = Math.min(Number(options.scale) || 2, 32760 / width, 32760 / height, Math.sqrt(80000000 / (width * height)));
+        if (scale < 1) throw new Error('Tablo tek görüntü için çok büyük. Daha az kayıt seçin veya PDF kullanın.');
+        const { canvas, ctx } = canvasAt(width, height, scale), settings = { fontSize, lineHeight, padding };
+        drawLines(ctx, titleLines, margin, margin, 23, 30, COLORS.accent, true);
+        drawLines(ctx, subtitleLines, margin, subtitleY, 12, 17, COLORS.muted, false);
+        let x = margin; header.forEach((cell, index) => { drawCell(ctx, cell, x, tableY, widths[index], headerHeight, settings, true, false); x += widths[index]; });
+        rows.forEach(row => { x = margin; row.cells.forEach((cell, index) => { drawCell(ctx, cell, x, row.y, widths[index], row.height, settings, false, row.rowIndex % 2 === 1); x += widths[index]; }); });
+        y += 20; notes.forEach(lines => { drawLines(ctx, lines, margin, y, 12, 17, COLORS.muted, false); y += lines.length * 17 + 6; });
+        const blob = await new Promise((resolve, reject) => canvas.toBlob(result => result ? resolve(result) : reject(new Error('Görüntü hazırlanamadı.')), 'image/png'));
+        const result = { blob, width: canvas.width, height: canvas.height }; canvas.width = 1; canvas.height = 1; return result;
+    }
+
+    async function image(input, options = {}) {
+        async function build() {
+            const models = reports(input);
+            if (models.length === 1) return imageBlob(models[0], options);
+            const images = [];
+            try {
+                for (const model of models) {
+                    const result = await imageBlob(model, options), bitmap = await root.createImageBitmap(result.blob);
+                    images.push({ ...result, bitmap });
+                }
+                const width = Math.max(...images.map(item => item.width)), height = total(images.map(item => item.height)) + (images.length - 1) * 32;
+                if (width > 32760 || height > 32760 || width * height > 80000000) throw new Error('Tablolar tek görüntü için çok büyük. Daha az tablo seçin veya PDF kullanın.');
+                const { canvas, ctx } = canvasAt(width, height, 1); let y = 0;
+                for (const item of images) { ctx.drawImage(item.bitmap, 0, y); y += item.height + 32; }
+                const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('Görüntü hazırlanamadı.')), 'image/png'));
+                canvas.width = 1; canvas.height = 1; return { blob, width, height };
+            } finally { images.forEach(item => item.bitmap.close()); }
+        }
+        if (options.copy === false) return build();
+        if (!root.navigator?.clipboard?.write || typeof root.ClipboardItem !== 'function') throw new Error('Bu cihazda panoya görüntü kopyalama desteklenmiyor.');
+        // Start the clipboard write in the click gesture. Promised PNG data works in Safari too.
+        let result;
+        const pending = build().then(value => { result = value; return value.blob; });
+        pending.catch(() => {});
+        await root.navigator.clipboard.write([new root.ClipboardItem({ 'image/png': pending })]);
+        await pending; return result;
+    }
+
+    function excelValue(value, column) {
+        if (value instanceof Date && Number.isFinite(value.getTime())) return new Date(value.getTime());
+        if (column?.type === 'date' && typeof value === 'string') {
+            let year, month, day, match;
+            if ((match = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/))) [, year, month, day] = match;
+            else if ((match = value.trim().match(/^(\d{1,2})[./](\d{1,2})[./](\d{4})$/))) [, day, month, year] = match;
+            if (year) {
+                const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+                if (date.getUTCFullYear() === Number(year) && date.getUTCMonth() === Number(month) - 1 && date.getUTCDate() === Number(day)) return date;
+            }
+        }
+        if (typeof value === 'number' && Number.isFinite(value) || typeof value === 'boolean') return value;
+        return text(value);
+    }
+
+    function excelNumberFormat(column, value) {
+        return value instanceof Date ? 'dd"."mm"."yyyy' : ['currency', 'money', 'amount'].includes(column.type) ? '#,##0.00' : column.type === 'integer' ? '#,##0' : '#,##0.##########';
+    }
+
+    function sheetName(title, names) {
+        const base = text(title).replace(/[\\/\[\]*?:]/g, ' ').replace(/^'+|'+$/g, '').trim().slice(0, 31) || 'Liste';
+        let name = base, suffix = 1;
+        while (names.has(name.toLocaleLowerCase('tr-TR'))) { const tail = ' (' + (++suffix) + ')'; name = base.slice(0, 31 - tail.length) + tail; }
+        names.add(name.toLocaleLowerCase('tr-TR')); return name;
+    }
+
+    function workbook(input) {
+        const model = normalize(input), XLSX = root.XLSX;
+        if (!XLSX?.utils) throw new Error('Excel bileşeni yüklenemedi. Sayfayı yenileyip tekrar deneyin.');
+        const rows = [model.columns.map(column => column.label), ...model.rows.map(row => row.map((value, index) => excelValue(value, model.columns[index])))];
+        const sheet = XLSX.utils.aoa_to_sheet(rows);
+        // Explicit cell types protect leading zeros, long identifiers and formula-looking text.
+        rows.forEach((row, r) => row.forEach((value, c) => {
+            const address = XLSX.utils.encode_cell({ r, c });
+            if (value instanceof Date) sheet[address] = { t: 'n', v: (Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate()) - Date.UTC(1899, 11, 30)) / 86400000, z: 'dd"."mm"."yyyy' };
+            else if (typeof value === 'number' && Number.isFinite(value)) sheet[address] = { t: 'n', v: value, z: excelNumberFormat(model.columns[c], value) };
+            else if (typeof value === 'boolean') sheet[address] = { t: 'b', v: value };
+            else sheet[address] = { t: 's', v: text(value), z: '@' };
+        }));
+        sheet['!cols'] = model.columns.map((column, index) => ({ wch: clamp(Math.max(column.label.length + 3, ...model.rows.map(row => Math.max(...text(row[index]).split('\n').map(line => line.length)) + 2)), 12, 65) }));
+        sheet['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: model.rows.length, c: model.columns.length - 1 } }) };
+        sheet['!freeze'] = { xSplit: 0, ySplit: 1 };
+        sheet['!margins'] = { left: .3, right: .3, top: .4, bottom: .4, header: .2, footer: .2 };
+        const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book, sheet, 'Liste');
+        if (model.title || model.subtitle || model.footnotes.length) {
+            const info = XLSX.utils.aoa_to_sheet([['Rapor', model.title], ...(model.subtitle ? [['Açıklama', model.subtitle]] : []), ...model.footnotes.map(note => ['Not', note])]);
+            info['!cols'] = [{ wch: 16 }, { wch: 85 }]; XLSX.utils.book_append_sheet(book, info, 'Rapor Bilgisi');
+        }
+        return { model, workbook: book };
+    }
+
+    async function styledExcel(input, options) {
+        const models = reports(input).map(normalize), book = new root.ExcelJS.Workbook(), names = new Set();
+        const measure = browserMeasure(); book.creator = 'FD YAZILIM'; book.title = models[0].title; book.subject = models[0].subtitle;
+        models.forEach(model => {
+            const ws = book.addWorksheet(sheetName(model.title, names), { properties: { defaultRowHeight: 20 }, views: [{ state: 'frozen', ySplit: 4, xSplit: model.columns.length > 12 ? 1 : 0, showGridLines: false }], pageSetup: { paperSize: 9, orientation: model.columns.length > 6 ? 'landscape' : 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, printTitlesRow: '1:4', margins: { left: .3, right: .3, top: .45, bottom: .45, header: .2, footer: .2 } } });
+            const widths = model.columns.map((column, index) => {
+                const lengths = model.rows.map(row => Math.max(...text(row[index]).split('\n').map(line => line.length))).sort((a, b) => a - b);
+                const typical = lengths.length ? lengths[Math.floor((lengths.length - 1) * .85)] : 0;
+                const identification = index === identifierIndex(model), exact = identification ? Math.max(0, ...lengths) : typical;
+                return clamp(Math.max(column.label.length + 2, exact + 2), column.type === 'day' ? 7 : 12, identification ? 48 : 60);
+            });
+            ws.columns = widths.map(width => ({ width, style: { font: { name: 'Arial', size: 11, color: { argb: 'FF16283C' } }, alignment: { vertical: 'top', wrapText: true } } }));
+            if (model.columns.length > 1) { ws.mergeCells(1, 1, 1, model.columns.length); ws.mergeCells(2, 1, 2, model.columns.length); }
+            const title = ws.getCell('A1'); title.value = model.title; title.font = { name: 'Arial', size: 17, bold: true, color: { argb: 'FF315B72' } };
+            const tablePixels = total(widths.map(width => width * 7)), titleLines = wrap(model.title, tablePixels - 16, measure, 23, true).length;
+            ws.getRow(1).height = Math.max(30, titleLines * 21 + 8);
+            const subtitle = ws.getCell('A2'); subtitle.value = model.subtitle; subtitle.font = { name: 'Arial', size: 10, color: { argb: 'FF64748B' } };
+            ws.getRow(2).height = model.subtitle ? Math.max(22, wrap(model.subtitle, tablePixels - 16, measure, 13.3, false).length * 15 + 6) : 8;
+            ws.getRow(3).height = 8;
+            const header = ws.getRow(4); header.values = model.columns.map(column => column.label);
+            header.height = Math.max(30, ...model.columns.map((column, index) => wrap(column.label, widths[index] * 7 - 14, measure, 14.7, true).length * 13.5 + 12));
+            header.eachCell(cell => { cell.font = { name: 'Arial', size: 11, bold: true, color: { argb: 'FF16283C' } }; cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE8F1F6' } }; cell.alignment = { vertical: 'middle', horizontal: 'left', wrapText: true }; });
+            model.rows.forEach((values, rowIndex) => {
+                const row = ws.getRow(rowIndex + 5); row.values = values.map((value, index) => excelValue(value, model.columns[index]));
+                let lineCount = 1;
+                row.eachCell({ includeEmpty: true }, (cell, columnNumber) => {
+                    const column = model.columns[columnNumber - 1], value = cell.value;
+                    cell.font = { name: 'Arial', size: 11, color: { argb: 'FF16283C' } }; cell.numFmt = typeof value === 'number' || value instanceof Date ? excelNumberFormat(column, value) : '@';
+                    cell.alignment = { vertical: 'top', horizontal: typeof value === 'number' ? 'right' : 'left', wrapText: true };
+                    if (rowIndex % 2 === 1) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF7FAFC' } };
+                    lineCount = Math.max(lineCount, wrap(value instanceof Date ? value.toLocaleDateString('tr-TR') : display(value, column), widths[columnNumber - 1] * 7 - 14, measure, 14.7, false).length);
+                });
+                row.height = Math.min(409, Math.max(22, lineCount * 13.5 + 9));
+            });
+            for (let r = 4; r <= model.rows.length + 4; r++) ws.getRow(r).eachCell({ includeEmpty: true }, cell => cell.border = { top: { style: 'hair', color: { argb: 'FFD4DFE8' } }, bottom: { style: 'hair', color: { argb: 'FFD4DFE8' } }, left: { style: 'hair', color: { argb: 'FFD4DFE8' } }, right: { style: 'hair', color: { argb: 'FFD4DFE8' } } });
+            ws.autoFilter = { from: { row: 4, column: 1 }, to: { row: Math.max(4, model.rows.length + 4), column: model.columns.length } };
+            let noteRow = model.rows.length + 6;
+            model.footnotes.forEach(note => {
+                if (model.columns.length > 1) ws.mergeCells(noteRow, 1, noteRow, model.columns.length);
+                const cell = ws.getCell(noteRow, 1); cell.value = note; cell.font = { name: 'Arial', size: 10, color: { argb: 'FF64748B' } }; cell.alignment = { wrapText: true, vertical: 'top' };
+                ws.getRow(noteRow).height = Math.min(409, Math.max(20, wrap(note, tablePixels - 16, measure, 13.3, false).length * 12.5 + 7)); noteRow++;
+            });
+            ws.pageSetup.printArea = 'A1:' + ws.getCell(noteRow - 1, model.columns.length).address;
+            ws.headerFooter.oddHeader = '&L&"Arial"&9' + model.title.replace(/&/g, '&&').slice(0, 180);
+            ws.headerFooter.oddFooter = '&L&"Arial"&8FD YAZILIM&R&"Arial"&8Sayfa &P / &N';
+        });
+        const name = filename(models[0], 'xlsx', options.filename), bytes = await book.xlsx.writeBuffer(), blob = new root.Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        if (options.preview !== false && typeof root.fdCiktiExcelJsOnizle === 'function') root.fdCiktiExcelJsOnizle(book, blob, name);
+        if (options.download === true && typeof root.fdCiktiDogrudanKaydet === 'function') root.fdCiktiDogrudanKaydet(blob, name);
+        return { blob, filename: name, workbook: book };
+    }
+
+    async function excel(input, options = {}) {
+        if (root.ExcelJS?.Workbook && options.styled !== false) return styledExcel(input, options);
+        const prepared = reports(input).map(model => workbook(model)), name = filename(prepared[0].model, 'xlsx', options.filename);
+        const book = prepared.length === 1 ? prepared[0].workbook : root.XLSX.utils.book_new(), names = new Set();
+        if (prepared.length > 1) prepared.forEach((item, index) => {
+            let base = item.model.title.replace(/[\\/\[\]*?:]/g, ' ').trim().slice(0, 31) || ('Liste ' + (index + 1));
+            let sheetName = base, suffix = 1;
+            while (names.has(sheetName.toLocaleLowerCase('tr-TR'))) { const tail = ' (' + (++suffix) + ')'; sheetName = base.slice(0, 31 - tail.length) + tail; }
+            names.add(sheetName.toLocaleLowerCase('tr-TR')); root.XLSX.utils.book_append_sheet(book, item.workbook.Sheets.Liste, sheetName);
+        });
+        if (prepared.length > 1) {
+            let infoName = 'Rapor Bilgisi'; while (names.has(infoName.toLocaleLowerCase('tr-TR'))) infoName = '_' + infoName;
+            const info = root.XLSX.utils.aoa_to_sheet([['Rapor', 'Açıklama'], ...prepared.flatMap(item => [[item.model.title, item.model.subtitle], ...item.model.footnotes.map(note => ['Not', note])])]);
+            info['!cols'] = [{ wch: 38 }, { wch: 85 }]; root.XLSX.utils.book_append_sheet(book, info, infoName.slice(0, 31));
+        }
+        const bytes = root.XLSX.write(book, { bookType: 'xlsx', type: 'array', cellDates: true });
+        const blob = new root.Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        if (options.preview !== false && typeof root.fdCiktiExcelOnizle === 'function') root.fdCiktiExcelOnizle(book, name);
+        if (options.download === true) {
+            if (typeof root.fdCiktiDogrudanKaydet === 'function') root.fdCiktiDogrudanKaydet(blob, name);
+            else {
+                const url = root.URL.createObjectURL(blob), anchor = root.document.createElement('a'); anchor.href = url; anchor.download = name;
+                root.document.body.appendChild(anchor); anchor.click(); anchor.remove(); root.setTimeout(() => root.URL.revokeObjectURL(url), 30000);
+            }
+        }
+        return { blob, filename: name, workbook: book };
+    }
+
+    root.fdOutputRenderers = { plan, pdf, image, excel, workbook, wrap, display, drawPage, browserMeasure, buildPdf: pdf, copyImage: image, buildExcel: excel };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script id="fdUnifiedOutputUiV227">
+/* One read-only output workflow for the desktop portal and mobile app. */
+(function (root) {
+    'use strict';
+    const groups = new WeakMap(), liveGroups = new Set();
+    let preparing = false, current = null, observer, scanTimer, sequence = 0;
+    const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const norm = value => String(value || '').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i');
+    const message = (text, type = 'warning') => typeof root.showToast === 'function' ? root.showToast(text, type) : root.alert(text);
+    const code = button => button.getAttribute('onclick') || String(button.onclick || '');
+    const excluded = '#fdOrtakCiktiOnizleme,#fdUnifiedOutputModal,#modalPersonelExport,#modalAracExport,#modalTapuCksKayit,#fdCksPdfKontrolModal';
+
+    function kind(button) {
+        if (!button || button.tagName === 'A' || button.closest(excluded) || button.closest('.fd-output-menu') || button.dataset.fdOutputOwn) return '';
+        const label = norm(button.textContent), handler = code(button), both = norm(label + ' ' + handler);
+        if (/yukle|dosya sec|belgeyi ac|sablon/.test(label)) return '';
+        if (/sablon|dosyasi.*sec|dosyasini.*oku|excel.*yukle|belge.*goruntule|pusulasi|sozlesme|dilekce|taahhut|tapuGoruntu/i.test(both)) return '';
+        if (/fdCikti|fdUnifiedOutput|pdfAc\(|belgeAc\(|GoruntuIndir\(/.test(handler)) return '';
+        if (/tapuExcelKayitlariniAktar|ihracatProforma|ihracatCeki|ihracat(?:Form)?TumBelgeler|Sablonu|DosyasiSec|DosyasiniOku/.test(handler)) return '';
+        if (/personelBelge|bordroBelgesi|bordroPersonelPusulasi|kiraSozlesme|icraPdfAc|icraDilekce|cksYilBelge|fdFiyatV2Belge|tapuGoruntu|ihracat(?:Form)?(?:Belge|CekiBelge|Proforma)/.test(handler)) return '';
+        if (button.closest('td') && !/Excel|Pdf|PDF|GoruntuAl|DisariAl/.test(handler)) return '';
+        if (/Goruntu|goruntu|goruntu|EkranGoruntusu/.test(handler) && /goruntu|ekran/.test(label)) return 'image';
+        if (/goruntu al|ekran goruntusu/.test(label)) return 'image';
+        if (/excel/.test(label) && !/belgeyi ac|mevcut belge|indir.*belge/.test(label)) return 'excel';
+        if (/^\W*pdf(?:\s|$)/.test(label) || /pdf (?:aktar|al|olustur)/.test(label)) return 'pdf';
+        return '';
+    }
+
+    function titleFor(group) {
+        const area = group.parent.closest('.card,.modal-card,.fd-ft-page,.fd-vk-detail-card,.tapu-module,.app-container,[id$="App"]') || group.parent.parentElement;
+        const heading = area?.querySelector('h2,h3,h4,.card-title');
+        return (heading?.textContent || group.parent.getAttribute('aria-label') || 'Tablo / Liste').trim().replace(/^[^\p{L}\p{N}]+/u, '');
+    }
+
+    function hideOriginal(item) {
+        const style = item.button.style;
+        if (!Object.prototype.hasOwnProperty.call(item, 'sourceDisplay') || style.display !== 'none' || style.getPropertyPriority('display') !== 'important') item.sourceDisplay = style.display;
+        item.button.classList.add('fd-output-original');
+        // Some old toolbars force inline-flex with two ID selectors and !important.
+        // Inline hiding ensures the old controls cannot leak through those styles.
+        style.setProperty('display', 'none', 'important');
+    }
+
+    function synchronize() {
+        for (const group of liveGroups) {
+            if (!group.parent.isConnected) { liveGroups.delete(group); continue; }
+            const buttons = Array.from(group.parent.querySelectorAll(':scope > button,:scope > a')).filter(b => !b.dataset.fdOutputOwn && kind(b));
+            for (const button of buttons) {
+                const format = kind(button);
+                if (!group.items.some(item => item.button === button)) group.items.push({ button, format });
+                hideOriginal(group.items.find(item => item.button === button));
+            }
+            group.items = group.items.filter(item => item.button.isConnected && item.button.parentElement === group.parent);
+            if (!group.items.length) { group.wrapper.remove(); liveGroups.delete(group); groups.delete(group.parent); continue; }
+            group.wrapper.hidden = group.items.every(item => item.button.hidden || item.sourceDisplay === 'none');
+        }
+    }
+
+    function scan() {
+        scanTimer = null;
+        document.querySelectorAll('button,a.btn-export').forEach(button => {
+            const format = kind(button); if (!format) return;
+            const parent = button.parentElement; if (!parent) return;
+            let group = groups.get(parent);
+            if (!group) {
+                const wrapper = document.createElement('span'); wrapper.className = 'fd-output-menu'; wrapper.dataset.fdOutputOwn = 'true';
+                const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'fd-output-trigger';
+                trigger.dataset.fdOutputOwn = 'true'; trigger.textContent = 'Çıktı'; trigger.setAttribute('aria-haspopup', 'dialog');
+                trigger.title = 'Aktarılacak alanları seç';
+                group = { parent, wrapper, trigger, items: [], id: ++sequence };
+                trigger.onclick = event => { event.preventDefault(); event.stopPropagation(); open(group); };
+                if (button.style.marginLeft === 'auto') wrapper.style.marginLeft = 'auto';
+                parent.insertBefore(wrapper, button); wrapper.appendChild(trigger);
+                groups.set(parent, group); liveGroups.add(group);
+            }
+            if (!group.wrapper.isConnected || group.wrapper.parentElement !== parent) parent.insertBefore(group.wrapper, button);
+            if (!group.items.some(item => item.button === button)) group.items.push({ button, format });
+            hideOriginal(group.items.find(item => item.button === button));
+        });
+        synchronize();
+    }
+
+    function schedule(mutations) {
+        if (scanTimer) return;
+        if (mutations && mutations.every(m => m.target.closest?.('.fd-output-menu,#fdUnifiedOutputModal,#fdOrtakCiktiOnizleme'))) return;
+        scanTimer = setTimeout(scan, 60);
+    }
+
+    // Export functions are used ONLY to obtain their existing filtered data.
+    // Output sinks are scoped to this user action and always restored in finally.
+    // Automated reports and application-wide exporters are never replaced.
+    async function capture(button, title) {
+        const workbooks = [], tableModels = [], blobs = [], previews = [], restore = [], pending = [];
+        const patch = (object, key, value) => {
+            if (!object || typeof object[key] !== 'function') return;
+            const previous = object[key]; object[key] = value;
+            restore.push(() => { object[key] = previous; });
+        };
+        const fakePreview = (format, filename) => {
+            const m = document.createElement('div'); m._tur = format; m.dosyaAdi = filename;
+            m.innerHTML = '<div data-cikti-icerik></div><a data-cikti-kaydet></a>';
+            m.sayfalar = m.querySelector('[data-cikti-icerik]'); m.katman = m; previews.push(m); return m;
+        };
+        patch(root.XLSX, 'writeFile', (wb, filename) => { workbooks.push({ wb, filename }); });
+        patch(root, 'fdCiktiExcelOnizle', (wb, filename) => { workbooks.push({ wb, filename }); return fakePreview('excel', filename); });
+        patch(root, 'fdCiktiOnizlemeAc', fakePreview);
+        patch(root, 'fdCiktiBlobBagla', (m, blob, filename) => { m._blob = blob; m.dosyaAdi = filename; blobs.push({ blob, filename, format: m._tur }); });
+        patch(root, 'fdCiktiExcelJsOnizle', (wb, blob, filename) => { blobs.push({ blob, filename, format: 'excel' }); return fakePreview('excel', filename); });
+        patch(root, 'fdTabloPdfOnizle', (source, heading, filename, options = {}) => {
+            tableModels.push(root.fdOutputModels.fromTable(source, { title: heading || title, subtitle: options.donem || options.altBaslik || '' }));
+            return Promise.resolve();
+        });
+        patch(root, 'fdPdfOnizlemeUret', (source, filename, options = {}) => {
+            const tables = source?.matches?.('table') ? [source] : Array.from(source?.querySelectorAll?.('table') || []);
+            for (const table of tables) tableModels.push(root.fdOutputModels.fromTable(table, { title: table.previousElementSibling?.textContent || options.altBaslik || title }));
+            return Promise.resolve();
+        });
+        // Inline onclick handlers normally discard the async function's return.
+        // Track the invoked exporter promises so sinks stay captured until done.
+        const names = [...new Set(Array.from(code(button).matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g), match => match[1]))];
+        for (const name of names) {
+            if (typeof root[name] !== 'function' || /^fdCikti|^fdTabloPdf|^fdPdfOnizleme/.test(name)) continue;
+            const original = root[name];
+            patch(root, name, function (...args) {
+                const result = original.apply(this, args);
+                if (result && typeof result.then === 'function') { const promise = Promise.resolve(result); pending.push(promise); promise.catch(() => {}); }
+                return result;
+            });
+        }
+        try {
+            if (typeof button.onclick !== 'function') throw new Error('Bu listenin çıktı kaynağı bulunamadı.');
+            await button.onclick.call(button, { target: button, currentTarget: button, preventDefault() {}, stopPropagation() {}, stopImmediatePropagation() {} });
+            for (let index = 0; index < pending.length; index++) await pending[index];
+            let models = workbooks.flatMap(entry => root.fdOutputModels.fromWorkbook(entry.wb, entry.filename));
+            for (const entry of blobs) {
+                if (entry.format === 'excel' || /\.xlsx?$/i.test(entry.filename || '')) {
+                    const wb = root.XLSX.read(await entry.blob.arrayBuffer(), { type: 'array', cellDates: true });
+                    models.push(...root.fdOutputModels.fromWorkbook(wb, entry.filename));
+                }
+            }
+            if (!models.length) models = tableModels;
+            if (!models.length) for (const preview of previews) for (const table of preview.querySelectorAll('table')) models.push(root.fdOutputModels.fromTable(table, { title }));
+            return models.filter(Boolean);
+        } finally { restore.reverse().forEach(fn => fn()); }
+    }
+
+    function nearbyTable(group) {
+        let parent = group.parent;
+        for (let step = 0; parent && step < 5; step++, parent = parent.parentElement) {
+            const tables = Array.from(parent.querySelectorAll('table')).filter(table => !table.closest(excluded));
+            if (tables.length === 1) return tables[0];
+            if (tables.length > 1) return tables.find(table => table.getBoundingClientRect().height > 0) || tables[0];
+        }
+        return null;
+    }
+
+    async function acquire(group) {
+        const title = titleFor(group), custom = await root.fdOutputAdapters?.get(group);
+        if (custom?.length) return custom;
+        const excel = group.items.find(item => item.format === 'excel');
+        if (excel) {
+            const models = await capture(excel.button, title);
+            if (models.length) return root.fdOutputAdapters?.filterCaptured?.(group, models) || models;
+            // Do not silently export only a paginated screen when a full exporter fails.
+            throw new Error('Listenin tüm satırları hazırlanamadı. Sayfayı yenileyip tekrar deneyin.');
+        }
+        const pdf = group.items.find(item => item.format === 'pdf');
+        // Only safe PDF functions that hand a table to the shared preview may be captured.
+        if (pdf && /fdTabloPdfOnizle|fdPdfOnizlemeUret/.test(String(root[(code(pdf.button).match(/([\w$]+)\s*\(/)?.[1])] || ''))) {
+            const models = await capture(pdf.button, title); if (models.length) return models;
+        }
+        const table = nearbyTable(group);
+        if (table) return [root.fdOutputModels.fromTable(table, { title })];
+        throw new Error('Çıktı alınacak tablo bulunamadı.');
+    }
+
+    function prepareModels(models, group) {
+        const metadata = models.filter(model => /^(rapor bilgisi|report info)$/i.test(model.title || ''));
+        const notes = metadata.flatMap(model => model.rows.map(row => model.columns.map((column, index) => Array.isArray(row) ? row[index] : row[column.key]).filter(value => value !== '' && value != null).join(': ')));
+        const reports = models.filter(model => !metadata.includes(model));
+        for (const model of reports) {
+            if (/\.xlsx?$/i.test(model.subtitle || '')) model.subtitle = titleFor(group);
+            model.footnotes = [...new Set([...(model.footnotes || []), ...notes])];
+            // Repeat an identifying name/plate on wide PDFs, not only the row number.
+            const identifying = model.columns.find(column => /personel|ad soyad|ad soyadi|plaka|urun|tasinmaz|kiraci|mulk/i.test(norm(column.label)));
+            if (identifying) model.identifierKey = identifying.key;
+        }
+        return reports.length ? reports : models;
+    }
+
+    function modal() {
+        let m = document.getElementById('fdUnifiedOutputModal'); if (m) return m;
+        m = document.createElement('div'); m.id = 'fdUnifiedOutputModal'; m.className = 'fd-output-overlay'; m.hidden = true;
+        m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fdOutputTitle');
+        m.innerHTML = '<section class="fd-output-card"><header class="fd-output-head"><div><h3 id="fdOutputTitle">Çıktı alanlarını seçin</h3><p data-output-description></p></div><button type="button" data-output-close aria-label="Çıktı penceresini kapat">×</button></header><div class="fd-output-body"><div class="fd-output-selection-tools"><input type="search" data-output-search placeholder="Alan ara…" aria-label="Aktarılacak alanlarda ara"><button type="button" data-output-all>Tümünü Seç</button><button type="button" data-output-none>Temizle</button></div><div data-output-fields></div><p class="fd-output-status" data-output-status role="status" aria-live="polite"></p></div><footer class="fd-output-footer"><span data-output-count></span><div><button type="button" class="fd-output-excel" data-output-format="excel">Excel</button><button type="button" class="fd-output-pdf" data-output-format="pdf">PDF</button><button type="button" class="fd-output-image" data-output-format="image">Görüntüyü Kopyala</button></div></footer></section>';
+        m.querySelector('[data-output-close]').onclick = close;
+        m.onclick = event => { if (event.target === m) close(); };
+        m.querySelector('[data-output-all]').onclick = () => selection(true);
+        m.querySelector('[data-output-none]').onclick = () => selection(false);
+        m.querySelector('[data-output-search]').oninput = event => {
+            const query = norm(event.target.value);
+            m.querySelectorAll('.fd-output-field').forEach(label => { label.hidden = query && !norm(label.textContent).includes(query); });
+        };
+        m.querySelector('[data-output-fields]').onchange = updateCount;
+        m.querySelectorAll('[data-output-format]').forEach(button => { button.onclick = () => render(button.dataset.outputFormat); });
+        m.addEventListener('keydown', event => {
+            if (event.key === 'Escape') { event.stopPropagation(); close(); }
+            if (event.key === 'Tab') {
+                const elements = Array.from(m.querySelectorAll('button,input')).filter(el => !el.disabled && !el.closest('[hidden]'));
+                const first = elements[0], last = elements.at(-1);
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+                if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+            }
+        });
+        document.body.appendChild(m); return m;
+    }
+
+    function selection(value) {
+        document.querySelectorAll('#fdUnifiedOutputModal [data-output-field]').forEach(input => { input.checked = value; }); updateCount();
+    }
+    function selectedModels() {
+        if (!current) return [];
+        const m = modal(), result = [];
+        current.models.forEach((model, sheet) => {
+            const indices = Array.from(m.querySelectorAll('[data-output-sheet="' + sheet + '"] input:checked')).map(input => Number(input.dataset.outputField));
+            if (!indices.length) return;
+            result.push({ ...model, columns: indices.map(index => model.columns[index]), rows: model.rows.map(row => indices.map(index => Array.isArray(row) ? row[index] : row[model.columns[index].key])) });
+        });
+        return result;
+    }
+    function updateCount() {
+        const m = modal(), count = m.querySelectorAll('[data-output-field]:checked').length;
+        m.querySelector('[data-output-count]').textContent = count + ' alan seçildi';
+        m.querySelectorAll('[data-output-format]').forEach(button => { button.disabled = !count || preparing || current?.rendering; });
+    }
+    function status(text, error = false) {
+        const element = modal().querySelector('[data-output-status]'); element.textContent = text; element.classList.toggle('error', error);
+    }
+    function close() {
+        if (preparing || current?.rendering) return;
+        modal().hidden = true; current?.group?.trigger.focus(); current = null;
+    }
+
+    async function open(group) {
+        if (preparing || current?.rendering) return;
+        const m = modal(); current = { group, models: [], rendering: false }; preparing = true;
+        m.hidden = false; group.trigger.disabled = true;
+        m.querySelector('[data-output-fields]').replaceChildren(); m.querySelector('[data-output-search]').value = '';
+        m.querySelector('[data-output-description]').textContent = titleFor(group);
+        status('Listenin tamamı hazırlanıyor…'); updateCount();
+        try {
+            const models = prepareModels(await acquire(group), group);
+            if (!models.length || models.some(model => !model.columns?.length || !Array.isArray(model.rows))) throw new Error('Aktarılacak alanlar hazırlanamadı.');
+            current.models = models;
+            m.querySelector('[data-output-fields]').innerHTML = models.map((model, sheet) => '<section class="fd-output-sheet" data-output-sheet="' + sheet + '"><h4>' + escape(model.title || model.sheetName || 'Tablo') + '<small>' + model.rows.length + ' satır</small></h4><div class="fd-output-field-grid">' + model.columns.map((column, index) => '<label class="fd-output-field"><input type="checkbox" data-output-field="' + index + '" checked><span>' + escape(column.label || column) + '</span></label>').join('') + '</div></section>').join('');
+            status(models.every(model => !model.rows.length) ? 'Bu seçimde kayıt bulunmuyor.' : 'Seçtiğiniz alanlar aktarılır. Görüntü panoya kopyalanır.');
+            m.querySelector('[data-output-description]').textContent = titleFor(group) + ' · ' + models.reduce((sum, model) => sum + model.rows.length, 0) + ' satır';
+        } catch (error) { status(error.message || String(error), true); }
+        finally { preparing = false; group.trigger.disabled = false; updateCount(); m.querySelector('[data-output-close]').focus(); }
+    }
+
+    function excelPreview(models, result) {
+        if (!result?.blob) return;
+        if (typeof root.fdCiktiOnizlemeAc !== 'function' || typeof root.fdCiktiBlobBagla !== 'function') throw new Error('Excel önizleme bileşeni yüklenemedi.');
+        const preview = root.fdCiktiOnizlemeAc('excel', result.filename); root.fdCiktiBlobBagla(preview, result.blob, result.filename);
+        const area = preview.querySelector('[data-cikti-icerik]'); area.replaceChildren(); area.style.cssText = 'flex:1;min-height:0;overflow:auto;padding:18px;background:#edf3f7;display:grid;gap:18px;align-content:start';
+        for (const model of models) {
+            const section = document.createElement('section'); section.style.cssText = 'padding:18px;background:white;border:1px solid #d7e3eb;border-radius:10px;min-width:0';
+            const title = document.createElement('h3'); title.textContent = model.title; title.style.cssText = 'font:700 17px/1.4 Arial;color:#315b72;margin:0 0 7px'; section.appendChild(title);
+            if (model.subtitle) { const subtitle = document.createElement('p'); subtitle.textContent = model.subtitle; subtitle.style.cssText = 'font:12px/1.5 Arial;color:#64748b;margin:0 0 13px'; section.appendChild(subtitle); }
+            const wrapper = document.createElement('div'); wrapper.style.cssText = 'max-width:100%;overflow:auto';
+            const table = document.createElement('table'); table.style.cssText = 'border-collapse:collapse;width:max-content;min-width:100%;table-layout:auto;font:13px Arial;color:#183246';
+            const head = table.createTHead().insertRow();
+            model.columns.forEach(column => { const cell = document.createElement('th'); cell.textContent = column.label; cell.style.cssText = 'padding:10px 12px;background:#e8f1f6;border:1px solid #d4dfe8;white-space:pre-wrap;max-width:300px;min-width:70px;overflow-wrap:anywhere;text-align:left;font:700 13px/1.4 Arial;color:#183246;position:static'; head.appendChild(cell); });
+            const body = table.createTBody(); model.rows.forEach((row, index) => { const tr = body.insertRow(); model.columns.forEach((column, c) => { const value = Array.isArray(row) ? row[c] : row[column.key], cell = tr.insertCell(); cell.textContent = root.fdOutputRenderers.display(value, column); cell.style.cssText = 'padding:9px 12px;border:1px solid #d4dfe8;white-space:pre-wrap;max-width:300px;overflow-wrap:anywhere;vertical-align:top;font:13px/1.5 Arial;position:static;background:'+(index % 2 ? '#f7fafc' : '#fff')+';text-align:'+(typeof value === 'number' ? 'right' : 'left'); }); });
+            wrapper.appendChild(table); section.appendChild(wrapper);
+            for (const text of model.footnotes || []) { const note = document.createElement('p'); note.textContent = text; note.style.cssText = 'font:12px/1.5 Arial;color:#64748b;margin:10px 0 0;overflow-wrap:anywhere'; section.appendChild(note); }
+            area.appendChild(section);
+        }
+    }
+
+    async function render(format) {
+        if (!current || current.rendering || preparing) return;
+        const models = selectedModels(); if (!models.length) return status('En az bir alan seçin.', true);
+        current.rendering = true; updateCount(); status(format === 'image' ? 'Görüntü panoya kopyalanıyor…' : 'Çıktı hazırlanıyor…');
+        const title = current.models[0]?.title || titleFor(current.group);
+        const filename = title.replace(/[\\/:*?"<>|]/g, '_').slice(0, 100) + (format === 'pdf' ? '.pdf' : '.xlsx');
+        try {
+            // Clipboard write is initiated synchronously in this click handler.
+            if (format === 'image') { await root.fdOutputRenderers.copyImage(models); status('Tablo görüntüsü panoya kopyalandı.'); message('Tablo görüntüsü panoya kopyalandı.', 'success'); }
+            else if (format === 'pdf') { await root.fdOutputRenderers.pdf(models, { filename, preview: true, onProgress: progress => status('PDF hazırlanıyor: ' + progress.completed + ' / ' + progress.total + ' sayfa') }); }
+            else { const result = await root.fdOutputRenderers.excel(models, { filename, preview: false }); excelPreview(models, result); }
+            if (format !== 'image') modal().hidden = true;
+        } catch (error) { status(error.message || String(error), true); }
+        finally { if (current) current.rendering = false; updateCount(); }
+    }
+
+    root.fdUnifiedOutput = { scan, open, acquire, selectedModels, capture, kind, excelPreview, groups: () => Array.from(liveGroups) };
+    function start() {
+        scan(); observer = new MutationObserver(schedule); observer.observe(document.body, { childList: true, subtree: true });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
+})(window);
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -25260,14 +26462,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v226';
+      const anahtar='fd-pwa-yenileme-v227';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=226',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=227',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
