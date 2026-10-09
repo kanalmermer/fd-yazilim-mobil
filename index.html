@@ -25147,7 +25147,7 @@ function fdAracListeCiz(){
     const mobil=document.getElementById('aracMobilKartlar');if(mobil)mobil.innerHTML=liste.map(a=>{const p=personeller.find(p=>aktifSirketeAit(p)&&String(p.id)===String(a.personelId));return'<article class="arac-mobil-kart"><div class="arac-mobil-kart-ust"><button type="button" class="arac-mobil-plaka" onclick="'+islem('aracDetayModaliniAc',a)+'">'+esc(a.plaka)+'</button><span class="fd-arac-durum">'+esc(fdAracSatilmis(a)?'Satıldı':a.durum||'Aktif')+'</span></div><strong>'+esc([a.marka,a.model].filter(Boolean).join(' '))+'</strong><small class="fd-arac-alt">'+esc([a.tur,a.modelYili].filter(Boolean).join(' · '))+'</small><dl><div><dt>Araç sahibi</dt><dd>'+esc(a.aracSahibi||'-')+'</dd></div><div><dt>Şube</dt><dd>'+esc(a.sube||'-')+'</dd></div><div><dt>Kullanan</dt><dd>'+esc(p?.ad||'Atanmamış')+'</dd></div></dl><div class="fd-arac-kart-takip">'+fdAracTakipHtml(a)+'</div><div class="arac-mobil-islemler"><button type="button" class="btn-modern btn-detail-modern" onclick="'+islem('aracDetayModaliniAc',a)+'">Detay</button><button type="button" class="btn-modern btn-edit-modern" onclick="'+islem('aracFormunuAc',a)+'">Düzenle</button></div></article>'}).join('')||'<div class="dashboard-empty">Filtreye uygun araç bulunmuyor.</div>';
     const meta=document.getElementById('fdAracListeMeta');if(meta)meta.innerHTML='<span>'+liste.length+' araç gösteriliyor · '+araclar.filter(aktifSirketeAit).length+' kayıt</span><span>Plakaya basarak araç detayını açabilirsiniz.</span>';
     const tum=araclar.filter(aktifSirketeAit),aktif=tum.filter(a=>!fdAracSatilmis(a)),stats=[['tumu','Tüm araçlar',tum.length],['aktif','Filo / satılmamış',aktif.length],['servis','Serviste',aktif.filter(a=>a.durum==='Serviste').length],['gecen','Süresi geçen',aktif.filter(a=>fdAracKritikDurum(a)==='gecen').length],['yaklasan','Yaklaşan işlemler',aktif.filter(a=>fdAracKritikDurum(a)==='yaklasan').length],['satilan','Satılan araçlar',tum.length-aktif.length]];
-    document.getElementById('aracTurOzetleri').innerHTML=stats.map(([tur,ad,n])=>'<button type="button" class="fd-arac-stat" data-tur="'+tur+'" onclick="fdAracOzetFiltre(\''+tur+'\')"><span>'+ad+'</span><strong>'+n+'</strong><small>Listeyi filtrele</small></button>').join('');
+    document.getElementById('aracTurOzetleri').innerHTML=stats.map(([tur,ad,n])=>'<button type="button" class="fd-arac-stat" data-tur="'+tur+'" onclick="fdAracOzetFiltre(\''+tur+'\')"><span>'+ad+'</span><strong>'+n+'</strong></button>').join('');
 }
 (function(){
     const root=document.getElementById('aracTakipApp'),main=root?.querySelector('main');if(!main)return;
@@ -25158,7 +25158,7 @@ function fdAracListeCiz(){
     document.querySelector('#aracTakipTablosu thead tr').innerHTML=['#','Plaka','Araç / Tür','Araç Sahibi / Şube','Kullanan / KM','Takip / Yaklaşan İşlemler','Durum','İşlem'].map(t=>'<th>'+t+'</th>').join('');
     const sh=document.getElementById('aracSigortaBody')?.closest('table')?.querySelector('thead tr');if(sh&&sh.children.length===9)sh.insertAdjacentHTML('beforeend','<th>İşlem</th>');
     aracEnKritikDurum=fdAracKritikDurum;
-    const detail=window.aracDetayModaliniAc;window.aracDetayModaliniAc=function(id){const a=araclar.find(a=>aktifSirketeAit(a)&&String(a.id)===String(id));if(!a)return;const r=detail.apply(this,arguments);const genel=document.getElementById('arac-detay-genel');if(genel){const islem=fn=>escapeDashboardText("aracDetayModaliniKapat();"+fn+'('+JSON.stringify(String(id))+')');genel.insertAdjacentHTML('afterbegin','<div class="fd-arac-detay-islemler"><button type="button" class="btn-modern btn-edit-modern" onclick="'+islem('aracFormunuAc')+'">Aracı Düzenle</button><button type="button" class="btn-modern btn-detail-modern" onclick="'+islem('aracBelgeMerkeziniAc')+'">Belgeler</button><button type="button" class="btn-modern btn-detail-modern" onclick="'+islem('aracBakimModaliniAc')+'">Bakım Kaydı</button></div>')}return r};
+    const detail=window.aracDetayModaliniAc;window.aracDetayModaliniAc=function(id){const a=araclar.find(a=>aktifSirketeAit(a)&&String(a.id)===String(id));if(!a)return;const r=detail.apply(this,arguments);const genel=document.getElementById('arac-detay-genel');if(genel){const islem=fn=>escapeDashboardText("aracDetayModaliniKapat();"+fn+'('+JSON.stringify(String(id))+')');genel.insertAdjacentHTML('afterbegin','<div class="fd-arac-detay-islemler"><button type="button" class="btn-modern btn-edit-modern" onclick="'+islem('aracFormunuAc')+'">Aracı Düzenle</button></div>')}return r};
     for(const name of ['aracFormunuAc','aracSigortaModaliniAc','aracVizeModaliniAc','aracBakimModaliniAc','aracBelgeMerkeziniAc','aracMtvGecmisiniAc','aracMtvElleOdemeAc','aracRuhsatAc','akaryakitAracDetayiniAc']){const fn=window[name];if(typeof fn!=='function')continue;window[name]=function(id){if(id&&!araclar.some(a=>aktifSirketeAit(a)&&String(a.id)===String(id)))return;return fn.apply(this,arguments)}}
     const busy=new Set();for(const name of ['aracSigortaKaydet','aracVizeKaydet','aracBakimSil','aracSil']){const fn=window[name];if(typeof fn!=='function')continue;window[name]=async function(){if(busy.has(name))return;busy.add(name);const form=name==='aracSigortaKaydet'?document.getElementById('aracSigortaForm'):name==='aracVizeKaydet'?document.getElementById('aracVizeForm'):null;fdAracFormMesgul(form,true);try{return await fn.apply(this,arguments)}finally{fdAracFormMesgul(form,false);busy.delete(name)}}}
 })();
@@ -25182,14 +25182,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v222';
+      const anahtar='fd-pwa-yenileme-v223';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=222',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=223',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
