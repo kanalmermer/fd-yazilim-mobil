@@ -5484,11 +5484,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
     let anaMenuAyarTaslagi=[];
     function ayarlarBolumAc(panelId,buton){
+        if(document.getElementById('ayarlarPanelModuller')?.classList.contains('active'))anaMenuAyarTaslaginiFormdanOku();
         document.querySelectorAll('#ayarlarApp .ayarlar-panel').forEach(panel=>panel.classList.toggle('active',panel.id===panelId));
-        document.querySelectorAll('#ayarlarApp .ayarlar-sol-menu button').forEach(btn=>btn.classList.toggle('active',btn===buton));
-        const aktifPanel=document.getElementById(panelId);
-        aktifPanel?.querySelectorAll('details.profile-section').forEach(detay=>{detay.open=false;});
-        if(panelId==='ayarlarPanelModuller')setTimeout(ayarlarAnaMenuPaneliniYenile,0);
+        document.querySelectorAll('#ayarlarApp .ayarlar-sol-menu button').forEach(btn=>{const aktif=btn===buton;btn.classList.toggle('active',aktif);if(aktif)btn.setAttribute('aria-current','page');else btn.removeAttribute('aria-current');});
     }
 
     function siparisAyarBirimleriniDuzelt(kaynak=uygulamaAyarlari?.siparisBirimleri){
@@ -5975,7 +5973,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         ayarlarArayuzunuDuzenle();
         ayarlarAnaMenuPaneliniYenile();
         try{ayarlarFormunuDoldur();}catch(error){console.error('Ayar formu doldurulamadı:',error);showToast('Bazı ayarlar yüklenemedi; Ana Menü yetkileri kullanılabilir.','warning');}
-        ayarlarAnaMenuPaneliniYenile();
         setTimeout(() => { if (typeof fdTakvimAyarlariniKur === 'function') fdTakvimAyarlariniKur(); }, 0);
     }
 
@@ -6066,6 +6063,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const izinSebep = document.getElementById('izinSebep');
             if (izinSebep && (!izinSebep.value || izinSebep.value === VARSAYILAN_UYGULAMA_AYARLARI.varsayilanIzinSebebi)) izinSebep.value = uygulamaAyarlari.varsayilanIzinSebebi;
             alert('Uygulama ayarları kaydedildi.');
+            window.fdAyarKayitTamamlandi?.();
         } catch (error) {
             alert('Ayarlar kaydedilemedi: ' + (error.message || 'Bilinmeyen hata'));
         } finally {
@@ -25166,6 +25164,53 @@ function fdAracListeCiz(){
     const busy=new Set();for(const name of ['aracSigortaKaydet','aracVizeKaydet','aracBakimSil','aracSil']){const fn=window[name];if(typeof fn!=='function')continue;window[name]=async function(){if(busy.has(name))return;busy.add(name);const form=name==='aracSigortaKaydet'?document.getElementById('aracSigortaForm'):name==='aracVizeKaydet'?document.getElementById('aracVizeForm'):null;fdAracFormMesgul(form,true);try{return await fn.apply(this,arguments)}finally{fdAracFormMesgul(form,false);busy.delete(name)}}}
 })();
 </script>
+<style id="fdAyarTasarimV225">
+#ayarlarApp main{max-width:1560px!important;padding:20px!important}
+#ayarlarApp .ayarlar-ana-kart{box-shadow:none!important}
+#ayarlarApp .ayarlar-ust{background:#fff;color:#19394b;border:1px solid #dbe5ee;border-radius:14px 14px 0 0;padding:18px 22px}
+#ayarlarApp .ayarlar-ust h2{font-size:21px;font-weight:650}#ayarlarApp .ayarlar-ust p{color:#6b8194;font-size:13px;margin-top:5px}
+#ayarlarApp .ayarlar-kabuk{grid-template-columns:240px minmax(0,1fr);border:1px solid #dbe5ee;border-top:0;min-height:540px}
+#ayarlarApp .ayarlar-sol-menu{background:#f7fafc;padding:15px 12px}#ayarlarApp .ayarlar-sol-menu button{font-size:14px;font-weight:550;line-height:1.4;padding:12px 11px;margin-bottom:6px;color:#456074}
+#ayarlarApp .ayarlar-sol-menu button.active{background:#e4f3f7;color:#086780;box-shadow:inset 3px 0 #0d91a5}#ayarlarApp .ayarlar-sol-menu button:hover{background:#edf5f8;color:#075a70}
+#ayarlarApp .ayarlar-icerik{padding:22px;min-width:0}#ayarlarApp .ayarlar-panel-baslik h3{font-size:19px;font-weight:650}#ayarlarApp .ayarlar-panel-baslik p{font-size:13px}
+#ayarlarApp .profile-section{margin-bottom:12px;border-color:#dbe5ee}#ayarlarApp .profile-section>summary{font-size:14px;font-weight:600;background:#f6fafc;color:#294f65;padding:14px 16px}
+#ayarlarApp .profile-section[open]>summary{background:#eff8fa;color:#086780}#ayarlarApp .profile-section>div{padding:18px}
+#ayarlarApp .form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}#ayarlarApp .form-group{min-width:0;margin-bottom:16px}#ayarlarApp .form-group>label{font-size:13px;font-weight:600;line-height:1.45;color:#385468;margin-bottom:6px}
+#ayarlarApp :is(input,select,textarea){max-width:100%;font-size:14px;box-sizing:border-box}#ayarlarApp .form-group :is(input:not([type=checkbox]):not([type=file]),select,textarea){width:100%;border:1px solid #cbdbe6;border-radius:8px;padding:10px 12px;background:#fff;color:#253d4e;min-height:40px}
+#ayarlarApp textarea{resize:vertical;line-height:1.5}#ayarlarApp small{font-size:12px!important;line-height:1.5;color:#6b8194}#ayarlarApp .form-group small{display:block;margin-top:6px}
+#ayarlarApp .ayarlar-modul-ozet{grid-template-columns:32px minmax(0,1fr) minmax(210px,.85fr) auto 16px}#ayarlarApp .ayarlar-modul-govde{grid-template-columns:48px minmax(0,1fr) minmax(0,1.2fr)}#ayarlarApp .ayarlar-modul-kimlik strong{font-size:14px}#ayarlarApp .ayarlar-roller{grid-template-columns:1fr}#ayarlarApp .ayar-rol-yetki{font-size:13px;grid-template-columns:100px minmax(0,1fr)}
+#ayarlarApp .ayarlar-kaydet-cubugu{background:#fff;border:1px solid #dbe5ee;border-top:0;box-shadow:0 -3px 15px #263b4e08;gap:12px;padding:12px 18px;bottom:0;border-radius:0 0 14px 14px}#ayarlarApp .ayarlar-kaydet-cubugu::before{display:none}#ayarlarApp .ayarlar-kaydet-cubugu .btn-submit{font-size:14px;box-shadow:none}
+.fd-ayar-arama{border:1px solid #dbe5ee;border-top:0;padding:14px 22px;background:#fff;position:relative}.fd-ayar-arama input{width:100%;padding:11px 13px;border:1px solid #cbdbe6;border-radius:9px;background:#f8fbfd!important}.fd-ayar-sonuclar{display:grid;gap:6px;margin-top:10px;max-height:300px;overflow:auto}.fd-ayar-sonuclar[hidden]{display:none}.fd-ayar-sonuclar button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:#f6fafc;border:1px solid #dbe5ee;border-radius:8px;padding:10px 12px;color:#294f65;font-size:14px;cursor:pointer}.fd-ayar-sonuclar button:hover{background:#e4f3f7}.fd-ayar-vurgu{outline:2px solid #52aabe;outline-offset:4px;border-radius:6px}.fd-ayar-durum{font-size:13px;color:#6b8194}.fd-ayar-durum.degisti{color:#986409}.fd-ayar-bilgi{padding:12px 14px;margin:0 0 14px;border:1px solid #cce7ec;background:#f2fafb;border-radius:9px;color:#426574;font-size:13px;line-height:1.55}
+@media(max-width:980px){#ayarlarApp .ayarlar-kabuk{grid-template-columns:1fr}#ayarlarApp .ayarlar-sol-menu{position:static;flex-wrap:nowrap;overflow-x:auto}#ayarlarApp .ayarlar-sol-menu button{flex:none;width:auto;margin-bottom:0}#ayarlarApp .ayarlar-icerik{padding:16px}#ayarlarApp .ayarlar-modul-ozet{grid-template-columns:32px minmax(0,1fr) auto 16px}#ayarlarApp .ayarlar-modul-govde{grid-template-columns:40px minmax(0,1fr)}#ayarlarApp .ayarlar-modul-govde>.ayar-yetki-kapsam{grid-column:2}}
+@media(max-width:600px){#ayarlarApp main{padding:10px!important}#ayarlarApp .ayarlar-ust{padding:15px;align-items:flex-start}#ayarlarApp .ayarlar-ust h2{font-size:18px}#ayarlarApp .ayarlar-ust .badge{max-width:110px;white-space:normal}#ayarlarApp .form-row{grid-template-columns:1fr;gap:0}#ayarlarApp .profile-section>div{padding:13px}#ayarlarApp .ayarlar-panel-baslik h3{font-size:17px}#ayarlarApp .ayarlar-modul-govde{grid-template-columns:1fr}#ayarlarApp .ayarlar-modul-govde>*{grid-column:1!important}.fd-ayar-arama{padding:12px 14px}#ayarlarApp .ayarlar-kaydet-cubugu{flex-wrap:wrap;padding:12px}#ayarlarApp .ayarlar-kaydet-cubugu .btn-submit{width:100%!important}.fd-ayar-durum{font-size:12px}}
+</style>
+<script id="fdAyarKullanimV225">
+(function(){
+    let mesgul=false,degisti=false;
+    const el=id=>document.getElementById(id),normalize=s=>String(s||'').toLocaleLowerCase('tr-TR').replace(/ı/g,'i').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    function durum(){const alan=el('fdAyarKayitDurumu');if(alan){alan.textContent=mesgul?'Ayarlar kaydediliyor…':degisti?'Kaydedilmemiş değişiklikler var.':'Ayarlar seçili şirkete aittir.';alan.classList.toggle('degisti',degisti)}}
+    window.fdAyarKayitTamamlandi=function(){degisti=false;durum()};
+    function bolumAc(panel){if(!panel)return;const buton=[...document.querySelectorAll('#ayarlarApp .ayarlar-sol-menu button')].find(b=>(b.getAttribute('onclick')||'').includes(panel.id));ayarlarBolumAc(panel.id,buton)}
+    function alaniGoster(alan){bolumAc(alan.closest('.ayarlar-panel'));for(let p=alan.parentElement;p&&p!==el('uygulamaAyarlariForm');p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;requestAnimationFrame(()=>{alan.scrollIntoView({block:'center',behavior:'smooth'});alan.focus({preventScroll:true});const grup=alan.closest('.form-group')||alan;grup.classList.add('fd-ayar-vurgu');setTimeout(()=>grup.classList.remove('fd-ayar-vurgu'),2200)})}
+    function ara(q){const sonuc=el('fdAyarAramaSonuclari');if(!sonuc)return;sonuc.replaceChildren();q=normalize(q).trim();sonuc.hidden=!q;if(!q)return;const form=el('uygulamaAyarlariForm'),alanlar=[...form.querySelectorAll('.form-group')].map(grup=>({grup,alan:grup.querySelector('input:not([type=file]),select,textarea'),etiket:grup.querySelector('label')?.textContent?.trim()})).filter(x=>x.alan&&x.etiket&&normalize(x.grup.textContent+' '+x.alan.closest('.ayarlar-panel')?.querySelector('h3')?.textContent).includes(q));
+        const detaylar=[...form.querySelectorAll('details.profile-section')].filter(d=>normalize(d.querySelector('summary')?.textContent).includes(q));const ekle=(ad,panel,ac)=>{const b=document.createElement('button');b.type='button';const bas=document.createElement('span');bas.textContent=ad;const alt=document.createElement('small');alt.textContent=panel?.querySelector('h3')?.textContent||'Ayarlar';b.append(bas,alt);b.addEventListener('click',ac);sonuc.appendChild(b)};
+        alanlar.slice(0,18).forEach(x=>ekle(x.etiket,x.alan.closest('.ayarlar-panel'),()=>alaniGoster(x.alan)));detaylar.filter(d=>!alanlar.some(x=>d.contains(x.alan))).slice(0,8).forEach(d=>ekle(d.querySelector('summary').textContent,d.closest('.ayarlar-panel'),()=>{bolumAc(d.closest('.ayarlar-panel'));d.open=true;d.scrollIntoView({block:'start',behavior:'smooth'})}));if(!sonuc.children.length)sonuc.textContent='Bu kelimeyle eşleşen ayar bulunamadı.';
+    }
+    function kur(){const form=el('uygulamaAyarlariForm'),ust=document.querySelector('#ayarlarApp .ayarlar-ust');if(!form||!ust||el('fdAyarAra'))return;
+        ust.querySelector('p').textContent='Şirketin çalışma kurallarını ve modül tercihlerini tek yerden yönetin.';
+        const arama=document.createElement('div');arama.className='fd-ayar-arama';arama.innerHTML='<input id="fdAyarAra" type="search" aria-label="Tüm ayarlarda ara" placeholder="Ayar ara… ör. vardiya, izin, araç, yedekleme"><div id="fdAyarAramaSonuclari" class="fd-ayar-sonuclar" aria-live="polite" hidden></div>';ust.after(arama);el('fdAyarAra').addEventListener('input',e=>ara(e.target.value));
+        const kaydet=form.querySelector('.ayarlar-kaydet-cubugu');if(kaydet){const span=document.createElement('span');span.id='fdAyarKayitDurumu';span.className='fd-ayar-durum';span.setAttribute('aria-live','polite');kaydet.prepend(span)}
+        const personel=el('ayarlarPanelPersonel');if(personel){const bilgi=document.createElement('p');bilgi.className='fd-ayar-bilgi';bilgi.textContent='Maaş ve mesai hesabını etkileyen değişiklikler içinde bulunduğunuz ay ve sonrasında uygulanır. Önceki ayların kayıtlı hesap ayarları korunur.';personel.querySelector('.ayarlar-panel-baslik')?.after(bilgi)}
+        const sablon=el('ayarOtomatikBildirimBolumu');const aciklama=sablon?.querySelector(':scope > div > p');if(aciklama)aciklama.textContent='Mesaj metinlerini buradan düzenleyin. Giriş–çıkış bildirimleri sabah hazırlanır ve saat 12.00’den itibaren kuyruktan gönderilir. Ücret pusulası bildirimleri yükleme gününün saat 20.00 gönderimine hazırlanır. Kuyruğu WhatsApp Mesajları bölümünden yönetin.';
+        for(const detay of form.querySelectorAll('details.profile-section')){const summary=detay.querySelector('summary');if(!summary)continue;if(/Bulut Yedekleme/.test(summary.textContent)){const bilgi=document.createElement('p');bilgi.className='fd-ayar-bilgi';bilgi.textContent='Bu bölümde değiştirdiğiniz yedekleme seçenekleri otomatik kaydedilir.';detay.querySelector(':scope > div')?.prepend(bilgi)}for(const label of detay.querySelectorAll('.form-group>label')){const input=label.parentElement.querySelector('input,select,textarea');if(input?.id&&!label.querySelector('input,select,textarea'))label.htmlFor=input.id}}
+        form.addEventListener('input',e=>{if(e.target.id==='ayarlarModulAra'||e.target.type==='file')return;const d=e.target.closest('details.profile-section');if(/Bulut Yedekleme/.test(d?.querySelector('summary')?.textContent||''))return;degisti=true;durum()});
+        form.addEventListener('change',e=>{const d=e.target.closest('details.profile-section');if(e.target.type!=='file'&&!/Bulut Yedekleme/.test(d?.querySelector('summary')?.textContent||'')){degisti=true;durum()}});
+        form.addEventListener('invalid',e=>{if(form.querySelector(':invalid')===e.target)alaniGoster(e.target)},true);durum();
+    }
+    const duzenle=window.ayarlarArayuzunuDuzenle;window.ayarlarArayuzunuDuzenle=function(){const r=duzenle.apply(this,arguments);kur();const badge=document.querySelector('#ayarlarApp .ayarlar-ust .badge');if(badge)badge.textContent=activeUser?.sirketAdi||'Seçili şirket';return r};
+    const kaydet=window.uygulamaAyarlariniKaydet;window.uygulamaAyarlariniKaydet=async function(event){event.preventDefault();if(mesgul)return;const form=el('uygulamaAyarlariForm');if(!form.checkValidity()){alaniGoster(form.querySelector(':invalid'));return form.reportValidity()}mesgul=true;durum();const buttons=[...form.querySelectorAll('button[type=submit]')].map(b=>({b,disabled:b.disabled,text:b.textContent}));buttons.forEach(({b})=>{b.disabled=true;b.textContent='Kaydediliyor…'});try{return await kaydet.apply(this,arguments)}finally{mesgul=false;buttons.forEach(({b,disabled,text})=>{b.disabled=disabled;b.textContent=text});durum()}};
+})();
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -25185,14 +25230,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v224';
+      const anahtar='fd-pwa-yenileme-v225';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=224',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=225',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
