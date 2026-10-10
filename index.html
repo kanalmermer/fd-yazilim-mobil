@@ -8270,13 +8270,20 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const aoa=[['PERSONEL VARDİYA LİSTESİ'],[`${tarihFormati(kayit.haftaBaslangic)} - ${tarihFormati(vardiyaHaftaBitisi(kayit.haftaBaslangic))}`],[kayit.sube],[],['#','Vardiya','Personel','Görev Yeri'],...vardiyaRaporSatirlari(),[],['Notlar'],...String(kayit.notlar||'').split('\\n').map(x=>[x])];
         const ws=XLSX.utils.aoa_to_sheet(aoa),wb=XLSX.utils.book_new();ws['!cols']=[{wch:5},{wch:18},{wch:28},{wch:28}];XLSX.utils.book_append_sheet(wb,ws,'Vardiya');XLSX.writeFile(wb,`Vardiya_${kayit.haftaBaslangic}_${kayit.sube}.xlsx`);
     }
-    async function vardiyaGoruntuCanvasHazirla(alan) {
+    async function vardiyaGoruntuCanvasHazirla(alan,seciliAlanlar) {
         if (!alan) throw new Error('Vardiya tablosu bulunamadı.');
         const sahne=document.createElement('div'),kopya=alan.cloneNode(true);
         const stil=(el,degerler)=>Object.entries(degerler).forEach(([anahtar,deger])=>el.style.setProperty(anahtar,deger,'important'));
         sahne.setAttribute('data-fd-vardiya-goruntu','');
         sahne.style.cssText='position:fixed;left:0;top:0;width:900px;margin:0;padding:0;background:#fff;pointer-events:none;z-index:1';
         kopya.querySelectorAll('button,[data-html2canvas-ignore],.vardiya-satir-kontrolleri').forEach(el=>el.remove());
+        const alanlar=Array.isArray(seciliAlanlar)?new Set(seciliAlanlar):null;
+        const hucreler=[['no','.vardiya-sira','27px'],['personel','.vardiya-personel','minmax(125px,1.12fr)'],['gorev','.vardiya-gorev','minmax(110px,.88fr)']];
+        if(alanlar){
+            hucreler.filter(([anahtar])=>!alanlar.has(anahtar)).forEach(([,secici])=>kopya.querySelectorAll(secici).forEach(el=>el.remove()));
+            if(!alanlar.has('vardiya'))kopya.querySelectorAll('.vardiya-panel-baslik').forEach(el=>el.remove());
+            if(!hucreler.some(([anahtar])=>alanlar.has(anahtar)))kopya.querySelectorAll('.vardiya-satir').forEach(el=>el.remove());
+        }
         const notlar=kopya.querySelector('#vardiyaNotlar'),aciklama=String(alan.querySelector('#vardiyaNotlar')?.innerText||'').trim();
         if (notlar) {
             if (!aciklama) notlar.remove();
@@ -8290,7 +8297,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         stil(kopya,{width:'900px','min-width':'900px','max-width':'none',height:'auto','min-height':'0','max-height':'none',overflow:'visible',margin:'0',padding:'8px',background:'#fff','box-sizing':'border-box','box-shadow':'none'});
         kopya.querySelectorAll('.vardiya-board').forEach(el=>stil(el,{width:'100%','min-width':'0',height:'auto','min-height':'0','max-height':'none',overflow:'visible','box-shadow':'none'}));
         kopya.querySelectorAll('.vardiya-dinamik-grid,.vardiya-pair').forEach(el=>stil(el,{display:'grid','grid-template-columns':'repeat(2,minmax(0,1fr))',height:'auto','min-height':'0','max-height':'none'}));
-        kopya.querySelectorAll('.vardiya-satir').forEach(el=>stil(el,{display:'grid','grid-template-columns':'27px minmax(125px,1.12fr) minmax(110px,.88fr)'}));
+        const kolonlar=hucreler.filter(([anahtar])=>!alanlar||alanlar.has(anahtar)).map(([, ,genislik])=>genislik).join(' ');
+        kopya.querySelectorAll('.vardiya-satir').forEach(el=>stil(el,{display:'grid','grid-template-columns':kolonlar}));
         sahne.appendChild(kopya);document.body.appendChild(sahne);
         try {
             await document.fonts?.ready;
@@ -25754,7 +25762,37 @@ function fdAracListeCiz(){
         const end = typeof vardiyaHaftaBitisi === 'function' ? vardiyaHaftaBitisi(week) : '';
         const subtitle = [date(week) + (end ? ' – ' + date(end) : ''),branch].filter(Boolean).join(' · ');
         const notes = String(el('vardiyaNotlar')?.innerText ?? record.notlar ?? '').trim();
-        return report(record.basliklar?.anaBaslik || 'Personel Vardiya Listesi',fields,output,(row,field) => row[field.key],{subtitle,footnotes:notes ? ['Notlar: ' + notes] : []});
+        return report(record.basliklar?.anaBaslik || 'Personel Vardiya Listesi',fields,output,(row,field) => row[field.key],{subtitle,footnotes:notes ? ['Notlar: ' + notes] : []}).map(model=>({...model,shiftContext:{branch,week}}));
+    }
+
+    function copyImage(group, models, options = {}) {
+        if (!/vardiya(?:ExcelAl|PdfAl|GoruntusuAl)|\bweekly-shift-list\b/.test(source(group))) return;
+        // Keep the roster's established side-by-side board instead of flattening it.
+        // Do not call vardiyaAktifKayit/vardiyaGoruntusuAl: reading them can schedule a save.
+        return (async () => {
+            const area = el('vardiyaCiktiAlani'), context = models[0]?.shiftContext;
+            if (!context) throw new Error('Görüntüsü alınacak vardiya kaydı bulunamadı. Önce şube ve hafta seçin.');
+            const isCurrent = () => (!options.isCurrent || options.isCurrent()) && (!context || (
+                String(el('vardiyaSube')?.value || '') === context.branch &&
+                (typeof vardiyaPazartesi === 'function' ? vardiyaPazartesi(el('vardiyaHafta')?.value || '') : el('vardiyaHafta')?.value || '') === context.week
+            ));
+            if (!isCurrent()) throw new Error('Vardiya seçimi değişti. Çıktı penceresini yeniden açın.');
+            if (!area || typeof root.vardiyaGoruntuCanvasHazirla !== 'function') throw new Error('Vardiya görüntüsü hazırlanamadı. Sayfayı yenileyip tekrar deneyin.');
+            if (!root.navigator?.clipboard?.write || typeof root.ClipboardItem !== 'function') throw new Error('Bu cihazda panoya görüntü kopyalama desteklenmiyor.');
+            const fields = models.flatMap(model => model.columns.map(column => column.key));
+            let result;
+            const pending = root.vardiyaGoruntuCanvasHazirla(area,fields).then(async canvas => {
+                try {
+                    const blob = await new Promise((resolve,reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('Görüntü hazırlanamadı.')),'image/png'));
+                    if (!isCurrent()) throw new Error('Vardiya seçimi değişti. Çıktı işlemi iptal edildi.');
+                    result = {blob,width:canvas.width,height:canvas.height};return blob;
+                } finally { canvas.width = 1;canvas.height = 1; }
+            });
+            pending.catch(() => {});
+            // Start clipboard write before yielding the click gesture (also works on Safari).
+            try { await root.navigator.clipboard.write([new root.ClipboardItem({'image/png':pending})]);await pending;return result; }
+            catch (error) { await pending.catch(() => {});throw error; }
+        })();
     }
 
     function fuelStock() {
@@ -25856,7 +25894,7 @@ function fdAracListeCiz(){
         });
     }
 
-    root.fdOutputAdapters = Object.assign(root.fdOutputAdapters || {},{get,filterCaptured});
+    root.fdOutputAdapters = Object.assign(root.fdOutputAdapters || {},{get,filterCaptured,copyImage});
 })(window);
 
 /* Selectable leave summary fields alongside entitlement and history tables. */
@@ -26911,7 +26949,7 @@ function fdAracListeCiz(){
         const filename = title.replace(/[\\/:*?"<>|]/g, '_').slice(0, 100) + (format === 'pdf' ? '.pdf' : '.xlsx');
         try {
             // Clipboard write is initiated synchronously in this click handler.
-            if (format === 'image') { await root.fdOutputRenderers.copyImage(models, {isCurrent}); if (!isCurrent()) return; status('Tablo görüntüsü panoya kopyalandı.'); message('Tablo görüntüsü panoya kopyalandı.', 'success'); }
+            if (format === 'image') { const special = root.fdOutputAdapters?.copyImage?.(group,models,{isCurrent});await (special || root.fdOutputRenderers.copyImage(models, {isCurrent})); if (!isCurrent()) return; status('Tablo görüntüsü panoya kopyalandı.'); message('Tablo görüntüsü panoya kopyalandı.', 'success'); }
             else if (format === 'pdf') { await root.fdOutputRenderers.pdf(models, { filename, preview: true, isCurrent, onProgress: progress => { if (isCurrent()) status('PDF hazırlanıyor: ' + progress.completed + ' / ' + progress.total + ' sayfa'); } }); }
             else { const result = await root.fdOutputRenderers.excel(models, { filename, preview: false, isCurrent }); if (!isCurrent()) return; excelPreview(models, result); }
             if (!isCurrent()) return;
@@ -28260,14 +28298,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v234';
+      const anahtar='fd-pwa-yenileme-v235';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=234',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=235',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
