@@ -1889,7 +1889,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             <div class="card-header" style="flex-wrap:wrap;gap:10px;"><h2>⛽ Akaryakıt ve Depo Takibi</h2><div class="action-btns"><button class="btn-modern btn-detail-modern" onclick="akaryakitFormunuAc('depo')">＋ Depo Ekle</button><button class="btn-modern btn-edit-modern" onclick="akaryakitFormunuAc('giris')">📥 Yeni Yakıt Girişi</button><button class="btn-submit" style="width:auto;margin:0;padding:8px 14px;" onclick="akaryakitFormunuAc('cikis')">⛽ Yakıt Ver</button><button class="btn-export btn-excel" onclick="akaryakitRaporAl('excel')">📊 Excel</button><button class="btn-export btn-pdf" onclick="akaryakitRaporAl('pdf')">📄 PDF</button></div></div>
             <div id="akaryakitDepoOzetleri" class="personel-summary-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:15px;"></div>
             <div class="filter-bar" style="margin:0 0 14px;"><input id="akaryakitArama" type="text" placeholder="🔍 Plaka, depo, alan veya veren kişi ara..." oninput="akaryakitListesiniCiz()"><select id="akaryakitDepoFiltre" onchange="akaryakitListesiniCiz()"><option value="">Tüm Depolar</option></select><select id="akaryakitTurFiltre" onchange="akaryakitListesiniCiz()"><option value="">Tüm Hareketler</option><option value="giris">Depoya Giriş</option><option value="cikis">Araca Verilen</option></select><button type="button" class="btn-modern" style="min-width:auto;padding:8px 11px;" onclick="akaryakitAyDegistir(-1)">&#8592; Önceki Ay</button><input id="akaryakitAyFiltre" type="month" onchange="akaryakitListesiniCiz()"><button type="button" class="btn-modern" style="min-width:auto;padding:8px 11px;" onclick="akaryakitAyDegistir(1)">Sonraki Ay &#8594;</button></div>
-            <div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka / İşlem</th><th>Litre</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th><th>İşlem</th></tr></thead><tbody id="akaryakitBody"></tbody></table></div>
+            <div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka / İşlem</th><th>Litre</th><th title="Saati olmayan aynı gün kayıtlarında depo girişleri önce hesaplanır.">İşlem Sonrası Kalan</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th><th>İşlem</th></tr></thead><tbody id="akaryakitBody"></tbody></table></div>
         </div></section>
         <section id="arac-tab-mtv" class="tab-content"><div class="card"><div class="card-header" style="flex-wrap:wrap;gap:10px;"><h2>💳 MTV Ödeme Takibi</h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><label style="font-weight:700;">Yıl:</label><select id="aracMtvYil" onchange="aracMtvListesiniCiz()" style="width:105px;"></select><button type="button" class="btn-export btn-excel" onclick="aracMtvSablonuIndir()">📥 MTV Şablonu</button><button type="button" class="btn-export" style="background:#0f766e;color:#fff;" onclick="document.getElementById('aracMtvExcel').click()">📤 Ödeme Listesi Yükle</button><input id="aracMtvExcel" type="file" accept=".xlsx,.xls" hidden onchange="aracMtvExcelYukle(this)"></div></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracMtvArama" type="text" placeholder="🔍 Plaka, marka veya model ara..." oninput="aracMtvListesiniCiz()"><select id="aracMtvDurumFiltre" onchange="aracMtvListesiniCiz()"><option value="">Tüm Ödeme Durumları</option><option value="tam">Tamamı Ödendi</option><option value="eksik">Eksik Ödeme</option><option value="gecikmis">Gecikmiş Ödeme</option></select></div><p style="margin:0 0 14px;color:#64748b;">1. taksit son ödeme 31 Ocak, 2. taksit son ödeme 31 Temmuz.</p><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>1. Taksit Tutarı</th><th>1. Taksit Durumu</th><th>2. Taksit Tutarı</th><th>2. Taksit Durumu</th><th>İşlem</th></tr></thead><tbody id="aracMtvBody"></tbody></table></div></div></section>
         <section id="arac-tab-sigorta" class="tab-content"><div class="card"><div class="card-header"><h2>🛡️ Trafik Sigortası ve Kasko Takibi</h2></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracSigortaArama" type="text" placeholder="🔍 Plaka, şirket veya poliçe ara..." oninput="aracSigortaListesiniCiz()"><select id="aracSigortaDurumFiltre" onchange="aracSigortaListesiniCiz()"><option value="">Tüm Poliçeler</option><option value="eksik">Eksik Poliçe</option><option value="gecen">Süresi Geçen</option><option value="yaklasan">Süresi Yaklaşan</option><option value="normal">Süresi Uygun</option></select></div><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Sigorta Şirketi / Poliçe</th><th>Sigorta Bitişi</th><th>Sigorta PDF</th><th>Kasko Şirketi / Poliçe</th><th>Kasko Bitişi</th><th>Kasko PDF</th></tr></thead><tbody id="aracSigortaBody"></tbody></table></div></div></section>
@@ -1957,7 +1957,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             <section class="akaryakit-report-section"><h3>İki Yakıt Alımı Arasındaki Tüketim</h3><div class="table-wrapper"><table><thead><tr><th>Önceki Yakıt Tarihi</th><th>Son Yakıt Tarihi</th><th>Önceki KM</th><th>Son KM</th><th>Yapılan KM</th><th>Alınan Yakıt</th><th>100 KM Tüketim</th></tr></thead><tbody id="akaryakitAralikBody"></tbody></table></div></section>
             <section class="akaryakit-report-section"><h3>Aylık Tüketim Özeti</h3><div class="table-wrapper"><table><thead><tr><th>Ay</th><th>Yakıt Alım Sayısı</th><th>Toplam Yakıt</th><th>Hesaplanan KM</th><th>Ortalama Tüketim</th></tr></thead><tbody id="akaryakitAylikOzetBody"></tbody></table></div></section>
             <section class="akaryakit-report-section"><h3>Yıllık Tüketim Özeti</h3><div class="table-wrapper"><table><thead><tr><th>Yıl</th><th>Yakıt Alım Sayısı</th><th>Toplam Yakıt</th><th>Hesaplanan KM</th><th>Ortalama Tüketim</th></tr></thead><tbody id="akaryakitYillikOzetBody"></tbody></table></div></section>
-            <section class="akaryakit-report-section"><h3>Yakıt Teslim Kayıtları</h3><div class="table-wrapper"><table><thead><tr><th>Tarih</th><th>Depo</th><th>Litre</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th></tr></thead><tbody id="akaryakitDetayBody"></tbody></table></div></section>
+            <section class="akaryakit-report-section"><h3>Yakıt Teslim Kayıtları</h3><div class="table-wrapper"><table><thead><tr><th>Tarih</th><th>Depo</th><th>Litre</th><th>İşlem Sonrası Kalan</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th></tr></thead><tbody id="akaryakitDetayBody"></tbody></table></div></section>
         </div>
     </div>
 </div>
@@ -12430,6 +12430,49 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function akaryakitDepolari() { return akaryakitKayitlari.filter(k => k.tur === 'depo' && aktifSirketeAit(k)); }
     function akaryakitHareketleri() { return akaryakitKayitlari.filter(k => ['giris','cikis'].includes(k.tur) && aktifSirketeAit(k)); }
+    function akaryakitStokSayisi(deger) {
+        if(deger===null||deger===undefined||typeof deger==='boolean'||String(deger).trim()==='')return null;
+        const sayi=Number(deger);return Number.isFinite(sayi)?sayi:null;
+    }
+    function akaryakitStokTarihAnahtari(hareket) {
+        const metin=String(hareket?.tarih||'').trim(),eslesme=/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?(Z|[+-]\d{2}:?\d{2})?)?$/.exec(metin);
+        if(!eslesme)return null;
+        const [,yil,ay,gun,saat,dakika,saniye='00',milisaniye='',bolge]=eslesme,parcalar=[Number(yil),Number(ay),Number(gun)];
+        const kontrol=new Date(Date.UTC(parcalar[0],parcalar[1]-1,parcalar[2]));
+        if(kontrol.getUTCFullYear()!==parcalar[0]||kontrol.getUTCMonth()!==parcalar[1]-1||kontrol.getUTCDate()!==parcalar[2]||(saat!==undefined&&(Number(saat)>23||Number(dakika)>59||Number(saniye)>59)))return null;
+        if(bolge){
+            const tarih=new Date(metin);if(!Number.isFinite(tarih.getTime()))return null;
+            const alanlar=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(tarih).map(p=>[p.type,p.value]));
+            return `${alanlar.year}-${alanlar.month}-${alanlar.day}T${alanlar.hour}:${alanlar.minute}:${alanlar.second}.${String(tarih.getUTCMilliseconds()).padStart(3,'0')}`;
+        }
+        // Eski teslim satırlarında saat yoktur: aynı günün depo girişleri önce, teslimler gün sonunda hesaplanır.
+        const zaman=saat===undefined?(hareket?.tur==='giris'?'00:00:00.000':'23:59:59.999'):`${saat}:${dakika}:${saniye}.${milisaniye.padEnd(3,'0')}`;
+        return `${yil}-${ay}-${gun}T${zaman}`;
+    }
+    function akaryakitStokHareketKarsilastir(a,b) {
+        const tarihA=akaryakitStokTarihAnahtari(a),tarihB=akaryakitStokTarihAnahtari(b);
+        if(tarihA!==tarihB)return tarihA===null?1:tarihB===null?-1:tarihA.localeCompare(tarihB);
+        const sira=h=>{const kayitSirasi=akaryakitStokSayisi(h.stokKayitSirasi);if(kayitSirasi!==null)return kayitSirasi;const eskiZaman=/^yakit_(\d{13})(?:_|$)/.exec(String(h.id||''));return eskiZaman?Number(eskiZaman[1])*1000:0;};
+        return sira(a)-sira(b)||String(a.id||'').localeCompare(String(b.id||''),'tr',{numeric:true});
+    }
+    function akaryakitStokHesaplariniHesapla() {
+        const depolar=new Map(),hareketler=new Map(),gruplar=new Map(),yuvarla=sayi=>Math.round((sayi+Number.EPSILON)*1e6)/1e6;
+        akaryakitDepolari().forEach(depo=>{const hesapBaslangici=akaryakitStokSayisi(depo.baslangic),ilk=akaryakitStokSayisi(depo.ilkBaslangic);depolar.set(String(depo.id),{acilis:ilk===null?hesapBaslangici:ilk,hesapBaslangici,mevcut:hesapBaslangici,giris:0,cikis:0});});
+        akaryakitHareketleri().forEach(h=>{const depoId=String(h.depoId??'');if(!gruplar.has(depoId))gruplar.set(depoId,[]);gruplar.get(depoId).push(h);});
+        gruplar.forEach((liste,depoId)=>{
+            const depo=depolar.get(depoId);if(!depo){liste.forEach(h=>hareketler.set(String(h.id),{onceki:null,kalan:null,depoId}));return;}
+            const tarihlerGecerli=liste.every(h=>akaryakitStokTarihAnahtari(h)!==null);
+            let bakiye=tarihlerGecerli?depo.hesapBaslangici:null,net=depo.hesapBaslangici;
+            liste.slice().sort(akaryakitStokHareketKarsilastir).forEach(h=>{
+                const sayi=akaryakitStokSayisi(h.litre),litre=sayi===null||sayi<0?null:sayi,onceki=bakiye,fark=litre===null?null:(h.tur==='giris'?litre:-litre);
+                bakiye=bakiye===null||fark===null?null:yuvarla(bakiye+fark);net=net===null||fark===null?null:yuvarla(net+fark);
+                if(litre===null)depo[h.tur]=null;else if(depo[h.tur]!==null)depo[h.tur]=yuvarla(depo[h.tur]+litre);
+                hareketler.set(String(h.id),{onceki,kalan:bakiye,depoId});
+            });
+            depo.mevcut=net;
+        });
+        return {depolar,hareketler};
+    }
     function akaryakitDepoBakiyesi(depoId) {
         const depo=akaryakitDepolari().find(d=>String(d.id)===String(depoId)); if(!depo)return 0;
         return Number(depo.baslangic||0)+akaryakitHareketleri().filter(h=>String(h.depoId)===String(depoId)).reduce((t,h)=>t+(h.tur==='giris'?Number(h.litre||0):-Number(h.litre||0)),0);
@@ -12557,16 +12600,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 const hareketNeti=akaryakitHareketleri().filter(h=>String(h.depoId)===String(eskiKayit.id)).reduce((t,h)=>t+(h.tur==='giris'?Number(h.litre||0):-Number(h.litre||0)),0);
                 baslangic=girilenStok-hareketNeti;
             }
-            kayit={...(eskiKayit||{}),id:editId||`depo_${Date.now()}`,tur:'depo',sirketId:aktifSirketId(),ad,kapasite,baslangic};
+            const ilkBaslangic=eskiKayit?.tur==='depo'?(akaryakitStokSayisi(eskiKayit.ilkBaslangic)??akaryakitStokSayisi(eskiKayit.baslangic)??girilenStok):girilenStok;
+            kayit={...(eskiKayit||{}),id:editId||`depo_${Date.now()}`,tur:'depo',sirketId:aktifSirketId(),ad,kapasite,baslangic,ilkBaslangic};
             kayitlar=[kayit];
         } else if(tur==='giris') {
             const depoId=document.getElementById('akaryakitDepoId').value, litre=paraMetniniSayiyaCevir(document.getElementById('akaryakitLitre').value), tarih=document.getElementById('akaryakitTarih').value;
             if(!depoId||!tarih||!(litre>0)){alert('Depo, tarih ve litre bilgilerini eksiksiz girin.');return;}
-            kayit={id:editId||`yakit_${Date.now()}`,tur:'giris',sirketId:aktifSirketId(),depoId,tarih,litre,aracId:'',km:0,alan:'',veren:'',tedarikci:document.getElementById('akaryakitTedarikci').value}; kayitlar=[eskiKayit?{...eskiKayit,...kayit}:kayit];
+            kayit={id:editId||`yakit_${Date.now()}`,tur:'giris',sirketId:aktifSirketId(),depoId,tarih,litre,aracId:'',km:0,alan:'',veren:'',tedarikci:document.getElementById('akaryakitTedarikci').value};if(!eskiKayit)kayit.stokKayitSirasi=Date.now()*1000; kayitlar=[eskiKayit?{...eskiKayit,...kayit}:kayit];
         } else if(tur==='cikis') {
             const satirlar=[...document.querySelectorAll('#akaryakitTopluBody tr')];
             if(!satirlar.length){alert('En az bir yakıt satırı ekleyin.');return;}
             const depoToplamlari={};
+            const stokKayitSirasi=Date.now()*1000;
             for(let i=0;i<satirlar.length;i++){
                 const tr=satirlar[i], tarih=tr.querySelector('.akaryakit-toplu-tarih').value, depoId=tr.querySelector('.akaryakit-toplu-depo').value, plaka=tr.querySelector('.akaryakit-toplu-plaka').value.trim(), arac=akaryakitPlakadanAracBul(plaka), aracId=arac?.id||'', km=paraMetniniSayiyaCevir(tr.querySelector('.akaryakit-toplu-km').value), litre=paraMetniniSayiyaCevir(tr.querySelector('.akaryakit-toplu-litre').value), alan=tr.querySelector('.akaryakit-toplu-alan').value.trim(), veren=tr.querySelector('.akaryakit-toplu-veren').value.trim();
                 const tamamenBos=!depoId&&!plaka&&!km&&!litre&&!alan&&!veren; if(tamamenBos)continue;
@@ -12574,6 +12619,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 if(!arac){alert(`${i+1}. satırdaki “${plaka}” plakası aktif araç kayıtlarında bulunamadı.`);return;}
                 depoToplamlari[depoId]=(depoToplamlari[depoId]||0)+litre;
                 const yeniKayit={id:editId||tr.dataset.kayitId||akaryakitYeniKayitId(),tur:'cikis',sirketId:aktifSirketId(),depoId,tarih,litre,aracId,km,alan,veren,tedarikci:''};
+                if(!eskiKayit)yeniKayit.stokKayitSirasi=stokKayitSirasi+i;
                 if(!editId&&[...akaryakitKayitlari,...kayitlar].some(mevcut=>akaryakitAyniCikisKaydiMi(mevcut,yeniKayit))){yinelenenSayisi++;continue;}
                 kayitlar.push(eskiKayit?{...eskiKayit,...yeniKayit}:yeniKayit);
             }
@@ -12614,24 +12660,25 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
     function akaryakitFiltrelenmisListe() {
         const arama=String(document.getElementById('akaryakitArama')?.value||'').toLocaleLowerCase('tr-TR'),depoFiltre=document.getElementById('akaryakitDepoFiltre')?.value||'',turFiltre=document.getElementById('akaryakitTurFiltre')?.value||'',ay=document.getElementById('akaryakitAyFiltre')?.value||'';
-        return akaryakitHareketleri().filter(h=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=akaryakitDepolari().find(d=>String(d.id)===String(h.depoId));const metin=[arac?.plaka,depo?.ad,h.alan,h.veren,h.tedarikci].join(' ').toLocaleLowerCase('tr-TR');return(!arama||metin.includes(arama))&&(!depoFiltre||h.depoId===depoFiltre)&&(!turFiltre||h.tur===turFiltre)&&(!ay||String(h.tarih).startsWith(ay));}).sort((a,b)=>String(b.tarih||'').localeCompare(String(a.tarih||''))||String(b.id||'').localeCompare(String(a.id||''),'tr',{numeric:true}));
+        return akaryakitHareketleri().filter(h=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=akaryakitDepolari().find(d=>String(d.id)===String(h.depoId));const metin=[arac?.plaka,depo?.ad,h.alan,h.veren,h.tedarikci].join(' ').toLocaleLowerCase('tr-TR');return(!arama||metin.includes(arama))&&(!depoFiltre||h.depoId===depoFiltre)&&(!turFiltre||h.tur===turFiltre)&&(!ay||String(h.tarih).startsWith(ay));}).sort((a,b)=>akaryakitStokHareketKarsilastir(b,a));
     }
     function akaryakitListesiniCiz() {
         const ayAlani=document.getElementById('akaryakitAyFiltre');if(ayAlani&&!ayAlani.value)ayAlani.value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,7);
         const body=document.getElementById('akaryakitBody');if(!body)return;akaryakitSecimleriniDoldur();
-        const liste=akaryakitFiltrelenmisListe(),tuketimler=akaryakitTuketimleriniHesapla();
-        body.innerHTML=liste.map((h,i)=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=akaryakitDepolari().find(d=>String(d.id)===String(h.depoId)),t=tuketimler.get(h.id),giris=h.tur==='giris',litre=h.tur==='cikis'?`<button type="button" class="fd-table-cell-link" onclick="akaryakitTuketimNotuAc('${h.id}')" title="T\u00fcketim bilgisini a\u00e7">${Number(h.litre).toLocaleString('tr-TR')} L</button>`:`${Number(h.litre).toLocaleString('tr-TR')} L`,plakaIslem=giris?'<span class="badge" style="background:#dcfce7;color:#166534;">DEPOYA G\u0130R\u0130\u015e</span>':(arac?`<button class="fd-table-cell-link" onclick="akaryakitAracDetayiniAc('${arac.id}')">${escapeDashboardText(arac.plaka)}</button>`:'-');return`<tr${giris?' style="background:#f0fdf4;box-shadow:inset 3px 0 #22c55e;"':''}><td>${i+1}</td><td>${tarihFormati(h.tarih)}</td><td>${escapeDashboardText(depo?.ad||'-')}</td><td>${plakaIslem}</td><td>${litre}</td><td>${h.km?Number(h.km).toLocaleString('tr-TR'):'-'}</td><td>${escapeDashboardText(h.alan||'-')}</td><td>${escapeDashboardText(h.veren||'-')}</td><td>${t?`${t.toFixed(2).replace('.',',')} L`:'-'}</td><td><div class="action-btns"><button class="btn-modern btn-edit-modern" onclick="akaryakitDuzenle('${h.id}')">\u270f\ufe0f D\u00fczenle</button><button class="btn-modern btn-del-modern" onclick="akaryakitSil('${h.id}')">\ud83d\uddd1\ufe0f Sil</button></div></td></tr>`;}).join('')||'<tr><td colspan="10" style="text-align:center;padding:22px;color:#64748b;">Se\u00e7ili ayda yak\u0131t kayd\u0131 bulunmuyor.</td></tr>';
-        const depolar=akaryakitDepolari(),toplam=depolar.reduce((s,d)=>s+akaryakitDepoBakiyesi(d.id),0),filtreGiris=liste.filter(h=>h.tur==='giris').reduce((s,h)=>s+Number(h.litre||0),0),filtreCikis=liste.filter(h=>h.tur==='cikis').reduce((s,h)=>s+Number(h.litre||0),0);
-        document.getElementById('akaryakitDepoOzetleri').innerHTML=`<article class="personel-summary-card"><span>T\u00fcm Depolarda Kalan</span><strong>${toplam.toLocaleString('tr-TR')} L</strong></article>`+depolar.map(d=>`<article class="personel-summary-card" style="position:relative;padding-right:48px;"><span>${escapeDashboardText(d.ad)} Deposunda Kalan</span><strong>${akaryakitDepoBakiyesi(d.id).toLocaleString('tr-TR')} L</strong><small>Kapasite: ${Number(d.kapasite||0).toLocaleString('tr-TR')} L</small><button type="button" class="btn-modern btn-edit-modern" title="Depoyu d\u00fczenle" aria-label="Depoyu d\u00fczenle" style="position:absolute;right:10px;top:10px;width:30px;height:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;" onclick="akaryakitDuzenle('${escapeDashboardText(String(d.id))}')">\u270f\ufe0f</button></article>`).join('')+`<article class="personel-summary-card"><span>Se\u00e7ili D\u00f6nemde Depoya Giren</span><strong>${filtreGiris.toLocaleString('tr-TR')} L</strong></article><article class="personel-summary-card"><span>Se\u00e7ili D\u00f6nemde Ara\u00e7lara Verilen</span><strong>${filtreCikis.toLocaleString('tr-TR')} L</strong></article>`;
+        const liste=akaryakitFiltrelenmisListe(),tuketimler=akaryakitTuketimleriniHesapla(),stoklar=akaryakitStokHesaplariniHesapla(),depolar=akaryakitDepolari(),depoHaritasi=new Map(depolar.map(d=>[String(d.id),d]));
+        const stokMetni=deger=>Number.isFinite(deger)?`${deger.toLocaleString('tr-TR')} L`:'-',stokRengi=deger=>Number.isFinite(deger)&&deger<0?'color:#b91c1c;':'';
+        body.innerHTML=liste.map((h,i)=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=depoHaritasi.get(String(h.depoId)),t=tuketimler.get(h.id),kalan=stoklar.hareketler.get(String(h.id))?.kalan,giris=h.tur==='giris',litre=h.tur==='cikis'?`<button type="button" class="fd-table-cell-link" onclick="akaryakitTuketimNotuAc('${h.id}')" title="T\u00fcketim bilgisini a\u00e7">${Number(h.litre).toLocaleString('tr-TR')} L</button>`:`${Number(h.litre).toLocaleString('tr-TR')} L`,plakaIslem=giris?'<span class="badge" style="background:#dcfce7;color:#166534;">DEPOYA G\u0130R\u0130\u015e</span>':(arac?`<button class="fd-table-cell-link" onclick="akaryakitAracDetayiniAc('${arac.id}')">${escapeDashboardText(arac.plaka)}</button>`:'-');return`<tr${giris?' style="background:#f0fdf4;box-shadow:inset 3px 0 #22c55e;"':''}><td>${i+1}</td><td>${tarihFormati(h.tarih)}</td><td>${escapeDashboardText(depo?.ad||'-')}</td><td>${plakaIslem}</td><td>${litre}</td><td style="${stokRengi(kalan)}font-weight:700;white-space:nowrap;">${stokMetni(kalan)}</td><td>${h.km?Number(h.km).toLocaleString('tr-TR'):'-'}</td><td>${escapeDashboardText(h.alan||'-')}</td><td>${escapeDashboardText(h.veren||'-')}</td><td>${t?`${t.toFixed(2).replace('.',',')} L`:'-'}</td><td><div class="action-btns"><button class="btn-modern btn-edit-modern" onclick="akaryakitDuzenle('${h.id}')">\u270f\ufe0f D\u00fczenle</button><button class="btn-modern btn-del-modern" onclick="akaryakitSil('${h.id}')">\ud83d\uddd1\ufe0f Sil</button></div></td></tr>`;}).join('')||'<tr><td colspan="11" style="text-align:center;padding:22px;color:#64748b;">Se\u00e7ili ayda yak\u0131t kayd\u0131 bulunmuyor.</td></tr>';
+        const bakiyeler=depolar.map(d=>stoklar.depolar.get(String(d.id))?.mevcut),toplam=bakiyeler.every(Number.isFinite)?bakiyeler.reduce((s,b)=>s+b,0):null,filtreGiris=liste.filter(h=>h.tur==='giris').reduce((s,h)=>s+Number(h.litre||0),0),filtreCikis=liste.filter(h=>h.tur==='cikis').reduce((s,h)=>s+Number(h.litre||0),0);
+        document.getElementById('akaryakitDepoOzetleri').innerHTML=`<article class="personel-summary-card"><span>T\u00fcm Depolarda Kalan</span><strong style="${stokRengi(toplam)}">${stokMetni(toplam)}</strong></article>`+depolar.map(d=>{const stok=stoklar.depolar.get(String(d.id)),duzeltme=Number.isFinite(stok?.acilis)&&Number.isFinite(stok?.hesapBaslangici)&&stok.acilis!==stok.hesapBaslangici;return`<article class="personel-summary-card" style="position:relative;padding-right:48px;"><span>${escapeDashboardText(d.ad)} Deposunda Kalan</span><strong style="${stokRengi(stok?.mevcut)}">${stokMetni(stok?.mevcut)}</strong><small style="display:block;margin-top:4px;">Açılış Stoku: <b style="${stokRengi(stok?.acilis)}">${stokMetni(stok?.acilis)}</b></small>${duzeltme?'<small style="display:block;color:#64748b;">Stok hesabına düzeltme uygulanmış.</small>':''}<small style="display:block;">Kapasite: ${Number(d.kapasite||0).toLocaleString('tr-TR')} L</small><button type="button" class="btn-modern btn-edit-modern" title="Depoyu d\u00fczenle" aria-label="Depoyu d\u00fczenle" style="position:absolute;right:10px;top:10px;width:30px;height:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;" onclick="akaryakitDuzenle('${escapeDashboardText(String(d.id))}')">\u270f\ufe0f</button></article>`;}).join('')+`<article class="personel-summary-card"><span>Se\u00e7ili D\u00f6nemde Depoya Giren</span><strong>${filtreGiris.toLocaleString('tr-TR')} L</strong></article><article class="personel-summary-card"><span>Se\u00e7ili D\u00f6nemde Ara\u00e7lara Verilen</span><strong>${filtreCikis.toLocaleString('tr-TR')} L</strong></article>`;
     }
-    function akaryakitRaporSatirlari(liste=akaryakitFiltrelenmisListe()) {
+    function akaryakitRaporSatirlari(liste=akaryakitFiltrelenmisListe(),stoklar=akaryakitStokHesaplariniHesapla()) {
         const tuketimler=akaryakitTuketimleriniHesapla();
-        return liste.map(h=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=akaryakitDepolari().find(d=>String(d.id)===String(h.depoId)),t=tuketimler.get(h.id);return[tarihFormati(h.tarih),depo?.ad||'-',arac?.plaka||'-',h.tur==='giris'?'DEPOYA GİRİŞ':'ARACA VERİLEN',Number(h.litre||0),h.km?Number(h.km):'',h.alan||'-',h.veren||'-',t?Number(t.toFixed(2)):''];});
+        return liste.map(h=>{const arac=araclar.find(a=>String(a.id)===String(h.aracId)),depo=akaryakitDepolari().find(d=>String(d.id)===String(h.depoId)),t=tuketimler.get(h.id),acilis=stoklar.depolar.get(String(h.depoId))?.acilis,kalan=stoklar.hareketler.get(String(h.id))?.kalan;return[tarihFormati(h.tarih),depo?.ad||'-',arac?.plaka||'-',h.tur==='giris'?'DEPOYA GİRİŞ':'ARACA VERİLEN',Number(h.litre||0),Number.isFinite(acilis)?acilis:'',Number.isFinite(kalan)?kalan:'',h.km?Number(h.km):'',h.alan||'-',h.veren||'-',t?Number(t.toFixed(2)):''];});
     }
     function akaryakitRaporAl(tur) {
-        const liste=akaryakitFiltrelenmisListe(),satirlar=akaryakitRaporSatirlari(liste),basliklar=['TARİH','DEPO','PLAKA','İŞLEM','LİTRE','KM','ALAN','VEREN','100 KM TÜKETİM'],ay=document.getElementById('akaryakitAyFiltre')?.value||'TÜM DÖNEMLER',ad=`AKARYAKIT_RAPORU_${ay}`;
+        const liste=akaryakitFiltrelenmisListe(),stoklar=akaryakitStokHesaplariniHesapla(),satirlar=akaryakitRaporSatirlari(liste,stoklar),basliklar=['TARİH','DEPO','PLAKA','İŞLEM','LİTRE','AÇILIŞ STOKU (LİTRE)','İŞLEM SONRASI KALAN (LİTRE)','KM','ALAN','VEREN','100 KM TÜKETİM'],ay=document.getElementById('akaryakitAyFiltre')?.value||'TÜM DÖNEMLER',ad=`AKARYAKIT_RAPORU_${ay}`;
         if(!liste.length){alert('Raporlanacak kayıt bulunmuyor.');return;}
-        if(tur==='excel'){const ws=XLSX.utils.aoa_to_sheet([basliklar,...satirlar]);ws['!cols']=[{wch:20},{wch:18},{wch:14},{wch:18},{wch:12},{wch:12},{wch:24},{wch:24},{wch:18}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Akaryakıt');XLSX.writeFile(wb,`${ad}.xlsx`);return;}
+        if(tur==='excel'){const ws=XLSX.utils.aoa_to_sheet([basliklar,...satirlar]);ws['!cols']=[{wch:20},{wch:18},{wch:14},{wch:18},{wch:12},{wch:22},{wch:28},{wch:12},{wch:24},{wch:24},{wch:18}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Akaryakıt');XLSX.writeFile(wb,`${ad}.xlsx`);return;}
         const giris=liste.filter(h=>h.tur==='giris').reduce((s,h)=>s+Number(h.litre||0),0),cikis=liste.filter(h=>h.tur==='cikis').reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.innerHTML=`<table><thead><tr>${basliklar.map(b=>`<th>${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td>${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;return window.fdTabloPdfOnizle?.(alan.querySelector('table'),'AKARYAKIT HAREKET RAPORU',`${ad}.pdf`,{donem:`${ay} · ${liste.length} kayıt · Giriş ${giris.toLocaleString('tr-TR')} L · Verilen ${cikis.toLocaleString('tr-TR')} L`,yon:'landscape',altBaslik:'Akaryakıt Hareket Raporu'});
     }
     async function akaryakitSil(id){if(!await fdYuzerOnaySor('Bu yakıt hareketi silinsin mi?'))return;const onceki=akaryakitKayitlari.slice();akaryakitKayitlari=akaryakitKayitlari.filter(k=>k.id!==id);yuklenenVeriler.add('akaryakit');try{await supabaseVerileriKaydet();akaryakitListesiniCiz();}catch(e){akaryakitKayitlari=onceki;alert('Kayıt silinemedi: '+e.message);}}
@@ -12683,9 +12730,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function akaryakitAracDetayiniAc(id){const arac=araclar.find(a=>String(a.id)===String(id));if(!arac)return;document.getElementById('akaryakitDetayAracId').value=id;document.getElementById('akaryakitAracDetayBaslik').textContent=`⛽ ${arac.plaka} · Yakıt Geçmişi`;const y=new Date().getFullYear(),yilSayisi=Math.round(ayarSayisi('aracYakitRaporYilSayisi',7));document.getElementById('akaryakitDetayYil').innerHTML=Array.from({length:yilSayisi},(_,i)=>y-i).map(x=>`<option>${x}</option>`).join('');document.getElementById('akaryakitDetayAy').value='';document.getElementById('akaryakitDetayBaslangic').value='';document.getElementById('akaryakitDetayBitis').value='';akaryakitAracDetayiniCiz();document.getElementById('modalAkaryakitAracDetay').style.display='flex';}
     function akaryakitDetayDonemSecildi(){document.getElementById('akaryakitDetayBaslangic').value='';document.getElementById('akaryakitDetayBitis').value='';akaryakitAracDetayiniCiz();}
     function akaryakitDetayTarihAraligindaMi(tarih){const baslangic=document.getElementById('akaryakitDetayBaslangic').value,bitis=document.getElementById('akaryakitDetayBitis').value,gun=String(tarih||'').slice(0,10);if(baslangic||bitis)return(!baslangic||gun>=baslangic)&&(!bitis||gun<=bitis);const yil=document.getElementById('akaryakitDetayYil').value,ay=document.getElementById('akaryakitDetayAy').value;return String(tarih||'').startsWith(`${yil}${ay?'-'+ay:''}`);}
-    function akaryakitAracDetayListesi(){const id=document.getElementById('akaryakitDetayAracId').value;return akaryakitHareketleri().filter(h=>h.tur==='cikis'&&String(h.aracId)===String(id)&&akaryakitDetayTarihAraligindaMi(h.tarih)).sort((a,b)=>String(b.tarih).localeCompare(String(a.tarih)));}
+    function akaryakitAracDetayListesi(){const id=document.getElementById('akaryakitDetayAracId').value;return akaryakitHareketleri().filter(h=>h.tur==='cikis'&&String(h.aracId)===String(id)&&akaryakitDetayTarihAraligindaMi(h.tarih)).sort((a,b)=>akaryakitStokHareketKarsilastir(b,a));}
     function akaryakitAracDetayiniCiz(){
-        const id=document.getElementById('akaryakitDetayAracId').value,yil=document.getElementById('akaryakitDetayYil').value,tuketimler=akaryakitTuketimleriniHesapla(),tum=akaryakitHareketleri().filter(h=>h.tur==='cikis'&&String(h.aracId)===String(id)),liste=akaryakitAracDetayListesi(),tumAraliklar=akaryakitTuketimAraliklari(id),seciliAraliklar=tumAraliklar.filter(a=>akaryakitDetayTarihAraligindaMi(a.sonTarih)),toplam=liste.reduce((s,h)=>s+Number(h.litre||0),0),hesaplananKm=seciliAraliklar.reduce((s,a)=>s+a.kmFarki,0),hesaplananLitre=seciliAraliklar.reduce((s,a)=>s+a.litre,0),ortalama=hesaplananKm>0?hesaplananLitre/hesaplananKm*100:0;
+        const id=document.getElementById('akaryakitDetayAracId').value,yil=document.getElementById('akaryakitDetayYil').value,tuketimler=akaryakitTuketimleriniHesapla(),stoklar=akaryakitStokHesaplariniHesapla(),tum=akaryakitHareketleri().filter(h=>h.tur==='cikis'&&String(h.aracId)===String(id)),liste=akaryakitAracDetayListesi(),tumAraliklar=akaryakitTuketimAraliklari(id),seciliAraliklar=tumAraliklar.filter(a=>akaryakitDetayTarihAraligindaMi(a.sonTarih)),toplam=liste.reduce((s,h)=>s+Number(h.litre||0),0),hesaplananKm=seciliAraliklar.reduce((s,a)=>s+a.kmFarki,0),hesaplananLitre=seciliAraliklar.reduce((s,a)=>s+a.litre,0),ortalama=hesaplananKm>0?hesaplananLitre/hesaplananKm*100:0;
         document.getElementById('akaryakitDetayOzet').innerHTML=aracDetayBilgiAlani([['Toplam Yakıt',`${toplam.toLocaleString('tr-TR')} L`],['Yakıt Alım Sayısı',liste.length],['Hesaplanan KM',hesaplananKm?`${hesaplananKm.toLocaleString('tr-TR')} KM`:'-'],['Ortalama Tüketim',ortalama?`${ortalama.toFixed(2).replace('.',',')} L / 100 KM`:'-']]);
         const aylik=Array.from({length:12},(_,i)=>tum.filter(h=>String(h.tarih).startsWith(`${yil}-${String(i+1).padStart(2,'0')}`)).reduce((s,h)=>s+Number(h.litre||0),0)),max=Math.max(...aylik,1),ayAdlari=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
         document.getElementById('akaryakitDetayGrafik').innerHTML=aylik.map((v,i)=>`<div style="flex:1;text-align:center;font-size:.68rem;color:#475569;"><strong style="display:block;margin-bottom:4px;">${v?Number(v).toLocaleString('tr-TR'):''}</strong><div title="${v} L" style="height:${Math.max(2,v/max*125)}px;background:linear-gradient(#38bdf8,#0284c7);border-radius:5px 5px 0 0;"></div><span>${ayAdlari[i]}</span></div>`).join('');
@@ -12693,15 +12740,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const tarihAraligiAktif=document.getElementById('akaryakitDetayBaslangic').value||document.getElementById('akaryakitDetayBitis').value,aylikOzet=akaryakitTuketimDonemOzeti(tarihAraligiAktif?seciliAraliklar:tumAraliklar.filter(a=>String(a.sonTarih).startsWith(yil)),7),yillikOzet=akaryakitTuketimDonemOzeti(tarihAraligiAktif?seciliAraliklar:tumAraliklar,4);
         document.getElementById('akaryakitAylikOzetBody').innerHTML=aylikOzet.map(o=>`<tr><td>${new Date(`${o.donem}-01T12:00:00`).toLocaleDateString('tr-TR',{month:'long',year:'numeric'})}</td><td>${o.adet}</td><td>${o.litre.toLocaleString('tr-TR')} L</td><td>${o.km.toLocaleString('tr-TR')} KM</td><td><strong>${o.ortalama.toFixed(2).replace('.',',')} L / 100 KM</strong></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;padding:18px;">Aylık tüketim hesabı bulunmuyor.</td></tr>';
         document.getElementById('akaryakitYillikOzetBody').innerHTML=yillikOzet.map(o=>`<tr><td>${o.donem}</td><td>${o.adet}</td><td>${o.litre.toLocaleString('tr-TR')} L</td><td>${o.km.toLocaleString('tr-TR')} KM</td><td><strong>${o.ortalama.toFixed(2).replace('.',',')} L / 100 KM</strong></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;padding:18px;">Yıllık tüketim hesabı bulunmuyor.</td></tr>';
-        document.getElementById('akaryakitDetayBody').innerHTML=liste.map(h=>{const d=akaryakitDepolari().find(x=>x.id===h.depoId),t=tuketimler.get(h.id);return`<tr><td>${tarihFormati(h.tarih)}</td><td>${escapeDashboardText(d?.ad||'-')}</td><td>${Number(h.litre).toLocaleString('tr-TR')} L</td><td>${Number(h.km||0).toLocaleString('tr-TR')}</td><td>${escapeDashboardText(h.alan||'-')}</td><td>${escapeDashboardText(h.veren||'-')}</td><td>${t?t.toFixed(2).replace('.',',')+' L':'-'}</td></tr>`;}).join('')||'<tr><td colspan="7" style="text-align:center;padding:20px;">Kayıt yok.</td></tr>';
+        document.getElementById('akaryakitDetayBody').innerHTML=liste.map(h=>{const d=akaryakitDepolari().find(x=>String(x.id)===String(h.depoId)),t=tuketimler.get(h.id),kalan=stoklar.hareketler.get(String(h.id))?.kalan;return`<tr><td>${tarihFormati(h.tarih)}</td><td>${escapeDashboardText(d?.ad||'-')}</td><td>${Number(h.litre).toLocaleString('tr-TR')} L</td><td style="${Number.isFinite(kalan)&&kalan<0?'color:#b91c1c;':''}font-weight:700;white-space:nowrap;">${Number.isFinite(kalan)?kalan.toLocaleString('tr-TR')+' L':'-'}</td><td>${Number(h.km||0).toLocaleString('tr-TR')}</td><td>${escapeDashboardText(h.alan||'-')}</td><td>${escapeDashboardText(h.veren||'-')}</td><td>${t?t.toFixed(2).replace('.',',')+' L':'-'}</td></tr>`;}).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;">Kayıt yok.</td></tr>';
     }
     function akaryakitAracRaporAl(tur){
         const id=document.getElementById('akaryakitDetayAracId').value,arac=araclar.find(a=>String(a.id)===String(id)),liste=akaryakitAracDetayListesi(),yil=document.getElementById('akaryakitDetayYil').value,ay=document.getElementById('akaryakitDetayAy').value||'TÜM AYLAR',baslangic=document.getElementById('akaryakitDetayBaslangic').value,bitis=document.getElementById('akaryakitDetayBitis').value,donemEtiketi=baslangic||bitis?`${baslangic?tarihFormati(baslangic):'BAŞLANGIÇ'} - ${bitis?tarihFormati(bitis):'BUGÜN'}`:`${yil} ${ay}`,tuketimler=akaryakitTuketimleriniHesapla(),tumAraliklar=akaryakitTuketimAraliklari(id),araliklar=tumAraliklar.filter(a=>akaryakitDetayTarihAraligindaMi(a.sonTarih));
         if(!arac||!liste.length){alert('Raporlanacak yakıt kaydı bulunmuyor.');return;}
-        const teslimBaslik=['TARİH','DEPO','LİTRE','KM','ALAN','VEREN','100 KM TÜKETİM'],teslimSatir=liste.map(h=>{const d=akaryakitDepolari().find(x=>String(x.id)===String(h.depoId)),t=tuketimler.get(h.id);return[tarihFormati(h.tarih),d?.ad||'-',Number(h.litre||0),Number(h.km||0),h.alan||'-',h.veren||'-',t?Number(t.toFixed(2)):''];});
+        const stoklar=akaryakitStokHesaplariniHesapla(),teslimBaslik=['TARİH','DEPO','LİTRE','AÇILIŞ STOKU (LİTRE)','İŞLEM SONRASI KALAN (LİTRE)','KM','ALAN','VEREN','100 KM TÜKETİM'],teslimSatir=liste.map(h=>{const d=akaryakitDepolari().find(x=>String(x.id)===String(h.depoId)),t=tuketimler.get(h.id),acilis=stoklar.depolar.get(String(h.depoId))?.acilis,kalan=stoklar.hareketler.get(String(h.id))?.kalan;return[tarihFormati(h.tarih),d?.ad||'-',Number(h.litre||0),Number.isFinite(acilis)?acilis:'',Number.isFinite(kalan)?kalan:'',Number(h.km||0),h.alan||'-',h.veren||'-',t?Number(t.toFixed(2)):''];});
         const aralikBaslik=['ÖNCEKİ TARİH','SON TARİH','ÖNCEKİ KM','SON KM','YAPILAN KM','ALINAN LİTRE','100 KM TÜKETİM'],aralikSatir=araliklar.map(a=>[tarihFormati(a.oncekiTarih),tarihFormati(a.sonTarih),a.oncekiKm,a.sonKm,a.kmFarki,a.litre,Number(a.oran.toFixed(2))]);
         const ozetKaynagi=baslangic||bitis?araliklar:tumAraliklar,aylik=akaryakitTuketimDonemOzeti(ozetKaynagi.filter(a=>baslangic||bitis?true:String(a.sonTarih).startsWith(yil)),7),yillik=akaryakitTuketimDonemOzeti(ozetKaynagi,4),ozetBaslik=['DÖNEM','ALIM SAYISI','TOPLAM LİTRE','HESAPLANAN KM','ORTALAMA L/100 KM'],aylikSatir=aylik.map(o=>[o.donem,o.adet,o.litre,o.km,Number(o.ortalama.toFixed(2))]),yillikSatir=yillik.map(o=>[o.donem,o.adet,o.litre,o.km,Number(o.ortalama.toFixed(2))]),ad=`${arac.plaka}_YAKIT_RAPORU_${donemEtiketi}`.replaceAll(' ','_').replace(/[/:]/g,'-');
-        if(tur==='excel'){const wb=XLSX.utils.book_new(),ekle=(ad,veri,genislik)=>{const ws=XLSX.utils.aoa_to_sheet(veri);ws['!cols']=genislik.map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,ad);};ekle('Yakıt Teslimleri',[[`${arac.plaka} YAKIT RAPORU`,donemEtiketi],teslimBaslik,...teslimSatir],[18,18,12,14,24,24,18]);ekle('İki Yakıt Arası',[aralikBaslik,...aralikSatir],[16,16,14,14,14,14,18]);ekle('Aylık Özet',[ozetBaslik,...aylikSatir],[16,14,16,18,20]);ekle('Yıllık Özet',[ozetBaslik,...yillikSatir],[16,14,16,18,20]);XLSX.writeFile(wb,`${ad}.xlsx`);return;}
+        if(tur==='excel'){const wb=XLSX.utils.book_new(),ekle=(ad,veri,genislik)=>{const ws=XLSX.utils.aoa_to_sheet(veri);ws['!cols']=genislik.map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,ad);};ekle('Yakıt Teslimleri',[[`${arac.plaka} YAKIT RAPORU`,donemEtiketi],teslimBaslik,...teslimSatir],[18,18,12,22,28,14,24,24,18]);ekle('İki Yakıt Arası',[aralikBaslik,...aralikSatir],[16,16,14,14,14,14,18]);ekle('Aylık Özet',[ozetBaslik,...aylikSatir],[16,14,16,18,20]);ekle('Yıllık Özet',[ozetBaslik,...yillikSatir],[16,14,16,18,20]);XLSX.writeFile(wb,`${ad}.xlsx`);return;}
         const tablo=(basliklar,satirlar)=>`<table style="width:100%;border-collapse:collapse;font-size:8px;margin-bottom:16px;"><thead><tr>${basliklar.map(b=>`<th style="padding:6px;border:1px solid #cbd5e1;background:#e2e8f0;">${b}</th>`).join('')}</tr></thead><tbody>${satirlar.map(s=>`<tr>${s.map(v=>`<td style="padding:5px;border:1px solid #cbd5e1;">${escapeDashboardText(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`,toplam=liste.reduce((s,h)=>s+Number(h.litre||0),0),alan=document.createElement('div');alan.style.cssText='padding:18px;font-family:Arial;color:#0f172a;';alan.innerHTML=`<h2 style="margin:0 0 4px;">${escapeDashboardText(arac.plaka)} ARAÇ YAKIT RAPORU</h2><p style="margin:0 0 14px;color:#64748b;">${escapeDashboardText(donemEtiketi)} · ${liste.length} kayıt · Toplam ${toplam.toLocaleString('tr-TR')} litre</p><h3>İki Yakıt Alımı Arasındaki Tüketim</h3>${tablo(aralikBaslik,aralikSatir)}<h3>Aylık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,aylikSatir)}<h3>Yıllık Tüketim Ortalamaları</h3>${tablo(ozetBaslik,yillikSatir)}<h3>Yakıt Teslim Kayıtları</h3>${tablo(teslimBaslik,teslimSatir)}`;return window.fdPdfOnizlemeUret?.(alan,`${ad}.pdf`,{yon:'landscape',altBaslik:`${arac.plaka} Yakıt Raporu`});
     }
 
@@ -25710,11 +25757,90 @@ function fdAracListeCiz(){
         return report(record.basliklar?.anaBaslik || 'Personel Vardiya Listesi',fields,output,(row,field) => row[field.key],{subtitle,footnotes:notes ? ['Notlar: ' + notes] : []});
     }
 
+    function fuelStock() {
+        const calculate = typeof akaryakitStokHesaplariniHesapla === 'function' ? akaryakitStokHesaplariniHesapla : root.akaryakitStokHesaplariniHesapla;
+        // Calculate before selecting report rows: a depot also serves other vehicles and periods.
+        return typeof calculate === 'function' ? calculate() : {hareketler:new Map(),depolar:new Map()};
+    }
+
+    function mapRecord(map, id) {
+        return map?.get?.(String(id)) ?? map?.get?.(id);
+    }
+
+    function stockNumber(value) {
+        if (typeof value === 'number') return Number.isFinite(value) ? value : '';
+        if (value == null || String(value).trim() === '') return '';
+        return root.fdOutputModels?.numberValue?.(value) ?? '';
+    }
+
+    function fuelDeliveries(records, stock, detail = false) {
+        const cars = typeof araclar !== 'undefined' ? araclar : root.araclar;
+        const depots = typeof akaryakitDepolari === 'function' ? akaryakitDepolari() : [];
+        const consumption = typeof akaryakitTuketimleriniHesapla === 'function' ? akaryakitTuketimleriniHesapla() : new Map();
+        return records.map(record => {
+            const car = list(cars).find(item => String(item.id) === String(record.aracId));
+            const depot = list(depots).find(item => String(item.id) === String(record.depoId));
+            const rate = mapRecord(consumption, record.id), movement = mapRecord(stock.hareketler, record.id), depotStock = mapRecord(stock.depolar, record.depoId);
+            return {
+                tarih:date(record.tarih),depo:depot?.ad || '-',plaka:car?.plaka || '-',islem:record.tur === 'giris' ? 'DEPOYA GİRİŞ' : 'ARACA VERİLEN',
+                litre:numeric(record.litre),depoBaslangic:stockNumber(depotStock?.acilis),kalanDepoLitre:stockNumber(movement?.kalan),
+                km:detail || record.km ? numeric(record.km) : '',alan:record.alan || '-',veren:record.veren || '-',
+                tuketim:typeof rate === 'number' && Number.isFinite(rate) ? Number(rate.toFixed(2)) : ''
+            };
+        });
+    }
+
+    function fuelDeliveryFields(detail = false) {
+        return [
+            {key:'tarih',label:'Tarih',type:'date'},{key:'depo',label:'Depo'},
+            ...(!detail ? [{key:'plaka',label:'Plaka'},{key:'islem',label:'İşlem'}] : []),
+            {key:'litre',label:'Litre',type:'number'},
+            {key:'depoBaslangic',label:'Açılış Stoku (Litre)',type:'number'},
+            {key:'kalanDepoLitre',label:'İşlem Sonrası Kalan (Litre)',type:'number'},
+            {key:'km',label:'KM',type:'number'},{key:'alan',label:'Alan'},{key:'veren',label:'Veren'},
+            {key:'tuketim',label:'100 KM Tüketim',type:'number'}
+        ];
+    }
+
+    function fuelMovements() {
+        if (typeof akaryakitFiltrelenmisListe !== 'function') return null;
+        const stock = fuelStock(), records = list(akaryakitFiltrelenmisListe());
+        const period = el('akaryakitAyFiltre')?.value || 'TÜM DÖNEMLER';
+        const incoming = records.filter(record => record.tur === 'giris').reduce((sum,record) => sum + Number(record.litre || 0),0);
+        const outgoing = records.filter(record => record.tur === 'cikis').reduce((sum,record) => sum + Number(record.litre || 0),0);
+        return report('Akaryakıt Hareket Raporu',fuelDeliveryFields(),fuelDeliveries(records,stock),(row,field) => row[field.key],{subtitle:period + ' · ' + records.length + ' kayıt · Giriş ' + incoming.toLocaleString('tr-TR') + ' L · Verilen ' + outgoing.toLocaleString('tr-TR') + ' L'});
+    }
+
+    function fuelVehicleHistory() {
+        if (typeof akaryakitAracDetayListesi !== 'function' || typeof akaryakitTuketimAraliklari !== 'function' || typeof akaryakitTuketimDonemOzeti !== 'function' || typeof akaryakitDetayTarihAraligindaMi !== 'function') return null;
+        const stock = fuelStock(), records = list(akaryakitAracDetayListesi()), id = el('akaryakitDetayAracId')?.value || '';
+        const cars = typeof araclar !== 'undefined' ? araclar : root.araclar, car = list(cars).find(item => String(item.id) === String(id));
+        const year = el('akaryakitDetayYil')?.value || '', month = el('akaryakitDetayAy')?.value || 'TÜM AYLAR';
+        const start = el('akaryakitDetayBaslangic')?.value || '', end = el('akaryakitDetayBitis')?.value || '';
+        const period = start || end ? (start ? date(start) : 'BAŞLANGIÇ') + ' - ' + (end ? date(end) : 'BUGÜN') : year + ' ' + month;
+        const subtitle = [car?.plaka,period].filter(Boolean).join(' · ');
+        const allIntervals = list(akaryakitTuketimAraliklari(id)), intervals = allIntervals.filter(interval => akaryakitDetayTarihAraligindaMi(interval.sonTarih));
+        const summarySource = start || end ? intervals : allIntervals;
+        const monthly = list(akaryakitTuketimDonemOzeti(summarySource.filter(interval => start || end ? true : String(interval.sonTarih).startsWith(year)),7));
+        const yearly = list(akaryakitTuketimDonemOzeti(summarySource,4));
+        const intervalFields = [{key:'oncekiTarih',label:'Önceki Tarih',type:'date'},{key:'sonTarih',label:'Son Tarih',type:'date'},{key:'oncekiKm',label:'Önceki KM',type:'number'},{key:'sonKm',label:'Son KM',type:'number'},{key:'kmFarki',label:'Yapılan KM',type:'number'},{key:'litre',label:'Alınan Litre',type:'number'},{key:'oran',label:'100 KM Tüketim',type:'number'}];
+        const summaryFields = [{key:'donem',label:'Dönem'},{key:'adet',label:'Alım Sayısı',type:'number'},{key:'litre',label:'Toplam Litre',type:'number'},{key:'km',label:'Hesaplanan KM',type:'number'},{key:'ortalama',label:'Ortalama L/100 KM',type:'number'}];
+        const read = (row,field) => field.type === 'date' ? date(row[field.key]) : field.type === 'number' ? ['oran','ortalama'].includes(field.key) && typeof row[field.key] === 'number' ? Number(row[field.key].toFixed(2)) : numeric(row[field.key]) : text(row[field.key]);
+        return [
+            ...report('Yakıt Teslimleri',fuelDeliveryFields(true),fuelDeliveries(records,stock,true),(row,field) => row[field.key],{subtitle}),
+            ...report('İki Yakıt Arası',intervalFields,intervals,read,{subtitle}),
+            ...report('Aylık Özet',summaryFields,monthly,read,{subtitle}),
+            ...report('Yıllık Özet',summaryFields,yearly,read,{subtitle})
+        ];
+    }
+
     async function get(group) {
         const handler = source(group);
         if (/openPersonelExportModal|exportSelectedPersonelFields|exportPersonelTo(?:Excel|PDF)|\bpersonnel\b/.test(handler)) return personnel();
         if (/aracExportModaliniAc|aracSeciliAlanlariAktar|\bvehicle-list\b/.test(handler)) return vehicles();
         if (/vardiya(?:ExcelAl|PdfAl|GoruntusuAl)|\bweekly-shift-list\b/.test(handler)) return shifts();
+        if (/akaryakitAracRaporAl|\bfuel-vehicle-history\b/.test(handler)) return fuelVehicleHistory();
+        if (/akaryakitRaporAl|\bfuel-movements\b/.test(handler)) return fuelMovements();
         return null;
     }
 
@@ -28134,14 +28260,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v233';
+      const anahtar='fd-pwa-yenileme-v234';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=233',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=234',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
