@@ -3996,6 +3996,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let izinKurtarmaAdaylari = [];
     
     let activeUser = null;
+    let fdPortalBellekOturumu = '';
     let supabaseProfile = null;
     let aktifKullaniciOturumId = '';
     let aktifKullaniciOturumToken = '';
@@ -4208,6 +4209,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         fdUzakVeriImzalari.set(fdUzakImzaAnahtari(anahtar, yil), `${satirlar.length}:${sonGuncelleme}`);
     }
     async function fdUzakAnahtarImzasiniGetir(anahtar, yil) {
+        const fdVeriOturumu = fdPortalVeriOturumu();
         let sorgu = supabaseClient.from('portal_records')
             .select('updated_at', { count:'exact' })
             .eq('company_id', activeUser.sirketId)
@@ -4216,11 +4218,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             .limit(1);
         if (anahtar === 'puantaj') sorgu = sorgu.eq('record_year', Number(yil));
         const { data, error, count } = await sorgu;
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; veri kontrolü iptal edildi.');
         if (error) throw error;
         return `${Number(count || 0)}:${String(data?.[0]?.updated_at || '')}`;
     }
     async function fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil) {
-        const imzaAnahtari = fdUzakImzaAnahtari(anahtar, yil);
+        const imzaAnahtari = fdPortalVeriOturumu() + '|' + fdUzakImzaAnahtari(anahtar, yil);
         const devamEden = fdUzakImzaKontrolSozleri.get(imzaAnahtari);
         if (devamEden) return devamEden;
         const kontrolSozu = fdUzakAnahtarImzasiniGetir(anahtar, yil);
@@ -4228,20 +4231,21 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try { return await kontrolSozu; }
         finally { if (fdUzakImzaKontrolSozleri.get(imzaAnahtari) === kontrolSozu) fdUzakImzaKontrolSozleri.delete(imzaAnahtari); }
     }
-    async function fdUzakModuldeDegisiklikVarMi(anahtarlar, yil) {
+    async function fdUzakDegisenAnahtarlariGetir(anahtarlar, yil) {
         const sonuclar = await Promise.all(anahtarlar.map(async anahtar => ({
             anahtar,
             imza:await fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil)
         })));
-        let degisti = false;
+        const degisenler = [];
         sonuclar.forEach(({ anahtar, imza }) => {
             const imzaAnahtari = fdUzakImzaAnahtari(anahtar, yil);
             const onceki = fdUzakVeriImzalari.get(imzaAnahtari);
-            if (onceki !== undefined && onceki !== imza) degisti = true;
+            if (onceki === undefined || onceki !== imza) degisenler.push(anahtar);
             if (onceki === undefined || onceki === imza) fdUzakVeriImzalari.set(imzaAnahtari, imza);
         });
-        return degisti;
+        return degisenler;
     }
+    async function fdUzakModuldeDegisiklikVarMi(anahtarlar, yil) { return (await fdUzakDegisenAnahtarlariGetir(anahtarlar, yil)).length > 0; }
     async function fdUzakModulImzalariniYenile(anahtarlar, yil) {
         const sonuclar = await Promise.all(anahtarlar.map(async anahtar => ({ anahtar, imza:await fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil) })));
         sonuclar.forEach(({ anahtar, imza }) => fdUzakVeriImzalari.set(fdUzakImzaAnahtari(anahtar, yil), imza));
@@ -4282,54 +4286,67 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return false;
         const fdVeriOturumu = fdPortalVeriOturumu();
         let veriDegisti = false;
+        let onbellekDegisti = false;
         const yil = Number(kayitYili || kayitYiliniSeciliEkrandanBul(modul) || new Date().getFullYear());
         aktifKayitYili = String(yil);
+        const puantajKapsamAnahtari = fdVeriOturumu + '|puantaj-yuklu-yil', puantajIstekAnahtari = fdVeriOturumu + '|puantaj-istenen-yil';
+        if ((SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat()).includes('puantaj') && (!Array.isArray(secenekler.anahtarlar) || secenekler.anahtarlar.includes('puantaj'))) fdUzakAnahtarSonYukleme.set(puantajIstekAnahtari, yil);
         const sirketOnbellekAnahtari = String(activeUser.sirketId);
+        const sirketIstekAnahtari = fdVeriOturumu + '|' + sirketOnbellekAnahtari;
         const sirketYuklemeZamani = Number(fdSirketSonYukleme.get(sirketOnbellekAnahtari) || 0);
         if (secenekler.sirketYukle !== false && (secenekler.onbellekKullan === false || Date.now() - sirketYuklemeZamani >= FD_SIRKET_AYARI_ONBELLEK_SURESI)) {
-            let sirketYuklemeSozu = fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari);
+            let sirketYuklemeSozu = fdSirketYuklemeSozleri.get(sirketIstekAnahtari);
             if (!sirketYuklemeSozu) {
-                sirketYuklemeSozu = supabaseSirketiYukle().then(() => fdSirketSonYukleme.set(sirketOnbellekAnahtari, Date.now()));
-                fdSirketYuklemeSozleri.set(sirketOnbellekAnahtari, sirketYuklemeSozu);
+                sirketYuklemeSozu = supabaseSirketiYukle().then(() => { if (fdPortalVeriOturumuGecerli(fdVeriOturumu)) { fdSirketSonYukleme.set(sirketOnbellekAnahtari, Date.now()); onbellekDegisti = true; } });
+                fdSirketYuklemeSozleri.set(sirketIstekAnahtari, sirketYuklemeSozu);
             }
             try { await sirketYuklemeSozu; veriDegisti = true; }
-            finally { if (fdSirketYuklemeSozleri.get(sirketOnbellekAnahtari) === sirketYuklemeSozu) fdSirketYuklemeSozleri.delete(sirketOnbellekAnahtari); }
+            finally { if (fdSirketYuklemeSozleri.get(sirketIstekAnahtari) === sirketYuklemeSozu) fdSirketYuklemeSozleri.delete(sirketIstekAnahtari); }
         }
         if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return false;
         const anahtarlar = SUPABASE_MODULLERI[modul] || Object.values(SUPABASE_MODULLERI).flat();
-        const benzersiz = [...new Set(anahtarlar)];
+        const benzersiz = [...new Set(anahtarlar)].filter(anahtar => !Array.isArray(secenekler.anahtarlar) || secenekler.anahtarlar.includes(anahtar));
         await Promise.all(benzersiz.map(async anahtar => {
             const yuklemeAnahtari = fdUzakImzaAnahtari(anahtar, yil);
-            const devamEden = fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari);
-            if (devamEden) return devamEden;
+            const istekAnahtari = fdVeriOturumu + '|' + yuklemeAnahtari;
+            const devamEden = fdUzakAnahtarYuklemeSozleri.get(istekAnahtari);
+            if (devamEden) { if (await devamEden) veriDegisti = true; return; }
             const sonYukleme = Number(fdUzakAnahtarSonYukleme.get(yuklemeAnahtari) || 0);
-            if (secenekler.onbellekKullan !== false && yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI) return;
-            let dogrulananUzakImza = '';
-            if (secenekler.onbellekKullan !== false && fdUzakAnahtarSonYukleme.has(yuklemeAnahtari) && !(activeUser?.rol === 'Personel' && anahtar === 'vardiya')) {
-                dogrulananUzakImza = await fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil);
-                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
-                const oncekiImza = fdUzakVeriImzalari.get(yuklemeAnahtari);
-                if (oncekiImza === undefined || oncekiImza === dogrulananUzakImza) {
-                    fdUzakVeriImzalari.set(yuklemeAnahtari, dogrulananUzakImza);
-                    fdUzakAnahtarSonYukleme.set(yuklemeAnahtari, Date.now());
-                    return;
-                }
-            }
+            const yilUygun = anahtar !== 'puantaj' || fdUzakAnahtarSonYukleme.get(puantajKapsamAnahtari) === yil;
+            if (secenekler.onbellekKullan !== false && yilUygun && yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI) return;
             const yuklemeSozu = (async () => {
+                let dogrulananUzakImza = '';
+                if (secenekler.onbellekKullan !== false && yilUygun && fdUzakAnahtarSonYukleme.has(yuklemeAnahtari) && !(activeUser?.rol === 'Personel' && anahtar === 'vardiya')) {
+                    dogrulananUzakImza = await fdUzakAnahtarImzasiniPaylasimliGetir(anahtar, yil);
+                    if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return false;
+                    const oncekiImza = fdUzakVeriImzalari.get(yuklemeAnahtari);
+                    if (oncekiImza !== undefined && oncekiImza === dogrulananUzakImza) {
+                        fdUzakAnahtarSonYukleme.set(yuklemeAnahtari, Date.now());
+                        return false;
+                    }
+                }
+                const yerelJson = JSON.stringify(veriDizisiniGetir(anahtar));
+                if (veriSonKayitGoruntuleri.has(anahtar) && veriSonKayitGoruntuleri.get(anahtar) !== yerelJson) return false;
                 const data = await supabasePortalModulKayitlariniTumunuGetir(anahtar, yil);
-                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return;
+                if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return false;
+                if (JSON.stringify(veriDizisiniGetir(anahtar)) !== yerelJson || (secenekler.yerelDegisiklikleriKoru && supabaseKaydetmeBekleyen > 0)) return false;
+                if (anahtar === 'puantaj' && fdUzakAnahtarSonYukleme.get(puantajIstekAnahtari) !== yil) return false;
                 const kayitlar = data.map(kayit => ({ ...(kayit.data || {}), id: kayit.data?.id ?? kayit.legacy_id }));
                 supabaseDiziAta(anahtar, kayitlar);
                 veriDegisti = true;
+                onbellekDegisti = true;
                 fdUzakImzayiSatirlardanKaydet(anahtar, yil, data);
                 if (dogrulananUzakImza) fdUzakVeriImzalari.set(yuklemeAnahtari, dogrulananUzakImza);
                 fdUzakAnahtarSonYukleme.set(yuklemeAnahtari, Date.now());
+                if (anahtar === 'puantaj') fdUzakAnahtarSonYukleme.set(puantajKapsamAnahtari, yil);
+                return true;
             })();
-            fdUzakAnahtarYuklemeSozleri.set(yuklemeAnahtari, yuklemeSozu);
+            fdUzakAnahtarYuklemeSozleri.set(istekAnahtari, yuklemeSozu);
             try { await yuklemeSozu; }
-            finally { if (fdUzakAnahtarYuklemeSozleri.get(yuklemeAnahtari) === yuklemeSozu) fdUzakAnahtarYuklemeSozleri.delete(yuklemeAnahtari); }
+            finally { if (fdUzakAnahtarYuklemeSozleri.get(istekAnahtari) === yuklemeSozu) fdUzakAnahtarYuklemeSozleri.delete(istekAnahtari); }
         }));
-        veriOnbelleginiKaydet();
+        if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) return false;
+        if (onbellekDegisti) veriOnbelleginiKaydet();
         return veriDegisti;
     }
 
@@ -4341,96 +4358,105 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         return anahtarlar.every(anahtar => {
             const yuklemeAnahtari = fdUzakImzaAnahtari(anahtar, yil);
             const sonYukleme = Number(fdUzakAnahtarSonYukleme.get(yuklemeAnahtari) || 0);
-            return yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI;
+            return (anahtar !== 'puantaj' || fdUzakAnahtarSonYukleme.get(fdPortalVeriOturumu() + '|puantaj-yuklu-yil') === yil) && yuklenenVeriler.has(anahtar) && Date.now() - sonYukleme < FD_AYNI_VERI_YUKLEME_KORUMASI;
         });
     }
 
     let supabaseKaydetmeKuyrugu = Promise.resolve();
     let supabaseKaydetmeBekleyen = 0;
     function supabaseVerileriKaydet() {
+        const fdVeriOturumu = fdPortalVeriOturumu();
         supabaseKaydetmeBekleyen++;
-        const islem = supabaseKaydetmeKuyrugu.catch(() => {}).then(() => supabaseVerileriKaydetGercek()).finally(() => { supabaseKaydetmeBekleyen = Math.max(0, supabaseKaydetmeBekleyen - 1); });
+        const islem = supabaseKaydetmeKuyrugu.catch(() => {}).then(() => { if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; önceki kayıt işlemi iptal edildi.'); return supabaseVerileriKaydetGercek(fdVeriOturumu); }).finally(() => { supabaseKaydetmeBekleyen = Math.max(0, supabaseKaydetmeBekleyen - 1); });
         supabaseKaydetmeKuyrugu = islem;
         return islem;
     }
 
-    async function supabaseVerileriKaydetGercek() {
+    async function supabaseVerileriKaydetGercek(fdVeriOturumu = fdPortalVeriOturumu()) {
         if (!activeUser?.sirketId) throw new Error('Şirket oturumu bulunamadı.');
-        if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) throw new Error('İSG hesabı yalnızca İSG modülündeki kayıtları değiştirebilir.');
-        if (activeUser?.rol === 'Personel') {
-            veriOnbelleginiKaydet();
-            return;
-        }
+        const kapsamDogrula = () => { if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; önceki kayıt işlemi iptal edildi.'); };
+        kapsamDogrula();
+        const sirketId = String(activeUser.sirketId);
+        if (activeUser?.rol === 'Personel') { veriOnbelleginiKaydet(); return; }
         if (yuklenenVeriler.has('sirketler') && veriDegistiMi('sirketler')) {
-            const sirket = sirketler.find(item => String(item.id) === String(activeUser.sirketId));
+            const sirketlerJson = JSON.stringify(sirketler), sirket = JSON.parse(sirketlerJson).find(item => String(item.id) === sirketId);
             if (sirket) {
-                const { error } = await supabaseClient.from('companies').update({
-                    short_name: sirket.kisaAd || sirket.ad || null,
-                    title: sirket.unvan || sirket.kisaAd || sirket.ad || null,
-                    data: sirket
-                }).eq('id', activeUser.sirketId);
-                if (error) throw error;
+                const { error } = await supabaseClient.from('companies').update({ short_name:sirket.kisaAd || sirket.ad || null, title:sirket.unvan || sirket.kisaAd || sirket.ad || null, data:sirket }).eq('id', sirketId);
+                kapsamDogrula(); if (error) throw error;
             }
-            veriKayitGoruntusunuYenile('sirketler');
+            veriSonKayitGoruntuleri.set('sirketler', sirketlerJson);
         }
         const anahtarlar = ['personeller', 'izinler', 'kullanicilar', 'puantaj', 'subeler', 'avanslar', 'ekOdemeler', 'kkd', 'vardiya', 'irsaliyeler', 'kiratakip', 'ihracat', 'icralar', 'araclar', 'akaryakit'];
-        const atlananKapaliDonemler = new Set();
-        let basariliKayitSayisi = 0;
+        const atlananKapaliDonemler = new Set(); let basariliKayitSayisi = 0;
         for (const anahtar of anahtarlar) {
-            if (!yuklenenVeriler.has(anahtar) || !veriDegistiMi(anahtar)) continue;
-            const yeni = veriDizisiniGetir(anahtar);
-            let eski = [];
-            try { eski = JSON.parse(veriSonKayitGoruntuleri.get(anahtar) || '[]'); } catch (e) {}
-            const eskiHarita = new Map(eski.map((kayit, index) => [supabaseKayitAnahtari(anahtar, kayit, index), JSON.stringify(kayit)]));
-            const yeniHarita = new Map(yeni.map((kayit, index) => [supabaseKayitAnahtari(anahtar, kayit, index), kayit]));
+            kapsamDogrula(); if (!yuklenenVeriler.has(anahtar)) continue;
+            // Snapshot the values sent, not mutable local data after an awaited reply.
+            const yeniJson = JSON.stringify(veriDizisiniGetir(anahtar));
+            if (veriSonKayitGoruntuleri.get(anahtar) === yeniJson) continue;
+            const yeni = JSON.parse(yeniJson); let eski = [];
+            try { eski = JSON.parse(veriSonKayitGoruntuleri.get(anahtar) || '[]'); } catch (_) {}
+            const eskiHarita = new Map(eski.map((kayit,index) => [supabaseKayitAnahtari(anahtar,kayit,index),JSON.stringify(kayit)]));
+            const yeniHarita = new Map(yeni.map((kayit,index) => [supabaseKayitAnahtari(anahtar,kayit,index),kayit]));
+            const sunucuHaritasi = new Map(eski.map((kayit,index) => [supabaseKayitAnahtari(anahtar,kayit,index),kayit]));
+            const uygulandi = (satirlar, sunucuSatirlari) => {
+                const donen = new Map((sunucuSatirlari || []).map(s => [String(s.legacy_id),s.data]));
+                for (const satir of satirlar) sunucuHaritasi.set(satir.legacy_id, donen.get(satir.legacy_id) || satir.data);
+            };
+            const degismediyseGeriAl = (legacyId, gonderilen) => {
+                const guncel = veriDizisiniGetir(anahtar).find((kayit,index) => supabaseKayitAnahtari(anahtar,kayit,index) === legacyId);
+                // Do not overwrite an edit/re-add made while the rejected request was pending.
+                if (gonderilen === undefined ? !guncel : JSON.stringify(guncel) === JSON.stringify(gonderilen)) supabaseYerelKaydiGeriAl(anahtar,legacyId,eskiHarita.get(legacyId));
+            };
             const degisenler = [];
-            yeniHarita.forEach((kayit, legacyId) => {
-                if (eskiHarita.get(legacyId) === JSON.stringify(kayit)) return;
-                degisenler.push({ company_id: activeUser.sirketId, module: anahtar, legacy_id: legacyId, record_year: supabaseKayitYili(anahtar, kayit), employee_legacy_id: supabasePersonelKimligi(kayit, anahtar) || null, data: kayit });
-            });
-            if (degisenler.length) {
-                let donemKayitIstegi = supabaseClient.from('portal_records').upsert(degisenler, { onConflict: 'company_id,module,legacy_id' });
-                if (anahtar === 'personeller') donemKayitIstegi = donemKayitIstegi.select('module,legacy_id,data');
-                const { error, data:kaydedilenSatirlar } = await donemKayitIstegi;
-                if (!error && anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatirlar);
-                if (!error) basariliKayitSayisi += degisenler.length;
-                if (error && !supabaseKapaliDonemHatasiMi(error)) throw error;
-                if (error) {
-                    for (const satir of degisenler) {
-                        let donemSatirIstegi = supabaseClient.from('portal_records').upsert(satir, { onConflict: 'company_id,module,legacy_id' });
-                        if (anahtar === 'personeller') donemSatirIstegi = donemSatirIstegi.select('module,legacy_id,data');
-                        const { error: satirHatasi, data:kaydedilenSatir } = await donemSatirIstegi;
-                        if (!satirHatasi && anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatir);
-                        if (!satirHatasi) { basariliKayitSayisi++; continue; }
-                        if (!supabaseKapaliDonemHatasiMi(satirHatasi)) throw satirHatasi;
-                        atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(satirHatasi));
-                        supabaseYerelKaydiGeriAl(anahtar, satir.legacy_id, eskiHarita.get(satir.legacy_id));
+            yeniHarita.forEach((kayit,legacyId) => { if (eskiHarita.get(legacyId) !== JSON.stringify(kayit)) degisenler.push({company_id:sirketId,module:anahtar,legacy_id:legacyId,record_year:supabaseKayitYili(anahtar,kayit),employee_legacy_id:supabasePersonelKimligi(kayit,anahtar)||null,data:kayit}); });
+            try {
+                if (degisenler.length) {
+                    let istek = supabaseClient.from('portal_records').upsert(degisenler,{onConflict:'company_id,module,legacy_id'});
+                    if (anahtar === 'personeller') istek = istek.select('module,legacy_id,data');
+                    const {error,data:kaydedilenSatirlar} = await istek; kapsamDogrula();
+                    if (!error) {
+                        if (anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatirlar);
+                        uygulandi(degisenler,kaydedilenSatirlar); basariliKayitSayisi += degisenler.length;
+                    } else {
+                        if (!supabaseKapaliDonemHatasiMi(error)) throw error;
+                        for (const satir of degisenler) {
+                            kapsamDogrula(); let satirIstegi = supabaseClient.from('portal_records').upsert(satir,{onConflict:'company_id,module,legacy_id'});
+                            if (anahtar === 'personeller') satirIstegi = satirIstegi.select('module,legacy_id,data');
+                            const {error:satirHatasi,data:kaydedilenSatir} = await satirIstegi; kapsamDogrula();
+                            if (!satirHatasi) { if (anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatir); uygulandi([satir],kaydedilenSatir); basariliKayitSayisi++; continue; }
+                            if (!supabaseKapaliDonemHatasiMi(satirHatasi)) throw satirHatasi;
+                            atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(satirHatasi));
+                            degismediyseGeriAl(satir.legacy_id,satir.data);
+                        }
                     }
                 }
-            }
-            const silinenler = [...eskiHarita.keys()].filter(legacyId => !yeniHarita.has(legacyId));
-            if (silinenler.length) {
-                const { error } = await supabaseClient.from('portal_records').delete().eq('company_id', activeUser.sirketId).eq('module', anahtar).in('legacy_id', silinenler);
-                if (!error) basariliKayitSayisi += silinenler.length;
-                if (error && !supabaseKapaliDonemHatasiMi(error)) throw error;
-                if (error) {
-                    for (const legacyId of silinenler) {
-                        const { error: satirHatasi } = await supabaseClient.from('portal_records').delete().eq('company_id', activeUser.sirketId).eq('module', anahtar).eq('legacy_id', legacyId);
-                        if (!satirHatasi) { basariliKayitSayisi++; continue; }
-                        if (!supabaseKapaliDonemHatasiMi(satirHatasi)) throw satirHatasi;
-                        atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(satirHatasi));
-                        supabaseYerelKaydiGeriAl(anahtar, legacyId, eskiHarita.get(legacyId));
+                const silinenler = [...eskiHarita.keys()].filter(id => !yeniHarita.has(id));
+                if (silinenler.length) {
+                    kapsamDogrula(); const {error} = await supabaseClient.from('portal_records').delete().eq('company_id',sirketId).eq('module',anahtar).in('legacy_id',silinenler); kapsamDogrula();
+                    if (!error) { silinenler.forEach(id=>sunucuHaritasi.delete(id)); basariliKayitSayisi += silinenler.length; }
+                    else {
+                        if (!supabaseKapaliDonemHatasiMi(error)) throw error;
+                        for (const legacyId of silinenler) {
+                            kapsamDogrula(); const {error:satirHatasi} = await supabaseClient.from('portal_records').delete().eq('company_id',sirketId).eq('module',anahtar).eq('legacy_id',legacyId); kapsamDogrula();
+                            if (!satirHatasi) { sunucuHaritasi.delete(legacyId); basariliKayitSayisi++; continue; }
+                            if (!supabaseKapaliDonemHatasiMi(satirHatasi)) throw satirHatasi;
+                            atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(satirHatasi)); degismediyseGeriAl(legacyId);
+                        }
                     }
                 }
+            } finally {
+                // A partial success is acknowledged individually. Later edits remain dirty.
+                if (fdPortalVeriOturumuGecerli(fdVeriOturumu)) {
+                    const sirali = [...yeniHarita.keys()].filter(id=>sunucuHaritasi.has(id)).map(id=>sunucuHaritasi.get(id));
+                    for (const [id,kayit] of sunucuHaritasi) if (!yeniHarita.has(id)) sirali.push(kayit);
+                    veriSonKayitGoruntuleri.set(anahtar,JSON.stringify(sirali));
+                }
             }
-            veriKayitGoruntusunuYenile(anahtar);
         }
-        veriOnbelleginiKaydet();
+        kapsamDogrula(); veriOnbelleginiKaydet();
         if (atlananKapaliDonemler.size) {
             const aylar = [...atlananKapaliDonemler].filter(Boolean).join(', ');
-            showToast(basariliKayitSayisi
-                ? 'İşleminiz kaydedildi. ' + (aylar || 'Kapalı dönem') + ' kapalı dönemine ait cihazdaki eski bir değişiklik aktarılmadan temizlendi.'
-                : (aylar || 'Kapalı dönem') + ' kapalı olduğu için bu döneme ait değişiklik kaydedilmedi ve ekrandaki eski değer geri getirildi.', 'warning');
+            showToast(basariliKayitSayisi ? 'İşleminiz kaydedildi. '+(aylar||'Kapalı dönem')+' kapalı dönemine ait cihazdaki eski bir değişiklik aktarılmadan temizlendi.' : (aylar||'Kapalı dönem')+' kapalı olduğu için bu döneme ait değişiklik kaydedilmedi ve ekrandaki eski değer geri getirildi.','warning');
         }
     }
 
@@ -4622,12 +4648,14 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         try{
             const anahtarlar=[...new Set(SUPABASE_MODULLERI[bilgi.modul]||[])];
             const yil=Number(kayitYiliniSeciliEkrandanBul(bilgi.modul)||new Date().getFullYear());
-            if(!anahtarlar.length||!(await fdUzakModuldeDegisiklikVarMi(anahtarlar,yil)))return;
-            const once=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
-            await supabaseVerileriniYukle(bilgi.modul,yil,{sirketYukle:false,onbellekKullan:false});
-            await fdUzakModulImzalariniYenile(anahtarlar,yil);
-            const sonra=JSON.stringify(anahtarlar.map(k=>veriDizisiniGetir(k)));
-            if(once!==sonra){fdOtomatikEsitlemeEkraniniCiz(bilgi.id);showToast('Yeni kay\u0131tlar otomatik g\u00fcncellendi.','success');}
+            if(!anahtarlar.length)return;
+            const fdVeriOturumu=fdPortalVeriOturumu(),degisenler=await fdUzakDegisenAnahtarlariGetir(anahtarlar,yil);
+            if(!fdPortalVeriOturumuGecerli(fdVeriOturumu)||!degisenler.length||fdOtomatikEsitlemeEngelliMi())return;
+            const once=JSON.stringify(degisenler.map(k=>veriDizisiniGetir(k)));
+            await supabaseVerileriniYukle(bilgi.modul,yil,{sirketYukle:false,onbellekKullan:false,anahtarlar:degisenler,yerelDegisiklikleriKoru:true});
+            if(!fdPortalVeriOturumuGecerli(fdVeriOturumu))return;
+            const sonra=JSON.stringify(degisenler.map(k=>veriDizisiniGetir(k)));
+            if(once!==sonra&&fdOtomatikEsitlemeBilgisi().id===bilgi.id&&!fdOtomatikEsitlemeEngelliMi()){fdOtomatikEsitlemeEkraniniCiz(bilgi.id);showToast('Yeni kay\u0131tlar otomatik g\u00fcncellendi.','success');}
         }catch(error){console.warn('Otomatik veri e\u015fitleme:',error);}
         finally{fdOtomatikEsitlemeCalisiyor=false;}
     }
@@ -4646,6 +4674,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const isgHesabi = ['IsgUzmani','IsyeriHekimi'].includes(profil.role);
         const { data: sirket } = isgHesabi ? {data:null} : await supabaseClient.from('companies').select('id,short_name,title').eq('id', profil.company_id).maybeSingle();
         activeUser = { username: profil.full_name || kullanici.email, yetkiKullaniciAdi:String(kullanici.email || '').split('@')[0], rol: profil.role || 'Personel', tcNo: String(profil.employee_legacy_id || ''), sirketId: profil.company_id, sirketAdi: sirket?.short_name || sirket?.title || '', supabaseUserId: kullanici.id, sifreDegismeli:Boolean(profil.must_change_password) };
+        if (!isgHesabi && fdPortalBellekOturumu !== fdPortalVeriOturumu()) {
+            window.fdPortalPrivateMemoryClear?.({ preserveCache:true });
+            fdPortalBellekOturumu = fdPortalVeriOturumu();
+            veriOnbelleginiYukle();
+        }
         if (profil.role === 'Admin' && String(kullanici.email || '').toLowerCase() === 'admin@kanalportal.local') {
             try {
                 const { data: epostaSonucu, error: epostaHatasi } = await supabaseClient.functions.invoke('manage-user', {
@@ -4861,6 +4894,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const ham = localStorage.getItem(VERI_ONBELLEK_ANAHTARI) || sessionStorage.getItem(VERI_ONBELLEK_ANAHTARI) || localStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI) || sessionStorage.getItem(ESKI_VERI_ONBELLEK_ANAHTARI);
             if (!ham) return;
             const veri = JSON.parse(ham);
+            // Cached payroll/records belong to the authenticated actor, not the device.
+            if (SUPABASE_MODE && (!activeUser?.supabaseUserId || veri.oturum !== fdPortalVeriOturumu())) return;
             if (!localStorage.getItem(VERI_ONBELLEK_ANAHTARI)) {
                 try { localStorage.setItem(VERI_ONBELLEK_ANAHTARI, ham); } catch (e) { sessionStorage.setItem(VERI_ONBELLEK_ANAHTARI, ham); }
             }
@@ -4908,7 +4943,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 ['akaryakit', veri.akaryakit],
                 ['sirketler', veri.sirketler],
                 ['subeler', veri.subeler]
-            ].forEach(([anahtar, dizi]) => { if (Array.isArray(dizi)) yuklenenVeriler.add(anahtar); });
+            // Server mode treats cache rows as previews, not acknowledged server data.
+            // Only an actual scoped load may make a module eligible for saving/deletion.
+            ].forEach(([anahtar, dizi]) => { if (!SUPABASE_MODE && Array.isArray(dizi)) yuklenenVeriler.add(anahtar); });
             personeller.forEach(p => p.id = String(p.id));
             izinler.forEach(i => { i.id = Number(i.id); i.pId = String(i.pId); i.gun = Number(i.gun); });
         } catch (error) {
@@ -4920,6 +4957,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)) return;
         const veri = {
             zaman: Date.now(),
+            oturum: SUPABASE_MODE ? fdPortalVeriOturumu() : '',
             personeller,
             izinler,
             kullanicilar: SUPABASE_MODE ? [] : kullanicilar,
@@ -6525,6 +6563,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         sessionStorage.removeItem('loggedInUser');
         activeUser = null;
         supabaseProfile = null;
+        window.fdPortalPrivateMemoryClear?.({ preserveCache:true });
+        fdPortalBellekOturumu = '';
         showHub();
     }
 
@@ -14813,9 +14853,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         fdMagicpassHaftalikVardiyaCache = new Map();
         personeller.filter(aktifSirketeAit).forEach(personel => {
             const personelId = String(personel.id || '');
-            if (personelId) fdMagicpassPersonelIdCache.set(personelId, personel);
+            if (personelId && !fdMagicpassPersonelIdCache.has(personelId)) fdMagicpassPersonelIdCache.set(personelId, personel);
             const cihazNo = String(personel.cihazPersonelNo || '').trim();
-            if (cihazNo) fdMagicpassPersonelCihazCache.set(cihazNo, personel);
+            if (cihazNo && !fdMagicpassPersonelCihazCache.has(cihazNo)) fdMagicpassPersonelCihazCache.set(cihazNo, personel);
         });
         vardiyaKayitlari.forEach(kayit => {
             if (!aktifSirketeAit(kayit)) return;
@@ -19343,7 +19383,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function magicpassGunHamHareketleriBul(personel,tarihKey){
         if(!personel||!tarihKey)return[];const vardiya=magicpassGunVardiyasi(personel,tarihKey),saatler=magicpassVardiyaSaatleri(vardiya,tarihKey),pencereBas=new Date(saatler.bas),pencereBit=new Date(saatler.bit);pencereBas.setHours(pencereBas.getHours()-4);pencereBit.setHours(pencereBit.getHours()+8);
-        return magicpassKayitlari('magicpassHareket').filter(k=>{const p=magicpassPersonelBul(k),zaman=new Date(k.zamanDamgasi);return p&&String(p.id)===String(personel.id)&&zaman>=pencereBas&&zaman<=pencereBit}).sort((a,b)=>String(a.zamanDamgasi).localeCompare(String(b.zamanDamgasi)));
+        const onbellekli=Boolean(fdMagicpassHareketlerByPersonelCache),kaynak=onbellekli?(fdMagicpassHareketlerByPersonelCache.get(String(personel.id))||[]):magicpassKayitlari('magicpassHareket');
+        return kaynak.filter(k=>{const p=onbellekli?personel:magicpassPersonelBul(k),zaman=new Date(k.zamanDamgasi);return p&&String(p.id)===String(personel.id)&&zaman>=pencereBas&&zaman<=pencereBit}).sort((a,b)=>String(a.zamanDamgasi).localeCompare(String(b.zamanDamgasi)));
     }
     async function magicpassHamHareketleriSil(kayitlar,baslik,mesaj){
         if(isPersonelUser())return showToast('Cihaz hareketlerini silme yetkiniz yok.','warning');const idler=[...new Set((kayitlar||[]).map(k=>String(k.id)).filter(Boolean))];if(!idler.length)return showToast('Silinecek ham cihaz hareketi bulunmuyor.','warning');
@@ -19743,8 +19784,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }).sort((a,b)=>String(a.personel.sube||'').localeCompare(String(b.personel.sube||''),'tr')||String(a.personel.ad||'').localeCompare(String(b.personel.ad||''),'tr'));
     }
 
-    function magicpassGunlukRaporVerisi() {
-        const durum=String(document.getElementById('magicpassGunlukDurum')?.value||''),liste=magicpassGunlukRaporTumVerisi(),esik=magicpassGunlukMesaiEsigi(),eksikEsik=magicpassGunlukEksikMesaiEsigi();
+    function magicpassGunlukRaporVerisi(tumVeri=null) {
+        const durum=String(document.getElementById('magicpassGunlukDurum')?.value||''),liste=Array.isArray(tumVeri)?tumVeri:magicpassGunlukRaporTumVerisi(),esik=magicpassGunlukMesaiEsigi(),eksikEsik=magicpassGunlukEksikMesaiEsigi();
         return liste.filter(k=>!durum||(durum==='gelen'&&k.geldi)||(durum==='gelmeyen'&&k.gelmedi)||(durum==='mesai'&&k.fazlaMesai>=esik)||(durum==='gec'&&k.gec>=eksikEsik)||(durum==='erken'&&k.erken>=eksikEsik)||(durum==='izinli'&&k.izinli)||(durum==='eksik'&&k.eksik)||(durum==='kayitsiz'&&k.kayitsiz));
     }
 
@@ -19756,7 +19797,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function magicpassGunlukRaporuCiz() {
         const tbody=document.querySelector('#magicpassGunlukTablo tbody');if(!tbody)return;
         if(!document.getElementById('magicpassGunlukTarih').value)document.getElementById('magicpassGunlukTarih').value=magicpassTarihAnahtari(new Date());
-        magicpassGunlukRaporSubeleriniHazirla();const tum=magicpassGunlukRaporTumVerisi(),liste=magicpassGunlukRaporVerisi(),esik=magicpassGunlukMesaiEsigi(),eksikEsik=magicpassGunlukEksikMesaiEsigi(),secili=String(document.getElementById('magicpassGunlukDurum')?.value||'');
+        magicpassGunlukRaporSubeleriniHazirla();const tum=magicpassGunlukRaporTumVerisi(),liste=magicpassGunlukRaporVerisi(tum),esik=magicpassGunlukMesaiEsigi(),eksikEsik=magicpassGunlukEksikMesaiEsigi(),secili=String(document.getElementById('magicpassGunlukDurum')?.value||'');
         tbody.innerHTML=liste.length?liste.map((k,index)=>{const eksik=k.eksik,sinif=k.gelmedi?' class="magicpass-gelmedi"':'';
             return'<tr'+sinif+'><td>'+(index+1)+'</td><td><strong>'+escapeDashboardText(k.personel.ad||'-')+'</strong></td><td>'+escapeDashboardText(k.personel.sube||'Merkez')+'</td><td>'+escapeDashboardText(k.personel.gorev||'-')+'</td><td>'+escapeDashboardText(magicpassVardiyaSaatEtiketi(k.hesap.vardiya))+'</td><td>'+magicpassSaatHucresiHtml(k.hesap,'giris')+'</td><td>'+magicpassSaatHucresiHtml(k.hesap,'cikis')+'</td><td>'+magicpassDakikaMetni(k.gec)+'</td><td>'+magicpassDakikaMetni(k.erken)+'</td><td>'+magicpassMesaiHucresiHtml(k.hesap,k.hesap.resmiTatilMesaiDakika==null)+'</td><td>'+magicpassDakikaMetni(magicpassToplamCalismaDakikasi(k.hesap))+'</td><td><span class="magicpass-gunluk-durum '+magicpassGunlukDurumSinifi(k)+'">'+(eksik?'⚠ ':'')+escapeDashboardText(k.gorunenDurum)+'</span></td></tr>';
         }).join(''):'<tr><td colspan="12" style="padding:24px;text-align:center;color:#64748b;">Seçilen filtreye uygun personel bulunmuyor.</td></tr>';
@@ -20564,7 +20605,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function fdSekmeGorunumunuYakala(a){const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s||fdAktifUygulamaSekmesi!==a)return;const id=fdGorunenUygulamaAlaniniBul();if(id)s.alanId=id;fdSekmeCubugunuGuncelle()}
 async function fdUygulamaSekmesineGec(a){if(a==='home'){fdAnaEkranaHafifDon();return}if(['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol)&&(a!=='isg'||!anaMenuModulErisimiVar('isg')))return showToast('Bu sekmeye erişim yetkiniz yok.','warning');const s=fdAcikUygulamaSekmeleri.find(x=>x.anahtar===a);if(!s)return;fdAktifUygulamaSekmesi=a;fdSekmeCubugunuGuncelle();document.querySelectorAll('.modal-overlay').forEach(e=>{if(e.id!=='modalZorunluSifre')e.style.display='none'});fdTumUygulamaAlanlariniGizle();if(s.alanId&&document.getElementById(s.alanId)){document.getElementById(s.alanId).style.display='block';anaMenuDonusButonunuGoster();return}const f=fdSekmeOrijinaller[s.fonksiyonAdi||fdUygulamaSekmeTanimlari[a]?.acilis];if(!f)return;fdSekmeSistemGecisi=true;try{await f()}finally{fdSekmeSistemGecisi=false;fdSekmeGorunumunuYakala(a)}}
     async function fdUygulamaSekmesiniKapat(e,a){e?.preventDefault?.();e?.stopPropagation?.();if(fdSekmeKapatiliyor)return;const i=fdAcikUygulamaSekmeleri.findIndex(x=>x.anahtar===a);if(i<0)return;fdSekmeKapatiliyor=true;try{const aktif=fdAktifUygulamaSekmesi===a;fdAcikUygulamaSekmeleri.splice(i,1);fdSekmeAgirIceriginiTemizle(a);if(!aktif){fdSekmeCubugunuGuncelle(false);return}const s=fdAcikUygulamaSekmeleri[Math.min(i,fdAcikUygulamaSekmeleri.length-1)];if(s){await fdUygulamaSekmesineGec(s.anahtar);return}fdAnaEkranaHafifDon()}finally{fdSekmeKapatiliyor=false;hideGlobalOverlay?.();document.documentElement.style.pointerEvents='';document.body.style.pointerEvents=''}}
-    function fdSekmeSisteminiKur(){Object.entries(fdSekmeFonksiyonlari).forEach(([f,a])=>{const o=window[f];if(typeof o!=='function'||o.__fdSekmeli)return;fdSekmeOrijinaller[f]=o;const w=function(...args){if(fdSekmeSistemGecisi)return o.apply(this,args);fdSekmeyiKaydet(a,f);let r;try{r=o.apply(this,args)}catch(e){fdSekmeGorunumunuYakala(a);throw e}if(r&&typeof r.then==='function')return r.finally(()=>fdSekmeGorunumunuYakala(a));setTimeout(()=>fdSekmeGorunumunuYakala(a),0);return r};w.__fdSekmeli=true;window[f]=w});const c=window.closeAppsToHub;if(typeof c==='function'&&!c.__fdSekmeli){fdSekmeOrijinaller.closeAppsToHub=c;const w=function(...a){if(fdSekmeSistemGecisi)return c.apply(this,a);fdAnaEkranaHafifDon()};w.__fdSekmeli=true;window.closeAppsToHub=w}const q=window.logout;if(typeof q==='function'&&!q.__fdSekmeli){const w=async function(...a){try{return await q.apply(this,a)}finally{fdAcikUygulamaSekmeleri=[];fdAktifUygulamaSekmesi='home';fdSekmeCubugunuGuncelle()}};w.__fdSekmeli=true;window.logout=w}const t=document.getElementById('portalTopbar');if(t)new MutationObserver(fdSekmeCubugunuGuncelle).observe(t,{attributes:true,attributeFilter:['style','class']});fdSekmeCubugunuGuncelle()}
+    const fdSekmeTopbarIzleyicileri = new WeakSet();
+    function fdSekmeSisteminiKur(){Object.entries(fdSekmeFonksiyonlari).forEach(([f,a])=>{const o=window[f];if(typeof o!=='function'||o.__fdSekmeli)return;fdSekmeOrijinaller[f]=o;const w=function(...args){if(fdSekmeSistemGecisi)return o.apply(this,args);fdSekmeyiKaydet(a,f);let r;try{r=o.apply(this,args)}catch(e){fdSekmeGorunumunuYakala(a);throw e}if(r&&typeof r.then==='function')return r.finally(()=>fdSekmeGorunumunuYakala(a));setTimeout(()=>fdSekmeGorunumunuYakala(a),0);return r};w.__fdSekmeli=true;window[f]=w});const c=window.closeAppsToHub;if(typeof c==='function'&&!c.__fdSekmeli){fdSekmeOrijinaller.closeAppsToHub=c;const w=function(...a){if(fdSekmeSistemGecisi)return c.apply(this,a);fdAnaEkranaHafifDon()};w.__fdSekmeli=true;window.closeAppsToHub=w}const q=window.logout;if(typeof q==='function'&&!q.__fdSekmeli){const w=async function(...a){try{return await q.apply(this,a)}finally{fdAcikUygulamaSekmeleri=[];fdAktifUygulamaSekmesi='home';fdSekmeCubugunuGuncelle()}};w.__fdSekmeli=true;window.logout=w}const t=document.getElementById('portalTopbar');if(t&&!fdSekmeTopbarIzleyicileri.has(t)){new MutationObserver(fdSekmeCubugunuGuncelle).observe(t,{attributes:true,attributeFilter:['style','class']});fdSekmeTopbarIzleyicileri.add(t);}fdSekmeCubugunuGuncelle()}
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fdSekmeSisteminiKur);else fdSekmeSisteminiKur();
     function fdPortalHesapMenusunuKur(){
         const kullaniciAlani=document.querySelector('#portalTopbar .portal-user');
@@ -24345,7 +24387,8 @@ body.fd-vk-detail-open{overflow:hidden}
     function degisiklikGecmisi(urunKimligi){const ham=dosyaSayfalari().slice().reverse().flatMap(s=>{const u=s.urunler.find(x=>x.id===urunKimligi);return u?[{tarih:s.tarih,fiyat:Number(u.fiyat),paraBirimi:paraBirimi(u.paraBirimi),ad:u.ad,birim:u.birim,aciklama:u.aciklama||'',sayfaId:s.id}]:[]}),sonuc=[];ham.forEach(n=>{const once=sonuc[sonuc.length-1];if(!once||Number(once.fiyat)!==Number(n.fiyat)||once.paraBirimi!==n.paraBirimi)sonuc.push(n)});return sonuc}
     function sayfaUrunDegisimi(s,u){if(!s||!u)return{degisti:false,etiket:''};const onceki=dosyaSayfalari(s.dosyaId).filter(x=>x.tarih<s.tarih).sort((a,b)=>String(b.tarih).localeCompare(String(a.tarih)))[0],eski=onceki?.urunler.find(x=>x.id===u.id);if(!eski)return{degisti:true,etiket:'Yeni ürün'};if(Number(eski.fiyat)!==Number(u.fiyat)||paraBirimi(eski.paraBirimi)!==paraBirimi(u.paraBirimi))return{degisti:true,etiket:''};return{degisti:false,etiket:''}}
     function dosyalariCiz(){const alan=document.getElementById('fdFtDosyalar');if(!alan)return;const q=trAnahtar(dosyaArama),liste=dosyalar.filter(d=>!q||trAnahtar([firmaAdi(d),d.aciklama].join(' ')).includes(q));alan.innerHTML=liste.length?liste.map(d=>{const n=dosyaSayfalari(d.id).length;return'<button class="fd-ft-file '+(d.id===seciliDosyaId?'active':'')+'" type="button" onclick="fdFiyatV2DosyaSec(\''+html(d.id)+'\')"><b>'+html(firmaAdi(d))+'</b><span>Verilen fiyatlar</span><small>'+n+' tarihli fiyat sayfası</small></button>'}).join(''):'<div class="fd-ft-empty">Aramanıza uygun firma bulunamadı.</div>'}
-    function urunTablosu(s,tarihsel=false){if(!s)return'<div class="fd-ft-empty">Bu firmada henüz fiyat sayfası yok. “Fiyat Güncelle” ile başlayabilirsiniz.</div>';const q=trAnahtar(urunArama),urunler=s.urunler.filter(u=>!q||trAnahtar([u.ad,u.birim,u.aciklama].join(' ')).includes(q));const baslik=tarihsel?'Fiyat':'Güncel Fiyat';return'<div class="fd-ft-toolbar"><input type="search" value="'+html(urunArama)+'" placeholder="Ürün adı, açıklama veya birim ara" oninput="fdFiyatV2UrunAra(this.value)"><span class="fd-ft-badge">'+urunler.length+' / '+s.urunler.length+' ürün</span></div><div class="fd-ft-table-wrap"><table class="fd-ft-table"><thead><tr><th>Ürün</th><th>Açıklama</th><th>Birim</th><th>'+baslik+'</th><th>Son Değişiklik</th><th></th></tr></thead><tbody>'+(urunler.length?urunler.map(u=>{const g=degisiklikGecmisi(u.id),son=g[g.length-1],d=tarihsel?sayfaUrunDegisimi(s,u):{degisti:false,etiket:''};return'<tr class="'+(d.degisti?'fd-ft-row-changed':'')+'" onclick="fdFiyatV2GecmisAc(\''+html(u.id)+'\')"><td data-label="Ürün"><span class="fd-ft-product">'+html(u.ad)+'</span>'+(d.etiket?'<span class="fd-ft-change-chip">● '+html(d.etiket)+'</span>':'')+'</td><td data-label="Açıklama">'+html(u.aciklama||'-')+'</td><td data-label="Birim">'+html(u.birim||'-')+'</td><td data-label="'+baslik+'"><span class="fd-ft-price">'+html(fiyatMetni(u))+'</span></td><td data-label="Son Değişiklik">'+html(tarihGoster(tarihsel?s.tarih:son?.tarih||s.tarih))+'</td><td data-label="Geçmiş"><button class="btn-modern btn-detail-modern fd-ft-history-btn" type="button" onclick="event.stopPropagation();fdFiyatV2GecmisAc(\''+html(u.id)+'\')">◷ Geçmiş</button></td></tr>'}).join(''):'<tr><td colspan="6" class="fd-ft-empty">Aramanıza uygun ürün bulunamadı.</td></tr>')+'</tbody></table></div>'}
+    function urunSonDegisiklikTarihleri(){const sonlar=new Map();for(const sayfa of dosyaSayfalari().slice().reverse()){const gorulen=new Set();for(const u of sayfa.urunler){if(gorulen.has(u.id))continue;gorulen.add(u.id);const onceki=sonlar.get(u.id),fiyat=Number(u.fiyat),kur=paraBirimi(u.paraBirimi);if(!onceki||onceki.fiyat!==fiyat||onceki.kur!==kur)sonlar.set(u.id,{fiyat,kur,tarih:sayfa.tarih})}}return sonlar;}
+    function urunTablosu(s,tarihsel=false){if(!s)return'<div class="fd-ft-empty">Bu firmada henüz fiyat sayfası yok. “Fiyat Güncelle” ile başlayabilirsiniz.</div>';const q=trAnahtar(urunArama),urunler=s.urunler.filter(u=>!q||trAnahtar([u.ad,u.birim,u.aciklama].join(' ')).includes(q));const sonTarihler=tarihsel?null:urunSonDegisiklikTarihleri(),baslik=tarihsel?'Fiyat':'Güncel Fiyat';return'<div class="fd-ft-toolbar"><input type="search" value="'+html(urunArama)+'" placeholder="Ürün adı, açıklama veya birim ara" oninput="fdFiyatV2UrunAra(this.value)"><span class="fd-ft-badge">'+urunler.length+' / '+s.urunler.length+' ürün</span></div><div class="fd-ft-table-wrap"><table class="fd-ft-table"><thead><tr><th>Ürün</th><th>Açıklama</th><th>Birim</th><th>'+baslik+'</th><th>Son Değişiklik</th><th></th></tr></thead><tbody>'+(urunler.length?urunler.map(u=>{const son=sonTarihler?.get(u.id),d=tarihsel?sayfaUrunDegisimi(s,u):{degisti:false,etiket:''};return'<tr class="'+(d.degisti?'fd-ft-row-changed':'')+'" onclick="fdFiyatV2GecmisAc(\''+html(u.id)+'\')"><td data-label="Ürün"><span class="fd-ft-product">'+html(u.ad)+'</span>'+(d.etiket?'<span class="fd-ft-change-chip">● '+html(d.etiket)+'</span>':'')+'</td><td data-label="Açıklama">'+html(u.aciklama||'-')+'</td><td data-label="Birim">'+html(u.birim||'-')+'</td><td data-label="'+baslik+'"><span class="fd-ft-price">'+html(fiyatMetni(u))+'</span></td><td data-label="Son Değişiklik">'+html(tarihGoster(tarihsel?s.tarih:son?.tarih||s.tarih))+'</td><td data-label="Geçmiş"><button class="btn-modern btn-detail-modern fd-ft-history-btn" type="button" onclick="event.stopPropagation();fdFiyatV2GecmisAc(\''+html(u.id)+'\')">◷ Geçmiş</button></td></tr>'}).join(''):'<tr><td colspan="6" class="fd-ft-empty">Aramanıza uygun ürün bulunamadı.</td></tr>')+'</tbody></table></div>'}
     function ciktiButonlari(s){return s?'<button class="btn-modern fd-ft-export-btn fd-ft-image-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Goruntu(\''+html(s.id)+'\',this)">▣ Görüntü Al</button><button class="btn-modern fd-ft-export-btn fd-ft-excel-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Excel(\''+html(s.id)+'\',this)">▦ Excel</button><button class="btn-modern fd-ft-export-btn fd-ft-pdf-btn" type="button" onclick="event.stopPropagation();fdFiyatV2Pdf(\''+html(s.id)+'\',this)">▤ PDF</button>':''}
     function guncelCiz(){const s=guncelSayfa();return'<div class="fd-ft-section-head"><div><h4>Güncel Fiyat Listesi</h4><p>'+(s?html(tarihGoster(s.tarih)+' tarihli sayfa · '+s.urunler.length+' ürün'):'Henüz fiyat kaydı bulunmuyor.')+'</p></div><div class="fd-ft-actions">'+ciktiButonlari(s)+'</div></div>'+urunTablosu(s,false)}
     function sayfaListesiCiz(){const q=trAnahtar(sayfaArama),liste=dosyaSayfalari().filter(s=>!q||trAnahtar([s.tarih,tarihGoster(s.tarih),s.baslik].join(' ')).includes(q));return'<div class="fd-ft-toolbar"><input type="search" value="'+html(sayfaArama)+'" placeholder="Tarih veya sayfa başlığı ara" oninput="fdFiyatV2SayfaAra(this.value)"><span class="fd-ft-badge">'+liste.length+' fiyat sayfası</span></div><div class="fd-ft-pages-grid">'+(liste.length?liste.map((s,i)=>'<article class="fd-ft-page-card" onclick="fdFiyatV2SayfaAc(\''+html(s.id)+'\')"><b>'+(i===0&&!q?'Güncel · ':'')+html(tarihGoster(s.tarih))+'</b><span>'+html(s.baslik||'Fiyat Listesi')+'</span><small>'+s.urunler.length+' ürün · '+s.belgeler.length+' belge</small></article>').join(''):'<div class="fd-ft-empty">Aramanıza uygun tarihli sayfa bulunamadı.</div>')+'</div>'}
@@ -24354,8 +24397,9 @@ body.fd-vk-detail-open{overflow:hidden}
     function anaCiz(){const d=seciliDosya(),icerik=document.getElementById('fdFtIcerik'),baslik=document.getElementById('fdFtDosyaBaslik'),bilgi=document.getElementById('fdFtDosyaBilgi'),tabs=document.getElementById('fdFtSekmeler'),duzenle=document.getElementById('fdFtDosyaDuzenleBtn'),yeni=document.getElementById('fdFtYeniSayfaBtn');if(!icerik)return;if(!d){baslik.textContent='Henüz firma yok';bilgi.textContent='Fiyat vereceğiniz firmayı ekleyin.';tabs.innerHTML='';icerik.innerHTML='<div class="fd-ft-empty">Başlamak için “Yeni Firma” düğmesini kullanın.</div>';duzenle.disabled=true;yeni.disabled=true;return}duzenle.disabled=!yazabilir();yeni.disabled=!yazabilir();baslik.textContent=firmaAdi(d);bilgi.innerHTML='<span class="fd-ft-badge">Verilen fiyatlar</span> '+html(d.aciklama||'Bu firmaya ait güncel ve tarihli fiyat listeleri');const adet=dosyaSayfalari().length;tabs.innerHTML='<button class="fd-ft-tab '+(gorunum==='guncel'?'active':'')+'" type="button" onclick="fdFiyatV2Gorunum(\'guncel\')">Güncel Liste</button><button class="fd-ft-tab '+(gorunum==='sayfalar'||gorunum==='detay'?'active':'')+'" type="button" onclick="fdFiyatV2Gorunum(\'sayfalar\')">Fiyat Sayfaları · '+adet+'</button>';icerik.innerHTML=gorunum==='sayfalar'?sayfaListesiCiz():gorunum==='detay'?sayfaDetayCiz():guncelCiz();document.querySelectorAll('#insaatFiyatApp [data-ft-yazma]').forEach(el=>el.classList.toggle('fd-ft-readonly',!yazabilir()))}
     function ciz(){dosyalariCiz();anaCiz();listeleriDoldur()}
     window.fdFiyatV2DosyaAra=v=>{dosyaArama=String(v||'');dosyalariCiz()};
-    window.fdFiyatV2UrunAra=v=>{urunArama=String(v||'');anaCiz()};
-    window.fdFiyatV2SayfaAra=v=>{sayfaArama=String(v||'');anaCiz()};
+    function aramaSonucunuGuncelle(markup,selector){const alan=document.getElementById('fdFtIcerik'),mevcut=alan?.querySelector(selector);if(!mevcut){anaCiz();return}const yeni=document.createElement('div');yeni.innerHTML=markup;const sonuc=yeni.querySelector(selector);if(!sonuc){anaCiz();return}mevcut.replaceWith(sonuc);const rozet=alan.querySelector('.fd-ft-toolbar .fd-ft-badge'),yeniRozet=yeni.querySelector('.fd-ft-toolbar .fd-ft-badge');if(rozet&&yeniRozet)rozet.textContent=yeniRozet.textContent;}
+    window.fdFiyatV2UrunAra=v=>{urunArama=String(v||'');aramaSonucunuGuncelle(urunTablosu(gorunum==='detay'?seciliSayfa():guncelSayfa(),gorunum==='detay'),'.fd-ft-table-wrap')};
+    window.fdFiyatV2SayfaAra=v=>{sayfaArama=String(v||'');aramaSonucunuGuncelle(sayfaListesiCiz(),'.fd-ft-pages-grid')};
     window.fdFiyatV2DosyaSec=id=>{seciliDosyaId=String(id);seciliSayfaId=guncelSayfa()?.id||'';gorunum='guncel';urunArama='';sayfaArama='';ciz()};
     window.fdFiyatV2Gorunum=v=>{gorunum=String(v||'guncel');urunArama='';anaCiz()};
     window.fdFiyatV2SayfaAc=id=>{seciliSayfaId=String(id);gorunum='detay';urunArama='';anaCiz()};
@@ -25276,10 +25320,11 @@ function fdAracListeCiz(){
 .fd-output-original{display:none!important}
 .fd-output-menu{display:inline-flex;flex:0 0 auto;vertical-align:middle;align-items:center}
 .fd-output-menu[hidden],#fdUnifiedOutputModal[hidden],#fdUnifiedOutputModal [hidden]{display:none!important}
-.fd-output-trigger{display:inline-flex!important;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:8px 15px!important;border:1px solid #b9d1df!important;border-radius:8px!important;background:#f0f7fb!important;color:#164d6a!important;font:600 13px/1.2 Arial,sans-serif!important;white-space:nowrap;cursor:pointer;box-shadow:none!important;width:auto!important;margin:0!important}
-.fd-output-trigger::before{content:'↥';font-size:17px;font-weight:500}
-.fd-output-trigger:hover{background:#e1eff7!important;border-color:#7faec9!important;color:#123d55!important}
-.fd-output-trigger:disabled{cursor:wait;opacity:.6}
+.fd-output-trigger,.fd-output-icon-button{display:inline-flex!important;align-items:center;justify-content:center;gap:0;min-height:40px!important;min-width:40px!important;height:40px!important;width:40px!important;padding:0!important;border:1px solid #b9d1df!important;border-radius:8px!important;background:#f0f7fb!important;color:#164d6a!important;font:600 13px/1.2 Arial,sans-serif!important;white-space:nowrap;cursor:pointer;box-shadow:none!important;margin:0!important;flex:0 0 auto;box-sizing:border-box}
+.fd-output-trigger::before,.fd-output-icon-button::before{content:none!important}
+.fd-output-printer-icon{display:block;flex:0 0 auto;width:20px;height:20px;pointer-events:none}
+.fd-output-trigger:hover,.fd-output-icon-button:hover{background:#e1eff7!important;border-color:#7faec9!important;color:#123d55!important}
+.fd-output-trigger:disabled,.fd-output-icon-button:disabled{cursor:wait;opacity:.6}
 .fd-output-overlay{position:fixed;inset:0;z-index:2147483646;background:#142b456b;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overscroll-behavior:contain}
 .fd-output-card{display:flex;flex-direction:column;width:min(820px,96vw);max-height:92dvh;background:#fff;border:1px solid #d2e0e9;border-radius:14px;box-shadow:0 24px 65px #152b4a40;overflow:hidden;color:#183246;font-family:Arial,sans-serif}
 .fd-output-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid #e1eaf0;background:#f7fafc}
@@ -25306,8 +25351,8 @@ function fdAracListeCiz(){
 .fd-output-footer button{padding:10px 15px;border:0;border-radius:7px;color:#fff;font:600 13px/1.2 Arial;cursor:pointer;white-space:nowrap;min-height:37px}
 .fd-output-excel{background:#159c73}.fd-output-pdf{background:#e74766}.fd-output-image{background:#168bc1}
 .fd-output-footer button:hover{filter:brightness(.94)}.fd-output-footer button:disabled{opacity:.45;cursor:not-allowed}
-.fd-output-card button:focus-visible,.fd-output-card input:focus-visible,.fd-output-trigger:focus-visible{outline:2px solid #268bbb;outline-offset:2px}
-@media(max-width:600px){.fd-output-overlay{padding:10px}.fd-output-card{width:100%;max-height:94dvh}.fd-output-head{padding:14px}.fd-output-body{padding:13px 14px}.fd-output-field-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fd-output-footer{padding:12px 14px;flex-direction:column;align-items:stretch;gap:9px}.fd-output-footer>div{display:grid;grid-template-columns:1fr 1fr}.fd-output-footer .fd-output-image{grid-column:1/-1}.fd-output-footer button{padding:11px 9px;min-height:42px}}
+.fd-output-card button:focus-visible,.fd-output-card input:focus-visible,.fd-output-trigger:focus-visible,.fd-output-icon-button:focus-visible{outline:2px solid #268bbb;outline-offset:2px}
+@media(max-width:600px){.fd-output-trigger,.fd-output-icon-button{min-width:44px!important;min-height:44px!important;width:44px!important;height:44px!important}.fd-output-overlay{padding:10px}.fd-output-card{width:100%;max-height:94dvh}.fd-output-head{padding:14px}.fd-output-body{padding:13px 14px}.fd-output-field-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fd-output-footer{padding:12px 14px;flex-direction:column;align-items:stretch;gap:9px}.fd-output-footer>div{display:grid;grid-template-columns:1fr 1fr}.fd-output-footer .fd-output-image{grid-column:1/-1}.fd-output-footer button{padding:11px 9px;min-height:42px}}
 </style>
 <script id="fdUnifiedOutputCoreV227">
 (function (global) {
@@ -26183,11 +26228,31 @@ function fdAracListeCiz(){
     'use strict';
     const groups = new WeakMap(), liveGroups = new Set();
     let preparing = false, current = null, observer, scanTimer, sequence = 0, sessionEpoch = 0;
+    const pendingRoots = new Set(), pendingParents = new Set();
+    let cleanupPending = false;
+    const scanStats = { observerBatches: 0, mutationRecords: 0, flushes: 0, fullScans: 0, subtreeScans: 0, buttonsInspected: 0, groupSynchronizations: 0, ignoredMutations: 0, processingMs: 0 };
+    const scanClock = () => root.performance?.now?.() ?? Date.now();
+    const buttonSelector = 'button,a.btn-export';
+    const icon = '<svg class="fd-output-printer-icon" data-fd-output-printer="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 8V3h10v5M7 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-3"/><path d="M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const norm = value => String(value || '').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i');
     const message = (text, type = 'warning') => typeof root.showToast === 'function' ? root.showToast(text, type) : root.alert(text);
     const code = button => button.getAttribute('onclick') || String(button.onclick || '');
     const excluded = '#fdOrtakCiktiOnizleme,#fdUnifiedOutputModal,#modalPersonelExport,#modalAracExport,#modalTapuCksKayit,#fdCksPdfKontrolModal';
+
+    function decorateButton(button, label = 'Yazdır / dışa aktar') {
+        if (!button || button.tagName !== 'BUTTON') return button;
+        button.classList.add('fd-output-icon-button');
+        button.dataset.fdOutputIcon = 'true';
+        button.title = label;
+        button.setAttribute('aria-label', label);
+        if (button.childElementCount !== 1 || !button.firstElementChild?.matches('svg[data-fd-output-printer]') || button.textContent.trim()) button.innerHTML = icon;
+        return button;
+    }
+
+    function ownMutation(element) {
+        return !!element?.closest?.('.fd-output-menu,' + excluded) || !!(element?.matches?.('button[data-fd-output-icon="true"]') && !element.textContent.trim() && element.firstElementChild?.matches('svg[data-fd-output-printer]'));
+    }
 
     function kind(button) {
         if (!button || button.tagName === 'A' || button.closest(excluded) || button.closest('.fd-output-menu') || button.dataset.fdOutputOwn) return '';
@@ -26220,9 +26285,11 @@ function fdAracListeCiz(){
         style.setProperty('display', 'none', 'important');
     }
 
-    function synchronize() {
-        for (const group of liveGroups) {
+    function synchronize(parents) {
+        const candidates = parents ? Array.from(parents, parent => groups.get(parent)).filter(Boolean) : liveGroups;
+        for (const group of candidates) {
             if (!group.parent.isConnected) { liveGroups.delete(group); continue; }
+            scanStats.groupSynchronizations++;
             const buttons = Array.from(group.parent.querySelectorAll(':scope > button,:scope > a')).filter(b => !b.dataset.fdOutputOwn && kind(b));
             for (const button of buttons) {
                 const format = kind(button);
@@ -26231,38 +26298,84 @@ function fdAracListeCiz(){
             }
             group.items = group.items.filter(item => item.button.isConnected && item.button.parentElement === group.parent);
             if (!group.items.length) { group.wrapper.remove(); liveGroups.delete(group); groups.delete(group.parent); continue; }
+            if (group.wrapper.parentElement !== group.parent) group.parent.insertBefore(group.wrapper, group.items[0].button);
             group.wrapper.hidden = group.items.every(item => item.button.hidden || item.sourceDisplay === 'none');
         }
     }
 
-    function scan() {
-        scanTimer = null;
-        document.querySelectorAll('button,a.btn-export').forEach(button => {
+    function discover(scope, parents) {
+        if (!scope?.isConnected && scope !== document) return;
+        if (scope === document) scanStats.fullScans++; else scanStats.subtreeScans++;
+        const buttons = scope.matches?.(buttonSelector) ? [scope] : Array.from(scope.querySelectorAll?.(buttonSelector) || []);
+        buttons.forEach(button => {
+            scanStats.buttonsInspected++;
+            if (!button.closest(excluded) && norm(button.textContent).trim() === 'cikti') decorateButton(button);
             const format = kind(button); if (!format) return;
             const parent = button.parentElement; if (!parent) return;
+            parents.add(parent);
             let group = groups.get(parent);
             if (!group) {
                 const wrapper = document.createElement('span'); wrapper.className = 'fd-output-menu'; wrapper.dataset.fdOutputOwn = 'true';
                 const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'fd-output-trigger';
-                trigger.dataset.fdOutputOwn = 'true'; trigger.textContent = 'Çıktı'; trigger.setAttribute('aria-haspopup', 'dialog');
-                trigger.title = 'Aktarılacak alanları seç';
+                trigger.dataset.fdOutputOwn = 'true'; decorateButton(trigger); trigger.setAttribute('aria-haspopup', 'dialog');
                 group = { parent, wrapper, trigger, items: [], id: ++sequence };
                 trigger.onclick = event => { event.preventDefault(); event.stopPropagation(); open(group); };
                 if (button.style.marginLeft === 'auto') wrapper.style.marginLeft = 'auto';
                 parent.insertBefore(wrapper, button); wrapper.appendChild(trigger);
                 groups.set(parent, group); liveGroups.add(group);
             }
+            liveGroups.add(group);
             if (!group.wrapper.isConnected || group.wrapper.parentElement !== parent) parent.insertBefore(group.wrapper, button);
             if (!group.items.some(item => item.button === button)) group.items.push({ button, format });
             hideOriginal(group.items.find(item => item.button === button));
         });
-        synchronize();
+    }
+
+    // A full discovery is retained for startup and the explicit public scan API.
+    // Live updates inspect only added subtrees and directly affected toolbars.
+    function scan(scope = document) {
+        const started = scanClock();
+        const parents = new Set();
+        discover(scope, parents);
+        synchronize(scope === document ? null : parents);
+        scanStats.processingMs += scanClock() - started;
+    }
+
+    function flush() {
+        const started = scanClock();
+        scanTimer = null; scanStats.flushes++;
+        const roots = Array.from(pendingRoots), rootSet = new Set(roots), parents = new Set(pendingParents);
+        pendingRoots.clear(); pendingParents.clear();
+        for (const scope of roots) {
+            let ancestor = scope.parentElement, covered = false;
+            while (ancestor) { if (rootSet.has(ancestor)) { covered = true; break; } ancestor = ancestor.parentElement; }
+            if (!covered) discover(scope, parents);
+        }
+        synchronize(parents);
+        if (cleanupPending) {
+            for (const group of liveGroups) if (!group.parent.isConnected) liveGroups.delete(group);
+            cleanupPending = false;
+        }
+        scanStats.processingMs += scanClock() - started;
     }
 
     function schedule(mutations) {
-        if (scanTimer) return;
-        if (mutations && mutations.every(m => m.target.closest?.('.fd-output-menu,#fdUnifiedOutputModal,#fdOrtakCiktiOnizleme'))) return;
-        scanTimer = setTimeout(scan, 60);
+        scanStats.observerBatches++; scanStats.mutationRecords += mutations.length;
+        for (const mutation of mutations) {
+            const target = mutation.target.nodeType === 1 ? mutation.target : mutation.target.parentElement;
+            if (ownMutation(target)) { scanStats.ignoredMutations++; continue; }
+            if (!mutation.removedNodes.length && mutation.addedNodes.length && Array.from(mutation.addedNodes).every(node => node.nodeType === 1 && ownMutation(node))) { scanStats.ignoredMutations++; continue; }
+            if (groups.has(target)) pendingParents.add(target);
+            const button = target?.closest?.(buttonSelector);
+            if (button) pendingRoots.add(button);
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType === 1 && !ownMutation(node)) pendingRoots.add(node);
+            }
+            if (mutation.removedNodes.length) cleanupPending = true;
+        }
+        if (scanTimer || (!pendingRoots.size && !pendingParents.size && !cleanupPending)) return;
+        if (typeof root.requestIdleCallback === 'function') scanTimer = root.requestIdleCallback(flush, { timeout: 60 });
+        else scanTimer = setTimeout(flush, 60);
     }
 
     // Export functions are used ONLY to obtain their existing filtered data.
@@ -26481,7 +26594,7 @@ function fdAracListeCiz(){
 
     function clear() { sessionEpoch++; if (current?.group?.trigger) current.group.trigger.disabled = false; current = null; preparing = false; document.getElementById('fdUnifiedOutputModal')?.remove(); document.getElementById('fdOrtakCiktiOnizleme')?.remove(); }
 
-    root.fdUnifiedOutput = { scan, open, acquire, selectedModels, capture, kind, excelPreview, clear, groups: () => Array.from(liveGroups) };
+    root.fdUnifiedOutput = { scan, open, acquire, selectedModels, capture, kind, excelPreview, clear, decorateButton, iconHtml: () => icon, performanceSnapshot: () => ({ ...scanStats }), resetPerformance: () => { for (const key of Object.keys(scanStats)) scanStats[key] = 0; }, groups: () => Array.from(liveGroups) };
     function start() {
         scan(); observer = new MutationObserver(schedule); observer.observe(document.body, { childList: true, subtree: true });
     }
@@ -27246,7 +27359,7 @@ function fdAracListeCiz(){
         } finally { clearTimeout(timer); }
     };
 
-    function clearPrivatePortalMemory() {
+    function clearPrivatePortalMemory({ preserveCache = false } = {}) {
         // Cached tab navigation can show an already-rendered page without calling its opener.
         // Evict the previous role's visible pages and tab handles before preparing a scoped session.
         if (typeof fdTumUygulamaAlanlariniGizle === 'function') fdTumUygulamaAlanlariniGizle();
@@ -27268,7 +27381,7 @@ function fdAracListeCiz(){
             if (!/zorunlu.?sifre|kvkk|login|giris|oturum|auth/i.test(modal.id)) scrub(modal);
         });
         // Evict only reloadable cache copies, not pending uploads, edits, tokens or device credentials.
-        [VERI_ONBELLEK_ANAHTARI, ESKI_VERI_ONBELLEK_ANAHTARI].forEach(key => {
+        if (!preserveCache) [VERI_ONBELLEK_ANAHTARI, ESKI_VERI_ONBELLEK_ANAHTARI].forEach(key => {
             try { localStorage.removeItem(key); sessionStorage.removeItem(key); } catch (_) {}
         });
         personeller = []; izinler = []; kullanicilar = []; puantajVerileri = []; avanslar = []; ekOdemeler = [];
@@ -27280,6 +27393,7 @@ function fdAracListeCiz(){
         uygulamaAyarlari = clone(VARSAYILAN_UYGULAMA_AYARLARI);
         document.querySelectorAll('.app-container:not(#isgApp) tbody,#adminUserTable tbody').forEach(body => body.replaceChildren());
     }
+    root.fdPortalPrivateMemoryClear = clearPrivatePortalMemory;
     root.fdIsgPrepareSession = async function () {
         if (!roleIsg(activeUser?.rol)) return;
         clearPrivatePortalMemory();
@@ -27490,6 +27604,25 @@ function fdAracListeCiz(){
     installModule();
 })(window);
 </script>
+<script id="fdAttendanceRenderPerformance">
+(function (root) {
+    // Each synchronous render/export gets a fresh index. Nested calculations reuse
+    // it, and finally restores previous caches so later edits never see stale data.
+    function withAttendanceIndex(fn, receiver, args) {
+        if (fdMagicpassKayitTurCache) return fn.apply(receiver, args);
+        const previous = fdPuantajHesapOnbelleginiBaslat();
+        try { return fn.apply(receiver, args); }
+        finally { fdPuantajHesapOnbelleginiGeriYukle(previous); }
+    }
+    for (const name of ['magicpassAylikCizelgeyiCiz', 'magicpassAylikCizelgeVerisi', 'magicpassGunlukRaporTumVerisi', 'magicpassGunlukRaporuCiz']) {
+        const original = root[name];
+        if (typeof original !== 'function' || original.__fdAttendanceIndexed) continue;
+        const wrapped = function (...args) { return withAttendanceIndex(original, this, args); };
+        wrapped.__fdAttendanceIndexed = true;
+        root[name] = wrapped;
+    }
+})(window);
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -27509,14 +27642,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v230';
+      const anahtar='fd-pwa-yenileme-v231';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=230',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=231',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
