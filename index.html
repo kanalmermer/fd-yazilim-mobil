@@ -2164,6 +2164,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Ortak alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>. Yıllık izin mesajında ayrıca <strong>{YIL}</strong> ve <strong>{GÜN}</strong> kullanılabilir.</div>
                     <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button id="ayarOtomatikBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">💾 Bildirim Metinlerini Kaydet</button></div>
                 </div></details>
+                <details id="ayarFiyatWhatsappDetayi" class="profile-section"><summary>WhatsApp Otomatik Fiyat Listesi Bildirimleri</summary><div>
+                    <div class="form-group"><label>Fiyat Listesi Değişikliği Bildirimi</label><select id="ayarWhatsappFiyatBildirimAktif"><option value="true">Açık</option><option value="false">Kapalı</option></select><small>Fiyat listesi gerçekten değiştiğinde yalnızca bu şirketin Admin ve Kullanıcı hesaplarına WhatsApp mesajı hazırlanır. Personel hesaplarına gönderilmez.</small></div>
+                    <div class="form-group"><label>Fiyat Listesi Değişikliği Mesajı</label><textarea id="ayarMagicBildirimFiyatDegisiklik" rows="6" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {LİSTE_ADI}, {DEĞİŞİKLİK_SAYISI}, {LİSTE_TARİHİ}, {TARİH}, {UYGULAMA_ADRESİ}</small></div>
+                    <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><button id="ayarFiyatBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">Bildirim Ayarlarını Kaydet</button></div>
+                    <div id="priceWhatsappSettingsPanel"></div>
+                </div></details>
                 <details class="profile-section"><summary>Günlük Rapor ve Kart Okuma Ayarları</summary><div>
                     <div class="form-row">
                         <div class="form-group"><label>Mesaiyi Rapora Ekleme Sınırı (Dakika)</label><input id="ayarMagicGunlukMesaiEsik" type="number" min="0" max="1440" step="1" value="75"><small>Bu süre ve üzerinde mesai yapanlar günlük raporda ve panoya kopyalanan listede gösterilir.</small></div>
@@ -3937,6 +3943,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         magicpassBildirimVardiyaDegisiklikMetni: '{AD}, {TARİHLER} için çalışma planınız {VARDİYA} ({ÇALIŞMA_SAATLERİ}) olarak güncellenmiştir. Göreviniz: {GÖREV}. Çalışma yeriniz: {ŞUBE}.',
         magicpassBildirimIseGirisMetni: '{AD}, {İŞE_GİRİŞ_TARİHİ} tarihinde {ŞUBE} işyerinde {GÖREV} göreviyle işe giriş kaydınız oluşturulmuştur. Uygulamaya {UYGULAMA_ADRESİ} adresinden girebilirsiniz. Kullanıcı adınız: {KULLANICI_ADI}. İlk şifreniz T.C. kimlik numaranızın ilk 6 hanesidir. İlk girişte şifrenizi değiştiriniz.',
         magicpassBildirimIstenAyrilisMetni: '{AD}, {İŞTEN_AYRILIŞ_TARİHİ} tarihli işten ayrılış işleminiz kaydedilmiştir.',
+        magicpassBildirimFiyatDegisiklikMetni: '*Fiyat Listesi Güncellendi*\n{AD}, {LİSTE_ADI} fiyat listesinde {DEĞİŞİKLİK_SAYISI} ürün güncellendi.\nListe tarihi: {LİSTE_TARİHİ}\nGüncelleme: {TARİH}\nGüncel fiyatları uygulamadaki Fiyat ve Teklifler bölümünden inceleyebilirsiniz.\n{UYGULAMA_ADRESİ}',
+        whatsappFiyatBildirimAktif: true,
         whatsappIzinOtomatikAktif: true,
         whatsappIzinBeklemeDakika: 3,
         whatsappVardiyaOtomatikAktif: true,
@@ -6089,6 +6097,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             magicpassGeceBitis:String(document.getElementById('ayarMagicGeceBitis')?.value || uygulamaAyarlari.magicpassGeceBitis || '08:00'),
             magicpassGeceMesaiSiniri:String(document.getElementById('ayarMagicGeceSinir')?.value || uygulamaAyarlari.magicpassGeceMesaiSiniri || '12:00'),
             ...otomatikBildirimSablonDegerleriniOku(true),
+            whatsappFiyatBildirimAktif:document.getElementById('ayarWhatsappFiyatBildirimAktif')?.value!=='false',
             whatsappIzinOtomatikAktif:document.getElementById('ayarWhatsappIzinAktif')?.value!=='false',
             whatsappIzinBeklemeDakika:Math.min(120,Math.max(0,Number(document.getElementById('ayarWhatsappIzinBekleme')?.value??3))),
             whatsappVardiyaOtomatikAktif:document.getElementById('ayarWhatsappVardiyaAktif')?.value!=='false',
@@ -19807,11 +19816,12 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function magicpassGunlukRaporAyarlariniDoldur(){
         const mesai=document.getElementById('ayarMagicGunlukMesaiEsik'),eksikMesai=document.getElementById('ayarMagicGunlukEksikMesaiEsik'),mukerrer=document.getElementById('ayarMagicMukerrerDakika'),durum=document.getElementById('ayarMagicCihazsizDurum');
         if(mesai)mesai.value=magicpassGunlukMesaiEsigi();if(eksikMesai)eksikMesai.value=magicpassGunlukEksikMesaiEsigi();if(mukerrer)mukerrer.value=Math.min(30,Math.max(0,Number(uygulamaAyarlari.magicpassMukerrerBasimDakika??3)));if(durum)durum.value=String(uygulamaAyarlari.magicpassCihazsizDurumMetni||'Kayıt Yok');
-        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni',ayarMagicBildirimAvansKayit:'magicpassBildirimAvansKayitMetni',ayarMagicBildirimIcraKayit:'magicpassBildirimIcraKayitMetni',ayarMagicBildirimIcraAylik:'magicpassBildirimIcraAylikMetni',ayarMagicBildirimIzinKayit:'magicpassBildirimIzinKayitMetni',ayarMagicBildirimBordroYayin:'magicpassBildirimBordroYayinMetni',ayarMagicBildirimBordroAvans:'magicpassBildirimBordroAvansMetni',ayarMagicBildirimVardiyaDegisiklik:'magicpassBildirimVardiyaDegisiklikMetni',ayarMagicBildirimIseGiris:'magicpassBildirimIseGirisMetni',ayarMagicBildirimIstenAyrilis:'magicpassBildirimIstenAyrilisMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
+        const sablonlar={ayarMagicBildirimGelmedi:'magicpassBildirimGelmediMetni',ayarMagicBildirimGirisYok:'magicpassBildirimGirisYokMetni',ayarMagicBildirimCikisYok:'magicpassBildirimCikisYokMetni',ayarMagicBildirimDogumGunu:'magicpassBildirimDogumGunuMetni',ayarMagicBildirimYillikIzin:'magicpassBildirimYillikIzinMetni',ayarMagicBildirimAvansKayit:'magicpassBildirimAvansKayitMetni',ayarMagicBildirimIcraKayit:'magicpassBildirimIcraKayitMetni',ayarMagicBildirimIcraAylik:'magicpassBildirimIcraAylikMetni',ayarMagicBildirimIzinKayit:'magicpassBildirimIzinKayitMetni',ayarMagicBildirimBordroYayin:'magicpassBildirimBordroYayinMetni',ayarMagicBildirimBordroAvans:'magicpassBildirimBordroAvansMetni',ayarMagicBildirimVardiyaDegisiklik:'magicpassBildirimVardiyaDegisiklikMetni',ayarMagicBildirimIseGiris:'magicpassBildirimIseGirisMetni',ayarMagicBildirimIstenAyrilis:'magicpassBildirimIstenAyrilisMetni',ayarMagicBildirimFiyatDegisiklik:'magicpassBildirimFiyatDegisiklikMetni'};Object.entries(sablonlar).forEach(([id,anahtar])=>{const alan=document.getElementById(id);if(alan)alan.value=String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')});
+        const fiyatBildirimAktif=document.getElementById('ayarWhatsappFiyatBildirimAktif');if(fiyatBildirimAktif)fiyatBildirimAktif.value=String(uygulamaAyarlari.whatsappFiyatBildirimAktif!==false);
     }
 
     function otomatikBildirimSablonDegerleriniOku(varsayılanKullan=false){
-        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin',magicpassBildirimAvansKayitMetni:'ayarMagicBildirimAvansKayit',magicpassBildirimIcraKayitMetni:'ayarMagicBildirimIcraKayit',magicpassBildirimIcraAylikMetni:'ayarMagicBildirimIcraAylik',magicpassBildirimIzinKayitMetni:'ayarMagicBildirimIzinKayit',magicpassBildirimBordroYayinMetni:'ayarMagicBildirimBordroYayin',magicpassBildirimBordroAvansMetni:'ayarMagicBildirimBordroAvans',magicpassBildirimVardiyaDegisiklikMetni:'ayarMagicBildirimVardiyaDegisiklik',magicpassBildirimIseGirisMetni:'ayarMagicBildirimIseGiris',magicpassBildirimIstenAyrilisMetni:'ayarMagicBildirimIstenAyrilis'};
+        const alanlar={magicpassBildirimGelmediMetni:'ayarMagicBildirimGelmedi',magicpassBildirimGirisYokMetni:'ayarMagicBildirimGirisYok',magicpassBildirimCikisYokMetni:'ayarMagicBildirimCikisYok',magicpassBildirimDogumGunuMetni:'ayarMagicBildirimDogumGunu',magicpassBildirimYillikIzinMetni:'ayarMagicBildirimYillikIzin',magicpassBildirimAvansKayitMetni:'ayarMagicBildirimAvansKayit',magicpassBildirimIcraKayitMetni:'ayarMagicBildirimIcraKayit',magicpassBildirimIcraAylikMetni:'ayarMagicBildirimIcraAylik',magicpassBildirimIzinKayitMetni:'ayarMagicBildirimIzinKayit',magicpassBildirimBordroYayinMetni:'ayarMagicBildirimBordroYayin',magicpassBildirimBordroAvansMetni:'ayarMagicBildirimBordroAvans',magicpassBildirimVardiyaDegisiklikMetni:'ayarMagicBildirimVardiyaDegisiklik',magicpassBildirimIseGirisMetni:'ayarMagicBildirimIseGiris',magicpassBildirimIstenAyrilisMetni:'ayarMagicBildirimIstenAyrilis',magicpassBildirimFiyatDegisiklikMetni:'ayarMagicBildirimFiyatDegisiklik'};
         return Object.fromEntries(Object.entries(alanlar).map(([anahtar,id])=>{
             const girilen=String(document.getElementById(id)?.value||'').trim();
             const deger=varsayılanKullan?(girilen||String(uygulamaAyarlari[anahtar]||VARSAYILAN_UYGULAMA_AYARLARI[anahtar]||'')):girilen;
@@ -19823,14 +19833,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!isManagerUser())return showToast('Bu ayarları değiştirme yetkiniz yok.','error');
         const sablonlar=otomatikBildirimSablonDegerleriniOku(false);
         if(Object.values(sablonlar).some(metin=>!metin))return showToast('Otomatik bildirim mesajlarının tamamını doldurun.','warning');
+        const fiyatBildirimAktif=document.getElementById('ayarWhatsappFiyatBildirimAktif')?.value!=='false';
         const eskiYazi=buton?.innerHTML||'';
         if(buton){buton.disabled=true;buton.innerHTML='⏳ Kaydediliyor...';}
         showGlobalOverlay('Bildirim metinleri kaydediliyor','Otomatik ve kayıt bildirimlerinde kullanılacak mesajlar güncelleniyor...');
         try{
-            const kayitli=await sirketUygulamaAyarParcasiKaydet(sablonlar);
-            if(Object.entries(sablonlar).some(([anahtar,deger])=>String(kayitli[anahtar]||'')!==deger))throw new Error('Kaydedilen bildirim metinleri doğrulanamadı.');
+            const kayitli=await sirketUygulamaAyarParcasiKaydet({...sablonlar,whatsappFiyatBildirimAktif:fiyatBildirimAktif});
+            if(Object.entries(sablonlar).some(([anahtar,deger])=>String(kayitli[anahtar]||'')!==deger)||kayitli.whatsappFiyatBildirimAktif!==fiyatBildirimAktif)throw new Error('Kaydedilen bildirim metinleri doğrulanamadı.');
             magicpassGunlukRaporAyarlariniDoldur();
-            showToast('Personel bildirim metinleri kaydedildi.','success');
+            showToast('WhatsApp bildirim metinleri ve fiyat bildirimi ayarı kaydedildi.','success');
         }catch(error){showToast('Bildirim metinleri kaydedilemedi: '+(error.message||error),'error');}
         finally{hideGlobalOverlay();if(buton){buton.disabled=false;buton.innerHTML=eskiYazi;}}
     }
@@ -22866,7 +22877,7 @@ document.addEventListener('click',function(e){
         tumPersoneller.forEach(p=>{const telefon=telefonAnahtari(p.telefon||p.gsm||p.telefonNo||p.cepTelefonu);if(telefon)telefonHaritasi.set(telefon,p)});
         const grupAl=(employeeId,senderWaId,ad='')=>{const personel=personelHaritasi.get(String(employeeId||''))||telefonHaritasi.get(telefonAnahtari(senderWaId)),pid=String(personel?.id||employeeId||''),wa=telefonAnahtari(senderWaId||personel?.telefon||personel?.gsm||''),anahtar=pid?'p:'+pid:'w:'+wa;if(!anahtar||anahtar==='w:')return null;if(!gruplar.has(anahtar))gruplar.set(anahtar,{anahtar,employeeId:pid,senderWaId:wa,ad:String(personel?.ad||ad||fdWhatsappTelefonuYaz(wa)||'Bilinmeyen kişi'),messages:[],outgoingSummary:null});const grup=gruplar.get(anahtar);if(!grup.senderWaId&&wa)grup.senderWaId=wa;if(!grup.employeeId&&pid)grup.employeeId=pid;return grup};
         fdWhatsappGelenMesajlar.forEach(mesaj=>{const grup=grupAl(mesaj?.employee_legacy_id,mesaj?.sender_wa_id,fdWhatsappGonderenAdi(mesaj));if(grup)grup.messages.push(mesaj)});
-        fdWhatsappGidenOzetleri.forEach(ozet=>{const grup=grupAl(ozet?.employee_legacy_id,ozet?.phone_e164,ozet?.employee_name);if(grup)grup.outgoingSummary=ozet});
+        fdWhatsappGidenOzetleri.forEach(ozet=>{const grup=grupAl(ozet?.employee_legacy_id,ozet?.phone_e164,ozet?.employee_name);if(grup&&(!grup.outgoingSummary||new Date(ozet.sent_at||ozet.created_at||ozet.notification?.created_at||0)>new Date(grup.outgoingSummary.sent_at||grup.outgoingSummary.created_at||grup.outgoingSummary.notification?.created_at||0)))grup.outgoingSummary=ozet});
         return [...gruplar.values()].map(grup=>{grup.messages.sort((a,b)=>new Date(a.received_at||a.created_at||0)-new Date(b.received_at||b.created_at||0));const sonGelen=grup.messages[grup.messages.length-1]||null,sonGiden=grup.outgoingSummary||null,gelenZaman=new Date(sonGelen?.received_at||sonGelen?.created_at||0).getTime(),gidenZaman=new Date(sonGiden?.sent_at||sonGiden?.created_at||sonGiden?.notification?.created_at||0).getTime(),gidenMi=gidenZaman>gelenZaman,son=gidenMi?sonGiden:sonGelen;return{...grup,son,sonYon:gidenMi?'out':'in',sonZaman:gidenMi?(sonGiden?.sent_at||sonGiden?.created_at||sonGiden?.notification?.created_at):(sonGelen?.received_at||sonGelen?.created_at),sonMesaj:gidenMi?String(sonGiden?.notification?.message||'Gönderilen mesaj'):fdWhatsappMesajMetni(sonGelen),okunmamis:grup.messages.filter(m=>!m.read_at).length}}).sort((a,b)=>new Date(b.sonZaman||0)-new Date(a.sonZaman||0));
     }
     function fdWhatsappRozetiniGuncelle(adet){const rozet=document.getElementById('fdWhatsappGelenRozeti'),sayi=Math.max(0,Number(adet)||0);if(!rozet)return;rozet.textContent=sayi>99?'99+':String(sayi);rozet.style.display=sayi?'inline-flex':'none'}
@@ -22887,9 +22898,9 @@ document.addEventListener('click',function(e){
         (giden?.notifications||[]).forEach(b=>{const alici=(giden.recipients||[]).find(a=>String(a.notification_id)===String(b.id))||{};akıs.push({yon:'out',zaman:b.created_at||alici.created_at,bildirim:b,alici})});
         if(!giden&&grup.outgoingSummary?.notification)akıs.push({yon:'out',zaman:grup.outgoingSummary.notification.created_at||grup.outgoingSummary.created_at,bildirim:grup.outgoingSummary.notification,alici:grup.outgoingSummary});
         akıs.sort((a,b)=>new Date(a.zaman||0)-new Date(b.zaman||0));
-        const balonlar=akıs.map(item=>{if(item.yon==='in'){const tur=fdWhatsappMesajTuru(item.mesaj);return '<div class="fd-wa-bubble">'+(tur?'<span class="fd-wa-message-kind">'+escapeDashboardText(tur)+'</span>':'')+'<p>'+escapeDashboardText(fdWhatsappMesajMetni(item.mesaj))+'</p><small>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</small></div>'}const durum=fdWhatsappGidenDurumu(item.alici),baslik=String(item.bildirim?.title||''),yeniden=Number(item.bildirim?.resend_count||0)>0&&item.bildirim?.last_resent_at?'<span class="fd-wa-retry-result '+(item.alici?.status==='failed'?'failed':'success')+'">'+(item.alici?.status==='failed'?'Son yeniden gönderim başarısız':item.alici?.status==='pending'?'Tekrar gönderim kuyrukta':item.alici?.status==='cancelled'?'İptal edildi':'Yeniden gönderildi')+' · '+escapeDashboardText(fdBildirimTarihi(item.bildirim.last_resent_at))+'</span>':'',tekrar=item.alici?.status==='failed'&&item.bildirim?.id&&grup.employeeId?'<button type="button" class="fd-wa-retry-btn" onclick="fdWhatsappBasarisizMesajiTekrarGonder(\''+escapeDashboardText(String(item.bildirim.id))+'\',\''+escapeDashboardText(String(grup.employeeId))+'\',this)">↻ Tekrar Gönder</button>':'';return '<div class="fd-wa-bubble outgoing">'+(baslik?'<strong class="fd-wa-bubble-title">'+escapeDashboardText(baslik)+'</strong>':'')+'<p>'+escapeDashboardText(item.bildirim?.message||'')+'</p><span class="fd-wa-bubble-footer">'+escapeDashboardText(WHATSAPP_SISTEM_ALT_BILGISI)+'</span><small class="fd-wa-bubble-meta '+durum.sinif+'"><span>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</span><span>'+escapeDashboardText(durum.metin)+'</span></small>'+yeniden+tekrar+'</div>'}).join('');
+        const balonlar=akıs.map(item=>{if(item.yon==='in'){const tur=fdWhatsappMesajTuru(item.mesaj);return '<div class="fd-wa-bubble">'+(tur?'<span class="fd-wa-message-kind">'+escapeDashboardText(tur)+'</span>':'')+'<p>'+escapeDashboardText(fdWhatsappMesajMetni(item.mesaj))+'</p><small>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</small></div>'}const durum=fdWhatsappGidenDurumu(item.alici),baslik=String(item.bildirim?.title||''),yeniden=Number(item.bildirim?.resend_count||0)>0&&item.bildirim?.last_resent_at?'<span class="fd-wa-retry-result '+(item.alici?.status==='failed'?'failed':'success')+'">'+(item.alici?.status==='failed'?'Son yeniden gönderim başarısız':item.alici?.status==='pending'?'Tekrar gönderim kuyrukta':item.alici?.status==='cancelled'?'İptal edildi':'Yeniden gönderildi')+' · '+escapeDashboardText(fdBildirimTarihi(item.bildirim.last_resent_at))+'</span>':'',tekrar=item.alici?.status==='failed'&&item.bildirim?.id&&grup.employeeId?'<button type="button" class="fd-wa-retry-btn" onclick="fdWhatsappBasarisizMesajiTekrarGonder(\''+escapeDashboardText(String(item.bildirim.id))+'\',\''+escapeDashboardText(String(item.bildirim.source_price_event_id?item.alici.employee_legacy_id||grup.employeeId:grup.employeeId))+'\',this,\''+escapeDashboardText(String(grup.employeeId))+'\')">↻ Tekrar Gönder</button>':'';return '<div class="fd-wa-bubble outgoing">'+(baslik?'<strong class="fd-wa-bubble-title">'+escapeDashboardText(baslik)+'</strong>':'')+'<p>'+escapeDashboardText(item.bildirim?.message||'')+'</p><span class="fd-wa-bubble-footer">'+escapeDashboardText(WHATSAPP_SISTEM_ALT_BILGISI)+'</span><small class="fd-wa-bubble-meta '+durum.sinif+'"><span>'+escapeDashboardText(fdBildirimTarihi(item.zaman))+'</span><span>'+escapeDashboardText(durum.metin)+'</span></small>'+yeniden+tekrar+'</div>'}).join('');
         const yukleniyor=grup.employeeId&&!fdWhatsappSohbetYuklenenler.has(String(grup.employeeId))?'<div class="fd-wa-empty" style="min-height:70px;padding:10px"><div>Gönderilen mesajlar yükleniyor...</div></div>':'';
-        sohbet.innerHTML='<div class="fd-wa-chat-head"><div><strong>'+escapeDashboardText(grup.ad)+'</strong><small>'+escapeDashboardText(fdWhatsappTelefonuYaz(grup.senderWaId))+(grup.employeeId?' · Personel kaydıyla eşleşti':' · Kayıtsız numara')+'</small></div>'+(grup.employeeId?'<button type="button" class="fd-wa-chat-head-action" onclick="fdWhatsappKisiyeMesajHazirla(\''+escapeDashboardText(grup.employeeId)+'\')">Mesaj Gönder</button>':'')+'</div><div class="fd-wa-chat-messages">'+(balonlar||'<div class="fd-wa-empty"><div><span>💬</span>Bu konuşmada mesaj bulunmuyor.</div></div>')+yukleniyor+'</div>';
+        sohbet.innerHTML='<div class="fd-wa-chat-head"><div><strong>'+escapeDashboardText(grup.ad)+'</strong><small>'+escapeDashboardText(fdWhatsappTelefonuYaz(grup.senderWaId))+(grup.employeeId?String(grup.employeeId).startsWith('user:')?' · Kullanıcı hesabı':' · Personel kaydıyla eşleşti':' · Kayıtsız numara')+'</small></div>'+(grup.employeeId&&!String(grup.employeeId).startsWith('user:')?'<button type="button" class="fd-wa-chat-head-action" onclick="fdWhatsappKisiyeMesajHazirla(\''+escapeDashboardText(grup.employeeId)+'\')">Mesaj Gönder</button>':'')+'</div><div class="fd-wa-chat-messages">'+(balonlar||'<div class="fd-wa-empty"><div><span>💬</span>Bu konuşmada mesaj bulunmuyor.</div></div>')+yukleniyor+'</div>';
         const mesajAlani=sohbet.querySelector('.fd-wa-chat-messages');if(mesajAlani)mesajAlani.scrollTop=mesajAlani.scrollHeight;
     }
     window.fdWhatsappGelenKutusuCiz=function(){
@@ -22918,13 +22929,14 @@ document.addEventListener('click',function(e){
         if(grup.employeeId&&(zorla||!fdWhatsappSohbetYuklenenler.has(String(grup.employeeId))))islemler.push(fdWhatsappSohbetGecmisiniYukle(grup.employeeId,zorla));
         await Promise.all(islemler);
     };
-    window.fdWhatsappBasarisizMesajiTekrarGonder=async function(notificationId,employeeId,button){
+    window.fdWhatsappBasarisizMesajiTekrarGonder=async function(notificationId,employeeId,button,historyEmployeeId=employeeId){
         if(button){button.disabled=true;button.textContent='Gönderiliyor...';}
         try{
             const sonuc=await whatsappCagir({action:'resend-recipient',notificationId:String(notificationId||''),employeeId:String(employeeId||'')}),ilkHata=sonuc.failureReasons?.[0]?.error_message;
             fdWhatsappGonderimSonucuGoster(sonuc);
-            fdWhatsappSohbetYuklenenler.delete(String(employeeId||''));
-            await fdWhatsappSohbetGecmisiniYukle(employeeId,true);
+            const historyId=String(historyEmployeeId||employeeId||'');
+            fdWhatsappSohbetYuklenenler.delete(historyId);
+            await fdWhatsappSohbetGecmisiniYukle(historyId,true);
         }catch(error){showToast(hataMesaji(error,'Mesaj yeniden gönderilemedi.'),'error')}
         finally{if(button&&button.isConnected){button.disabled=false;button.textContent='↻ Tekrar Gönder';}}
     };
@@ -22933,12 +22945,14 @@ document.addEventListener('click',function(e){
         try{const sonuc=await whatsappCagir({action:'inbox'});fdWhatsappGelenMesajlar=Array.isArray(sonuc.messages)?sonuc.messages:[];fdWhatsappGidenOzetleri=Array.isArray(sonuc.outgoingSummaries)?sonuc.outgoingSummaries:[];fdWhatsappKonusmalarYuklendi=true;fdWhatsappGelenKutusuCiz();fdWhatsappRozetiniGuncelle(fdWhatsappGelenMesajlar.filter(m=>!m.read_at).length);if(fdWhatsappAktifGonderen)await fdWhatsappKonusmaAc(fdWhatsappAktifGonderen,zorla)}catch(error){fdWhatsappKonusmalarYuklendi=false;if(liste)liste.innerHTML='<div class="fd-wa-empty" style="color:#b91c1c"><div><span>⚠️</span>'+escapeDashboardText(hataMesaji(error,'WhatsApp konuşmaları yüklenemedi.'))+'</div></div>'}finally{fdWhatsappGelenYukleniyor=false}
     };
     window.fdWhatsappKisiyeMesajHazirla=function(employeeId){fdWhatsappSekmeAc('send');fdBildirimSeciliIdler.clear();fdBildirimSeciliIdler.add(String(employeeId));const sube=document.getElementById('fdBildirimSube'),ara=document.getElementById('fdBildirimPersonelAra');if(sube)sube.value='';if(ara)ara.value='';fdBildirimPersonelleriniDoldur(false);fdBildirimHedefOzetiniGuncelle();const secili=document.querySelector('#fdBildirimPersonelListesi .fd-bildirim-personel-sec:checked');if(!secili)showToast('Bu personel aktif gönderim listesinde bulunmuyor.','warning');else document.getElementById('fdBildirimMesaj')?.focus()};
-    let fdWhatsappKuyrukKayitlari=[],fdWhatsappKuyrukDuraklatildi=false,fdWhatsappKuyrukHazir=false,fdWhatsappKuyrukIslemde=false,fdWhatsappKuyrukSirket='';
+    let fdWhatsappKuyrukKayitlari=[],fdWhatsappKuyrukDuraklatildi=false,fdWhatsappKuyrukHazir=false,fdWhatsappKuyrukIslemde=false,fdWhatsappKuyrukSirket='',fdWhatsappKuyrukOturum='',fdWhatsappKuyrukYuklemeSira=0;
     const fdWhatsappKuyrukSecimleri=new Set();
-    function fdWhatsappKuyrukTuru(item){const roller=Array.isArray(item?.target_roles)?item.target_roles:[];if(roller.includes('IzinOtomatik'))return'🌴 İzin';if(roller.includes('VardiyaOtomatik'))return'🕓 Vardiya';if(roller.includes('BordroOtomatik'))return'📄 Ücret pusulası';return'💬 Planlı mesaj'}
-    function fdWhatsappKuyrukOtomatikMi(item){const roller=Array.isArray(item?.target_roles)?item.target_roles:[];return roller.some(x=>['IzinOtomatik','VardiyaOtomatik','BordroOtomatik'].includes(x))}
-    function fdWhatsappKuyrukHedefi(item){const idler=Array.isArray(item?.target_employee_ids)?item.target_employee_ids.map(String):[],adlar=idler.map(id=>personeller.find(p=>String(p.id)===id)?.ad).filter(Boolean);if(adlar.length)return adlar.join(', ');const roller=Array.isArray(item?.target_roles)?item.target_roles:[];return roller.some(x=>['Admin','Yonetici'].includes(x))?'Yöneticiler':'Tüm aktif personel'}
-    function fdWhatsappKuyrukAnahtari(item){return(item.recipientQueue?'recipient:':'schedule:')+String(item.id)}
+    function fdWhatsappKuyrukOturumAnahtari(){return String(activeUser?.supabaseUserId||activeUser?.username||'')+'|'+String(activeUser?.sirketId||'')+'|'+String(activeUser?.rol||'')}
+    function fdWhatsappKuyrukOturumuGecerli(oturum){return !!activeUser?.sirketId&&oturum===fdWhatsappKuyrukOturumAnahtari()&&(typeof isManagerUser!=='function'||isManagerUser())}
+    function fdWhatsappKuyrukTuru(item){if(item?.priceEventQueue)return'Fiyat listesi';const roller=Array.isArray(item?.target_roles)?item.target_roles:[];if(roller.includes('IzinOtomatik'))return'🌴 İzin';if(roller.includes('VardiyaOtomatik'))return'🕓 Vardiya';if(roller.includes('BordroOtomatik'))return'📄 Ücret pusulası';return'💬 Planlı mesaj'}
+    function fdWhatsappKuyrukOtomatikMi(item){if(item?.priceEventQueue)return true;const roller=Array.isArray(item?.target_roles)?item.target_roles:[];return roller.some(x=>['IzinOtomatik','VardiyaOtomatik','BordroOtomatik'].includes(x))}
+    function fdWhatsappKuyrukHedefi(item){if(item?.priceEventQueue)return'Admin / Kullanıcı';const idler=Array.isArray(item?.target_employee_ids)?item.target_employee_ids.map(String):[],adlar=idler.map(id=>personeller.find(p=>String(p.id)===id)?.ad).filter(Boolean);if(adlar.length)return adlar.join(', ');const roller=Array.isArray(item?.target_roles)?item.target_roles:[];return roller.some(x=>['Admin','Yonetici'].includes(x))?'Yöneticiler':'Tüm aktif personel'}
+    function fdWhatsappKuyrukAnahtari(item){return(item.priceEventQueue?'price:':item.recipientQueue?'recipient:':'schedule:')+String(item.id)}
     function fdWhatsappKuyrukKontrolleriniCiz(){
         const bekleyen=fdWhatsappKuyrukKayitlari.filter(x=>x.status==='pending'),gecerli=new Set(bekleyen.map(fdWhatsappKuyrukAnahtari));
         for(const key of fdWhatsappKuyrukSecimleri)if(!gecerli.has(key))fdWhatsappKuyrukSecimleri.delete(key);
@@ -22954,37 +22968,41 @@ document.addEventListener('click',function(e){
         const alan=document.getElementById('fdWhatsappKuyrukListesi'),rozet=document.getElementById('fdWhatsappKuyrukRozeti');
         if(rozet){rozet.textContent=String(fdWhatsappKuyrukKayitlari.length);rozet.style.display=fdWhatsappKuyrukKayitlari.length?'inline-flex':'none'}if(!alan)return;
         alan.innerHTML=fdWhatsappKuyrukKayitlari.length?fdWhatsappKuyrukKayitlari.map(item=>{
-            const bekliyor=item.status==='pending',duzenlenebilir=bekliyor&&!item.recipientQueue&&!fdWhatsappKuyrukOtomatikMi(item),id=escapeDashboardText(String(item.id)),key=escapeDashboardText(fdWhatsappKuyrukAnahtari(item)),secili=fdWhatsappKuyrukSecimleri.has(fdWhatsappKuyrukAnahtari(item));
+            const bekliyor=item.status==='pending',duzenlenebilir=bekliyor&&!item.recipientQueue&&!item.priceEventQueue&&!fdWhatsappKuyrukOtomatikMi(item),id=escapeDashboardText(String(item.id)),key=escapeDashboardText(fdWhatsappKuyrukAnahtari(item)),secili=fdWhatsappKuyrukSecimleri.has(fdWhatsappKuyrukAnahtari(item));
             const durum=item.status==='processing'?'Gönderime alındı':fdWhatsappKuyrukDuraklatildi?'Durduruldu':item.recipientQueue?'Kuyrukta · 4 dk aralıkla':'Bekliyor';
-            return '<article class="fd-wa-queue-item '+escapeDashboardText(item.status||'pending')+(secili?' selected':'')+'"><div>'+(bekliyor?'<label class="fd-wa-queue-selection"><input type="checkbox" data-queue-key="'+key+'" '+(secili?'checked ':'')+'onchange="fdWhatsappKuyrukSec(\''+key+'\',this.checked)"> Seç</label>':'')+'<h4>'+escapeDashboardText((item.recipientQueue?'⏳ Sıralı gönderim':fdWhatsappKuyrukTuru(item))+' · '+(item.title||'Bilgilendirme'))+'</h4><p>'+escapeDashboardText(item.message||'')+'</p><div class="fd-wa-queue-meta"><span>👤 '+escapeDashboardText(item.employee_name||fdWhatsappKuyrukHedefi(item))+'</span><span>🗓 '+(item.recipientQueue?(fdWhatsappKuyrukDuraklatildi?'Devam ettirilince sırayla':'Tahmini: '+escapeDashboardText(fdBildirimTarihi(item.scheduled_for))):escapeDashboardText(fdBildirimTarihi(item.scheduled_for)))+'</span><span>'+durum+'</span></div>'+(item.error_message?'<small>'+escapeDashboardText(fdWhatsappHataMetniDuzelt(item.error_message))+'</small>':'')+'</div>'+(bekliyor?'<div class="fd-wa-queue-actions">'+(duzenlenebilir?'<button type="button" class="fd-wa-queue-edit" onclick="fdWhatsappKuyrukDuzenle(\''+id+'\')">Düzenle</button>':'')+'<button type="button" class="fd-wa-queue-cancel" onclick="fdWhatsappKuyrukIptal(\''+id+'\',this)">İptal Et</button></div>':'')+'</article>'
+            const baslik=item.priceEventQueue?item.title:(item.recipientQueue?'⏳ Sıralı gönderim':fdWhatsappKuyrukTuru(item))+' · '+(item.title||'Bilgilendirme');
+            return '<article class="fd-wa-queue-item '+escapeDashboardText(item.status||'pending')+(secili?' selected':'')+'"><div>'+(bekliyor?'<label class="fd-wa-queue-selection"><input type="checkbox" data-queue-key="'+key+'" '+(secili?'checked ':'')+'onchange="fdWhatsappKuyrukSec(\''+key+'\',this.checked)"> Seç</label>':'')+'<h4>'+escapeDashboardText(baslik)+'</h4><p>'+escapeDashboardText(item.message||'')+'</p><div class="fd-wa-queue-meta"><span>👤 '+escapeDashboardText(item.priceEventQueue?fdWhatsappKuyrukHedefi(item):item.employee_name||fdWhatsappKuyrukHedefi(item))+'</span><span>🗓 '+(item.priceEventQueue?'Oluşturuldu: '+escapeDashboardText(fdBildirimTarihi(item.created_at)):item.recipientQueue?(fdWhatsappKuyrukDuraklatildi?'Devam ettirilince sırayla':'Tahmini: '+escapeDashboardText(fdBildirimTarihi(item.scheduled_for))):escapeDashboardText(fdBildirimTarihi(item.scheduled_for)))+'</span>'+(item.priceEventQueue?'<span>'+escapeDashboardText(String(Number(item.changed_count)||0))+' ürün değişikliği</span>':'')+'<span>'+durum+'</span></div>'+(item.error_message?'<small>'+escapeDashboardText(fdWhatsappHataMetniDuzelt(item.error_message))+'</small>':'')+'</div>'+(bekliyor?'<div class="fd-wa-queue-actions">'+(duzenlenebilir?'<button type="button" class="fd-wa-queue-edit" onclick="fdWhatsappKuyrukDuzenle(\''+id+'\')">Düzenle</button>':'')+'<button type="button" class="fd-wa-queue-cancel" onclick="fdWhatsappKuyrukIptal(\''+id+'\',this,\''+key+'\')">İptal Et</button></div>':'')+'</article>'
         }).join(''):'<div class="fd-wa-empty"><div><span>✓</span>Bekleyen WhatsApp mesajı bulunmuyor.</div></div>';
         fdWhatsappKuyrukKontrolleriniCiz();
     }
     window.fdWhatsappKuyrukSec=function(key,sec){const item=fdWhatsappKuyrukKayitlari.find(x=>fdWhatsappKuyrukAnahtari(x)===key);if(fdWhatsappKuyrukIslemde||item?.status!=='pending')return;if(sec)fdWhatsappKuyrukSecimleri.add(key);else fdWhatsappKuyrukSecimleri.delete(key);document.querySelectorAll('#fdWhatsappKuyrukListesi input[data-queue-key]').forEach(x=>x.closest('article')?.classList.toggle('selected',fdWhatsappKuyrukSecimleri.has(x.dataset.queueKey)));fdWhatsappKuyrukKontrolleriniCiz()};
     window.fdWhatsappKuyrukTumunuSec=function(sec){if(fdWhatsappKuyrukIslemde)return;fdWhatsappKuyrukSecimleri.clear();if(sec)fdWhatsappKuyrukKayitlari.filter(x=>x.status==='pending').forEach(x=>fdWhatsappKuyrukSecimleri.add(fdWhatsappKuyrukAnahtari(x)));fdWhatsappKuyrukCiz()};
-    window.fdWhatsappKuyrukDuzenle=function(id){if(fdWhatsappKuyrukIslemde)return;const item=fdWhatsappKuyrukKayitlari.find(kayit=>String(kayit.id)===String(id)&&!kayit.recipientQueue&&kayit.status==='pending');if(!item)return showToast('Planlı mesaj kuyruğunda bulunamadı.','warning');if(fdWhatsappKuyrukOtomatikMi(item))return showToast('Otomatik mesajlar WhatsApp ayarlarından yönetilir.','warning');fdWhatsappSekmeAc('send');fdBildirimPlanDuzenlemeAc(item);const dugme=document.getElementById('fdBildirimGonderBtn');if(dugme)dugme.textContent='💾 Planlı Mesajı Güncelle';document.getElementById('fdBildirimMesaj')?.focus()};
-    window.fdWhatsappKuyrukYukle=async function(zorla=false){const alan=document.getElementById('fdWhatsappKuyrukListesi');if(!alan||alan.dataset.loading==='1')return;
-        const sirket=String(activeUser?.sirketId||'');if(fdWhatsappKuyrukSirket!==sirket){fdWhatsappKuyrukSirket=sirket;fdWhatsappKuyrukHazir=false;fdWhatsappKuyrukKayitlari=[];fdWhatsappKuyrukSecimleri.clear();delete alan.dataset.loaded}
+    window.fdWhatsappKuyrukDuzenle=function(id){if(fdWhatsappKuyrukIslemde)return;const item=fdWhatsappKuyrukKayitlari.find(kayit=>String(kayit.id)===String(id)&&!kayit.recipientQueue&&!kayit.priceEventQueue&&kayit.status==='pending');if(!item)return showToast('Planlı mesaj kuyruğunda bulunamadı.','warning');if(fdWhatsappKuyrukOtomatikMi(item))return showToast('Otomatik mesajlar WhatsApp ayarlarından yönetilir.','warning');fdWhatsappSekmeAc('send');fdBildirimPlanDuzenlemeAc(item);const dugme=document.getElementById('fdBildirimGonderBtn');if(dugme)dugme.textContent='💾 Planlı Mesajı Güncelle';document.getElementById('fdBildirimMesaj')?.focus()};
+    window.fdWhatsappKuyrukYukle=async function(zorla=false){const alan=document.getElementById('fdWhatsappKuyrukListesi');if(!alan)return;
+        const sirket=String(activeUser?.sirketId||''),oturum=fdWhatsappKuyrukOturumAnahtari();if(fdWhatsappKuyrukOturum!==oturum){fdWhatsappKuyrukOturum=oturum;fdWhatsappKuyrukYuklemeSira++;fdWhatsappKuyrukSirket=sirket;fdWhatsappKuyrukHazir=false;fdWhatsappKuyrukIslemde=false;fdWhatsappKuyrukDuraklatildi=false;fdWhatsappKuyrukKayitlari=[];fdWhatsappKuyrukSecimleri.clear();delete alan.dataset.loaded;delete alan.dataset.loading}
+        if(!fdWhatsappKuyrukOturumuGecerli(oturum)){fdWhatsappKuyrukHazir=false;fdWhatsappKuyrukKayitlari=[];fdWhatsappKuyrukSecimleri.clear();delete alan.dataset.loaded;fdWhatsappKuyrukCiz();return}if(alan.dataset.loading==='1')return;
+        const istek=++fdWhatsappKuyrukYuklemeSira;
         if(!zorla&&alan.dataset.loaded==='1'){fdWhatsappKuyrukCiz();return}alan.dataset.loading='1';fdWhatsappKuyrukHazir=false;fdWhatsappKuyrukKontrolleriniCiz();alan.innerHTML='<div class="fd-wa-empty"><div><span>⏳</span>Gönderim kuyruğu yükleniyor...</div></div>';try{
             if(typeof window.fdxPlanliBildirimApi!=='function')throw new Error('Planlı mesaj bağlantısı hazır değil.');
             const [sonuc,kuyruk]=await Promise.all([window.fdxPlanliBildirimApi({action:'schedule-queue-list'}),whatsappCagir({action:'queue-list'})]);
-            if(sirket!==String(activeUser?.sirketId||''))return;
+            if(istek!==fdWhatsappKuyrukYuklemeSira||!fdWhatsappKuyrukOturumuGecerli(oturum))return;
             let zaman=Math.max(Date.now(),Date.parse(kuyruk.nextSendAt)||0);const aralik=(Number(kuyruk.intervalSeconds)||240)*1000;
-            const alicilar=(kuyruk.items||[]).map(item=>{zaman=Math.max(zaman,Date.parse(item.next_attempt_at)||0);const kayit={...item,...item.whatsapp_notifications,recipientQueue:true,status:item.queue_state==='processing'?'processing':'pending',scheduled_for:new Date(zaman).toISOString()};zaman+=aralik;return kayit});
+            const alicilar=(Array.isArray(kuyruk.items)?kuyruk.items:[]).map(item=>{zaman=Math.max(zaman,Date.parse(item.next_attempt_at)||0);const kayit={...item,...item.whatsapp_notifications,recipientQueue:true,priceEventQueue:false,status:item.queue_state==='processing'?'processing':'pending',scheduled_for:new Date(zaman).toISOString()};zaman+=aralik;return kayit});
+            const fiyatlar=(Array.isArray(kuyruk.priceEvents)?kuyruk.priceEvents:[]).map(item=>({...item,priceEventQueue:true,recipientQueue:false,target_roles:['Admin','Yonetici'],status:item.status==='processing'?'processing':'pending',title:'Fiyat listesi: '+String(item.list_name||'Fiyat listesi'),message:String(item.blocked_reason||'Fiyat bildirimi hazırlanıyor'),scheduled_for:item.created_at||new Date().toISOString()}));
             fdWhatsappKuyrukDuraklatildi=!!kuyruk.paused;fdWhatsappKuyrukHazir=true;
-            fdWhatsappKuyrukKayitlari=[...(Array.isArray(sonuc.items)?sonuc.items:[]),...alicilar].sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for));alan.dataset.loaded='1';fdWhatsappKuyrukCiz();
-        }catch(error){alan.innerHTML='<div class="fd-wa-empty"><div>'+escapeDashboardText(error?.message||error)+'</div></div>';delete alan.dataset.loaded;fdWhatsappKuyrukKontrolleriniCiz()}finally{delete alan.dataset.loading}};
+            fdWhatsappKuyrukKayitlari=[...(Array.isArray(sonuc.items)?sonuc.items:[]),...alicilar,...fiyatlar].sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for));alan.dataset.loaded='1';fdWhatsappKuyrukCiz();
+        }catch(error){if(istek===fdWhatsappKuyrukYuklemeSira&&fdWhatsappKuyrukOturumuGecerli(oturum)){alan.innerHTML='<div class="fd-wa-empty"><div>'+escapeDashboardText(error?.message||error)+'</div></div>';delete alan.dataset.loaded;fdWhatsappKuyrukKontrolleriniCiz()}}finally{if(istek===fdWhatsappKuyrukYuklemeSira){delete alan.dataset.loading;if(!fdWhatsappKuyrukOturumuGecerli(oturum)){fdWhatsappKuyrukHazir=false;fdWhatsappKuyrukKayitlari=[];fdWhatsappKuyrukSecimleri.clear();delete alan.dataset.loaded;fdWhatsappKuyrukCiz()}}}};
     window.fdWhatsappKuyrukDuraklat=async function(durdur){if(fdWhatsappKuyrukIslemde||!fdWhatsappKuyrukHazir)return;fdWhatsappKuyrukIslemde=true;fdWhatsappKuyrukKontrolleriniCiz();try{const sonuc=await whatsappCagir({action:durdur?'queue-pause':'queue-resume'});fdWhatsappKuyrukDuraklatildi=!!sonuc.paused;showToast(durdur?'Bu şirketin tüm bekleyen WhatsApp gönderimleri durduruldu. Gönderime başlamış mesajlar geri alınamaz.':'Gönderimler kaldığı yerden, en az 4 dakika arayla devam edecek.','success')}catch(error){showToast('Kuyruk durumu değiştirilemedi: '+(error?.message||error),'error')}finally{fdWhatsappKuyrukIslemde=false;await fdWhatsappKuyrukYukle(true)}};
     window.fdWhatsappKuyrukSecilenleriSil=async function(){if(fdWhatsappKuyrukIslemde||!fdWhatsappKuyrukHazir)return;const secilen=fdWhatsappKuyrukKayitlari.filter(x=>x.status==='pending'&&fdWhatsappKuyrukSecimleri.has(fdWhatsappKuyrukAnahtari(x)));if(!secilen.length)return;
         fdWhatsappKuyrukIslemde=true;fdWhatsappKuyrukKontrolleriniCiz();
         try{if(!await fdYuzerOnaySor(secilen.length+' bekleyen mesaj gönderim kuyruğundan silinsin mi? Gönderilmiş ve gönderime başlamış mesajlara dokunulmaz.','Seçilen Mesajları Sil','Sil'))return;
-            const sonuc=await whatsappCagir({action:'queue-cancel-many',scheduleIds:secilen.filter(x=>!x.recipientQueue).map(x=>x.id),recipientIds:secilen.filter(x=>x.recipientQueue).map(x=>x.id)});
+            const sonuc=await whatsappCagir({action:'queue-cancel-many',scheduleIds:secilen.filter(x=>!x.recipientQueue&&!x.priceEventQueue).map(x=>x.id),recipientIds:secilen.filter(x=>x.recipientQueue).map(x=>x.id),priceEventIds:secilen.filter(x=>x.priceEventQueue).map(x=>x.id)});
             const adet=Number(sonuc.cancelled||0);showToast(adet+' bekleyen mesaj kuyruktan silindi.'+(adet<secilen.length?' Diğer mesajlar gönderime alınmış veya daha önce kaldırılmış.':''),adet?'success':'warning');fdWhatsappKuyrukSecimleri.clear();
         }catch(error){showToast('Mesajlar silinemedi: '+(error?.message||error),'error')}finally{fdWhatsappKuyrukIslemde=false;await fdWhatsappKuyrukYukle(true)}};
-    window.fdWhatsappKuyrukIptal=async function(id,button){if(fdWhatsappKuyrukIslemde||!id)return;const item=fdWhatsappKuyrukKayitlari.find(x=>String(x.id)===String(id)&&x.status==='pending');if(!item)return;
+    window.fdWhatsappKuyrukIptal=async function(id,button,key=''){if(fdWhatsappKuyrukIslemde||!id)return;const item=fdWhatsappKuyrukKayitlari.find(x=>String(x.id)===String(id)&&(!key||fdWhatsappKuyrukAnahtari(x)===key)&&x.status==='pending');if(!item)return;
         fdWhatsappKuyrukIslemde=true;fdWhatsappKuyrukKontrolleriniCiz();
         try{if(!await fdYuzerOnaySor('Bu bekleyen WhatsApp mesajı iptal edilsin mi?','Gönderimi İptal Et','İptal Et'))return;
-            if(item.recipientQueue)await whatsappCagir({action:'queue-cancel',id});else await window.fdxPlanliBildirimApi({action:'schedule-cancel',id});showToast('Bekleyen WhatsApp mesajı iptal edildi.','success');
+            if(item.priceEventQueue)await whatsappCagir({action:'queue-cancel-price',id});else if(item.recipientQueue)await whatsappCagir({action:'queue-cancel',id});else await window.fdxPlanliBildirimApi({action:'schedule-cancel',id});showToast('Bekleyen WhatsApp mesajı iptal edildi.','success');
         }catch(error){showToast('Mesaj iptal edilemedi: '+(error?.message||error),'error')}finally{fdWhatsappKuyrukIslemde=false;await fdWhatsappKuyrukYukle(true)}};
     window.fdWhatsappSekmeAc=function(sekme){const gonder=sekme==='send',kuyruk=sekme==='queue',gelen=!gonder&&!kuyruk,gelenPanel=document.getElementById('fdWhatsappGelenPanel'),gonderPanel=document.getElementById('fdWhatsappGonderPanel'),kuyrukPanel=document.getElementById('fdWhatsappKuyrukPanel'),gelenDugme=document.getElementById('fdWhatsappSekmeGelen'),gonderDugme=document.getElementById('fdWhatsappSekmeGonder'),kuyrukDugme=document.getElementById('fdWhatsappSekmeKuyruk');if(gelenPanel)gelenPanel.style.display=gelen?'flex':'none';if(gonderPanel)gonderPanel.style.display=gonder?'block':'none';if(kuyrukPanel)kuyrukPanel.style.display=kuyruk?'block':'none';gelenDugme?.classList.toggle('active',gelen);gonderDugme?.classList.toggle('active',gonder);kuyrukDugme?.classList.toggle('active',kuyruk);if(gelen)fdWhatsappGelenKutusuYukle(false);if(kuyruk)fdWhatsappKuyrukYukle(false)};
     window.openWhatsappMesajlari=function(){return openBildirimModal({tab:'inbox'})};
@@ -24508,7 +24526,7 @@ body.fd-vk-detail-open{overflow:hidden}
     function editorSatiri(u={}){const satir=document.createElement('div');satir.className='fd-ft-editor-row';satir.dataset.urunId=String(u.id||'');const pb=paraBirimi(u.paraBirimi);satir.innerHTML='<input class="fd-ft-editor-name" list="fdFtUrunListesi" data-case-preserve="true" placeholder="Ürün adında ara veya yeni ürün yaz" value="'+html(u.ad||'')+'"><input class="fd-ft-editor-price" type="text" inputmode="decimal" placeholder="Fiyat" value="'+html(u.fiyat??'')+'"><select class="fd-ft-editor-currency" title="Para birimi"><option value="TRY" '+(pb==='TRY'?'selected':'')+'>TL</option><option value="USD" '+(pb==='USD'?'selected':'')+'>Dolar</option><option value="EUR" '+(pb==='EUR'?'selected':'')+'>Euro</option></select><input class="fd-ft-editor-unit" list="fdFtBirimListesi" data-case-preserve="true" placeholder="Birim seçin veya yazın" value="'+html(u.birim||'')+'"><input class="fd-ft-editor-desc" data-case-preserve="true" placeholder="Açıklama" value="'+html(u.aciklama||'')+'"><button type="button" title="Satırdan kaldır">✕</button>';const ad=satir.querySelector('.fd-ft-editor-name');ad.addEventListener('input',()=>{const bulunan=urunKatalogu.find(x=>trAnahtar(x.ad)===trAnahtar(ad.value));if(bulunan){satir.dataset.urunId=bulunan.id;const birim=satir.querySelector('.fd-ft-editor-unit');if(!birim.value)birim.value=bulunan.birim||''}else satir.dataset.urunId=''});satir.querySelector('button').onclick=()=>satir.remove();document.getElementById('fdFtEditorSatirlari').appendChild(satir)}
     window.fdFiyatV2UrunSatiriEkle=()=>editorSatiri({});
     window.fdFiyatV2Duzenle=id=>{if(!yazabilir())return;const s=sayfalar.find(x=>x.id===String(id||seciliSayfaId))||seciliSayfa()||guncelSayfa();if(!s)return;duzenlenenSayfaId=s.id;duzenlenenSayfa=s;seciliSayfaId=s.id;const modal=document.getElementById('fdFtEditorModal');modal.dataset.sayfaId=s.id;document.getElementById('fdFtEditorId').value=s.id;document.getElementById('fdFtEditorTarih').textContent=firmaAdi(seciliDosya())+' · '+tarihGoster(s.tarih);document.getElementById('fdFtEditorBaslik').value=s.baslik||'';const liste=document.getElementById('fdFtEditorSatirlari');liste.innerHTML='';s.urunler.forEach(editorSatiri);listeleriDoldur();modal.style.display='flex'};
-    window.fdFiyatV2EditorKaydet=async event=>{event?.preventDefault?.();const buton=event?.submitter||event?.currentTarget?.querySelector?.('button[type="submit"]'),eskiYazi=buton?.textContent||'Fiyat Sayfasını Kaydet';if(buton?.disabled)return;try{const gizliId=String(document.getElementById('fdFtEditorId')?.value||''),modalId=String(document.getElementById('fdFtEditorModal')?.dataset?.sayfaId||''),id=gizliId||duzenlenenSayfaId||modalId||seciliSayfaId,s=sayfalar.find(x=>String(x.id)===String(id))||sayfalar.find(x=>String(x.id)===String(duzenlenenSayfaId))||sayfalar.find(x=>String(x.id)===String(modalId))||duzenlenenSayfa||seciliSayfa();if(!s)throw new Error('Düzenlenecek fiyat sayfası bulunamadı. Sayfayı kapatıp yeniden açın.');duzenlenenSayfaId=s.id;duzenlenenSayfa=s;seciliSayfaId=s.id;const rows=[...document.querySelectorAll('#fdFtEditorSatirlari .fd-ft-editor-row')],gorulen=new Set(),urunler=[];for(const[i,row]of rows.entries()){const ad=String(row.querySelector('.fd-ft-editor-name')?.value||'').trim(),hamFiyat=String(row.querySelector('.fd-ft-editor-price')?.value||'').trim(),pb=paraBirimi(row.querySelector('.fd-ft-editor-currency')?.value||'TRY'),birim=String(row.querySelector('.fd-ft-editor-unit')?.value||'').trim(),aciklama=String(row.querySelector('.fd-ft-editor-desc')?.value||'').trim(),tamamenBos=!ad&&!hamFiyat&&!birim&&!aciklama;if(tamamenBos)continue;if(!ad||!hamFiyat)throw new Error((i+1)+'. satırda ürün adı ve fiyatı birlikte girin.');const fiyat=fiyatSayiyaCevir(hamFiyat);if(!Number.isFinite(fiyat)||fiyat<0)throw new Error((i+1)+'. satırdaki fiyat geçerli değil. Örnek: 1250,50');const bulunan=urunKatalogu.find(x=>trAnahtar(x.ad)===trAnahtar(ad)),uid=String(bulunan?.id||row.dataset.urunId||urunId(ad));if(gorulen.has(uid))throw new Error(ad+' ürünü listede birden fazla kez bulunuyor.');gorulen.add(uid);urunler.push({id:uid,ad:bulunan?.ad||ad,fiyat,paraBirimi:pb,birim:birim||bulunan?.birim||'',aciklama,sira:urunler.length+1})}if(!urunler.length&&!confirm('Bu fiyat sayfası boş kaydedilecek. Devam edilsin mi?'))return;if(buton){buton.disabled=true;buton.textContent='Kaydediliyor...'}showGlobalOverlay?.('Fiyatlar kaydediliyor','Ürün kataloğu ve güncel liste yenileniyor...');const kayit=await sayfaVeKatalogKaydet({...s,baslik:String(document.getElementById('fdFtEditorBaslik')?.value||'').trim(),urunler});duzenlenenSayfa=kayit;modalKapat('fdFtEditorModal');ciz();showToast?.('Fiyat sayfası kaydedildi. Güncel liste yenilendi.','success')}catch(e){console.error(e);alert('Fiyatlar kaydedilemedi: '+(e.message||e))}finally{if(buton){buton.disabled=false;buton.textContent=eskiYazi}hideGlobalOverlay?.()}};
+    window.fdFiyatV2EditorKaydet=async event=>{event?.preventDefault?.();const buton=event?.submitter||event?.currentTarget?.querySelector?.('button[type="submit"]'),eskiYazi=buton?.textContent||'Fiyat Sayfasını Kaydet';if(buton?.disabled)return;try{const gizliId=String(document.getElementById('fdFtEditorId')?.value||''),modalId=String(document.getElementById('fdFtEditorModal')?.dataset?.sayfaId||''),id=gizliId||duzenlenenSayfaId||modalId||seciliSayfaId,s=sayfalar.find(x=>String(x.id)===String(id))||sayfalar.find(x=>String(x.id)===String(duzenlenenSayfaId))||sayfalar.find(x=>String(x.id)===String(modalId))||duzenlenenSayfa||seciliSayfa();if(!s)throw new Error('Düzenlenecek fiyat sayfası bulunamadı. Sayfayı kapatıp yeniden açın.');duzenlenenSayfaId=s.id;duzenlenenSayfa=s;seciliSayfaId=s.id;const rows=[...document.querySelectorAll('#fdFtEditorSatirlari .fd-ft-editor-row')],gorulen=new Set(),urunler=[];for(const[i,row]of rows.entries()){const ad=String(row.querySelector('.fd-ft-editor-name')?.value||'').trim(),hamFiyat=String(row.querySelector('.fd-ft-editor-price')?.value||'').trim(),pb=paraBirimi(row.querySelector('.fd-ft-editor-currency')?.value||'TRY'),birim=String(row.querySelector('.fd-ft-editor-unit')?.value||'').trim(),aciklama=String(row.querySelector('.fd-ft-editor-desc')?.value||'').trim(),tamamenBos=!ad&&!hamFiyat&&!birim&&!aciklama;if(tamamenBos)continue;if(!ad||!hamFiyat)throw new Error((i+1)+'. satırda ürün adı ve fiyatı birlikte girin.');const fiyat=fiyatSayiyaCevir(hamFiyat);if(!Number.isFinite(fiyat)||fiyat<0)throw new Error((i+1)+'. satırdaki fiyat geçerli değil. Örnek: 1250,50');const bulunan=urunKatalogu.find(x=>trAnahtar(x.ad)===trAnahtar(ad)),uid=String(bulunan?.id||row.dataset.urunId||urunId(ad));if(gorulen.has(uid))throw new Error(ad+' ürünü listede birden fazla kez bulunuyor.');gorulen.add(uid);urunler.push({id:uid,ad:bulunan?.ad||ad,fiyat,paraBirimi:pb,birim:birim||bulunan?.birim||'',aciklama,sira:urunler.length+1})}if(!urunler.length&&!confirm('Bu fiyat sayfası boş kaydedilecek. Devam edilsin mi?'))return;if(buton){buton.disabled=true;buton.textContent='Kaydediliyor...'}showGlobalOverlay?.('Fiyatlar kaydediliyor','Ürün kataloğu ve güncel liste yenileniyor...');const kayit=await sayfaVeKatalogKaydet({...s,baslik:String(document.getElementById('fdFtEditorBaslik')?.value||'').trim(),urunler,fiyatYayinlandi:true});duzenlenenSayfa=kayit;modalKapat('fdFtEditorModal');ciz();showToast?.('Fiyat sayfası kaydedildi. Güncel liste yenilendi.','success')}catch(e){console.error(e);alert('Fiyatlar kaydedilemedi: '+(e.message||e))}finally{if(buton){buton.disabled=false;buton.textContent=eskiYazi}hideGlobalOverlay?.()}};
     window.fdFiyatV2SayfaSil=async id=>{if(!yazabilir())return;const s=sayfalar.find(x=>x.id===String(id||seciliSayfaId)),belgeSayisi=s?.belgeler?.length||0;if(!s||!confirm(tarihGoster(s.tarih)+' tarihli fiyat sayfası silinsin mi? Ürün geçmişindeki bu tarih'+(belgeSayisi?' ve ekli '+belgeSayisi+' Drive belgesi':'')+' de kaldırılır.'))return;showGlobalOverlay?.('Fiyat sayfası siliniyor','Kayıtlar güncelleniyor...');try{const{error}=await supabaseClient.from('portal_records').delete().eq('company_id',sirketId()).eq('module',MODUL).eq('legacy_id',s.id);if(error)throw error;sayfalar=sayfalar.filter(x=>x.id!==s.id);seciliSayfaId=guncelSayfa()?.id||'';gorunum='sayfalar';ciz();if(belgeSayisi)await Promise.allSettled(s.belgeler.map(b=>fdYazilimDriveDosyaSil(b.id,'FİYAT VE TEKLİFLER')));showToast?.('Fiyat sayfası silindi.','success')}catch(e){alert('Fiyat sayfası silinemedi: '+(e.message||e))}finally{hideGlobalOverlay?.()}};
     window.fdFiyatV2Yenile=async()=>{showGlobalOverlay?.('Fiyat ve teklifler yenileniyor','Firma dosyaları, ürünler ve fiyat geçmişi alınıyor...');try{await yukle();ciz();showToast?.('Fiyat ve teklifler yenilendi.','success')}catch(e){alert('Kayıtlar alınamadı: '+(e.message||e))}finally{hideGlobalOverlay?.()}};
     function appKur(){if(document.getElementById('fdFtDosyaModal')&&document.getElementById('fdFtBelgeModal')&&document.getElementById('insaatFiyatApp')?.querySelector('.fd-ft-shell'))return;['insaatFiyatApp','fdFiyatYeniModal','fdFiyatEditorModal','fdFiyatGecmisModal','fdFtBelgeModal'].forEach(id=>document.getElementById(id)?.remove());const app=document.createElement('div');app.id='insaatFiyatApp';app.innerHTML='<div class="fd-ft-shell"><div class="fd-ft-head"><div><h2>💼 Fiyat ve Teklifler</h2><p>Firmalara, projelere ve işlere göre fiyat dosyaları oluşturun; güncel fiyatları ve değişiklik geçmişini izleyin.</p></div><div class="fd-ft-actions"><button class="btn-modern" type="button" onclick="fdFiyatV2Yenile()">↻ Yenile</button><button class="btn-submit" style="width:auto;margin:0" data-ft-yazma type="button" onclick="fdFiyatV2DosyaFormuAc()">+ Yeni Fiyat Dosyası</button></div></div><div class="fd-ft-layout"><aside class="fd-ft-sidebar"><div class="fd-ft-sidebar-head"><div class="fd-ft-sidebar-title"><strong>Firma ve Fiyat Dosyaları</strong></div><small>Firma, proje veya iş adına göre bulun</small><input type="search" placeholder="Firma veya dosya ara" oninput="fdFiyatV2DosyaAra(this.value)"></div><div id="fdFtDosyalar" class="fd-ft-file-list"></div><div class="fd-ft-sidebar-add"><button class="btn-modern" data-ft-yazma type="button" onclick="fdFiyatV2DosyaFormuAc()">+ Yeni Dosya</button></div></aside><main class="fd-ft-main"><div class="fd-ft-file-head"><div><h3 id="fdFtDosyaBaslik"></h3><p id="fdFtDosyaBilgi"></p></div><div class="fd-ft-actions"><button id="fdFtDosyaDuzenleBtn" class="btn-modern" data-ft-yazma type="button" onclick="fdFiyatV2DosyaFormuAc(seciliDosyaId)">Dosyayı Düzenle</button><button id="fdFtYeniSayfaBtn" class="btn-submit" style="width:auto;margin:0" data-ft-yazma type="button" onclick="fdFiyatV2YeniSayfaAc()">+ Yeni Fiyat Sayfası</button></div></div><div id="fdFtSekmeler" class="fd-ft-tabs"></div><div id="fdFtIcerik"></div></main></div></div>';document.body.appendChild(app);window.seciliDosyaId='';
@@ -27559,7 +27577,7 @@ function fdAracListeCiz(){
         document.querySelectorAll('.modal-overlay').forEach(modal => { if (modal.id !== 'modalZorunluSifre') modal.style.display = 'none'; });
         const payrollFrame = document.getElementById('bordroOnizlemeFrame');
         if (payrollFrame) payrollFrame.src = 'about:blank';
-        root.fdUnifiedOutput?.clear?.(); root.fdIsgDocuments?.clear?.();
+        root.fdUnifiedOutput?.clear?.(); root.fdIsgDocuments?.clear?.(); root.fdPriceWhatsappSettings?.reset?.();
         const scrub = container => container.querySelectorAll('input,textarea,select').forEach(field => {
             if (field.matches('button,input[type="button"],input[type="submit"],input[type="reset"]')) return;
             if (field.tagName === 'SELECT') field.selectedIndex = 0;
@@ -27813,6 +27831,290 @@ function fdAracListeCiz(){
     }
 })(window);
 </script>
+<script id="fdPriceWhatsappSettingsV233">
+/* Company-scoped price notifications settings. Reading this source never sends a message. */
+(function (root) {
+    'use strict';
+    const TEMPLATE = 'fiyat_listesi_bildirimi_v1';
+    const PHONE_KEY = 'whatsappFiyatBildirimTelefonlari';
+    const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const BODY = 'Sayın {{1}},\n\nYetkili kullanıcı olduğunuz işletmenin {{2}} kaydı güncellenmiştir.\n\n{{3}}\n\nBu bildirim, işletme hesabınızdaki güncel fiyat kayıtlarını takip etmeniz için gönderilmiştir.';
+    const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const state = { host: null, key: '', epoch: 0, loaded: false, loading: false, busy: false, recipients: [], meta: null, error: '', promise: null };
+
+    function context() {
+        const user = typeof activeUser !== 'undefined' ? activeUser : root.activeUser;
+        const secure = typeof SUPABASE_MODE !== 'undefined' ? SUPABASE_MODE : root.SUPABASE_MODE;
+        const role = String(user?.rol || user?.role || '');
+        const company = String(user?.sirketId || user?.company_id || '');
+        const account = String(user?.supabaseUserId || user?.id || user?.username || '');
+        const manager = ['Admin', 'Yonetici'].includes(role) && (!root.isManagerUser || root.isManagerUser());
+        const allowed = secure === true && manager && UUID.test(company) && Boolean(account) && user?.sifreDegismeli !== true;
+        return { allowed, role, company, account, key: [company, account, role, allowed].join('|') };
+    }
+
+    function normalizePhone(value) {
+        const raw = String(value ?? '').trim();
+        if (!raw || !/^[\d+\s().-]+$/.test(raw)) return '';
+        let digits = raw.replace(/\D/g, '');
+        if (digits.startsWith('00')) digits = digits.slice(2);
+        if (digits.length === 11 && digits.startsWith('0')) digits = '90' + digits.slice(1);
+        else if (digits.length === 10) digits = '90' + digits;
+        return /^90\d{10}$/.test(digits) ? digits : '';
+    }
+
+    function phoneText(value) {
+        const digits = normalizePhone(value);
+        return digits ? '+90 ' + digits.slice(2, 5) + ' ' + digits.slice(5, 8) + ' ' + digits.slice(8, 10) + ' ' + digits.slice(10) : '';
+    }
+
+    function assertCurrent(key, epoch = state.epoch) {
+        if (!context().allowed || context().key !== key || state.key !== key || state.epoch !== epoch) throw new Error('Oturum değişti. Ayarları yeniden açın.');
+    }
+
+    function releaseOldContext(epoch) {
+        if (epoch !== state.epoch) return true;
+        if (context().allowed && context().key === state.key) return false;
+        const host = state.host; reset();
+        if (host) host.innerHTML = '<div class="fd-price-wa"><div class="fd-price-wa-empty">Oturum değişti. Ayarları yeniden açın.</div></div>';
+        return true;
+    }
+
+    async function api(action, payload = {}) {
+        const allowedActions = ['price-recipients', 'price-template-info', 'price-template-submit'];
+        const current = context(), epoch = state.epoch;
+        if (!current.allowed || !allowedActions.includes(action)) throw new Error('Bu ayarı görüntüleme yetkiniz yok.');
+        if (action === 'price-template-submit' && current.role !== 'Admin') throw new Error('Şablon başvurusu için Admin yetkisi gerekir.');
+        assertCurrent(current.key, epoch);
+        let result;
+        if (typeof root.fdPriceWhatsappApi === 'function') result = await root.fdPriceWhatsappApi(action, payload);
+        else {
+            const client = typeof supabaseClient !== 'undefined' ? supabaseClient : root.supabaseClient;
+            if (!client?.auth || !client?.functions) throw new Error('WhatsApp bağlantısı hazır değil. Uygulamayı yenileyin.');
+            const { data: sessionData, error: sessionError } = await client.auth.getSession();
+            assertCurrent(current.key, epoch);
+            if (sessionError) throw sessionError;
+            const session = sessionData?.session;
+            if (!session?.access_token || (UUID.test(current.account) && session.user?.id !== current.account)) throw new Error('Oturum süresi dolmuş. Yeniden giriş yapın.');
+            const response = await client.functions.invoke('whatsapp-notification', {
+                headers: { Authorization: 'Bearer ' + session.access_token }, body: { action, ...payload }
+            });
+            assertCurrent(current.key, epoch);
+            if (response.error) {
+                let message = response.error.message || 'WhatsApp ayarları okunamadı.';
+                try { const body = await response.error.context?.json?.(); message = body?.message || message; } catch (_) { /* Keep the safe error message. */ }
+                throw new Error(message);
+            }
+            result = response.data;
+        }
+        assertCurrent(current.key, epoch);
+        if (!result || result.success === false || result.error) throw new Error(result?.message || result?.error?.message || 'İşlem tamamlanamadı.');
+        return result;
+    }
+
+    function safeRecipients(rows) {
+        const seen = new Set();
+        return (Array.isArray(rows) ? rows : []).filter(row => {
+            const valid = UUID.test(String(row?.id || '')) && ['Admin', 'Yonetici'].includes(row?.role) && !seen.has(row.id);
+            if (valid) seen.add(row.id);
+            return valid;
+        }).map(row => ({
+            id: String(row.id), name: String(row.name || 'İsimsiz hesap'), role: row.role,
+            overridePhone: String(row.overridePhone || ''), defaultPhone: normalizePhone(row.defaultPhone), phone: normalizePhone(row.phone)
+        }));
+    }
+
+    function notice(message, type = 'success') {
+        const node = state.host?.querySelector('[data-price-wa-notice]');
+        if (node) { node.textContent = message; node.dataset.type = type; node.setAttribute('role', type === 'error' ? 'alert' : 'status'); }
+        if (typeof root.showToast === 'function') root.showToast(message, type);
+    }
+
+    function installStyle() {
+        if (document.getElementById('fdPriceWhatsappSettingsStyle')) return;
+        const style = document.createElement('style'); style.id = 'fdPriceWhatsappSettingsStyle';
+        style.textContent = `
+        .fd-price-wa{margin:12px 0;border:1px solid #dce6ef;border-radius:10px;background:#fff;color:#334155;min-width:0;overflow:hidden}
+        .fd-price-wa *{box-sizing:border-box}.fd-price-wa-section{padding:14px}.fd-price-wa-section+.fd-price-wa-section{border-top:1px solid #e5edf4}
+        .fd-price-wa h4{font-size:.87rem;margin:0 0 5px;color:#153b55}.fd-price-wa p{font-size:.77rem;line-height:1.5;margin:5px 0 10px;color:#64748b}
+        .fd-price-wa-toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.fd-price-wa-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+        .fd-price-wa button{border:1px solid #cbdbe7;border-radius:7px;background:#f8fafc;color:#135879;font:inherit;font-size:.76rem;padding:8px 11px;cursor:pointer;white-space:normal}
+        .fd-price-wa button.fd-price-wa-primary{background:#0784b8;color:#fff;border-color:#0784b8}.fd-price-wa button:disabled{opacity:.55;cursor:default}
+        .fd-price-wa button:focus-visible,.fd-price-wa input:focus-visible{outline:2px solid #0284c7;outline-offset:2px}
+        .fd-price-wa table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:.79rem}.fd-price-wa th{text-align:left;font-weight:600;background:#f4f8fb;color:#506a80;padding:8px 10px}
+        .fd-price-wa td{padding:10px;border-top:1px solid #e5edf4;vertical-align:middle;overflow-wrap:anywhere}.fd-price-wa th:first-child{width:43%}
+        .fd-price-wa-account{display:block;font-weight:600}.fd-price-wa small{display:block;font-size:.72rem;line-height:1.5;margin-top:3px;color:#64748b}
+        .fd-price-wa input{width:100%;min-width:0;font:inherit;font-size:.8rem;line-height:1.4;height:35px;padding:6px 9px;border:1px solid #cbdbe7;border-radius:6px;color:#334155;background:white}
+        .fd-price-wa input[aria-invalid=true]{border-color:#ef4444}.fd-price-wa [data-price-wa-phone-state][data-missing=true]{color:#b45309}
+        .fd-price-wa-notice{font-size:.77rem;padding:0 14px 10px;line-height:1.5}.fd-price-wa-notice:empty{display:none}.fd-price-wa-notice[data-type=error]{color:#b91c1c}
+        .fd-price-wa-notice[data-type=success]{color:#047857}.fd-price-wa-status{font-size:.75rem;font-weight:600;color:#64748b}.fd-price-wa-status[data-ready=true]{color:#047857}
+        .fd-price-wa-template{padding:10px;margin:9px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;max-width:100%;overflow-wrap:anywhere;font-size:.76rem}
+        .fd-price-wa table{min-width:0;white-space:normal}
+        .fd-price-wa th,.fd-price-wa td,.fd-price-wa small{white-space:normal;overflow-wrap:anywhere}
+        .fd-price-wa-template pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;margin:8px 0;font-size:inherit;line-height:1.6}
+        .fd-price-wa-template summary{cursor:pointer}.fd-price-wa-template code{font-size:.73rem;overflow-wrap:anywhere}.fd-price-wa-empty{padding:10px;color:#64748b;font-size:.8rem}
+        @media(max-width:520px){.fd-price-wa-section{padding:11px}.fd-price-wa td,.fd-price-wa th{padding:8px 6px}.fd-price-wa th:first-child{width:40%}.fd-price-wa-actions{width:100%}.fd-price-wa-actions button{flex:1;min-width:0}.fd-price-wa-template{padding:9px}.fd-price-wa-notice{padding:0 11px 10px}}
+        `;
+        document.head.appendChild(style);
+    }
+
+    function metaView() {
+        const meta = state.meta || {}, status = String(meta.status || 'UNKNOWN').toUpperCase();
+        const category = String(meta.category || '').toUpperCase();
+        const language = String(meta.language || '');
+        const ready = meta.ready === true && status === 'APPROVED' && category === 'UTILITY' && language === 'tr' && String(meta.templateName || '') === TEMPLATE;
+        const statuses = { APPROVED: 'Onaylandı', PENDING: 'Değerlendirmede', IN_APPEAL: 'İtiraz değerlendiriliyor', REJECTED: 'Reddedildi', PAUSED: 'Duraklatıldı', DISABLED: 'Devre dışı', NOT_CREATED: 'Henüz hazırlanmadı', NOT_FOUND: 'Henüz hazırlanmadı', UNKNOWN: 'Durum doğrulanamadı' };
+        const reason = meta.reason || meta.message || (ready ? 'Fiyat bildirimleri sırayla gönderime alınabilir.' : 'Onay ve uygun şablon doğrulanana kadar fiyat mesajları gönderilmez.');
+        return { ready, status: statuses[status] || status, category, language, reason };
+    }
+
+    function render() {
+        if (!state.host) return;
+        const current = context();
+        if (!current.allowed || current.key !== state.key) {
+            state.host.innerHTML = '<div class="fd-price-wa"><div class="fd-price-wa-empty">Bu alan için güvenli Admin veya Kullanıcı oturumu gerekir.</div></div>';
+            return;
+        }
+        const meta = metaView();
+        const rows = state.recipients.map(row => `<tr><td><span class="fd-price-wa-account">${escape(row.name)}</span><small>${row.role === 'Admin' ? 'Admin' : 'Kullanıcı'}</small><small>${row.defaultPhone ? 'Personel telefonu: ' + escape(phoneText(row.defaultPhone)) : 'Personel telefonu bulunmuyor.'}</small></td><td><input type="tel" inputmode="tel" maxlength="28" autocomplete="off" data-case-preserve="true" data-price-wa-phone="${escape(row.id)}" aria-label="${escape(row.name)} için bildirim telefonu" placeholder="${escape(phoneText(row.defaultPhone) || '05xx xxx xx xx')}" value="${escape(row.overridePhone)}" ${state.busy ? 'disabled' : ''}><small data-price-wa-phone-state="${escape(row.id)}"></small></td></tr>`).join('');
+        state.host.innerHTML = `<div class="fd-price-wa"><section class="fd-price-wa-section"><div class="fd-price-wa-toolbar"><div><h4>Fiyat Bildirimi Alıcıları</h4><p>Yalnızca bu şirketin Admin ve Kullanıcı hesapları. Boş bırakırsanız personele bağlı telefon kullanılır.</p></div><button type="button" data-price-wa-act="refresh" ${state.loading || state.busy ? 'disabled' : ''}>Yenile</button></div>${state.loading ? '<div class="fd-price-wa-empty" role="status">Alıcılar yükleniyor…</div>' : state.error ? '<div class="fd-price-wa-empty" role="alert">' + escape(state.error) + '</div>' : rows ? `<table><thead><tr><th>Hesap</th><th>Bildirim Telefonu</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="fd-price-wa-empty">Bu şirkette uygun alıcı hesabı bulunamadı.</div>'}<div class="fd-price-wa-toolbar" style="margin-top:10px"><small data-price-wa-count></small><button type="button" class="fd-price-wa-primary" data-price-wa-act="save" ${!state.loaded || !rows || state.busy || state.loading ? 'disabled' : ''}>${state.busy ? 'İşleniyor…' : 'Alıcı Telefonlarını Kaydet'}</button></div></section><section class="fd-price-wa-section"><div class="fd-price-wa-toolbar"><h4>Fiyat Mesajı Şablonu</h4><span class="fd-price-wa-status" data-ready="${meta.ready}" data-price-wa-meta-status>${escape(meta.status)}${meta.category ? ' · ' + escape(meta.category) : ''}</span></div><p data-price-wa-meta-reason>${escape(meta.reason)}</p><details class="fd-price-wa-template"><summary>Şablon bilgileri ve metni</summary><p><code>${TEMPLATE}</code> · Türkçe · Utility başvurusu</p><strong>${escape(state.meta?.headerText || 'Fiyat Listesi Güncellemesi')}</strong><pre>${escape(state.meta?.bodyText || BODY)}</pre><small>${escape(state.meta?.footerText || 'İşletmenizin yönetim sisteminden gönderilmiştir.')}</small></details><div class="fd-price-wa-actions"><button type="button" class="fd-price-wa-primary" data-price-wa-act="submit" ${state.busy || state.loading || current.role !== 'Admin' ? 'disabled' : ''}>Şablonu Hazırla</button><button type="button" data-price-wa-act="info" ${state.busy || state.loading ? 'disabled' : ''}>Durumu Kontrol Et</button><small>Personel mesajlarının şablonu değişmez.</small></div>${current.role !== 'Admin' ? '<small>Şablon başvurusunu Admin yapabilir.</small>' : ''}</section><div class="fd-price-wa-notice" data-price-wa-notice aria-live="polite"></div></div>`;
+        updatePhones();
+    }
+
+    function updatePhones() {
+        if (!state.host || !state.loaded) return;
+        const used = new Set(); let missing = 0, duplicates = 0;
+        for (const row of state.recipients) {
+            const input = state.host.querySelector('[data-price-wa-phone="' + row.id + '"]');
+            if (!input) continue;
+            const raw = input.value.trim(), override = normalizePhone(raw), phone = override || (!raw ? row.defaultPhone : '');
+            input.setAttribute('aria-invalid', raw && !override ? 'true' : 'false');
+            const status = state.host.querySelector('[data-price-wa-phone-state="' + row.id + '"]');
+            if (status) {
+                status.dataset.missing = String(!phone);
+                status.textContent = raw && !override ? 'Geçerli bir Türkiye telefonu yazın.' : !phone ? 'Telefon eklenmeden bu hesaba gönderilemez.' : (raw ? 'Bu telefon kullanılacak: ' : 'Personel telefonu kullanılacak: ') + phoneText(phone);
+            }
+            if (!phone) missing++;
+            else if (used.has(phone)) duplicates++;
+            else used.add(phone);
+        }
+        const count = state.host.querySelector('[data-price-wa-count]');
+        if (count) count.textContent = state.recipients.length + ' hesap · ' + used.size + ' farklı telefon' + (missing ? ' · ' + missing + ' telefon eksik / geçersiz' : '') + (duplicates ? ' · Ortak telefona tek mesaj gider.' : '');
+    }
+
+    async function refresh() {
+        if (state.loading) return state.promise;
+        if (state.busy) return;
+        const current = context(), epoch = state.epoch;
+        if (!current.allowed || current.key !== state.key) { render(); return; }
+        state.loading = true; state.error = ''; render();
+        state.promise = (async () => {
+            const [recipients, meta] = await Promise.allSettled([api('price-recipients'), api('price-template-info')]);
+            try {
+                assertCurrent(current.key, epoch);
+                if (recipients.status === 'fulfilled') { state.recipients = safeRecipients(recipients.value.recipients); state.loaded = true; }
+                else { state.loaded = false; state.recipients = []; state.error = recipients.reason?.message || 'Alıcılar alınamadı.'; }
+                state.meta = meta.status === 'fulfilled' ? meta.value : { ready: false, status: 'UNKNOWN', message: meta.reason?.message || 'Şablon durumu doğrulanamadı.' };
+            } catch (_) { return; }
+            finally { if (!releaseOldContext(epoch)) { state.loading = false; state.promise = null; render(); } }
+        })();
+        return state.promise;
+    }
+
+    async function save() {
+        if (state.busy || state.loading || !state.loaded) return;
+        const current = context(), epoch = state.epoch, map = {};
+        try {
+            assertCurrent(current.key, epoch);
+            for (const row of state.recipients) {
+                const input = state.host?.querySelector('[data-price-wa-phone="' + row.id + '"]');
+                if (!input) throw new Error('Alıcı listesi değişti. Yenileyip tekrar deneyin.');
+                const raw = input.value.trim(), normalized = normalizePhone(raw);
+                if (raw && !normalized) { input.focus(); throw new Error(row.name + ' için geçerli bir Türkiye telefonu yazın.'); }
+                if (normalized) map[row.id] = normalized;
+            }
+            if (typeof root.sirketUygulamaAyarParcasiKaydet !== 'function') throw new Error('Ayar kaydetme bağlantısı hazır değil.');
+            state.busy = true; disableButtons(true);
+            const saveButton = state.host?.querySelector('[data-price-wa-act="save"]');
+            if (saveButton) saveButton.textContent = 'Kaydediliyor…';
+            const stored = await root.sirketUygulamaAyarParcasiKaydet({ [PHONE_KEY]: map });
+            assertCurrent(current.key, epoch);
+            const result = stored?.[PHONE_KEY];
+            if (!result || typeof result !== 'object' || Array.isArray(result) || Object.keys(result).length !== Object.keys(map).length || Object.keys(map).some(id => normalizePhone(result[id]) !== map[id])) throw new Error('Telefon ayarları sunucuda doğrulanamadı. Yenileyip kontrol edin.');
+            state.recipients.forEach(row => { row.overridePhone = map[row.id] || ''; row.phone = map[row.id] || row.defaultPhone; });
+            state.busy = false; render(); notice('Alıcı telefonları kaydedildi.');
+        } catch (error) { if (current.key === context().key && epoch === state.epoch) notice(error.message || 'Telefonlar kaydedilemedi.', 'error'); }
+        finally { if (!releaseOldContext(epoch)) { state.busy = false; disableButtons(false); const saveButton = state.host?.querySelector('[data-price-wa-act="save"]'); if (saveButton) saveButton.textContent = 'Alıcı Telefonlarını Kaydet'; updatePhones(); } }
+    }
+
+    function disableButtons(disabled) {
+        state.host?.querySelectorAll('button,input').forEach(button => { button.disabled = disabled; });
+        if (!disabled) {
+            const submit = state.host?.querySelector('[data-price-wa-act="submit"]');
+            if (submit) submit.disabled = context().role !== 'Admin';
+            const saveButton = state.host?.querySelector('[data-price-wa-act="save"]');
+            if (saveButton) saveButton.disabled = !state.loaded || !state.recipients.length;
+        }
+    }
+
+    async function template(action) {
+        if (state.busy || state.loading) return;
+        const current = context(), epoch = state.epoch;
+        try {
+            assertCurrent(current.key, epoch);
+            if (action === 'submit' && current.role !== 'Admin') throw new Error('Şablon başvurusu için Admin yetkisi gerekir.');
+            state.busy = true; disableButtons(true);
+            const result = await api(action === 'submit' ? 'price-template-submit' : 'price-template-info');
+            assertCurrent(current.key, epoch); state.meta = result; state.busy = false;
+            // Preserve unsubmitted phone edits when refreshing only the Meta status.
+            const draft = new Map([...state.host.querySelectorAll('[data-price-wa-phone]')].map(input => [input.dataset.priceWaPhone, input.value]));
+            render(); state.host.querySelectorAll('[data-price-wa-phone]').forEach(input => { if (draft.has(input.dataset.priceWaPhone)) input.value = draft.get(input.dataset.priceWaPhone); }); updatePhones();
+            notice(action === 'submit' ? result.message || 'Şablon başvuru durumu güncellendi; onaydan önce fiyat mesajı gönderilmez.' : metaView().reason, metaView().ready ? 'success' : 'warning');
+        } catch (error) {
+            if (current.key === context().key && epoch === state.epoch) {
+                state.meta = { ready: false, status: 'UNKNOWN', message: error.message || 'Şablon durumu doğrulanamadı.' };
+                const status = state.host?.querySelector('[data-price-wa-meta-status]'), reason = state.host?.querySelector('[data-price-wa-meta-reason]');
+                if (status) { status.textContent = 'Durum doğrulanamadı'; status.dataset.ready = 'false'; }
+                if (reason) reason.textContent = state.meta.message;
+                notice(state.meta.message, 'error');
+            }
+        } finally { if (!releaseOldContext(epoch)) { state.busy = false; disableButtons(false); } }
+    }
+
+    function reset() {
+        state.epoch++; state.key = ''; state.loaded = false; state.loading = false; state.busy = false;
+        state.recipients = []; state.meta = null; state.error = ''; state.promise = null;
+        if (state.host) { state.host.innerHTML = ''; state.host.onclick = null; state.host.oninput = null; }
+        state.host = null;
+    }
+
+    async function open(host) {
+        const element = typeof host === 'string' ? document.getElementById(host) : host || document.getElementById('priceWhatsappSettingsPanel');
+        if (!element || element.nodeType !== 1) return;
+        const current = context();
+        if (state.key !== current.key || (state.host && state.host !== element)) reset();
+        state.key = current.key; state.host = element; installStyle();
+        element.onclick = event => {
+            const button = event.target.closest('[data-price-wa-act]');
+            if (!button || !element.contains(button) || button.disabled) return;
+            event.preventDefault();
+            if (button.dataset.priceWaAct === 'save') void save();
+            else if (button.dataset.priceWaAct === 'refresh') void refresh();
+            else void template(button.dataset.priceWaAct);
+        };
+        element.oninput = event => { if (event.target.matches('[data-price-wa-phone]')) updatePhones(); };
+        if (!current.allowed) { render(); return; }
+        if (state.loading) return state.promise;
+        if (state.loaded) { if (!element.querySelector('[data-price-wa-act]')) render(); else updatePhones(); return; }
+        return refresh();
+    }
+
+    root.fdPriceWhatsappSettings = Object.freeze({ open, refresh, reset, normalizePhone, templateName: TEMPLATE });
+    if (typeof document !== 'undefined') document.getElementById('ayarFiyatWhatsappDetayi')?.addEventListener('toggle', function () {
+        if (this.open) void open();
+    });
+})(window);
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -27832,14 +28134,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v232';
+      const anahtar='fd-pwa-yenileme-v233';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=232',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=233',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
