@@ -20885,19 +20885,19 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function policeTurGrubu(tur){const key=policeMetinAnahtari(tur||'');if(key.includes('KASKO'))return'KASKO';if(key.includes('TRAFİK')||key.includes('TRAFIK'))return'TRAFİK';return key;}
     function policeAracBelgesiBul(p){
         if(String(p.hedefTip||policeKayitHedefTipi(p))!=='arac')return null;
-        const kod=policePlakaAnahtari(policeKayitEslesmeKodu(p)||p.hedefAdi||''),arac=araclar.find(a=>String(a.id)===String(p.hedefId||'')||policePlakaAnahtari(a.plaka)===kod);if(!arac)return null;
+        const varlik=policeGuncelVarlikAnahtari(p),arac=varlik?araclar.find(a=>policeGuncelVarlikAnahtari({hedefTip:'arac',hedefId:a.id,sirketId:a.sirketId||a.company_id})===varlik):null;if(!arac)return null;
         const grup=policeTurGrubu(p.tur),adaylar=[];
         if(grup==='KASKO'&&arac.belgeler?.kasko?.url)adaylar.push({belge:arac.belgeler.kasko,tur:'KASKO',policeNo:arac.kaskoPoliceNo,baslangic:arac.kaskoBaslangic,bitis:arac.kaskoBitis});
         if(grup==='TRAFİK'&&arac.belgeler?.sigorta?.url)adaylar.push({belge:arac.belgeler.sigorta,tur:'TRAFİK',policeNo:arac.sigortaPoliceNo,baslangic:arac.sigortaBaslangic,bitis:arac.sigortaBitis});
-        (arac.sigortaGecmisi||[]).forEach(k=>{if(k?.belge?.url&&policeTurGrubu(k.tur)===grup)adaylar.push(k);});
+        (arac.sigortaGecmisi||[]).forEach(k=>{if(k?.belge?.url&&policeTurGrubu(k.tur)===grup)adaylar.push({...k});});
         const no=policeMetinAnahtari(p.policeNo||''),bas=String(p.baslangic||''),bit=String(p.bitis||'');
         adaylar.forEach(k=>k._puan=(no&&policeMetinAnahtari(k.policeNo||'')===no?8:0)+(bas&&String(k.baslangic||'')===bas?4:0)+(bit&&String(k.bitis||'')===bit?4:0));
         return adaylar.sort((a,b)=>Number(b._puan||0)-Number(a._puan||0))[0]?.belge||null;
     }
     function policeBelgesiniTamamla(p,tum){
         if(p.belge?.url)return p;const aracBelgesi=policeAracBelgesiBul(p);if(aracBelgesi)return{...p,belge:aracBelgesi};
-        const kod=policePlakaAnahtari(policeKayitEslesmeKodu(p)||p.hedefAdi||''),grup=policeTurGrubu(p.tur),no=policeMetinAnahtari(p.policeNo||''),bas=String(p.baslangic||''),bit=String(p.bitis||'');
-        const adaylar=tum.filter(x=>x!==p&&x.belge?.url&&policePlakaAnahtari(policeKayitEslesmeKodu(x)||x.hedefAdi||'')===kod&&policeTurGrubu(x.tur)===grup).map(x=>({x,puan:(no&&policeMetinAnahtari(x.policeNo||'')===no?8:0)+(bas&&String(x.baslangic||'')===bas?4:0)+(bit&&String(x.bitis||'')===bit?4:0)})).sort((a,b)=>b.puan-a.puan);
+        const varlik=policeGuncelVarlikAnahtari(p),grup=policeGuncelTurAnahtari(p.tur),no=policeMetinAnahtari(p.policeNo||''),bas=String(p.baslangic||''),bit=String(p.bitis||'');if(!varlik)return p;
+        const adaylar=tum.filter(x=>x!==p&&x.belge?.url&&policeGuncelVarlikAnahtari(x)===varlik&&policeGuncelTurAnahtari(x.tur)===grup).map(x=>({x,puan:(no&&policeMetinAnahtari(x.policeNo||'')===no?8:0)+(bas&&String(x.baslangic||'')===bas?4:0)+(bit&&String(x.bitis||'')===bit?4:0)})).sort((a,b)=>b.puan-a.puan);
         return adaylar[0]?{...p,belge:adaylar[0].x.belge}:p;
     }    policeTumKayitlar=function(){const tum=fdPoliceTumKayitlarHam(),merkez=tum.filter(p=>!p._sentetik),tekMerkez=new Map();merkez.forEach(p=>{const key=policeMukerrerAnahtari(p),eski=tekMerkez.get(key);if(!eski){tekMerkez.set(key,p);return;}const yeni=policeKayitSirasi(p)>policeKayitSirasi(eski)?p:eski,diger=yeni===p?eski:p;tekMerkez.set(key,!yeni.belge?.url&&diger.belge?.url?{...yeni,belge:diger.belge}:yeni);});const temiz=[...tekMerkez.values()].map(p=>policeBelgesiniTamamla(p,tum));return [...temiz,...tum.filter(p=>p._sentetik&&!temiz.some(m=>policeKayitlarAyniMi(p,m))).map(p=>policeBelgesiniTamamla(p,tum))].sort(policeBitisSiralama);};
     function policeMukerrerAnahtari(p){const key=policeVarlikEslesmeAnahtari(p);return key?JSON.stringify([key,String(p.baslangic||''),String(p.bitis||'')]):p;}
@@ -20909,7 +20909,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
     async function policeKaydiniDuzenle(id){const p=policeTumKayitlar().find(x=>String(x.id)===String(id));if(!p)return showToast('Poliçe kaydı bulunamadı.','error');if(!anaMenuModulYazmaYetkisiVar('police'))return showToast('Poliçe düzenleme yetkiniz bulunmuyor.','warning');if(p._sentetik)return policeSentetikFormunuDoldur(p);policeFormunuAc(p.hedefTip,p.hedefId||p.daireId||'',p.id);}
     function policeVarlikGecmisiniAc(id,saltGorunum=false){
-        const secili=policeTumKayitlar().find(p=>String(p.id)===String(id));if(!secili)return;const kod=policeMetinAnahtari(policeKayitEslesmeKodu(secili)||secili.hedefAdi||''),tip=secili.hedefTip,liste=policeTumKayitlar().filter(p=>p.hedefTip===tip&&policeMetinAnahtari(policeKayitEslesmeKodu(p)||p.hedefAdi||'')===kod).sort(policeBitisSiralama);let modal=document.getElementById('modalPoliceVarlikGecmis');if(!modal){modal=document.createElement('div');modal.id='modalPoliceVarlikGecmis';modal.className='modal-overlay';document.body.appendChild(modal);}
+        const tum=policeTumKayitlar(),secili=tum.find(p=>String(p.id)===String(id));if(!secili)return;const varlik=policeGuncelVarlikAnahtari(secili),liste=tum.filter(p=>varlik?policeGuncelVarlikAnahtari(p)===varlik:p===secili).sort(policeBitisSiralama);let modal=document.getElementById('modalPoliceVarlikGecmis');if(!modal){modal=document.createElement('div');modal.id='modalPoliceVarlikGecmis';modal.className='modal-overlay';document.body.appendChild(modal);}
         modal.innerHTML=`<div class="modal-card" style="max-width:1180px"><div class="modal-header police-gecmis-baslik"><h3>🛡️ ${escapeDashboardText(secili.hedefAdi||'-')} — Poliçe Geçmişi</h3><button type="button" class="modal-close" onclick="modalKapat('modalPoliceVarlikGecmis')">✕</button></div><div class="modal-body"><div class="table-wrapper"><table class="police-gecmis-tablo"><thead><tr><th>#</th><th>Poliçe Türü</th><th>Şirket / Poliçe No</th><th>Başlangıç</th><th>Bitiş</th><th>Prim</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${liste.map((p,i)=>{const d=policeDurumu(p);return`<tr><td>${i+1}</td><td>${policeTurRozeti(p.tur,p.belge,p.id)}</td><td>${escapeDashboardText(p.sirket||'-')}<br><small>${escapeDashboardText(p.policeNo||'-')}</small></td><td>${tarihFormati(p.baslangic)}</td><td>${tarihFormati(p.bitis)}</td><td>${Number(p.bedel||0)?paraFormatla(p.bedel):'-'}</td><td><span class="police-durum police-durum-${d.tur}">${escapeDashboardText(d.metin)}</span></td><td><button type="button" class="btn-modern btn-edit-modern" title="Düzenle" onclick="modalKapat('modalPoliceVarlikGecmis');policeKaydiniDuzenle('${escapeDashboardText(String(p.id))}')">✏️</button></td></tr>`;}).join('')}</tbody></table></div></div></div>`;if(saltGorunum)modal.querySelectorAll('table tr').forEach(tr=>tr.lastElementChild?.remove());modal.style.display='flex';
     }
     function aracSahibiFiltreleriniDoldur(liste){
@@ -29100,14 +29100,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v244';
+      const anahtar='fd-pwa-yenileme-v245';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=244',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=245',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
