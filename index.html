@@ -16357,7 +16357,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             ${section('İletişim ve Aile Bilgileri',
                 item('Telefon', safe(p.telefon)) + item('2. Telefon', safe(p.kurumsalTelefon)) + item('E-posta', safe(p.eposta)) + item('Medeni Durum', safe(p.medeniDurum)) + item('Çocuk Sayısı', safe(p.cocukSayisi)) + item('Acil Durum Kişisi', safe(p.acilDurumAd)) + item('Yakınlık Derecesi', safe(p.acilDurumYakinlik)) + item('Acil Durum Telefonu', safe(p.acilDurumTelefon)) + item('Adres', safe(p.adres)))}
             ${section('Finansal ve Özlük Bilgileri',
-                item('Banka', safe(p.bankaAdi)) + item('IBAN', safe(p.iban)) + item('SGK Sicil No', safe(p.sgkNo)) + item('Emeklilik Durumu', safe(p.emekli)) + item('Emeklilik Türü', safe(p.emeklilikTuru)) + item('Engelli Durumu', safe(p.engelli)) + item('Vergi Muafiyeti', safe(p.vergiMuafiyet)) + item('Askerlik Durumu', safe(p.askerlikDurumu)) + item('Terhis Tarihi', date(p.terhisTarihi)) + item('Tecil Bitiş Tarihi', date(p.tecilBitis)) + item('Ücret Tipi', safe(p.ucretTipi)) + item('Ücret', safe(p.ucret)) + item('Ek Ödeme', `${safe(p.ekOdemeTuru)} / ${safe(p.ekOdemeTutari)}`) + item('Yol Ücreti', safe(p.yolUcreti)) + item('Prim Uygulaması', safe(p.primVar)))}
+                item('Banka', safe(p.bankaAdi)) + item('IBAN', safe(p.iban)) + item('SGK Sicil No', safe(p.sgkNo)) + item('Emeklilik Durumu', safe(p.emekli)) + item('Emeklilik Türü', safe(p.emeklilikTuru)) + item('Engelli Durumu', safe(p.engelli)) + item('Vergi Muafiyeti', safe(p.vergiMuafiyet)) + item('Askerlik Durumu', safe(p.askerlikDurumu)) + item('Terhis Tarihi', date(p.terhisTarihi)) + item('Tecil Bitiş Tarihi', date(p.tecilBitis)) + item('Ücret Tipi', safe(p.ucretTipi)) + item('Ücret', safe(p.fdUcretDonemleri?.length ? paraFormatla(personelGunlukUcretiniGetir(p)) : p.ucret)) + item('Ek Ödeme', `${safe(p.ekOdemeTuru)} / ${safe(p.ekOdemeTutari)}`) + item('Yol Ücreti', safe(p.yolUcreti)) + item('Prim Uygulaması', safe(p.primVar)))}
             ${section('Eğitim, Belgeler ve Yetkinlikler',
                 item('Eğitim Seviyesi', safe(p.egitimSeviyesi)) + item('Okul / Bölüm', safe(p.okulBolum)) + item('Mezuniyet Yılı', safe(mezuniyetYiliniDuzelt(p.mezuniyetYili||p.mezuniyetTarihi))) + item('Aldığı Belgeler', safe(p.belgeler)) + item('Sertifikalar', safe(p.sertifikalar)) + item('Sertifika Bitişi', date(p.sertifikaBitis)) + item('Ehliyetler ve Yabancı Dil', safe(p.ehliyetDil)))}
             ${section('Sağlık ve İş Güvenliği',
@@ -17133,12 +17133,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if (!generalTarget || !branchTarget) return;
 
         const active = personeller.filter(p => aktifSirketeAit(p) && (!p.cikisTarihi || String(p.cikisTarihi) === 'null'));
+        const genderCount = (people, gender) => people.filter(p => String(p.cinsiyet || '').trim().toLocaleLowerCase('tr-TR') === gender).length;
+        const categoryPeople = (people, field) => people.filter(p => personelEvetMi(p[field]));
         const summarize = people => ({
             toplam: people.length,
             kadin: people.filter(p => String(p.cinsiyet || '').toLocaleLowerCase('tr-TR') === 'kadın').length,
             erkek: people.filter(p => String(p.cinsiyet || '').toLocaleLowerCase('tr-TR') === 'erkek').length,
-            engelli: people.filter(p => p.engelli === true || String(p.engelli || '').toLocaleLowerCase('tr-TR') === 'evet').length,
-            emekli: people.filter(p => p.emekli === true || String(p.emekli || '').toLocaleLowerCase('tr-TR') === 'evet').length
+            engelli: categoryPeople(people, 'engelli').length,
+            emekli: categoryPeople(people, 'emekli').length,
+            engelliErkek: genderCount(categoryPeople(people, 'engelli'), 'erkek'),
+            engelliKadin: genderCount(categoryPeople(people, 'engelli'), 'kadın'),
+            emekliErkek: genderCount(categoryPeople(people, 'emekli'), 'erkek'),
+            emekliKadin: genderCount(categoryPeople(people, 'emekli'), 'kadın')
         });
         const metrics = summary => [
             ['Toplam', summary.toplam], ['Kadın', summary.kadin], ['Erkek', summary.erkek], ['Engelli', summary.engelli], ['Emekli', summary.emekli]
@@ -17154,7 +17160,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const branchNames = Object.keys(branches).sort((a, b) => a.localeCompare(b, 'tr'));
             branchEl.innerHTML = branchNames.length ? branchNames.map(branch => {
                 const summary = summarize(branches[branch]);
-                return `<article class="branch-summary-card"><h4>${escapeDashboardText(branch)}</h4><div class="branch-summary-metrics">${metrics(summary).map(([label, value]) => `<span><b>${value}</b>${label}</span>`).join('')}</div></article>`;
+                return `<article class="branch-summary-card"><h4>${escapeDashboardText(branch)}</h4><div class="branch-summary-metrics">${metrics(summary).map(([label, value]) => {
+                    const field = label === 'Engelli' ? 'engelli' : label === 'Emekli' ? 'emekli' : '';
+                    const breakdown = field ? `<small class="branch-summary-gender">Erkek: ${summary[field + 'Erkek']}<br>Bayan: ${summary[field + 'Kadin']}</small>` : '';
+                    return `<span><b>${value}</b>${breakdown}${label}</span>`;
+                }).join('')}</div></article>`;
             }).join('') : `<div class="dashboard-empty">${emptyText}</div>`;
         };
         renderTargets(active, generalTarget, branchTarget, 'Kayıtlı aktif personel bulunmuyor.');
@@ -17370,7 +17380,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const records = filtrelenmisAktifPersonelleriGetir();
         if (!records.length) { alert('Seçili filtrelere uygun dışa aktarılacak personel bulunamadı.'); return; }
         const rows = records.map(person => fields.map(field => {
-            const value = field.key === 'mezuniyetYili' ? mezuniyetYiliniDuzelt(person.mezuniyetYili || person.mezuniyetTarihi) : person[field.key];
+            const value = field.key === 'mezuniyetYili' ? mezuniyetYiliniDuzelt(person.mezuniyetYili || person.mezuniyetTarihi) : field.key === 'ucret' && person.fdUcretDonemleri?.length ? paraFormatla(personelGunlukUcretiniGetir(person)) : person[field.key];
             if (field.date) return value ? tarihFormati(value) : '';
             if (field.key === 'engelli' || field.key === 'emekli') return personelEvetMi(value) ? 'Evet' : 'Hayır';
             return value ?? '';
@@ -17468,7 +17478,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         document.getElementById('pSaglikNotu').value = p.saglikNotu || '';
         document.getElementById('pMezuniyetYili').value = mezuniyetYiliniDuzelt(p.mezuniyetYili || p.mezuniyetTarihi);
         document.getElementById('pUcretTipi').value = p.ucretTipi || '';
-        document.getElementById('pUcret').value = p.ucret || '';
+        document.getElementById('pUcret').value = p.fdUcretDonemleri?.length ? personelGunlukUcretiniGetir(p).toLocaleString('tr-TR',{maximumFractionDigits:2}) : (p.ucret || '');
         document.getElementById('pEkOdemeTuru').value = p.ekOdemeTuru || '';
         document.getElementById('pEkOdemeTutari').value = p.ekOdemeTutari || '';
         document.getElementById('pYolUcreti').value = p.yolUcreti || '';
@@ -25852,6 +25862,7 @@ body.fd-vk-detail-open{overflow:hidden}
 #personelApp .branch-summary-card{padding:11px;border:1px solid #e6ecf3;border-radius:8px;background:#f9fbfe}
 #personelApp .branch-summary-card h4{font-size:13px;font-weight:600;margin:0 0 10px;color:#476079}
 #personelApp .branch-summary-metrics b{font-size:17px;font-weight:600;color:#155e75}#personelApp .branch-summary-metrics span{font-size:11px;color:#64748b}
+#personelApp .branch-summary-gender{display:block;margin:2px 0 5px;font-size:10px;font-weight:400;line-height:1.35;white-space:nowrap;color:#64748b}
 #personelApp .card{border:1px solid #dce5ee;border-radius:12px;box-shadow:0 3px 14px #0f172a04;background:#fff;padding:0!important;overflow:hidden}
 #personelApp .card-header{padding:15px 17px;border-bottom:1px solid #e5ebf2;background:#fff;gap:10px}
 #personelApp .card-header h2{font-size:14px;font-weight:650;color:#20374e;margin:0}
@@ -25963,11 +25974,96 @@ function fdUcretDonemleriniYereldeGuncelle(rows){for(const row of rows||[]){if(r
 (function(){
     for(const name of ['magicpassGunHesapla','magicpassGunVardiyasi','magicpassVardiyaSaatleri']){const original=window[name];window[name]=function(p,date){return fdHesapDonemindeCalistir(String(date||'').slice(0,7),()=>original.apply(this,arguments));};}
     for(const name of ['personelPrimHakkiVarMi','personelPrimDurumu','personelPrimCalisilmayanGunSayisi','magicpassAylikMesaiSaati','magicpassAylikYarimResmiTatilMesaiSaati']){const original=window[name];if(typeof original!=='function')continue;window[name]=function(p,ay,yil){const month=puantajAyAnahtari(ay,yil);return fdHesapDonemindeCalistir(month,()=>original.call(this,fdPersonelDonemVerisi(p,month),ay,yil));};}
-    const salary=personelGunlukUcretiniGetir;window.personelGunlukUcretiniGetir=function(p,ay,yil){const month=ay!==undefined&&yil!==undefined?puantajAyAnahtari(ay,yil):fdHesapAktifDonem;return salary(fdPersonelDonemVerisi(p,month));};
+    const salary=personelGunlukUcretiniGetir;window.personelGunlukUcretiniGetir=function(p,ay,yil){const month=ay!==undefined&&yil!==undefined?puantajAyAnahtari(ay,yil):(fdHesapAktifDonem||new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit'}).format(new Date()));return salary(fdPersonelDonemVerisi(p,month));};
     const render=renderPuantajMatrisi;window.renderPuantajMatrisi=function(){const ay=Number(document.getElementById('puanAySec')?.value),yil=Number(document.getElementById('puanYilSec')?.value),month=puantajAyAnahtari(ay,yil),originalPeople=personeller;return fdHesapDonemindeCalistir(month,()=>{personeller=originalPeople.map(p=>fdPersonelDonemVerisi(p,month));try{return render.apply(this,arguments);}finally{personeller=originalPeople;}});};
     const preview=maasSatiriniOnizle;window.maasSatiriniOnizle=function(){return fdHesapDonemindeCalistir(puantajAyAnahtari(Number(document.getElementById('puanAySec')?.value),Number(document.getElementById('puanYilSec')?.value)),()=>preview.apply(this,arguments));};
     function note(){const panel=document.getElementById('ayarlarPanelPersonel');if(panel&&!document.getElementById('fdDonemKorumaNotu'))panel.insertAdjacentHTML('afterbegin','<div id="fdDonemKorumaNotu" style="padding:12px 14px;margin-bottom:14px;border:1px solid #b9dce9;border-radius:9px;background:#f0f9fc;color:#315b72;font-size:13px;line-height:1.5">Vardiya, mesai, prim ve ücret değişiklikleri kaydedildiği aydan itibaren geçerlidir. Önceki aylar kendi ayarlarıyla hesaplanır; geçmiş kayıtlar geriye dönük değiştirilmez.</div>');}
     const settingsOpen=window.openAyarlarApp;if(typeof settingsOpen==='function')window.openAyarlarApp=function(){const r=settingsOpen.apply(this,arguments);note();return r;};
+})();
+</script>
+<style id="fdTopluZamDonemStilV249">
+#fdTopluZamModal .fd-zam-donem{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin-bottom:10px;border:1px solid #cbdde6;border-radius:10px;background:#f5fafc}
+#fdTopluZamModal .fd-zam-donem label{font-size:13px;font-weight:600;color:#31576b}
+#fdTopluZamModal .fd-zam-donem input{width:185px;min-height:38px;padding:7px 10px;border:1px solid #b8cedb;border-radius:7px;background:#fff;font-size:14px}
+#fdTopluZamModal .fd-zam-donem small{font-size:12px;line-height:1.5;color:#64748b;flex:1;min-width:180px}
+</style>
+<script id="fdTopluZamDonemV249">
+(function(){
+    let busy=false,drafts=new Map(),draftMonth='',draftSession='';
+    const currentMonth=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit'}).format(new Date());
+    const monthLabel=month=>new Date(month+'-01T12:00:00+03:00').toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+    const state=p=>({values:Object.fromEntries(FD_DONEM_UCRET_ALANLARI.filter(k=>Object.hasOwn(p,k)).map(k=>[k,p[k]])),history:p.fdUcretDonemleri||[]});
+    function install(){
+        const modal=document.getElementById('fdTopluZamModal');if(!modal||document.getElementById('fdZamGecerliAy'))return;
+        modal.querySelector('.modal-body').insertAdjacentHTML('afterbegin','<div class="fd-zam-donem"><label for="fdZamGecerliAy">Geçerli olacağı ay</label><input id="fdZamGecerliAy" type="month" required max="9998-12"><small id="fdZamDonemNotu">Zam seçilen ayın başından itibaren geçerlidir. Önceki aylar değişmez.</small></div>');
+        const input=document.getElementById('fdZamGecerliAy');input.min=currentMonth();input.value=currentMonth();
+        input.addEventListener('change',()=>{drafts.clear();draftMonth='';window.fdTopluZamCiz();});
+    }
+    function selectedMonth(){return document.getElementById('fdZamGecerliAy')?.value||currentMonth();}
+    const draw=window.fdTopluZamCiz;
+    window.fdTopluZamCiz=function(){
+        install();const month=selectedMonth(),session=fdPortalVeriOturumu();
+        if(month!==draftMonth||session!==draftSession){drafts.clear();draftMonth=month;draftSession=session;}
+        else document.querySelectorAll('#fdTopluZamBody tr[data-pid]').forEach(tr=>drafts.set(tr.dataset.pid,tr.querySelector('[data-yeni]').value));
+        fdHesapDonemindeCalistir(month,()=>draw.apply(this,arguments));
+        document.querySelectorAll('#fdTopluZamBody tr[data-pid]').forEach(tr=>{
+            const p=personeller.find(x=>String(x.id)===tr.dataset.pid&&aktifSirketeAit(x));tr.dataset.salaryState=JSON.stringify(state(p));
+            const input=tr.querySelector('[data-yeni]');if(drafts.has(tr.dataset.pid)){input.value=drafts.get(tr.dataset.pid);window.fdTopluZamSatirHesapla(input);}
+        });
+        const note=document.getElementById('fdZamDonemNotu');if(note)note.textContent=/^[0-9]{4}-(0[1-9]|1[0-2])$/.test(month)?monthLabel(month)+' ayından itibaren geçerlidir. Önceki aylar değişmez. Ayı değiştirmek yeni ücret girişlerini temizler.':'Geçerli olacağı ayı seçin.';
+    };
+    const rowCalculate=window.fdTopluZamSatirHesapla;
+    window.fdTopluZamSatirHesapla=function(){return fdHesapDonemindeCalistir(selectedMonth(),()=>rowCalculate.apply(this,arguments));};
+    const open=window.fdTopluZamAc;
+    window.fdTopluZamAc=function(){if(isPersonelUser()||!isManagerUser())return;install();drafts.clear();draftMonth='';document.getElementById('fdZamGecerliAy').value=currentMonth();document.getElementById('fdZamGecerliAy').min=currentMonth();return open.apply(this,arguments);};
+    function mergeSaved(rows,changes){
+        const keys=[...FD_DONEM_UCRET_ALANLARI,'fdUcretDonemleri','ucretGecmisi'];
+        const oldSnapshot=JSON.parse(veriSonKayitGoruntuleri.get('personeller')||'[]');
+        for(const row of rows){
+            const id=String(row.legacy_id),p=personeller.find(x=>String(x.id)===id&&aktifSirketeAit(x)),change=changes.find(x=>x.id===id);
+            if(p&&JSON.stringify(state(p))===JSON.stringify(change.expected)){for(const key of keys){delete p[key];if(Object.hasOwn(row.data,key))p[key]=row.data[key];}}
+            const position=oldSnapshot.findIndex(x=>String(x.id)===id);if(position>=0)oldSnapshot[position]=row.data;else oldSnapshot.push(row.data);
+        }
+        veriSonKayitGoruntuleri.set('personeller',JSON.stringify(oldSnapshot));veriOnbelleginiKaydet();
+    }
+    window.fdTopluZamlariKaydet=async function(){
+        if(busy||isPersonelUser()||!isManagerUser())return;
+        const month=selectedMonth(),session=fdPortalVeriOturumu(),company=aktifSirketId(),changes=[];
+        if(!/^[0-9]{4}-(0[1-9]|1[0-2])$/.test(month)||month<currentMonth()||month>'9998-12')return alert('Bu ayı veya ileri bir ayı seçin. Önceki ayların ücretleri değiştirilemez.');
+        document.querySelectorAll('#fdTopluZamBody tr[data-pid]').forEach(tr=>{
+            const input=tr.querySelector('[data-yeni]'),wage=paraMetniniSayiyaCevir(input.value);
+            if(input.value.trim()&&Math.abs(wage-Number(tr.dataset.eski))>.001)changes.push({id:tr.dataset.pid,dailyWage:wage,expected:JSON.parse(tr.dataset.salaryState)});
+        });
+        if(changes.some(x=>!Number.isFinite(x.dailyWage)||x.dailyWage<=0||x.dailyWage>100000000))return alert('Yeni yevmiyeler pozitif ve geçerli tutarlar olmalıdır.');
+        if(!changes.length)return alert('Kaydedilecek yeni yevmiye girişi bulunmuyor.');
+        if(!SUPABASE_MODE||!supabaseClient)return alert('Toplu ücret güncellemesi için sunucu bağlantısı gerekiyor.');
+        busy=true;
+        const controls=[...document.querySelectorAll('#fdTopluZamModal input,#fdTopluZamModal button')],disabled=controls.map(c=>c.disabled);controls.forEach(c=>c.disabled=true);
+        try{
+            if(!await fdYuzerOnaySor(changes.length+' personelin yeni ücreti '+monthLabel(month)+' ayından itibaren uygulansın mı? Önceki aylar değişmeyecek.','Toplu Ücret Güncelleme','Kaydet'))return;
+            if(!fdPortalVeriOturumuGecerli(session)||company!==aktifSirketId())throw Error('Oturum değişti. İşlem iptal edildi.');
+            if(changes.some(x=>{const p=personeller.find(p=>String(p.id)===x.id&&aktifSirketeAit(p));return !p||JSON.stringify(state(p))!==JSON.stringify(x.expected);}))throw Error('Ücret bilgileri değişmiş. Listeyi yeniden açın.');
+            showGlobalOverlay('Ücretler güncelleniyor',changes.length+' personel · '+monthLabel(month));
+            const {data,error}=await supabaseClient.rpc('fd_bulk_salary_update',{p_company_id:company,p_month:month,p_changes:changes});
+            if(error)throw error;
+            if(!fdPortalVeriOturumuGecerli(session)||company!==aktifSirketId())return;
+            if(!Array.isArray(data)||data.length!==changes.length)throw Error('Sunucu yanıtı doğrulanamadı. Listeyi yenileyin.');
+            mergeSaved(data,changes);drafts.clear();draftMonth='';document.querySelectorAll('#fdTopluZamBody [data-yeni]').forEach(x=>x.value='');initUI();window.fdTopluZamCiz();
+            showToast(changes.length+' personelin ücreti '+monthLabel(month)+' ayından itibaren güncellendi.');
+        }catch(error){if(fdPortalVeriOturumuGecerli(session))alert('Ücret güncellemesi tamamlanamadı: '+(error.message||error));}
+        finally{busy=false;controls.forEach((c,i)=>c.disabled=disabled[i]);hideGlobalOverlay();}
+    };
+    const historyOpen=window.fdUcretGecmisiAc;
+    window.fdUcretGecmisiAc=function(id=''){
+        if(isPersonelUser()||!isManagerUser())return;
+        if(id&&!personeller.some(p=>String(p.id)===String(id)&&aktifSirketeAit(p)))return;
+        historyOpen.apply(this,arguments);
+        const rows=personeller.filter(p=>aktifSirketeAit(p)&&(!id||String(p.id)===String(id))).flatMap(p=>(p.ucretGecmisi||[]).map(g=>({...g}))).sort((a,b)=>String(b.tarih||'').localeCompare(String(a.tarih||'')));
+        const table=document.querySelector('#fdUcretGecmisiBody table');if(!table)return;
+        table.querySelector('thead th').insertAdjacentHTML('afterend','<th>Geçerli Ay</th>');
+        table.querySelectorAll('tbody tr').forEach((tr,i)=>tr.firstElementChild.insertAdjacentHTML('afterend','<td>'+escapeDashboardText(rows[i]?.gecerliAy?monthLabel(rows[i].gecerliAy):'—')+'</td>'));
+    };
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
 </script>
 <style id="fdAracTasarimV222">
@@ -26491,7 +26587,7 @@ function fdAracListeCiz(){
         const numbers = new Set(['cocukSayisi','ucret','ekOdemeTutari','yolUcreti']);
         const clonedFields = fields.map(field => ({...field,type:numbers.has(field.key) ? 'number' : field.date ? 'date' : 'text'}));
         return report('Aktif Personel Listesi',clonedFields,filtrelenmisAktifPersonelleriGetir(),(person,field) => {
-            let value = person[field.key];
+            let value = field.key === 'ucret' && person.fdUcretDonemleri?.length && typeof personelGunlukUcretiniGetir === 'function' ? personelGunlukUcretiniGetir(person) : person[field.key];
             if (field.key === 'mezuniyetYili') value = typeof mezuniyetYiliniDuzelt === 'function' ? mezuniyetYiliniDuzelt(person.mezuniyetYili || person.mezuniyetTarihi) : person.mezuniyetYili || person.mezuniyetTarihi || '';
             if (field.date) return date(value);
             if (['engelli','emekli','primVar'].includes(field.key)) return yes(value) ? 'Evet' : 'Hayır';
@@ -29226,14 +29322,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v248';
+      const anahtar='fd-pwa-yenileme-v249';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=248',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=249',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
