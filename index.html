@@ -3291,7 +3291,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <div id="avansKayitlarCard" class="card" style="max-width:1120px; margin:0 auto 18px;">
             <div class="card-header">
                 <h2>Kaydedilen Avanslar</h2>
-                <div class="action-btns"><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKayitListesiBody','excel','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKayitListesiBody','pdf','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📄 PDF</button></div>
+                <div class="action-btns"><button type="button" class="btn-modern btn-detail-modern" id="avansListeYenileBtn" onclick="avansListeyiYenile()">↻ Yenile</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKayitListesiBody','excel','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKayitListesiBody','pdf','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📄 PDF</button></div>
             </div>
             <style>
                 .avans-kayit-filtreleri{display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(155px,.8fr) minmax(160px,.9fr) minmax(140px,.8fr) auto;gap:9px;align-items:end;margin:0 0 13px;padding:12px;border:1px solid #dbe5ef;border-radius:12px;background:#f8fafc}.avans-kayit-filtreleri label{display:block;margin:0 0 5px;color:#475569;font-size:.68rem;font-weight:850}.avans-kayit-filtreleri input,.avans-kayit-filtreleri select{width:100%;min-height:39px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}.avans-kayit-filtre-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 2px 11px;color:#64748b;font-size:.72rem;font-weight:750}@media(max-width:980px){.avans-kayit-filtreleri{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.avans-kayit-filtreleri{grid-template-columns:1fr 1fr}.avans-kayit-filtreleri .avans-filtre-arama{grid-column:1/-1}.avans-kayit-filtreleri button{width:100%}}
@@ -3319,6 +3319,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             <div class="table-wrapper">
                 <table><thead><tr><th>Avans</th><th>Personel</th><th>Yatırma Tarihi</th><th>Bu Ay Kesinti</th><th>Taksit Durumu</th><th>Toplam Avans</th><th>Kalan Tutar</th></tr></thead><tbody id="avansKesintiBody"></tbody></table>
             </div>
+            <small style="display:block;margin-top:10px;color:#64748b;line-height:1.5">Bu listede yalnızca seçilen ayın kesintileri gösterilir. Önceki ayların avans kayıtları için “Kaydedilen Avanslar”, aylar arası karşılaştırma için “Kesinti Planı” bölümünü kullanın.</small>
         </div>
         <div id="avansGelecekCard" class="card" style="max-width:1120px; margin:0 auto; display:none;">
             <div class="card-header avans-gelecek-baslik">
@@ -4914,6 +4915,27 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const degisenler = [];
             yeniHarita.forEach((kayit,legacyId) => { if (eskiHarita.get(legacyId) !== JSON.stringify(kayit)) degisenler.push({company_id:sirketId,module:anahtar,legacy_id:legacyId,record_year:supabaseKayitYili(anahtar,kayit),employee_legacy_id:supabasePersonelKimligi(kayit,anahtar)||null,data:kayit}); });
             try {
+                if (anahtar === 'avanslar') {
+                    // Never send a blind bulk upsert/delete of financial records.
+                    for (const satir of degisenler) {
+                        kapsamDogrula();
+                        try {
+                            const beklenen = eskiHarita.has(satir.legacy_id) ? JSON.parse(eskiHarita.get(satir.legacy_id)) : null;
+                            const sonuc = await avansGuvenliSunucuKaydi(sirketId, satir.data, beklenen); kapsamDogrula();
+                            avansSunucuKaydiniUygula(sonuc, satir.data, false);
+                            uygulandi([satir], [sonuc]); basariliKayitSayisi++;
+                        } catch (hata) {
+                            kapsamDogrula(); if (!supabaseKapaliDonemHatasiMi(hata)) throw hata;
+                            atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(hata)); degismediyseGeriAl(satir.legacy_id,satir.data);
+                        }
+                    }
+                    for (const id of [...eskiHarita.keys()].filter(id => !yeniHarita.has(id))) {
+                        kapsamDogrula();
+                        try { await avansGuvenliSunucuSil(sirketId,id,JSON.parse(eskiHarita.get(id))); kapsamDogrula(); sunucuHaritasi.delete(id); basariliKayitSayisi++; }
+                        catch(hata){kapsamDogrula();if(!supabaseKapaliDonemHatasiMi(hata))throw hata;atlananKapaliDonemler.add(supabaseKapaliDonemAyiniBul(hata));degismediyseGeriAl(id);}
+                    }
+                    continue;
+                }
                 if (degisenler.length) {
                     let istek = supabaseClient.from('portal_records').upsert(degisenler,{onConflict:'company_id,module,legacy_id'});
                     if (anahtar === 'personeller') istek = istek.select('module,legacy_id,data');
@@ -10268,6 +10290,40 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     function kkdGecmisPdfIndir() { const tablo=document.querySelector('#kkdGecmisRaporu table'); return window.fdTabloPdfOnizle(tablo,'KKD GEÇMİŞİ · '+kkdGecmisYili,'KKD_Gecmisi_'+kkdGecmisYili+'.pdf',{yon:'landscape'}); }
 
+    let avansIslemSuruyor = false;
+    let avansDuzenlemeKopyasi = null;
+    let avansYeniTaslakId = '';
+    function avansJsonAyniMi(a, b) {
+        const sirala = v => Array.isArray(v) ? v.map(sirala) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map(k => [k, sirala(v[k])])) : v;
+        return JSON.stringify(sirala(a)) === JSON.stringify(sirala(b));
+    }
+    function avansIslemYetkisiVar() { return isManagerUser() && !isPersonelUser() && !['IsgUzmani','IsyeriHekimi'].includes(activeUser?.rol); }
+    function avansSunucuKaydiniUygula(kayit, onceki, goruntuGuncelle = true) {
+        const id = String(kayit.legacy_id), dogrulanan = { ...kayit.data, id:String(kayit.data.id || id) };
+        const index = avanslar.findIndex(a => String(a.id) === id);
+        if (index < 0 ? onceki === null : avansJsonAyniMi(avanslar[index], onceki)) {
+            if (index < 0) avanslar.push(dogrulanan); else avanslar[index] = dogrulanan;
+        }
+        if (goruntuGuncelle) {
+            const goruntu = JSON.parse(veriSonKayitGoruntuleri.get('avanslar') || '[]'), sira = goruntu.findIndex(a => String(a.id) === id);
+            if (sira < 0) goruntu.push(dogrulanan); else goruntu[sira] = dogrulanan;
+            veriSonKayitGoruntuleri.set('avanslar', JSON.stringify(goruntu));
+            veriOnbelleginiKaydet();
+        }
+        return dogrulanan;
+    }
+    async function avansGuvenliSunucuKaydi(sirketId, kayit, onceki) {
+        const { data, error } = await supabaseClient.rpc('fd_advance_save', { p_company_id:sirketId, p_id:String(kayit.id), p_expected:onceki, p_data:kayit });
+        if (error) throw error;
+        if (!data?.data || String(data.legacy_id) !== String(kayit.id)) throw new Error('Avans kaydı sunucuda doğrulanamadı. Listeyi yenileyip kontrol edin.');
+        return data;
+    }
+    async function avansGuvenliSunucuSil(sirketId, id, onceki) {
+        const { data, error } = await supabaseClient.rpc('fd_advance_delete', { p_company_id:sirketId, p_id:String(id), p_expected:onceki });
+        if (error) throw error;
+        if (!data?.deleted || String(data.legacy_id) !== String(id)) throw new Error('Avans silme işlemi doğrulanamadı. Listeyi yenileyip kontrol edin.');
+        return data;
+    }
     function avansAnahtariniTemizle(deger) {
         return String(deger || '')
             .toLocaleLowerCase('tr-TR')
@@ -10295,13 +10351,14 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const baslangicHam = al('baslangicAy', 'kesintiBaslangicAy', 'başlangıç ayı', 'kesinti başlangıç ayı');
         const baslangicEslesme = String(baslangicHam).match(/(\d{4})-(\d{1,2})/);
         return {
+            ...satir,
             id: String(al('id', 'avansId') || `avans_${Date.now()}_${Math.random().toString(36).slice(2)}`),
             avansNo: String(al('avansNo', 'avans no', 'referansNo') || ''),
             sirketId: String(al('sirketId', 'şirket id', 'firmaId') || personel?.sirketId || ''),
             pId: String(personelId || ''),
             personelAd: String(al('personelAd', 'personel adı', 'adSoyad', 'ad soyad') || personel?.ad || ''),
             sube: String(al('sube', 'şube') || personel?.sube || ''),
-            tutar: paraMetniniSayiyaCevir(al('tutar', 'avansTutari', 'avans tutarı', 'toplam avans')),
+            tutar: typeof al('tutar', 'avansTutari', 'avans tutarı', 'toplam avans') === 'number' ? al('tutar', 'avansTutari', 'avans tutarı', 'toplam avans') : paraMetniniSayiyaCevir(al('tutar', 'avansTutari', 'avans tutarı', 'toplam avans')),
             taksitSayisi: Math.max(1, Number(al('taksitSayisi', 'taksit sayısı', 'kacAy', 'kaç ay') || 1)),
             baslangicAy: baslangicEslesme ? `${baslangicEslesme[1]}-${String(baslangicEslesme[2]).padStart(2, '0')}` : '',
             kayitTarihi: tarih,
@@ -10323,10 +10380,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function avansVerileriniYukle() {
         if (SUPABASE_MODE) {
-            await supabaseVerileriniYukle('avans');
-            avanslar = avanslar.map(avansSatiriniDonustur).filter(Boolean);
-            veriKayitGoruntusunuYenile('avanslar');
-            return;
+            // The shared loader acknowledges only actual server replies. Never
+            // normalize/re-acknowledge unsaved local changes after a skipped load.
+            return supabaseVerileriniYukle('avans', '', { yerelDegisiklikleriKoru:true });
         }
         const response = await fetch(`${GOOGLE_SCRIPT_URL}?modul=avans&_=${Date.now()}`, { cache: 'no-store' });
         if (!response.ok) throw new Error(`Avans verisi alınamadı (${response.status})`);
@@ -10334,6 +10390,26 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         avanslar = avansDizisiniBul(data).map(avansSatiriniDonustur).filter(Boolean);
         yuklenenVeriler.add('avanslar');
         veriOnbelleginiKaydet();
+    }
+
+    async function avansListeyiYenile() {
+        if (avansIslemSuruyor || !SUPABASE_MODE || !supabaseClient) return;
+        if (supabaseKaydetmeBekleyen > 0) return showToast('Kayıt işlemi devam ediyor. Tamamlanınca listeyi yenileyin.','warning');
+        const oturum=fdPortalVeriOturumu(), yerel=JSON.stringify(avanslar), btn=document.getElementById('avansListeYenileBtn');
+        avansIslemSuruyor=true;if(btn)btn.disabled=true;
+        try {
+            if(veriSonKayitGoruntuleri.has('avanslar')&&veriSonKayitGoruntuleri.get('avanslar')!==yerel) {
+                if(!await fdYuzerOnaySor('Bu cihazda kaydedilmemiş avans değişiklikleri var. Sunucudaki kayıtlar değişmeden, yalnızca bu cihazdaki kaydedilmemiş değişiklikler bırakılıp güncel liste yüklensin mi?','Avans Listesini Yenile','Güncel Listeyi Yükle'))return;
+            }
+            if(!fdPortalVeriOturumuGecerli(oturum))return;
+            const yil=Number(aktifKayitYili||new Date().getFullYear()),rows=await supabasePortalModulKayitlariniTumunuGetir('avanslar',yil);
+            if(!fdPortalVeriOturumuGecerli(oturum))return;
+            if(JSON.stringify(avanslar)!==yerel)throw Error('Avans bilgileri bu sırada değişti; yenileme iptal edildi.');
+            supabaseDiziAta('avanslar',rows.map(r=>({...r.data,id:r.data?.id??r.legacy_id})));
+            fdUzakImzayiSatirlardanKaydet('avanslar',yil,rows);fdUzakAnahtarSonYukleme.set(fdUzakImzaAnahtari('avanslar',yil),Date.now());
+            veriOnbelleginiKaydet();renderAvansKayitListesi();renderAvansKesintiListesi();renderAvansGelecekKesintileri();showToast('Avans listesi sunucudan yenilendi.');
+        }catch(error){if(fdPortalVeriOturumuGecerli(oturum))showToast('Liste yenilenemedi: '+(error.message||error),'warning');}
+        finally{avansIslemSuruyor=false;if(btn)btn.disabled=false;}
     }
 
     function avansSekmeDegistir(sekme, button) {
@@ -10356,12 +10432,13 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     let avansDuzenlemeId = '';
 
     function avansYeniKayitAc() {
-        if (activeUser?.rol === 'Personel') return;
+        if (avansIslemSuruyor || !avansIslemYetkisiVar()) return;
         avansFormReset();
         avansSekmeDegistir('yeni', document.getElementById('btnAvansYeniSekme'));
     }
 
     function avansDuzenleVazgec() {
+        if (avansIslemSuruyor) return;
         avansFormReset();
         avansSekmeDegistir('kayitlar', document.getElementById('btnAvansKayitlarSekme'));
     }
@@ -10768,7 +10845,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const tutar = Number(avans.tutar || 0);
         const standart = Math.floor((tutar / taksitSayisi) * 100) / 100;
         const kesinti = fark === taksitSayisi - 1 ? Number((tutar - standart * (taksitSayisi - 1)).toFixed(2)) : standart;
-        const kalan = Math.max(0, Number((tutar - standart * (fark + 1)).toFixed(2)));
+        const kalan = fark === taksitSayisi - 1 ? 0 : Math.max(0, Number((tutar - standart * (fark + 1)).toFixed(2)));
         return { kesinti, kalan, sira: fark + 1, taksitSayisi };
     }
 
@@ -10779,11 +10856,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const kayitPersonelId = String(avans?.pId ?? avans?.personelId ?? avans?.employee_legacy_id ?? '').trim();
             if (!kendiPersonelId || kayitPersonelId !== kendiPersonelId) return false;
             const aktifId = String(aktifSirketId() || '').trim();
-            if (!aktifId || !avans?.sirketId || String(avans.sirketId) === aktifId) return true;
+            if (!aktifId) return false;
+            if (avans?.sirketId) return String(avans.sirketId) === aktifId;
             const personel = personeller.find(p => String(p.id).trim() === kendiPersonelId);
             return String(personel?.sirketId || '') === aktifId;
         }
-        return true;
+        const aktifId = String(aktifSirketId() || '').trim();
+        if (!aktifId) return false;
+        if (avans?.sirketId) return String(avans.sirketId) === aktifId;
+        return personeller.some(p => String(p.id) === String(avans?.pId) && aktifSirketeAit(p));
     }
     function siradakiAvansNo(kayitTarihi, haricId = '') {
         const tarihEslesme = String(kayitTarihi || '').match(/^(\d{4})-(\d{2})/);
@@ -10804,17 +10885,21 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     async function avansKaydet(event) {
         event.preventDefault();
-        const form = event.currentTarget;
+        if (avansIslemSuruyor || !avansIslemYetkisiVar()) return;
+        if (!SUPABASE_MODE || !supabaseClient || !activeUser?.sirketId) return alert('Güvenli avans kaydı için sunucu bağlantısı gerekiyor.');
+        const oturum = fdPortalVeriOturumu(), sirketId = String(aktifSirketId());
         const editId = String(avansDuzenlemeId || document.getElementById('avansEditId').value || '');
         const mevcutIndex = editId ? avanslar.findIndex(a => String(a.id) === editId) : -1;
         const mevcutAvans = mevcutIndex >= 0 ? avanslar[mevcutIndex] : null;
-        if (editId && !mevcutAvans) {
-            alert('Düzenlenen avans kaydı bulunamadı. Listeyi yenileyip tekrar deneyin.');
+        if (editId && (!mevcutAvans || !avansAktifSirketinMi(mevcutAvans) || !avansDuzenlemeKopyasi || avansDuzenlemeKopyasi.oturum !== oturum || avansDuzenlemeKopyasi.id !== editId)) {
+            alert('Düzenlenen avans kaydı veya oturum değişmiş. Listeyi yenileyip tekrar düzenleyin.');
             return;
         }
+        const beklenen = editId ? avansDuzenlemeKopyasi.data : null;
+        if (beklenen && !avansJsonAyniMi(mevcutAvans,beklenen)) return alert('Avans bu sırada değişmiş. Eski bilgilerle üzerine yazılmadı; listeyi yenileyip tekrar düzenleyin.');
         avansPersonelSecimKontrol();
         const personelId = document.getElementById('avansPersonelId').value;
-        const personel = personeller.find(p => String(p.id) === String(personelId));
+        const personel = personeller.find(p => String(p.id) === String(personelId) && aktifSirketeAit(p));
         const tutar = paraMetniniSayiyaCevir(document.getElementById('avansTutar').value);
         const baslangicAy = String(document.getElementById('avansBaslangicAy').value || '');
         const kayitTarihi = String(document.getElementById('avansYatirmaTarihi').value || '');
@@ -10825,18 +10910,19 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             alert('Lütfen personeli açılan listeden seçin.');
             return;
         }
-        if (tutar <= 0 || taksitSayisi < 1 || !baslangicAy || !kayitTarihi) {
+        const tarih = new Date(kayitTarihi + 'T12:00:00Z');
+        if (!Number.isFinite(tutar) || tutar <= 0 || tutar > 1000000000 || !Number.isInteger(taksitSayisi) || taksitSayisi < 1 || taksitSayisi > 1200 || !/^\d{4}-(0[1-9]|1[0-2])$/.test(baslangicAy) || !/^\d{4}-(0[1-9]|1[0-2])-\d{2}$/.test(kayitTarihi) || !Number.isFinite(tarih.getTime()) || tarih.toISOString().slice(0,10) !== kayitTarihi) {
             alert('Avans bilgilerini eksiksiz doldurun.');
             return;
         }
-        const sirketId = avansSirketIdBul(personel);
         if (!sirketId) {
             alert('Personelin şirket bilgisi bulunamadı.');
             return;
         }
 
         const yeniAvans = {
-            id: editId || `avans_${Date.now()}`,
+            ...(beklenen || {}),
+            id: editId || (avansYeniTaslakId ||= 'avans_' + (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : Date.now() + '_' + Math.random().toString(36).slice(2))),
             avansNo: mevcutAvans?.avansNo && String(mevcutAvans.kayitTarihi || '').slice(0, 7) === kayitTarihi.slice(0, 7)
                 ? mevcutAvans.avansNo
                 : siradakiAvansNo(kayitTarihi, editId),
@@ -10849,65 +10935,58 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             baslangicAy,
             kayitTarihi,
             aciklama,
-            durum: 'Aktif'
+            durum: beklenen ? beklenen.durum : 'Aktif'
         };
-
-        yuklenenVeriler.add('avanslar');
-        const oncekiAvanslar = avanslar.slice();
-        if (mevcutAvans) {
-            avanslar[mevcutIndex] = yeniAvans;
-        } else {
-            avanslar.push(yeniAvans);
-        }
-        document.getElementById('avansListeAy').value = baslangicAy;
-        renderAvansKayitListesi();
-        renderAvansKesintiListesi();
-
+        avansIslemSuruyor = true;
+        const alanlar = [...document.querySelectorAll('#avansForm input,#avansForm button')], pasifliklar = alanlar.map(a=>a.disabled);
+        alanlar.forEach(a=>a.disabled=true);
         showGlobalOverlay('Avans kaydediliyor', 'Kesinti planı oluşturuluyor...');
         try {
-            if (SUPABASE_MODE && supabaseClient && activeUser?.sirketId) {
-                const satir = { company_id:activeUser.sirketId, module:'avanslar', legacy_id:String(yeniAvans.id), record_year:supabaseKayitYili('avanslar',yeniAvans), employee_legacy_id:String(yeniAvans.pId || '') || null, data:yeniAvans };
-                const { data, error } = await supabaseClient.from('portal_records').upsert(satir,{onConflict:'company_id,module,legacy_id'}).select('legacy_id,data').single();
-                if (error) throw error;
-                if (!data?.data) throw new Error('Avans kaydı veritabanında doğrulanamadı.');
-                const dogrulanan = {...data.data,id:String(data.data.id || data.legacy_id || yeniAvans.id)};
-                const dogrulamaIndex = avanslar.findIndex(a => String(a.id) === String(yeniAvans.id));
-                if (dogrulamaIndex >= 0) avanslar[dogrulamaIndex] = dogrulanan;
-                veriKayitGoruntusunuYenile('avanslar');
-                veriOnbelleginiKaydet();
-            } else {
-                await verileriKaydet();
-            }
-            if (!mevcutAvans) {
+            const sonuc = await avansGuvenliSunucuKaydi(sirketId, yeniAvans, beklenen);
+            if (!fdPortalVeriOturumuGecerli(oturum)) return;
+            avansSunucuKaydiniUygula(sonuc, beklenen);
+            yuklenenVeriler.add('avanslar');
+            document.getElementById('avansListeAy').value = baslangicAy;
+            ['avansKayitArama','avansKayitSubeFiltre','avansKayitDurumFiltre'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('avansKayitAyFiltre').value = kayitTarihi.slice(0,7);
+            // The confirmed record stays saved even if a notification fails.
+            if (sonuc.created === true) {
+                Promise.resolve().then(() => {
+                if (!fdPortalVeriOturumuGecerli(oturum)) return;
                 const taksitBilgisi = taksitSayisi === 1 ? 'tek seferde' : `${taksitSayisi} taksit halinde`;
                 const mesaj = personelBildirimSablonunuDoldur('magicpassBildirimAvansKayitMetni', {
                     AD: personel.ad || 'Personel', TUTAR: paraFormatla(tutar), TAKSİT: taksitSayisi,
                     TAKSIT: taksitSayisi, 'TAKSİT_BİLGİSİ': taksitBilgisi, TAKSIT_BILGISI: taksitBilgisi
                 });
-                try {
-                    await personelKayitBildirimiGonder(personel.id, 'Avans Kaydı', mesaj, { messageCategory:'advance' });
-                } catch (bildirimHatasi) {
+                return personelKayitBildirimiGonder(personel.id, 'Avans Kaydı', mesaj, { messageCategory:'advance' });
+                }).catch(bildirimHatasi => {
                     console.warn('Avans kaydedildi ancak personel bildirimi gönderilemedi:', bildirimHatasi);
-                    showToast?.('Avans kaydedildi; personel bildirimi gönderilemedi.', 'warning');
-                }
+                    if (fdPortalVeriOturumuGecerli(oturum)) showToast('Avans kaydedildi; personel bildirimi gönderilemedi.', 'warning');
+                });
             }
+            if (!fdPortalVeriOturumuGecerli(oturum)) return;
             avansFormReset();
             avansSekmeDegistir('kayitlar', document.getElementById('btnAvansKayitlarSekme'));
+            showToast(mevcutAvans ? 'Avans değişikliği kaydedildi.' : 'Avans kaydedildi.');
         } catch (error) {
-            avanslar = oncekiAvanslar;
-            renderAvansKayitListesi();
-            renderAvansKesintiListesi();
+            if (!fdPortalVeriOturumuGecerli(oturum)) return;
             console.error('Avans kaydedilemedi:', error);
-            alert('Avans kaydedilemedi. Lütfen tekrar deneyin.');
+            alert('Avans işlemi tamamlanamadı: ' + (error.message || 'Bağlantıyı kontrol edip listeyi yenileyin.'));
         } finally {
+            avansIslemSuruyor = false;
+            alanlar.forEach((a,i)=>a.disabled=pasifliklar[i]);
             hideGlobalOverlay();
         }
+        if (!fdPortalVeriOturumuGecerli(oturum)) return;
         renderAvansKayitListesi();
         renderAvansKesintiListesi();
+        renderAvansGelecekKesintileri();
     }
 
     function avansFormReset() {
         avansDuzenlemeId = '';
+        avansDuzenlemeKopyasi = null;
+        avansYeniTaslakId = '';
         document.getElementById('avansForm').reset();
         document.getElementById('avansEditId').value = '';
         document.getElementById('avansPersonelId').value = '';
@@ -10924,13 +11003,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     function avansDuzenle(id) {
+        if (avansIslemSuruyor || !avansIslemYetkisiVar()) return;
         const avans = avanslar.find(a => String(a.id) === String(id));
-        if (!avans || activeUser?.rol === 'Personel') return;
-        const personel = personeller.find(p => String(p.id) === String(avans.pId));
+        if (!avans || !avansAktifSirketinMi(avans)) return;
+        const personel = personeller.find(p => String(p.id) === String(avans.pId) && aktifSirketeAit(p));
+        avansDuzenlemeKopyasi = { id:String(avans.id), oturum:fdPortalVeriOturumu(), data:JSON.parse(JSON.stringify(avans)) };
         avansDuzenlemeId = String(avans.id);
         document.getElementById('avansEditId').value = avansDuzenlemeId;
         document.getElementById('avansPersonelId').value = String(avans.pId);
-        document.getElementById('avansPersonelAra').value = `${avans.personelAd || personel?.ad || ''} — ${avans.sube || personel?.sube || 'Şube yok'}`;
+        document.getElementById('avansPersonelAra').value = `${personel?.ad || avans.personelAd || ''} — ${personel?.sube || avans.sube || 'Şube yok'}`;
         document.getElementById('avansSeciliPersonel').textContent = `✓ Seçilen personel: ${avans.personelAd || personel?.ad || ''}`;
         document.getElementById('avansYatirmaTarihi').value = tarihInputDegeri(avans.kayitTarihi);
         document.getElementById('avansTutar').value = Number(avans.tutar || 0).toLocaleString('tr-TR');
@@ -10946,12 +11027,26 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     }
 
     async function avansSil(id) {
+        if (avansIslemSuruyor || !avansIslemYetkisiVar()) return;
+        const mevcut = avanslar.find(a=>String(a.id)===String(id));
+        if (!mevcut || !avansAktifSirketinMi(mevcut)) return;
+        if (!SUPABASE_MODE || !supabaseClient) return alert('Güvenli silme işlemi için sunucu bağlantısı gerekiyor.');
+        const oturum=fdPortalVeriOturumu(), sirketId=String(aktifSirketId()), beklenen=JSON.parse(JSON.stringify(mevcut));
+        avansIslemSuruyor=true;
+        try {
         if (!await fdYuzerOnaySor('Bu avans kaydı silinsin mi?')) return;
+        if (!fdPortalVeriOturumuGecerli(oturum)) return;
+        if (!avansJsonAyniMi(avanslar.find(a=>String(a.id)===String(id)),beklenen)) throw Error('Avans bu sırada değişti; silinmedi. Listeyi yenileyin.');
+        await avansGuvenliSunucuSil(sirketId,id,beklenen);
+        if (!fdPortalVeriOturumuGecerli(oturum)) return;
         avanslar = avanslar.filter(a => String(a.id) !== String(id));
-        yuklenenVeriler.add('avanslar');
+        const goruntu=JSON.parse(veriSonKayitGoruntuleri.get('avanslar')||'[]').filter(a=>String(a.id)!==String(id));
+        veriSonKayitGoruntuleri.set('avanslar',JSON.stringify(goruntu));veriOnbelleginiKaydet();
         renderAvansKayitListesi();
         renderAvansKesintiListesi();
-        await verileriKaydet();
+        renderAvansGelecekKesintileri();showToast('Avans silindi.');
+        } catch(error){if(fdPortalVeriOturumuGecerli(oturum))alert('Avans silinmedi: '+(error.message||error));}
+        finally{avansIslemSuruyor=false;}
     }
 
     function avansEtiketi(avans) {
@@ -11029,7 +11124,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const tumKayitlar = avanslar.filter(avansAktifSirketinMi);
         const kayitlar = avansKayitFiltreliListe();
         const ozet = document.getElementById('avansKayitFiltreOzeti');
-        if (ozet) ozet.textContent = `${kayitlar.length} / ${tumKayitlar.length} kayıt · ${paraFormatla(kayitlar.reduce((toplam, avans) => toplam + Number(avans.tutar || 0), 0))}`;
+        if (ozet) ozet.textContent = `${kayitlar.length} / ${tumKayitlar.length} kayıt · ${paraFormatla(kayitlar.reduce((toplam, avans) => toplam + Number(avans.tutar || 0), 0))} · Kayıt ayı: ${document.getElementById('avansKayitAyFiltre')?.value || 'Tüm aylar'}`;
 
         if (!kayitlar.length) {
             body.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#64748b; padding:22px;">${tumKayitlar.length ? 'Seçilen filtrelerle eşleşen avans bulunmuyor.' : 'Kayıtlı avans bulunmuyor.'}</td></tr>`;
@@ -11161,19 +11256,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const avansKesintiSirala = (a, b) => String(a.sube || '').localeCompare(String(b.sube || ''), 'tr-TR', {sensitivity:'base'}) || String(a.personelAd || '').localeCompare(String(b.personelAd || ''), 'tr-TR', {sensitivity:'base'});
         const tumAvanslar = avanslar.filter(a => {
             const durum = String(a.durum || '').trim().toLocaleLowerCase('tr-TR');
-            return avansAktifSirketinMi(a) && durum !== 'kapandı' && durum !== 'kapandi';
+            return avansAktifSirketinMi(a) && !['kapandı','kapandi','tamamlandı','tamamlandi'].includes(durum);
         }).sort(avansKesintiSirala);
         const satirlar = tumAvanslar.map(a => ({ avans: a, plan: avansAylikKesinti(a, ay) })).filter(item => item.plan).sort((a, b) => avansKesintiSirala(a.avans, b.avans));
         if (!satirlar.length) {
-            body.innerHTML = tumAvanslar.length ? tumAvanslar.map(avans => `<tr>
-                <td>${avansEtiketi(avans)}</td>
-                <td><strong>${escapeHtml(avans.personelAd || '-')}</strong></td>
-                <td>${escapeHtml(tarihFormati(avans.kayitTarihi) || '-')}</td>
-                <td style="color:#64748b;">Bu ay kesinti yok</td>
-                <td>Başlangıç: ${escapeHtml(String(avans.baslangicAy || '-').slice(0, 7))}</td>
-                <td>${paraFormatla(avans.tutar)}</td>
-                <td>${paraFormatla(avans.tutar)}</td>
-            </tr>`).join('') : '<tr><td colspan="7" style="text-align:center; color:#64748b; padding:22px;">Kayıtlı avans bulunmuyor.</td></tr>';
+            body.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b; padding:22px;">Seçilen ay için avans kesintisi bulunmuyor. Önceki kayıtları “Kaydedilen Avanslar” bölümünden görebilirsiniz.</td></tr>';
             return;
         }
         body.innerHTML = satirlar.map(({ avans, plan }) => `<tr>
@@ -29322,14 +29409,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v249';
+      const anahtar='fd-pwa-yenileme-v250';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=249',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=250',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
