@@ -10477,6 +10477,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 avansPersonelListesiniDoldur();
                 renderAvansKayitListesi();
                 renderAvansKesintiListesi();
+                renderAvansGelecekKesintileri();
             }).catch(error => {
                 console.error('Avans ekranı yükleme hatası:', error);
                 showToast('Avans verileri arka planda yenilenemedi.', 'warning');
@@ -11191,11 +11192,16 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const card=document.getElementById('avansGelecekCard'),baslangic=document.getElementById('avansGelecekBaslangicAy'),bitis=document.getElementById('avansGelecekBitisAy');
         if(!baslangic||!bitis)return false;
         if(card.dataset.goruntuHazirlaniyor==='1')return false;
-        if(card.dataset.donemHazir!=='1'){
-            const planlar=avanslar.filter(avansAktifSirketinMi).filter(a=>/^\d{4}-(0[1-9]|1[0-2])$/.test(String(a.baslangicAy||''))&&Number.isInteger(Number(a.taksitSayisi||1))&&Number(a.taksitSayisi||1)>0),bugun=new Date(),buAy=bugun.getFullYear()+'-'+String(bugun.getMonth()+1).padStart(2,'0');
-            baslangic.value=baslangic.value||planlar.map(a=>a.baslangicAy).sort()[0]||buAy;
-            bitis.value=bitis.value||planlar.map(a=>avansAyEkle(a.baslangicAy,Number(a.taksitSayisi||1)-1)).sort().pop()||baslangic.value;
+        const sirket=String(aktifSirketId()||''),otomatik=baslangic.value===card.dataset.varsayilanBaslangic&&bitis.value===card.dataset.varsayilanBitis;
+        if(card.dataset.donemHazir!=='1'||card.dataset.donemSirket!==sirket||otomatik){
+            const planlar=avanslar.filter(avansAktifSirketinMi).filter(a=>/^\d{4}-(0[1-9]|1[0-2])$/.test(String(a.baslangicAy||''))&&Number.isInteger(Number(a.taksitSayisi||1))&&Number(a.taksitSayisi||1)>0),buAy=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit'}).format(new Date());
+            baslangic.value=avansAyEkle(buAy,-1);
+            const sonPlanAyi=planlar.map(a=>avansAyEkle(a.baslangicAy,Number(a.taksitSayisi||1)-1)).sort().pop();
+            bitis.value=sonPlanAyi&&sonPlanAyi>buAy?sonPlanAyi:buAy;
             card.dataset.donemHazir='1';
+            card.dataset.donemSirket=sirket;
+            card.dataset.varsayilanBaslangic=baslangic.value;
+            card.dataset.varsayilanBitis=bitis.value;
         }
         const donem=avansGelecekDonemi(),hata=document.getElementById('avansGelecekDonemHatasi');
         if(hata){hata.textContent=donem.hata;hata.style.display=donem.hata?'':'none';}
@@ -29409,14 +29415,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v250';
+      const anahtar='fd-pwa-yenileme-v251';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=250',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=251',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
