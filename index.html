@@ -194,7 +194,7 @@
     width: 100%;
     min-width: 0;
     height: auto;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     background: transparent;
     backdrop-filter: none;
@@ -1655,6 +1655,13 @@
 #policeTakipApp .police-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px;background:linear-gradient(135deg,#ecfeff,#f0fdf4);border-color:#99f6e4}#policeTakipApp .police-hero h2{margin:0;color:#115e59}#policeTakipApp .police-hero p{margin:5px 0 0;color:#475569}.police-ozet-grid{grid-template-columns:repeat(4,minmax(150px,1fr));margin-bottom:14px}.police-filtre{display:grid;grid-template-columns:minmax(260px,1fr) 150px 190px 155px auto}.police-durum{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:.68rem;font-weight:850}.police-durum-gecen{background:#fee2e2;color:#b91c1c}.police-durum-yaklasan{background:#ffedd5;color:#c2410c}.police-durum-aktif{background:#dcfce7;color:#166534}.police-tur-rozet{display:inline-flex;padding:5px 8px;border-radius:999px;color:#fff;font-size:.68rem;font-weight:850;line-height:1.15;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}#policeTakipTablosu td:last-child .action-btns{display:flex;min-width:78px;gap:5px}#policeTakipTablosu td:last-child button{width:32px;height:32px;min-width:32px;min-height:32px;padding:0}.police-ayar-tur-satiri{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-bottom:7px}.police-ayar-tur-satiri button{width:36px;padding:0}@media(max-width:850px){.police-filtre{grid-template-columns:1fr 1fr}.police-ozet-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.police-filtre{grid-template-columns:1fr}.police-hero{align-items:stretch!important;flex-direction:column}}
 </style><style id="policeTakipDuzeltmeStilleri">
 .police-durum-planli{background:#e0f2fe;color:#075985}
+#modalPoliceKayit .police-varlik-arama{display:flex;align-items:center;gap:6px;margin-bottom:7px;min-width:0}
+#modalPoliceKayit .police-varlik-arama input{flex:1 1 auto;min-width:0;margin:0}
+#modalPoliceKayit #policeHedefArama::-webkit-search-cancel-button{-webkit-appearance:none}
+#modalPoliceKayit .police-varlik-arama button{flex:0 0 34px;width:34px;height:36px;padding:0;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;color:#475569;font-size:20px;cursor:pointer}
+#modalPoliceKayit .police-varlik-arama button:disabled{opacity:.4;cursor:default}
+#modalPoliceKayit #policeHedefId{width:100%;min-width:0;max-width:100%}
+#modalPoliceKayit #policeHedefAramaOzeti{display:block;margin-top:5px;color:#64748b;font-size:12px;line-height:1.45}
 @media(min-width:851px){#policeOzetleri{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
 #policeTakipTablosu td:nth-child(2) .police-varlik-link{all:unset;display:inline;cursor:pointer;color:inherit;font:inherit;font-weight:inherit;text-decoration:none}
 #policeTakipTablosu td:nth-child(2) .police-varlik-link:hover{text-decoration:underline;text-decoration-color:#94a3b8;text-underline-offset:3px}
@@ -1744,6 +1751,14 @@
 .magicpass-zaman-alanlari{display:grid;grid-template-columns:minmax(135px,1fr) minmax(120px,.75fr);gap:9px}
 .magicpass-zaman-alanlari label{display:block;margin-bottom:5px;color:#475569;font-size:.72rem;font-weight:800}
 .magicpass-zaman-alanlari input{width:100%;height:46px;padding:7px 9px;border:1px solid #94a3b8;border-radius:9px;background:#fff;font-size:1rem;font-weight:750;color:#0f172a}
+.magicpass-duzeltme-aralik{padding:12px;margin-bottom:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}
+.magicpass-duzeltme-aralik-baslik{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#334155}
+.magicpass-duzeltme-aralik-baslik button{border:1px solid #fecaca;border-radius:7px;background:#fff;color:#b91c1c;padding:6px 10px;cursor:pointer}
+.magicpass-duzeltme-not{margin:8px 0 12px;color:#64748b;font-size:.78rem;line-height:1.5}
+#modalMagicpassDuzeltme .modal-card{max-height:94vh;display:flex;flex-direction:column}
+#modalMagicpassDuzeltme .modal-body{min-height:0;overflow:auto}
+#modalMagicpassDuzeltme .magicpass-duzeltme-zamanlar{margin-bottom:0}
+#modalMagicpassDuzeltme button:disabled{opacity:.55;cursor:wait}
 .magicpass-saat-adimlari{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
 .magicpass-saat-adimlari button{padding:5px 9px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:#475569;font-size:.69rem;font-weight:800;cursor:pointer}
 .magicpass-saat-adimlari button:hover{border-color:#8b5cf6;color:#6d28d9;background:#f5f3ff}
@@ -2307,7 +2322,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <div class="modal-header"><h3 id="policeModalBaslik">🛡️ Yeni Poliçe</h3><button type="button" class="modal-close" onclick="modalKapat('modalPoliceKayit')">✕</button></div>
         <form id="policeForm" class="modal-body" onsubmit="policeKaydet(event)"><input type="hidden" id="policeEditId"><div class="profile-layout">
             <div class="form-group"><label>Varlık Türü</label><select id="policeHedefTip" required onchange="policeHedefSecenekleriniDoldur()"></select></div>
-            <div class="form-group" id="policeHedefSecimGrubu"><label>Varlık</label><select id="policeHedefId" required onchange="policeHedefBilgisiniGuncelle()"></select></div>
+            <div class="form-group" id="policeHedefSecimGrubu"><label for="policeHedefId">Varlık</label><div class="police-varlik-arama"><input id="policeHedefArama" type="search" placeholder="Varlık adı veya UAVT ara" aria-label="Varlık listesinde ara" aria-controls="policeHedefId" autocomplete="off" oninput="policeHedefAramasiniUygula()" onkeydown="if(event.key==='Enter'||event.key==='ArrowDown'){event.preventDefault();document.getElementById('policeHedefId').focus();}"><button id="policeHedefAramaTemizle" type="button" title="Aramayı temizle" aria-label="Varlık aramasını temizle" disabled onclick="policeHedefAramasiniTemizle()">×</button></div><select id="policeHedefId" required aria-describedby="policeHedefAramaOzeti" onchange="policeHedefBilgisiniGuncelle()"></select><small id="policeHedefAramaOzeti" role="status" aria-live="polite"></small></div>
             <div class="form-group" id="policeDigerAdGrubu" style="display:none"><label>Varlık Adı</label><input id="policeDigerAd" placeholder="Varlık adını yazın"></div>
             <div class="form-group"><label id="policeEslesmeKoduEtiket">Plaka / UAVT / Referans</label><input id="policeEslesmeKodu"></div>
             <div class="form-group"><label>Poliçe Türü</label><select id="policeTur" required></select></div>
@@ -3595,10 +3610,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             <input id="magicpassDuzeltmePersonelId" type="hidden"><input id="magicpassDuzeltmeTarih" type="hidden">
             <div id="magicpassDuzeltmeVardiyaBilgi" class="magicpass-duzeltme-plan"></div>
             <input id="magicpassDuzeltmeGiris" type="hidden"><input id="magicpassDuzeltmeCikis" type="hidden">
-            <div class="magicpass-duzeltme-zamanlar">
-                <section class="magicpass-zaman-karti"><strong>Giriş zamanı</strong><div class="magicpass-zaman-alanlari"><div><label>Tarih</label><input id="magicpassDuzeltmeGirisTarih" type="date" onchange="magicpassDuzeltmeTarihSaatBirlestir('Giris')"></div><div><label>Saat</label><input id="magicpassDuzeltmeGirisSaat" type="time" step="60" onchange="magicpassDuzeltmeTarihSaatBirlestir('Giris')"></div></div><div class="magicpass-saat-adimlari"><button type="button" onclick="magicpassDuzeltmeSaatKaydir('Giris',-15)">−15 dk</button><button type="button" onclick="magicpassDuzeltmeSaatKaydir('Giris',15)">+15 dk</button></div></section>
-                <section class="magicpass-zaman-karti"><strong>Çıkış zamanı</strong><div class="magicpass-zaman-alanlari"><div><label>Tarih</label><input id="magicpassDuzeltmeCikisTarih" type="date" onchange="magicpassDuzeltmeTarihSaatBirlestir('Cikis')"></div><div><label>Saat</label><input id="magicpassDuzeltmeCikisSaat" type="time" step="60" onchange="magicpassDuzeltmeTarihSaatBirlestir('Cikis')"></div></div><div class="magicpass-saat-adimlari"><button type="button" onclick="magicpassDuzeltmeSaatKaydir('Cikis',-15)">−15 dk</button><button type="button" onclick="magicpassDuzeltmeSaatKaydir('Cikis',15)">+15 dk</button></div></section>
-            </div>
+            <div class="magicpass-duzeltme-not">Her çalışma aralığını ayrı düzenleyin. Gece çalışmasında çıkışın tarihini kontrol edin; eksik giriş veya çıkışın saatini boş bırakabilirsiniz.</div>
+            <div id="magicpassDuzeltmeAraliklar"></div>
+            <button type="button" class="btn-modern" onclick="magicpassDuzeltmeAralikEkle()">＋ Çalışma Aralığı Ekle</button>
             <div class="form-group"><label>Düzeltme Açıklaması</label><textarea id="magicpassDuzeltmeAciklama" rows="3" data-case-preserve="true" placeholder="Örn. cihaz okumadı, saha görevi, unutulan çıkış..."></textarea></div>
             <div class="vardiya-tanim-aksiyonlar"><button type="button" class="btn-modern btn-del-modern" onclick="magicpassGunDuzeltmesiniKaldir()">Düzeltmeyi Kaldır</button><button type="button" class="btn-modern" onclick="modalKapat('modalMagicpassDuzeltme')">İptal</button><button type="submit" class="btn-submit">Kaydet</button></div>
         </form>
@@ -19653,51 +19667,105 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const iki=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+iki(d.getMonth()+1)+'-'+iki(d.getDate())+'T'+iki(d.getHours())+':'+iki(d.getMinutes());
     }
 
-    function magicpassDuzeltmeTarihSaatBirlestir(tur){
-        const tarih=document.getElementById('magicpassDuzeltme'+tur+'Tarih')?.value||'',saat=document.getElementById('magicpassDuzeltme'+tur+'Saat')?.value||'',hedef=document.getElementById('magicpassDuzeltme'+tur);
+    let magicpassDuzeltmeKayitIslemi=false;
+    function magicpassDuzeltmeOturumu(){return{sirketId:String(aktifSirketId()),anahtar:typeof fdPortalVeriOturumu==='function'?fdPortalVeriOturumu():null};}
+    function magicpassDuzeltmeOturumuGecerli(oturum){return String(aktifSirketId())===oturum.sirketId&&(oturum.anahtar===null||typeof fdPortalVeriOturumuGecerli!=='function'||fdPortalVeriOturumuGecerli(oturum.anahtar));}
+    function magicpassDuzeltmeAlanId(tur,sira=0){return 'magicpassDuzeltme'+tur+(sira?'_'+sira:'');}
+    function magicpassDuzeltmeTarihSaatBirlestir(tur,sira=0){
+        const id=magicpassDuzeltmeAlanId(tur,sira),tarih=document.getElementById(id+'Tarih')?.value||'',saat=document.getElementById(id+'Saat')?.value||'',hedef=document.getElementById(id);
         if(hedef)hedef.value=tarih&&saat?tarih+'T'+saat:'';
     }
 
-    function magicpassDuzeltmeZamanAlanlariniDoldur(tur,zaman,varsayilanTarih){
-        const yerel=magicpassYerelTarihSaatDegeri(zaman),parcalar=yerel?yerel.split('T'):[varsayilanTarih||'',''],tarih=document.getElementById('magicpassDuzeltme'+tur+'Tarih'),saat=document.getElementById('magicpassDuzeltme'+tur+'Saat');
-        if(tarih)tarih.value=parcalar[0]||varsayilanTarih||'';if(saat)saat.value=(parcalar[1]||'').slice(0,5);magicpassDuzeltmeTarihSaatBirlestir(tur);
+    function magicpassDuzeltmeZamanAlanlariniDoldur(tur,zaman,varsayilanTarih,sira=0){
+        const id=magicpassDuzeltmeAlanId(tur,sira),yerel=magicpassYerelTarihSaatDegeri(zaman),parcalar=yerel?yerel.split('T'):[varsayilanTarih||'',''],tarih=document.getElementById(id+'Tarih'),saat=document.getElementById(id+'Saat');
+        if(tarih)tarih.value=parcalar[0]||varsayilanTarih||'';if(saat)saat.value=(parcalar[1]||'').slice(0,5);magicpassDuzeltmeTarihSaatBirlestir(tur,sira);
     }
 
-    function magicpassDuzeltmeSaatKaydir(tur,dakika){
-        const tarih=document.getElementById('magicpassDuzeltme'+tur+'Tarih'),saat=document.getElementById('magicpassDuzeltme'+tur+'Saat');if(!tarih||!saat)return;
+    function magicpassDuzeltmeSaatKaydir(tur,dakika,sira=0){
+        const id=magicpassDuzeltmeAlanId(tur,sira),tarih=document.getElementById(id+'Tarih'),saat=document.getElementById(id+'Saat');if(!tarih||!saat||magicpassDuzeltmeKayitIslemi)return;
         if(!tarih.value)tarih.value=document.getElementById('magicpassDuzeltmeTarih')?.value||magicpassTarihAnahtari(new Date());
         if(!saat.value)return showToast('Önce saati seçin.','warning');
-        const deger=new Date(tarih.value+'T'+saat.value+':00');deger.setMinutes(deger.getMinutes()+Number(dakika||0));tarih.value=magicpassTarihAnahtari(deger);saat.value=String(deger.getHours()).padStart(2,'0')+':'+String(deger.getMinutes()).padStart(2,'0');magicpassDuzeltmeTarihSaatBirlestir(tur);
+        const deger=new Date(tarih.value+'T'+saat.value+':00');deger.setMinutes(deger.getMinutes()+Number(dakika||0));tarih.value=magicpassTarihAnahtari(deger);saat.value=String(deger.getHours()).padStart(2,'0')+':'+String(deger.getMinutes()).padStart(2,'0');magicpassDuzeltmeTarihSaatBirlestir(tur,sira);
+    }
+    function magicpassDuzeltmeAraliklariniOku(dogrula=false){
+        let oncekiSon=null;
+        const araliklar=[...document.querySelectorAll('#magicpassDuzeltmeAraliklar .magicpass-duzeltme-aralik')].map((satir,sira)=>{
+            const aralik={};for(const tur of ['Giris','Cikis']){
+                magicpassDuzeltmeTarihSaatBirlestir(tur,sira);const id=magicpassDuzeltmeAlanId(tur,sira),tarih=document.getElementById(id+'Tarih')?.value||'',saat=document.getElementById(id+'Saat')?.value||'',metin=tarih&&saat?tarih+'T'+saat:'';
+                if(dogrula&&saat&&!tarih)throw new Error((sira+1)+'. aralıkta '+(tur==='Giris'?'giriş':'çıkış')+' tarihini seçin.');
+                const zaman=metin?new Date(metin+':00'):null;if(dogrula&&metin&&(Number.isNaN(zaman.getTime())||magicpassYerelTarihSaatDegeri(zaman)!==metin))throw new Error((sira+1)+'. aralıkta geçerli bir tarih ve saat seçin.');
+                aralik[tur==='Giris'?'giris':'cikis']=zaman;aralik[tur==='Giris'?'girisTarih':'cikisTarih']=tarih;
+            }
+            const {giris,cikis}=aralik;if(dogrula){
+                if(!giris&&!cikis)throw new Error((sira+1)+'. aralıkta en az giriş veya çıkış saatini yazın; kullanılmayan aralığı kaldırın.');
+                if(giris&&cikis&&cikis<=giris)throw new Error((sira+1)+'. aralıkta çıkış, girişten sonra olmalıdır. Gece çalışmasında çıkış tarihini kontrol edin.');
+                const ilk=giris||cikis,son=cikis||giris;if(oncekiSon&&ilk<oncekiSon)throw new Error('Çalışma aralıkları tarih ve saat sırasıyla ilerlemeli, birbiriyle çakışmamalıdır.');oncekiSon=son;
+            }
+            return aralik;
+        });
+        if(dogrula&&!araliklar.length)throw new Error('En az bir çalışma aralığı ekleyin.');return araliklar;
+    }
+    function magicpassDuzeltmeAraliklariniCiz(araliklar,saatler){
+        const alan=document.getElementById('magicpassDuzeltmeAraliklar'),tarih=document.getElementById('magicpassDuzeltmeTarih').value;if(!alan)return;
+        const liste=araliklar.length?araliklar:[{giris:null,cikis:null}];
+        alan.innerHTML=liste.map((a,sira)=>'<section class="magicpass-duzeltme-aralik" data-aralik="'+sira+'"><div class="magicpass-duzeltme-aralik-baslik"><strong>'+(sira+1)+'. Çalışma Aralığı</strong><button type="button" onclick="magicpassDuzeltmeAralikKaldir('+sira+')" aria-label="'+(sira+1)+'. çalışma aralığını kaldır">Aralığı Kaldır</button></div><div class="magicpass-duzeltme-zamanlar">'+['Giris','Cikis'].map(tur=>{const id=magicpassDuzeltmeAlanId(tur,sira),ad=tur==='Giris'?'Giriş':'Çıkış';return'<section class="magicpass-zaman-karti"><strong>'+ad+' zamanı</strong>'+(sira?'<input id="'+id+'" type="hidden">':'')+'<div class="magicpass-zaman-alanlari"><div><label for="'+id+'Tarih">Tarih</label><input id="'+id+'Tarih" type="date" onchange="magicpassDuzeltmeTarihSaatBirlestir(\''+tur+'\','+sira+')"></div><div><label for="'+id+'Saat">Saat</label><input id="'+id+'Saat" type="time" step="60" onchange="magicpassDuzeltmeTarihSaatBirlestir(\''+tur+'\','+sira+')"></div></div><div class="magicpass-saat-adimlari"><button type="button" onclick="magicpassDuzeltmeSaatKaydir(\''+tur+'\',-15,'+sira+')">−15 dk</button><button type="button" onclick="magicpassDuzeltmeSaatKaydir(\''+tur+'\',15,'+sira+')">+15 dk</button></div></section>';}).join('')+'</div></section>').join('');
+        liste.forEach((a,sira)=>{const girisTarih=a.girisTarih||magicpassYerelTarihSaatDegeri(a.giris).slice(0,10)||tarih,planCikisTarih=magicpassYerelTarihSaatDegeri(saatler?.bit).slice(0,10),cikisTarih=a.cikisTarih||(planCikisTarih>girisTarih?planCikisTarih:girisTarih);magicpassDuzeltmeZamanAlanlariniDoldur('Giris',a.giris,girisTarih,sira);magicpassDuzeltmeZamanAlanlariniDoldur('Cikis',a.cikis,cikisTarih,sira);});
+    }
+    function magicpassDuzeltmeAralikEkle(){
+        if(magicpassDuzeltmeKayitIslemi)return;const araliklar=magicpassDuzeltmeAraliklariniOku(),son=araliklar.at(-1),tarih=magicpassYerelTarihSaatDegeri(son?.cikis||son?.giris).slice(0,10)||document.getElementById('magicpassDuzeltmeTarih').value;araliklar.push({giris:null,cikis:null,girisTarih:tarih,cikisTarih:tarih});magicpassDuzeltmeAraliklariniCiz(araliklar);
+    }
+    function magicpassDuzeltmeAralikKaldir(sira){
+        if(magicpassDuzeltmeKayitIslemi)return;const araliklar=magicpassDuzeltmeAraliklariniOku();araliklar.splice(sira,1);magicpassDuzeltmeAraliklariniCiz(araliklar);
+    }
+    function magicpassDuzeltmeIslemKilidi(kilitli){
+        magicpassDuzeltmeKayitIslemi=kilitli;const modal=document.getElementById('modalMagicpassDuzeltme');if(!modal)return;modal.setAttribute('aria-busy',String(kilitli));modal.querySelectorAll('button,input,textarea').forEach(alan=>{if(kilitli){alan.dataset.magicpassOncekiDisabled=String(alan.disabled);alan.disabled=true;}else{alan.disabled=alan.dataset.magicpassOncekiDisabled==='true';delete alan.dataset.magicpassOncekiDisabled;}});
     }
     magicpassGunDuzenle=function(tarih){
+        if(magicpassDuzeltmeKayitIslemi)return;
         const personel=personeller.find(p=>String(p.id)===String(document.getElementById('magicpassPersonel')?.value));if(!personel)return;
-        const hesap=magicpassGunHesapla(personel,tarih),duzeltme=hesap.duzeltme||{};
+        const hesap=magicpassGunHesapla(personel,tarih),duzeltme=hesap.duzeltme||{},saatler=magicpassVardiyaSaatleri(hesap.vardiya||magicpassGunVardiyasi(personel,tarih),tarih);
         document.getElementById('magicpassDuzeltmePersonelId').value=String(personel.id);document.getElementById('magicpassDuzeltmeTarih').value=tarih;
         document.getElementById('magicpassDuzeltmeBilgi').textContent=(personel.ad||'Personel')+' · '+tarihFormati(tarih);
-        document.getElementById('magicpassDuzeltmeVardiyaBilgi').innerHTML='<strong>'+escapeDashboardText(magicpassVardiyaAdi(hesap.vardiya))+'</strong><br>Planlanan saat: '+escapeDashboardText(hesap.vardiya==='izin'?'-':magicpassVardiyaTanimiBul(hesap.vardiya).baslangic+'–'+magicpassVardiyaTanimiBul(hesap.vardiya).bitis)+(hesap.tatilAdi?'<br>Tatil: '+escapeDashboardText(hesap.tatilAdi):'')+(hesap.izinAdi?'<br>İzin: '+escapeDashboardText(hesap.izinAdi):'');
-        magicpassDuzeltmeZamanAlanlariniDoldur('Giris',duzeltme.girisZamani||hesap.giris,tarih);
-        magicpassDuzeltmeZamanAlanlariniDoldur('Cikis',duzeltme.cikisZamani||hesap.cikis,tarih);
+        document.getElementById('magicpassDuzeltmeVardiyaBilgi').innerHTML='<strong>'+escapeDashboardText(saatler.tanim?.ad||magicpassVardiyaAdi(hesap.vardiya))+'</strong><br>Planlanan saat: '+escapeDashboardText(hesap.vardiya==='izin'?'-':magicpassYerelTarihSaatDegeri(saatler.bas).slice(11,16)+'–'+magicpassYerelTarihSaatDegeri(saatler.bit).slice(11,16))+(hesap.tatilAdi?'<br>Tatil: '+escapeDashboardText(hesap.tatilAdi):'')+(hesap.izinAdi?'<br>İzin: '+escapeDashboardText(hesap.izinAdi):'');
+        const araliklar=hesap.duzeltme?magicpassDuzeltmeCalismaAraliklari(duzeltme,tarih,saatler):(hesap.calismaAraliklari?.length?hesap.calismaAraliklari:magicpassCalismaAraliklari(hesap.hareketler||[],saatler));
+        magicpassDuzeltmeAraliklariniCiz(araliklar.length?araliklar:[{giris:hesap.giris,cikis:hesap.cikis}],saatler);
         document.getElementById('magicpassDuzeltmeAciklama').value=String(duzeltme.aciklama||'');
         document.getElementById('modalMagicpassDuzeltme').style.display='flex';
     };
 
     async function magicpassGunDuzeltmeKaydet(event){
-        event.preventDefault();magicpassDuzeltmeTarihSaatBirlestir('Giris');magicpassDuzeltmeTarihSaatBirlestir('Cikis');const pId=document.getElementById('magicpassDuzeltmePersonelId').value,tarih=document.getElementById('magicpassDuzeltmeTarih').value,girisMetni=document.getElementById('magicpassDuzeltmeGiris').value,cikisMetni=document.getElementById('magicpassDuzeltmeCikis').value;
-        if(!girisMetni&&!cikisMetni)return showToast('En az giriş veya çıkış saatini yazın.','warning');
-        const giris=girisMetni?new Date(girisMetni):null,cikis=cikisMetni?new Date(cikisMetni):null;if(giris&&cikis&&cikis<=giris)return showToast('Çıkış, giriş saatinden sonra olmalıdır.','warning');
-        const oncekiListe=vardiyaKayitlari.slice(),mevcutDuzeltme=vardiyaKayitlari.find(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)),personel=personeller.find(p=>String(p.id)===String(pId)),oncekiHesap=!mevcutDuzeltme&&personel?magicpassGunHesapla(personel,tarih):null;
+        event.preventDefault();if(magicpassDuzeltmeKayitIslemi)return;let araliklar;try{araliklar=magicpassDuzeltmeAraliklariniOku(true);}catch(error){return showToast(error.message,'warning');}
+        const pId=document.getElementById('magicpassDuzeltmePersonelId').value,tarih=document.getElementById('magicpassDuzeltmeTarih').value,giris=araliklar[0].giris,cikis=araliklar.at(-1).cikis,oturum=magicpassDuzeltmeOturumu();
+        const oncekiListe=vardiyaKayitlari.slice(),mevcutDuzeltme=vardiyaKayitlari.filter(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)).sort((a,b)=>Number(b.zaman||0)-Number(a.zaman||0))[0],personel=personeller.find(p=>String(p.id)===String(pId)),oncekiHesap=!mevcutDuzeltme?.denetimOnceki&&personel?magicpassGunHesapla(personel,tarih):null;
         vardiyaKayitlari=vardiyaKayitlari.filter(k=>!(k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)));
-        const yeniKayit={...mevcutDuzeltme,id:mevcutDuzeltme?.id||('mduz_'+pId+'_'+tarih+'_'+Date.now()),kayitTipi:'magicpassDuzeltme',sirketId:aktifSirketId(),pId:String(pId),tarih,girisZamani:giris?giris.toISOString():'',cikisZamani:cikis?cikis.toISOString():'',giris:girisMetni.slice(11,16),cikis:cikisMetni.slice(11,16),aciklama:String(document.getElementById('magicpassDuzeltmeAciklama').value||'').trim(),zaman:Date.now()};
-        if(!mevcutDuzeltme&&oncekiHesap){const oncekiGiris=oncekiHesap.giris instanceof Date&&!Number.isNaN(oncekiHesap.giris.getTime())?oncekiHesap.giris:null,oncekiCikis=oncekiHesap.cikis instanceof Date&&!Number.isNaN(oncekiHesap.cikis.getTime())?oncekiHesap.cikis:null;yeniKayit.denetimOnceki={...yeniKayit,girisZamani:oncekiGiris?oncekiGiris.toISOString():'',cikisZamani:oncekiCikis?oncekiCikis.toISOString():'',giris:oncekiGiris?magicpassYerelTarihSaatDegeri(oncekiGiris).slice(11,16):'',cikis:oncekiCikis?magicpassYerelTarihSaatDegeri(oncekiCikis).slice(11,16):''};delete yeniKayit.denetimOnceki.denetimOnceki;}
+        const yeniKayit={...mevcutDuzeltme,id:mevcutDuzeltme?.id||('mduz_'+pId+'_'+tarih+'_'+Date.now()),kayitTipi:'magicpassDuzeltme',sirketId:aktifSirketId(),pId:String(pId),tarih,calismaAraliklari:magicpassCalismaAraliklariniKaydaCevir(araliklar),girisZamani:giris?giris.toISOString():'',cikisZamani:cikis?cikis.toISOString():'',giris:magicpassYerelTarihSaatDegeri(giris).slice(11,16),cikis:magicpassYerelTarihSaatDegeri(cikis).slice(11,16),aciklama:String(document.getElementById('magicpassDuzeltmeAciklama').value||'').trim(),zaman:Date.now()};
+        if(oncekiHesap){const oncekiGiris=oncekiHesap.giris instanceof Date&&!Number.isNaN(oncekiHesap.giris.getTime())?oncekiHesap.giris:null,oncekiCikis=oncekiHesap.cikis instanceof Date&&!Number.isNaN(oncekiHesap.cikis.getTime())?oncekiHesap.cikis:null;yeniKayit.denetimOnceki={...(mevcutDuzeltme||yeniKayit),calismaAraliklari:magicpassCalismaAraliklariniKaydaCevir(oncekiHesap.calismaAraliklari?.length?oncekiHesap.calismaAraliklari:[{giris:oncekiGiris,cikis:oncekiCikis}]),girisZamani:oncekiGiris?oncekiGiris.toISOString():'',cikisZamani:oncekiCikis?oncekiCikis.toISOString():'',giris:oncekiGiris?magicpassYerelTarihSaatDegeri(oncekiGiris).slice(11,16):'',cikis:oncekiCikis?magicpassYerelTarihSaatDegeri(oncekiCikis).slice(11,16):''};delete yeniKayit.denetimOnceki.denetimOnceki;}
         vardiyaKayitlari.push(yeniKayit);
-        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast(mevcutDuzeltme?'Giriş–çıkış düzeltmesi güncellendi.':'Ayrıntılı giriş–çıkış düzeltmesi kaydedildi.');}catch(error){vardiyaKayitlari=oncekiListe;showToast('Düzeltme kaydedilemedi: '+(error.message||error),'error');}
+        magicpassDuzeltmeIslemKilidi(true);
+        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(!vardiyaKayitlari.some(k=>magicpassDuzeltmeKayitlariAyniMi(k,yeniKayit)))throw new Error('Bu günün düzeltmesi kaydedilmedi; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast(mevcutDuzeltme?'Giriş–çıkış düzeltmesi güncellendi.':'Ayrıntılı giriş–çıkış düzeltmesi kaydedildi.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId,yeniKayit);showToast('Düzeltme kaydedilemedi: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
+    }
+
+    function magicpassDuzeltmeKayitlariAyniMi(a,b){
+        if(!a||!b||!['id','kayitTipi','sirketId','pId','tarih','aciklama'].every(alan=>String(a[alan]||'')===String(b[alan]||'')))return false;
+        const ilk=a.calismaAraliklari,son=b.calismaAraliklari;if(!Array.isArray(ilk)||!Array.isArray(son)||ilk.length!==son.length)return false;
+        const zaman=deger=>deger?new Date(deger).getTime():null;return ilk.every((aralik,i)=>['girisZamani','cikisZamani'].every(alan=>zaman(aralik[alan])===zaman(son[i][alan])));
+    }
+
+    function magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,sirketId,gonderilen=null){
+        if(String(aktifSirketId())!==String(sirketId))return;
+        const hedef=k=>k.kayitTipi==='magicpassDuzeltme'&&String(k.sirketId||sirketId)===String(sirketId)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih),guncel=vardiyaKayitlari.filter(hedef);
+        // Kaydetme beklerken başka bir ekranın güncellediği / yeniden eklediği
+        // kayıt korunur; yalnız hâlâ bu işlemin adayı olan kayıt geri alınır.
+        if(guncel.length&&(!gonderilen||guncel.some(k=>!magicpassDuzeltmeKayitlariAyniMi(k,gonderilen)||Number(k.zaman||0)!==Number(gonderilen.zaman||0))))return;
+        vardiyaKayitlari=vardiyaKayitlari.filter(k=>!hedef(k)).concat(oncekiListe.filter(hedef));
     }
 
     async function magicpassGunDuzeltmesiniKaldir(){
-        const pId=document.getElementById('magicpassDuzeltmePersonelId').value,tarih=document.getElementById('magicpassDuzeltmeTarih').value,varMi=vardiyaKayitlari.some(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih));
+        if(magicpassDuzeltmeKayitIslemi)return;const pId=document.getElementById('magicpassDuzeltmePersonelId').value,tarih=document.getElementById('magicpassDuzeltmeTarih').value,oturum=magicpassDuzeltmeOturumu(),varMi=vardiyaKayitlari.some(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih));
         if(!varMi)return showToast('Bu gün için kayıtlı manuel düzeltme yok.','warning');if(!(await fdYuzerOnaySor('Bu güne ait manuel giriş–çıkış düzeltmesi kaldırılsın mı?','Düzeltmeyi Kaldır','Kaldır')))return;
+        if(magicpassDuzeltmeKayitIslemi||!magicpassDuzeltmeOturumuGecerli(oturum))return;const oncekiListe=vardiyaKayitlari.slice();magicpassDuzeltmeIslemKilidi(true);
         vardiyaKayitlari=vardiyaKayitlari.filter(k=>!(k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)));
-        yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast('Manuel düzeltme kaldırıldı.');
+        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(vardiyaKayitlari.some(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)))throw new Error('Düzeltme kaldırılamadı; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast('Manuel düzeltme kaldırıldı.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId);showToast('Düzeltme kaldırılamadı: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
     }
 
     magicpassSeciliGunlereGunTuruAta=async function(gunTuru){
@@ -19844,6 +19912,15 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const araliklar=[];for(let i=0;i<zamanlar.length;i+=2)araliklar.push({giris:zamanlar[i],cikis:zamanlar[i+1]||null});
         return araliklar;
     }
+    // Yeni düzeltmeler her basış çiftini ayrı saklar; eski tek çiftli kayıtlar
+    // aynı anlamla okunur. Boş uçlara vardiya saati veya cihaz basışı eklenmez.
+    function magicpassDuzeltmeCalismaAraliklari(kayit,tarihKey,saatler){
+        if(Array.isArray(kayit?.calismaAraliklari))return kayit.calismaAraliklari.map(a=>({giris:magicpassTamDakika(a?.girisZamani||a?.giris),cikis:magicpassTamDakika(a?.cikisZamani||a?.cikis)}));
+        if(!kayit)return[];const giris=kayit.girisZamani?magicpassTamDakika(kayit.girisZamani):(kayit.giris?magicpassSaatliTarih(tarihKey,kayit.giris):null),cikis=kayit.cikisZamani?magicpassTamDakika(kayit.cikisZamani):(kayit.cikis?magicpassSaatliTarih(tarihKey,kayit.cikis,saatler.bitErtesi&&kayit.cikis<=saatler.basSaat):null);return[{giris,cikis}];
+    }
+    function magicpassCalismaAraliklariniKaydaCevir(araliklar){
+        return araliklar.map(a=>{const giris=magicpassTamDakika(a.giris),cikis=magicpassTamDakika(a.cikis);return{girisZamani:giris?giris.toISOString():'',cikisZamani:cikis?cikis.toISOString():''};});
+    }
     function magicpassAralikSureleriniHesapla(araliklar,saatler,tatil=false){
         return araliklar.map(aralik=>{
             const {giris,cikis}=aralik;let normal=0,brutMesai=0;
@@ -19882,13 +19959,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             return{...bos,durum:'Cihaz No Tanımsız',seviye:'hata',uyarilar:['Personel kartına cihaz numarası girin']};
         }
         const hareketler=String(personel?.cihazPersonelNo||'').trim()?magicpassGunHareketleri(personel,tarihKey,vardiya):[];let giris=null,cikis=null;
-        if(duzeltme){giris=duzeltme.girisZamani?new Date(duzeltme.girisZamani):(duzeltme.giris?magicpassSaatliTarih(tarihKey,duzeltme.giris):null);cikis=duzeltme.cikisZamani?new Date(duzeltme.cikisZamani):(duzeltme.cikis?magicpassSaatliTarih(tarihKey,duzeltme.cikis,saatler.bitErtesi&&duzeltme.cikis<=saatler.basSaat):null);}
+        const duzeltmeAraliklari=duzeltme?magicpassDuzeltmeCalismaAraliklari(duzeltme,tarihKey,saatler):null;
+        // İlk aralığın girişi eksik olsa da sonraki gerçek girişler günü
+        // hareketli tutar. Eksik uçlar kendi aralıklarında boş kalır.
+        if(duzeltme){giris=duzeltmeAraliklari.find(a=>a.giris)?.giris||null;cikis=duzeltmeAraliklari.at(-1)?.cikis||null;}
         else if(hareketler.length>=2){giris=new Date(hareketler[0].zamanDamgasi);cikis=hareketler.length%2===0?new Date(hareketler[hareketler.length-1].zamanDamgasi):null;}
         else if(hareketler.length===1){const tek=new Date(hareketler[0].zamanDamgasi),orta=new Date((saatler.bas.getTime()+saatler.bit.getTime())/2);if(tek<=orta)giris=tek;else cikis=tek;}
         giris=magicpassTamDakika(giris);cikis=magicpassTamDakika(cikis);saatler.bas=magicpassTamDakika(saatler.bas);saatler.bit=magicpassTamDakika(saatler.bit);saatler.mesaiBas=magicpassTamDakika(saatler.mesaiBas);saatler.sinir=magicpassTamDakika(saatler.sinir);saatler.yemekBas=magicpassTamDakika(saatler.yemekBas);saatler.yemekBit=magicpassTamDakika(saatler.yemekBit);
-        let calismaAraliklari=magicpassAralikSureleriniHesapla(duzeltme?[{giris,cikis}]:magicpassCalismaAraliklari(hareketler,saatler),saatler,Boolean(tatilAdi));
+        let calismaAraliklari=magicpassAralikSureleriniHesapla(duzeltme?duzeltmeAraliklari:magicpassCalismaAraliklari(hareketler,saatler),saatler,Boolean(tatilAdi));
         const simdi=magicpassTamDakika(new Date()),vardiyaBasladi=simdi>=saatler.bas,vardiyaBitti=simdi>saatler.bit;
-        let normal=0,gec=giris?magicpassFarkDakika(giris,saatler.bas):0,erken=cikis?magicpassFarkDakika(saatler.bit,cikis):0,brutMesai=0,mesai=0,durum='Tamam',seviye='tamam';const uyarilar=[];
+        const ilkGiris=duzeltme?duzeltmeAraliklari[0]?.giris:giris;
+        let normal=0,gec=ilkGiris?magicpassFarkDakika(ilkGiris,saatler.bas):0,erken=cikis?magicpassFarkDakika(saatler.bit,cikis):0,brutMesai=0,mesai=0,durum='Tamam',seviye='tamam';const uyarilar=[];
         if(!giris&&!cikis){
             if(tatilAdi){durum=tatilAdi;}
             else if(saatler.tanim.girisCikisYasak||saatler.tanim.tatil||vardiya==='izin'){durum='Çalışma Yok';}
@@ -19913,6 +19994,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(calismaAraliklari.length>1){
             normal=calismaAraliklari.reduce((t,a)=>t+a.normal,0);brutMesai=calismaAraliklari.reduce((t,a)=>t+a.brutMesai,0);
             calismaAraliklari=magicpassAralikNetMesaisiniDagit(calismaAraliklari,tatilAdi?0:gec+erken);mesai=calismaAraliklari.reduce((t,a)=>t+a.mesai,0);
+            const eksikGiris=calismaAraliklari.some(a=>!a.giris&&a.cikis),eksikCikis=calismaAraliklari.some(a=>a.giris&&!a.cikis);
+            if(eksikGiris||eksikCikis){if(eksikGiris&&!uyarilar.includes('Giriş Yok'))uyarilar.push('Giriş Yok');if(eksikCikis&&!uyarilar.includes('Çıkış Yok'))uyarilar.push('Çıkış Yok');durum=eksikGiris&&eksikCikis?'Giriş / Çıkış Yok':eksikGiris?'Giriş Yok':vardiyaBitti?'Çıkış Yok':'İçeride';seviye=vardiyaBitti||eksikGiris?'hata':'tamam';}
         }else if(calismaAraliklari.length){calismaAraliklari[0]={...calismaAraliklari[0],normal,brutMesai,mesai};}
         return{tarih:tarihKey,vardiya,giris,cikis,normal,gec,erken,brutMesai,mesai,durum,seviye,uyarilar,hareketler,duzeltme,gunTuru,tatilAdi,calismaAraliklari};
     };
@@ -20134,31 +20217,17 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             .sort((a,b) => Number(b.zaman || 0) - Number(a.zaman || 0))[0];
         if (!duzeltme) return;
 
-        let cihazGiris = null;
-        let cihazCikis = null;
-        if (hareketler.length >= 2) {
-            cihazGiris = new Date(hareketler[0].zamanDamgasi);
-            cihazCikis = new Date(hareketler[hareketler.length - 1].zamanDamgasi);
-        } else if (hareketler.length === 1) {
-            const tek = new Date(hareketler[0].zamanDamgasi);
-            const orta = new Date((saatler.bas.getTime() + saatler.bit.getTime()) / 2);
-            if (tek <= orta) cihazGiris = tek;
-            else cihazCikis = tek;
-        }
-
-        const duzeltilenGiris = duzeltme.girisZamani
-            ? new Date(duzeltme.girisZamani)
-            : (duzeltme.giris ? magicpassSaatliTarih(tarihKey, duzeltme.giris) : null);
-        const duzeltilenCikis = duzeltme.cikisZamani
-            ? new Date(duzeltme.cikisZamani)
-            : (duzeltme.cikis ? magicpassSaatliTarih(tarihKey, duzeltme.cikis, saatler.bitErtesi && duzeltme.cikis <= saatler.basSaat) : null);
+        const cihazAraliklari = magicpassCalismaAraliklari(hareketler,saatler);
+        const duzeltilenAraliklar = magicpassDuzeltmeCalismaAraliklari(duzeltme,tarihKey,saatler);
+        const aralikHtml = araliklar => araliklar.length ? araliklar.map((a,i)=>
+            '<div style="padding:8px 0;border-top:1px solid #e2e8f0"><small style="display:block;margin-bottom:6px;color:#64748b">'+(i+1)+'. çalışma aralığı</small><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div><small style="display:block;color:#64748b">Giriş</small><b>'+escapeDashboardText(a.giris?fdMagicpassSaatTarihMetni(a.giris):'GİRİŞ YOK')+'</b></div><div><small style="display:block;color:#64748b">Çıkış</small><b>'+escapeDashboardText(a.cikis?fdMagicpassSaatTarihMetni(a.cikis):'ÇIKIŞ YOK')+'</b></div></div></div>').join('') : '<small>Cihaz hareketi bulunmuyor.</small>';
 
         magicpassManuelKarsilastirmaKapat();
         const katman = document.createElement('div');
         katman.id = 'magicpassManuelKarsilastirma';
         katman.style.cssText = 'position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)';
         katman.innerHTML =
-            '<div role="dialog" aria-modal="true" aria-label="Manuel saat karşılaştırması" style="width:min(520px,96vw);border:1px solid #cbd5e1;border-radius:16px;background:#fff;box-shadow:0 24px 70px rgba(15,23,42,.35);overflow:hidden">' +
+            '<div role="dialog" aria-modal="true" aria-label="Manuel saat karşılaştırması" style="width:min(600px,96vw);max-height:92vh;overflow:auto;border:1px solid #cbd5e1;border-radius:16px;background:#fff;box-shadow:0 24px 70px rgba(15,23,42,.35)">' +
                 '<div style="display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:#312e81;color:#fff">' +
                     '<div><strong style="display:block;font-size:1rem">✎ Manuel Saat Düzeltmesi</strong><small style="opacity:.82">' + escapeDashboardText(personel.ad || 'Personel') + ' · ' + escapeDashboardText(tarihFormati(tarihKey)) + '</small></div>' +
                     '<button type="button" onclick="magicpassManuelKarsilastirmaKapat()" style="border:0;background:rgba(255,255,255,.16);color:#fff;width:32px;height:32px;border-radius:9px;font-size:1.2rem;cursor:pointer">×</button>' +
@@ -20166,11 +20235,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 '<div style="padding:16px 18px">' +
                     '<div style="margin-bottom:11px;padding:13px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc">' +
                         '<strong style="display:block;margin-bottom:8px;color:#334155">Cihazdaki gerçek kayıt</strong>' +
-                        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div><small style="display:block;color:#64748b">Giriş</small><b>' + escapeDashboardText(fdMagicpassSaatTarihMetni(cihazGiris)) + '</b></div><div><small style="display:block;color:#64748b">Çıkış</small><b>' + escapeDashboardText(fdMagicpassSaatTarihMetni(cihazCikis)) + '</b></div></div>' +
+                        aralikHtml(cihazAraliklari) +
                     '</div>' +
                     '<div style="padding:13px;border:1px solid #c4b5fd;border-radius:12px;background:#f5f3ff">' +
                         '<strong style="display:block;margin-bottom:8px;color:#6d28d9">Sizin düzelttiğiniz kayıt</strong>' +
-                        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div><small style="display:block;color:#7c3aed">Giriş</small><b>' + escapeDashboardText(fdMagicpassSaatTarihMetni(duzeltilenGiris)) + '</b></div><div><small style="display:block;color:#7c3aed">Çıkış</small><b>' + escapeDashboardText(fdMagicpassSaatTarihMetni(duzeltilenCikis)) + '</b></div></div>' +
+                        aralikHtml(duzeltilenAraliklar) +
                     '</div>' +
                     (duzeltme.aciklama ? '<p style="margin:11px 0 0;color:#475569;font-size:.8rem"><b>Açıklama:</b> ' + escapeDashboardText(duzeltme.aciklama) + '</p>' : '') +
                 '</div>' +
@@ -20645,7 +20714,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     magicpassGunHesapla=function(personel,tarihKey){
         const sonuc=fdMagicpassArefeOncesi(personel,tarihKey);if(!magicpassYarimGunResmiTatilMi(tarihKey)||sonuc?.izin||sonuc?.istihdamDisi)return sonuc;
         const vardiya=sonuc?.vardiya||magicpassGunVardiyasi(personel,tarihKey),normal=magicpassArefeSabahDakikasi(tarihKey,vardiya),calismaAraliklari=((sonuc?.giris||sonuc?.cikis)?(sonuc?.calismaAraliklari?.length?sonuc.calismaAraliklari:[{giris:sonuc?.giris,cikis:sonuc?.cikis}]):[]).map(a=>({...a,brutMesai:0,mesai:magicpassArefeResmiTatilDakikasi(tarihKey,a.giris,a.cikis)})),resmiTatilMesaiDakika=calismaAraliklari.reduce((t,a)=>t+a.mesai,0),uyarilar=[];
-        if(sonuc?.giris&&!sonuc?.cikis)uyarilar.push('Çıkış Yok');else if(!sonuc?.giris&&sonuc?.cikis)uyarilar.push('Giriş Yok');
+        if(calismaAraliklari.some(a=>a.giris&&!a.cikis))uyarilar.push('Çıkış Yok');if(calismaAraliklari.some(a=>!a.giris&&a.cikis))uyarilar.push('Giriş Yok');
         return{...sonuc,vardiya,gunTuru:'yarimResmiTatil',tatilAdi:magicpassResmiTatilAdi(tarihKey),normal,gec:0,erken:0,brutMesai:0,mesai:resmiTatilMesaiDakika,resmiTatilMesaiDakika,calismaAraliklari,durum:'Öğleden Sonra Resmî Tatil',seviye:uyarilar.length?'uyari':'tamam',uyarilar};
     };
     function magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil){
@@ -20799,10 +20868,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(form){const onceki=secili||form.value;form.innerHTML=turler.map(ad=>`<option value="${policeVarlikKodu(ad)}">${escapeDashboardText(ad)}</option>`).join('');if([...form.options].some(o=>o.value===onceki))form.value=onceki;}
         if(filtre){const onceki=filtre.value;filtre.innerHTML='<option value="">Tüm Varlıklar</option>'+turler.map(ad=>`<option value="${policeVarlikKodu(ad)}">${escapeDashboardText(ad)}</option>`).join('');if([...filtre.options].some(o=>o.value===onceki))filtre.value=onceki;}
     }
+    function policeVarlikAramaAnahtari(deger){return String(deger||'').toLocaleLowerCase('tr-TR').replace(/ı/g,'i').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').replace(/\s+/g,' ').trim();}
+    function policeHedefAramasiniUygula(secili){
+        const select=document.getElementById('policeHedefId'),arama=document.getElementById('policeHedefArama'),ozet=document.getElementById('policeHedefAramaOzeti'),temizle=document.getElementById('policeHedefAramaTemizle');if(!select)return;
+        const liste=select.fdPoliceHedefListe||[],aranan=policeVarlikAramaAnahtari(arama?.value),kompakt=aranan.replace(/\s/g,''),secim=String(secili??select.value??''),secilen=liste.find(x=>x.id===secim),sonuclar=liste.filter(x=>{const ad=policeVarlikAramaAnahtari(x.ad);return !aranan||ad.includes(aranan)||ad.replace(/\s/g,'').includes(kompakt);}),korunan=secilen&&!sonuclar.some(x=>x.id===secilen.id),option=x=>`<option value="${escapeDashboardText(x.id)}">${escapeDashboardText(x.ad)}</option>`;
+        select.innerHTML='<option value="">'+(sonuclar.length?'Varlık seçin':'Aramaya uygun varlık bulunamadı')+'</option>'+(korunan?'<optgroup label="Mevcut seçim">'+option(secilen)+'</optgroup>':'')+sonuclar.map(option).join('');select.value=secilen?secilen.id:'';
+        if(ozet)ozet.textContent=(sonuclar.length?sonuclar.length+' varlık'+(aranan?' bulundu':' listeleniyor'):'Aramaya uygun varlık bulunamadı')+(korunan?' · Mevcut seçim korunuyor':'');if(temizle)temizle.disabled=!arama?.value;policeHedefBilgisiniGuncelle();
+    }
+    function policeHedefAramasiniTemizle(){const arama=document.getElementById('policeHedefArama');if(arama)arama.value='';policeHedefAramasiniUygula();arama?.focus();}
     policeHedefSecenekleriniDoldur=function(secili=''){
         const tip=document.getElementById('policeHedefTip')?.value||'arac',select=document.getElementById('policeHedefId'),secimGrubu=document.getElementById('policeHedefSecimGrubu'),serbest=document.getElementById('policeDigerAdGrubu'),bagli=policeBagliVarlikTuruMu(tip);
-        const liste=tip==='arac'?araclar.filter(a=>aktifSirketeAit(a)&&policeMetinAnahtari(a.durum)!=='SATILDI').map(a=>({id:String(a.id),ad:a.plaka+' · '+[a.marka,a.model].filter(Boolean).join(' ')})):tip==='daire'||tip==='isyeri'?kiraDaireler().filter(d=>(d.mulkTuru==='isyeri'?'isyeri':'daire')===tip).map(d=>({id:String(d.id),ad:d.kisaAd+(d.uavt?' · UAVT '+d.uavt:' · UAVT YOK')})):[];
-        secimGrubu.style.display=bagli?'':'none';serbest.style.display=bagli?'none':'';select.required=bagli;document.getElementById('policeDigerAd').required=!bagli;select.innerHTML=liste.length?liste.map(x=>`<option value="${escapeDashboardText(x.id)}">${escapeDashboardText(x.ad)}</option>`).join(''):'<option value="">Kayıt bulunamadı</option>';if(secili&&liste.some(x=>x.id===String(secili)))select.value=String(secili);policeHedefBilgisiniGuncelle();
+        const liste=tip==='arac'?araclar.filter(a=>aktifSirketeAit(a)&&(policeMetinAnahtari(a.durum)!=='SATILDI'||String(a.id)===String(secili))).map(a=>({id:String(a.id),ad:a.plaka+' · '+[a.marka,a.model].filter(Boolean).join(' ')})):tip==='daire'||tip==='isyeri'?kiraDaireler().filter(d=>aktifSirketeAit(d)&&((d.mulkTuru==='isyeri'?'isyeri':'daire')===tip||String(d.id)===String(secili))).map(d=>({id:String(d.id),ad:(d.kisaAd||d.ad||'İsimsiz mülk')+(d.uavt?' · UAVT '+d.uavt:' · UAVT YOK')})):[];
+        secimGrubu.style.display=bagli?'':'none';serbest.style.display=bagli?'none':'';select.required=bagli;document.getElementById('policeDigerAd').required=!bagli;select.fdPoliceHedefListe=liste.sort((a,b)=>a.ad.localeCompare(b.ad,'tr',{numeric:true}));const arama=document.getElementById('policeHedefArama');if(arama){arama.value='';arama.placeholder=tip==='arac'?'Plaka, marka veya model ara':'Daire/işyeri adı veya UAVT ara';}policeHedefAramasiniUygula(String(secili||''));
     };
     policeHedefBilgisiniGuncelle=function(){
         const tip=document.getElementById('policeHedefTip')?.value||'arac',id=document.getElementById('policeHedefId')?.value,kod=document.getElementById('policeEslesmeKodu'),etiket=document.getElementById('policeEslesmeKoduEtiket');
@@ -21177,7 +21254,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             }
         });
     };
-    const fdUygulamaSekmeTanimlari={bildirim:{ad:'WhatsApp Mesajları',ikon:'💬',acilis:'openWhatsappMesajlari'},personel:{ad:'Personel \u0130\u015flemleri',ikon:'\ud83d\udc65',acilis:'openPersonnelWorkspace'},arac:{ad:'Ara\u00e7 Takip',ikon:'\ud83d\ude9a',acilis:'openAracTakipApp'},police:{ad:'Poli\u00e7e Takip',ikon:'\ud83d\udee1\ufe0f',acilis:'openPoliceTakipApp'},irsaliye:{ad:'\u0130rsaliye Takip',ikon:'\ud83d\udcc4',acilis:'openIrsaliyeTakipApp'},kira:{ad:'Daire / \u0130\u015fyeri',ikon:'\ud83c\udfe2',acilis:'openKiraTakipApp'},ihracat:{ad:'\u0130hracat',ikon:'\ud83c\udf0d',acilis:'openIhracatApp'},sirket:{ad:'\u015eirket / \u015eube',ikon:'\ud83c\udfed',acilis:'openSirketApp'},ayarlar:{ad:'Ayarlar',ikon:'\u2699\ufe0f',acilis:'openAyarlarApp'},workCenter:{ad:'Denetim Merkezi',ikon:'\ud83c\udfaf',acilis:'openWorkCenterApp'}};
+    const fdUygulamaSekmeTanimlari={bildirim:{ad:'WhatsApp Mesajları',ikon:'💬',acilis:'openWhatsappMesajlari'},personel:{ad:'Personel \u0130\u015flemleri',ikon:'\ud83d\udc65',acilis:'openPersonnelWorkspace'},arac:{ad:'Ara\u00e7 Takip',ikon:'\ud83d\ude9a',acilis:'openAracTakipApp'},police:{ad:'Poli\u00e7e Takip',ikon:'\ud83d\udee1\ufe0f',acilis:'openPoliceTakipApp'},irsaliye:{ad:'\u0130rsaliye Takip',ikon:'\ud83d\udcc4',acilis:'openIrsaliyeTakipApp'},kira:{ad:'Kira Takip',ikon:'\ud83c\udfe2',acilis:'openKiraTakipApp'},ihracat:{ad:'\u0130hracat',ikon:'\ud83c\udf0d',acilis:'openIhracatApp'},sirket:{ad:'\u015eirket / \u015eube',ikon:'\ud83c\udfed',acilis:'openSirketApp'},ayarlar:{ad:'Ayarlar',ikon:'\u2699\ufe0f',acilis:'openAyarlarApp'},workCenter:{ad:'Denetim Merkezi',ikon:'\ud83c\udfaf',acilis:'openWorkCenterApp'}};
     const fdSekmeFonksiyonlari={openWhatsappMesajlari:'bildirim',openBildirimModal:'bildirim',openPersonnelWorkspace:'personel',openPersonelDashboard:'personel',openPersonelApp:'personel',openIzinTakipApp:'personel',openPuantajApp:'personel',openPuantajGorunumu:'personel',openPrimApp:'personel',openAvansApp:'personel',openIcraApp:'personel',openEkOdemeApp:'personel',openKkdApp:'personel',openVardiyaApp:'personel',openMagicpassApp:'personel',openAracTakipApp:'arac',openPoliceTakipApp:'police',openIrsaliyeTakipApp:'irsaliye',openKiraTakipApp:'kira',openIhracatApp:'ihracat',openSirketApp:'sirket',openAyarlarApp:'ayarlar',openWorkCenterApp:'workCenter'};
     const fdSekmeAlanlari=['whatsappMesajApp','personelDashboardApp','personelApp','izinTakipApp','puantajApp','primApp','avansApp','icraApp','ekOdemeApp','kkdApp','vardiyaApp','magicpassApp','aracTakipApp','policeTakipApp','irsaliyeTakipApp','kiraTakipApp','ihracatApp','sirketApp','ayarlarApp','workCenterApp'],fdSekmeOrijinaller={};let fdAcikUygulamaSekmeleri=[],fdAktifUygulamaSekmesi='home',fdSekmeSistemGecisi=false,fdSekmeKapatiliyor=false;
     function fdGorunenUygulamaAlaniniBul(){return fdSekmeAlanlari.find(id=>{const e=document.getElementById(id);return e&&getComputedStyle(e).display!=='none'})||''}
@@ -25529,18 +25606,21 @@ body.fd-vk-detail-open{overflow:hidden}
 #kiraTakipApp .card-header>.action-btns{display:flex!important;flex-wrap:wrap!important;gap:7px;margin:0;min-width:0;width:auto;justify-content:flex-start}
 #kiraTakipApp #kira-tab-daireler .card-header>.action-btns>*{width:auto;min-width:0;flex:0 1 auto}
 #kiraTakipApp #kira-tab-daireler .card-header>.action-btns>select{width:170px;min-height:35px}
-#kiraTakipApp input,#kiraTakipApp select{height:35px;border:1px solid #d5e0ea;border-radius:7px;padding:7px 10px;font-size:12px;min-width:0;max-width:100%;background:#fff;color:#334155}
+#kiraTakipApp input,#kiraTakipApp select{height:35px;border:1px solid #d5e0ea;border-radius:7px;padding:7px 10px;font-size:13px;min-width:0;max-width:100%;background:#fff;color:#334155}
 #kiraTakipApp #kiraDaireArama{width:220px}
-#kiraTakipApp .btn-submit,#kiraTakipApp .btn-export,#kiraTakipApp .btn-modern,.fd-kira-export button{border-radius:7px;font-size:11px;padding:8px 11px;line-height:1.4;min-height:34px;box-shadow:none;margin:0;white-space:nowrap}
+#kiraTakipApp .btn-submit,#kiraTakipApp .btn-export,#kiraTakipApp .btn-modern,.fd-kira-export button{border-radius:7px;font-size:12px;padding:8px 11px;line-height:1.4;min-height:34px;box-shadow:none;margin:0;white-space:nowrap}
 #kiraTakipApp .table-wrapper,#modalKiraDaireDetay .table-wrapper,#modalKiraSahipDetay .table-wrapper{margin:0;max-width:100%;overflow:auto;border-radius:0;border:0;overscroll-behavior:contain}
-#kiraTakipApp table,#modalKiraDaireDetay table,#modalKiraSahipDetay table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
-#kiraTakipApp thead th,#modalKiraDaireDetay thead th,#modalKiraSahipDetay thead th{background:#f0f5fa!important;color:#60758a!important;font-size:10px;font-weight:650;letter-spacing:.25px;padding:11px 10px;border-bottom:1px solid #d9e4ef;white-space:normal!important;text-align:left}
-#kiraTakipApp tbody td,#modalKiraDaireDetay tbody td,#modalKiraSahipDetay tbody td{padding:11px 10px;border-bottom:1px solid #edf1f6;color:#334155;overflow-wrap:anywhere;vertical-align:middle}
+#kiraTakipApp table,#modalKiraDaireDetay table,#modalKiraSahipDetay table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.5;background:#fff}
+#kiraTakipApp #kiraMulkListesiTablosu{font-size:13px;line-height:1.5}
+#kiraTakipApp thead th,#modalKiraDaireDetay thead th,#modalKiraSahipDetay thead th{background:#f0f5fa!important;color:#50657a!important;font-size:12px;font-weight:600;letter-spacing:0;padding:11px 10px;border-bottom:1px solid #d9e4ef;white-space:normal!important;text-align:left}
+#kiraTakipApp tbody td,#modalKiraDaireDetay tbody td,#modalKiraSahipDetay tbody td{font-size:13px;line-height:1.5;padding:11px 10px;border-bottom:1px solid #edf1f6;color:#334155;overflow-wrap:anywhere;vertical-align:middle}
+#kiraTakipApp tbody small{font-size:11px;line-height:1.5;color:#64748b}
 #kiraTakipApp tbody tr:nth-child(even){background:#fbfcfe}
 #kiraTakipApp tbody tr:hover{background:#f0f8fc}
 #kiraTakipApp .kira-link,#modalKiraDaireDetay .kira-link,#modalKiraSahipDetay .kira-link{color:inherit!important;font:inherit!important;font-weight:500!important;text-align:left;background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
 #kiraTakipApp .kira-link:hover,#modalKiraSahipDetay .kira-link:hover{text-decoration:underline}
-#kiraTakipApp .badge,#kiraTakipApp .status-badge{font-size:9px;font-weight:600;padding:4px 6px;border-radius:5px}
+#kiraTakipApp .badge,#kiraTakipApp .status-badge{font-size:11px;font-weight:600;padding:4px 6px;border-radius:5px}
+#kiraTakipApp .kira-status{font-size:11.5px;font-weight:600;line-height:1.5}
 #kiraTakipApp #kiraMulkListesiTablosu th:nth-child(1){width:7%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(2){width:18%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(3){width:17%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(4){width:15%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(5){width:9%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(6){width:14%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(7){width:9%}#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(8){width:11%}
 #kiraTakipApp #kiraMulkListesiTablosu td:last-child{padding-left:6px;padding-right:6px}
 #kiraTakipApp #kiraMulkListesiTablosu :is(th,td):nth-child(7){text-align:right;font-variant-numeric:tabular-nums}
@@ -25584,42 +25664,42 @@ body.fd-vk-detail-open{overflow:hidden}
 .fd-kira-section .table-wrapper{padding:0!important}
 #modalKiraSahipDetay .kira-sahip-daire-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
 #modalKiraSahipDetay .kira-sahip-daire-kart{border:1px solid #dce5ee;box-shadow:none;border-radius:9px;padding:13px;background:#fff}
-/* Readable property detail; the main property list retains its compact typography. */
+/* One balanced readable scale for the property list and apartment detail. */
 #modalKiraDaireDetay>.modal-card{width:min(1600px,calc(100vw - 32px))!important;max-width:1600px!important}
-#modalKiraDaireDetay #kiraDetayIcerik{font-size:14px;line-height:1.5}
-#modalKiraDaireDetay .modal-header h3{font-size:19px;line-height:1.4}
-#modalKiraDaireDetay #kiraDetayIcerik .profile-layout strong{font-size:12px;color:#52677b;line-height:1.5}
-#modalKiraDaireDetay #kiraDetayIcerik .profile-layout p{font-size:14px;line-height:1.55;margin-top:5px}
-#modalKiraDaireDetay #kiraDetayIcerik h3{font-size:16px;line-height:1.5}
-#modalKiraDaireDetay #kiraDetayIcerik .kira-status{font-size:12.5px;font-weight:600;line-height:1.5}
-#modalKiraDaireDetay #kiraDetayIcerik .btn-modern{font-size:13px;line-height:1.4;min-height:36px;padding:8px 10px;border-radius:7px}
+#modalKiraDaireDetay #kiraDetayIcerik{font-size:13px;line-height:1.5}
+#modalKiraDaireDetay .modal-header h3{font-size:17px;line-height:1.4}
+#modalKiraDaireDetay #kiraDetayIcerik .profile-layout strong{font-size:11.5px;color:#52677b;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .profile-layout p{font-size:13px;line-height:1.5;margin-top:5px}
+#modalKiraDaireDetay #kiraDetayIcerik h3{font-size:15px;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-status{font-size:11.5px;font-weight:600;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .btn-modern{font-size:12px;line-height:1.4;min-height:36px;padding:8px 10px;border-radius:7px}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar{display:flex!important;flex-wrap:wrap!important;align-items:center;gap:8px!important}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>button{width:auto!important;flex:0 1 auto;max-width:100%;min-width:0;white-space:normal}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>.fd-kira-detail-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;flex:1 1 560px;width:auto!important;min-width:0;max-width:100%}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>.fd-kira-detail-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:0 1 auto;width:auto!important;min-width:0;max-width:100%;margin-left:auto}
-#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-detail-year-label{font-size:13px;margin-left:0!important;font-weight:600!important;padding-left:0}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-detail-year-label{font-size:12px;margin-left:0!important;font-weight:600!important;padding-left:0}
 #modalKiraDaireDetay #kiraDetayIcerik .fd-kira-detail-tools>.fd-output-menu{margin-left:0!important;flex:0 0 auto}
-#modalKiraDaireDetay #kiraDaireDetayYil{font-size:14px;font-weight:600;height:38px;width:112px!important;flex:0 0 112px}
-#modalKiraDaireDetay #kiraDetayIcerik table{font-size:14px;line-height:1.5}
-#modalKiraDaireDetay #kiraDetayIcerik table thead th{font-size:13px;line-height:1.45;letter-spacing:0;text-transform:none;color:#466078!important;font-weight:600;padding:11px 9px;vertical-align:middle}
-#modalKiraDaireDetay #kiraDetayIcerik table tbody td{font-size:14px;line-height:1.5;padding:10px 6px;vertical-align:middle}
-#modalKiraDaireDetay #kiraDetayIcerik table small{font-size:12.5px;line-height:1.5}
+#modalKiraDaireDetay #kiraDaireDetayYil{font-size:13px;font-weight:600;height:38px;width:112px!important;flex:0 0 112px}
+#modalKiraDaireDetay #kiraDetayIcerik table{font-size:13px;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik table thead th{font-size:12px;line-height:1.45;letter-spacing:0;text-transform:none;color:#466078!important;font-weight:600;padding:10px 9px;vertical-align:middle}
+#modalKiraDaireDetay #kiraDetayIcerik table tbody td{font-size:13px;line-height:1.5;padding:9px 6px;vertical-align:middle}
+#modalKiraDaireDetay #kiraDetayIcerik table small{font-size:11.5px;line-height:1.5}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet{width:100%!important;min-width:0;max-width:100%;table-layout:auto}
-#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th{width:auto!important;position:sticky;top:0;z-index:2;padding:11px 6px}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th{width:auto!important;position:sticky;top:0;z-index:2;padding:10px 6px}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(1){width:7%!important}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(2){width:16%!important}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(4){width:8%!important}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:last-child{width:9%!important}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td{overflow:visible;text-overflow:clip;white-space:normal!important}
-#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(3),#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(n+5):not(:last-child){font-size:14px;white-space:nowrap!important;text-align:right;font-variant-numeric:tabular-nums}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(3),#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(n+5):not(:last-child){font-size:13px;white-space:nowrap!important;text-align:right;font-variant-numeric:tabular-nums}
 #modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:last-child{min-width:0!important;width:auto!important;text-align:center}
-#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:last-child .btn-modern{font-size:13px;width:100%!important;min-width:0!important;min-height:36px;display:flex;margin:2px 0;padding:6px 4px!important;white-space:normal!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:last-child .btn-modern{font-size:12px;width:100%!important;min-width:0!important;min-height:36px;display:flex;margin:2px 0;padding:6px 4px!important;white-space:normal!important}
 #modalKiraDaireDetay .modal-body{overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;min-height:0;-webkit-overflow-scrolling:touch}
 #modalKiraDaireDetay #kiraDetayIcerik .table-wrapper{max-width:100%;min-width:0;max-height:none!important;height:auto;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x pan-y}
 #modalKiraDaireDetay #kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet){overflow:visible;overscroll-behavior:auto}
 #modalKiraDaireDetay #kiraDetayIcerik .fd-kira-section{overflow:visible}
 @media(max-width:1099px){#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet{min-width:1120px}#modalKiraDaireDetay #kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet){overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto}}
-#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-section>summary{font-size:14px;line-height:1.5;color:#36536b}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-section>summary{font-size:13px;line-height:1.5;color:#36536b}
 @media(max-width:1050px){#kiraTakipApp #kiraMulkListesiTablosu{min-width:1040px!important}#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{flex-wrap:wrap!important}#kiraTakipApp .card-header>.action-btns{width:100%}#kiraTakipApp #kiraDaireArama{flex:1}}
 @media(max-width:650px){
 #kiraTakipApp>main{padding:12px!important}#kiraTakipApp .app-header-bar{padding:15px}#kiraTakipApp .card-header{padding:13px}#kiraTakipApp #kiraSekmeler button{padding:9px!important;font-size:11px!important;flex:1 1 130px!important;min-width:0!important;white-space:normal;justify-content:center}
@@ -25627,7 +25707,7 @@ body.fd-vk-detail-open{overflow:hidden}
 #kiraTakipApp #kiraMulkListesiTablosu td:nth-child(7){text-align:left}
 #kiraTakipApp .kira-stats,#modalKiraDaireDetay .kira-stats,#modalKiraSahipDetay .kira-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#kiraTakipApp .kira-stat strong,#modalKiraDaireDetay .kira-stat strong,#modalKiraSahipDetay .kira-stat strong{font-size:17px}
 #kiraTakipApp .card-header>.action-btns>*,#kiraTakipApp #kira-tab-daireler .card-header>.action-btns>*{flex:1 1 120px;width:auto!important}#kiraTakipApp #kira-tab-daireler #kiraDaireArama{flex-basis:100%}
-#kiraTakipApp #kiraMulkListesiTablosu,#kiraTakipApp #kiraMulkListesiTablosu tbody{display:block!important;width:100%!important}#kiraTakipApp #kiraMulkListesiTablosu thead{display:none}#kiraTakipApp #kiraMulkListesiTablosu tbody tr{display:grid!important;grid-template-columns:1fr 1fr;border-bottom:1px solid #dce5ee;padding:10px;gap:4px;background:#fff}#kiraTakipApp #kiraMulkListesiTablosu td{display:block;min-width:0;border:0;padding:5px 7px;text-align:left;white-space:normal!important}#kiraTakipApp #kiraMulkListesiTablosu td::before{content:attr(data-label);display:block;color:#7e8c9d;font-size:9px;margin-bottom:4px}#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(3),#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(4),#kiraTakipApp #kiraMulkListesiTablosu td:last-child{grid-column:1/-1}#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{justify-content:flex-start!important}
+#kiraTakipApp #kiraMulkListesiTablosu,#kiraTakipApp #kiraMulkListesiTablosu tbody{display:block!important;width:100%!important}#kiraTakipApp #kiraMulkListesiTablosu thead{display:none}#kiraTakipApp #kiraMulkListesiTablosu tbody tr{display:grid!important;grid-template-columns:1fr 1fr;border-bottom:1px solid #dce5ee;padding:10px;gap:4px;background:#fff}#kiraTakipApp #kiraMulkListesiTablosu td{display:block;min-width:0;border:0;padding:5px 7px;text-align:left;white-space:normal!important}#kiraTakipApp #kiraMulkListesiTablosu td::before{content:attr(data-label);display:block;color:#64748b;font-size:11px;margin-bottom:4px}#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(3),#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(4),#kiraTakipApp #kiraMulkListesiTablosu td:last-child{grid-column:1/-1}#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{justify-content:flex-start!important}
 #kiraTakipApp #kiraRaporOzet{padding:12px}#kiraTakipApp #kiraRaporTablo{min-width:680px}#kiraTakipApp .table-wrapper>table:not(#kiraMulkListesiTablosu){min-width:620px}
 #modalKiraDaireDetay>.modal-card,#modalKiraSahipDetay>.modal-card{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}#modalKiraDaireDetay .modal-body,#modalKiraSahipDetay .modal-body{padding:12px}#modalKiraDaireDetay .profile-layout,#modalKiraSahipDetay .profile-layout{grid-template-columns:1fr 1fr}#modalKiraDaireDetay .kira-detail-toolbar{display:flex;flex-wrap:wrap}#modalKiraDaireDetay .kira-detail-toolbar>*{max-width:100%;min-width:0}
 }
@@ -29100,14 +29180,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v245';
+      const anahtar='fd-pwa-yenileme-v246';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=245',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=246',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
