@@ -2677,7 +2677,6 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <div class="form-group"><label>İşten Ayrılış Bildirimi</label><textarea id="ayarMagicBildirimIstenAyrilis" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {İŞTEN_AYRILIŞ_TARİHİ}, {GÖREV}, {ŞUBE}</small></div>
                     <div class="form-group"><label>Fiyat Listesi Değişikliği Mesajı</label><textarea id="ayarMagicBildirimFiyatDegisiklik" rows="4" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {LİSTE_ADI}, {DEĞİŞİKLİK_SAYISI}, {LİSTE_TARİHİ}, {TARİH}, {UYGULAMA_ADRESİ}</small></div>
                     <div class="form-group"><label>Fiyat Listesi Bildirimleri</label><select id="ayarWhatsappFiyatBildirimAktif"><option value="true">Açık</option><option value="false">Kapalı</option></select><small>Alıcılar personel kartındaki WhatsApp mesaj tercihlerinden seçilir. Yalnızca bu şirketin Admin ve Kullanıcı hesaplarına gönderilir; Personel hesaplarına gönderilmez.</small></div>
-                    <div id="priceWhatsappSettingsPanel"></div>
                     <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Ortak alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>. Yıllık izin mesajında ayrıca <strong>{YIL}</strong> ve <strong>{GÜN}</strong> kullanılabilir.</div>
                     <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button id="ayarOtomatikBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">💾 Bildirim Metinlerini Kaydet</button></div>
                 </div></details>
@@ -29041,7 +29040,7 @@ function fdAracListeCiz(){
 })(window);
 </script>
 <script id="fdPriceWhatsappSettingsV233">
-/* Company-scoped price template only. Recipients are chosen on personnel cards. */
+/* Technical template inspector retained for diagnostics only; not mounted in application settings. */
 (function (root) {
     'use strict';
     const TEMPLATE = 'fiyat_listesi_bildirimi_v1';
@@ -29231,9 +29230,6 @@ function fdAracListeCiz(){
     }
 
     root.fdPriceWhatsappSettings = Object.freeze({ open, refresh, reset, templateName: TEMPLATE });
-    if (typeof document !== 'undefined') document.getElementById('ayarOtomatikBildirimBolumu')?.addEventListener('toggle', function () {
-        if (this.open) void open();
-    });
 })(window);
 </script>
 <script id="fdPersonelWhatsappTercihleriScript">
@@ -29430,14 +29426,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v255';
+      const anahtar='fd-pwa-yenileme-v256';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=255',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=256',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
