@@ -2675,14 +2675,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     <div class="form-group"><label>Vardiya Değişikliği Bildirimi</label><textarea id="ayarMagicBildirimVardiyaDegisiklik" rows="3" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {TARİHLER}, {VARDİYA}, {ÇALIŞMA_SAATLERİ}, {GÖREV}, {ŞUBE}</small></div>
                     <div class="form-group"><label>İşe Giriş ve Uygulama Bilgileri</label><textarea id="ayarMagicBildirimIseGiris" rows="4" maxlength="500" data-case-preserve="true"></textarea><small>Yalnızca yeni giriş hesabı başarıyla oluşturulduğunda gönderilir. Şifre değeri mesaja yazılmaz; ilk şifrenin T.C. kimlik numarasının ilk 6 hanesi olduğu belirtilir. Alanlar: {AD}, {İŞE_GİRİŞ_TARİHİ}, {GÖREV}, {ŞUBE}, {UYGULAMA_ADRESİ}, {KULLANICI_ADI}</small></div>
                     <div class="form-group"><label>İşten Ayrılış Bildirimi</label><textarea id="ayarMagicBildirimIstenAyrilis" rows="2" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {İŞTEN_AYRILIŞ_TARİHİ}, {GÖREV}, {ŞUBE}</small></div>
+                    <div class="form-group"><label>Fiyat Listesi Değişikliği Mesajı</label><textarea id="ayarMagicBildirimFiyatDegisiklik" rows="4" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {LİSTE_ADI}, {DEĞİŞİKLİK_SAYISI}, {LİSTE_TARİHİ}, {TARİH}, {UYGULAMA_ADRESİ}</small></div>
+                    <div class="form-group"><label>Fiyat Listesi Bildirimleri</label><select id="ayarWhatsappFiyatBildirimAktif"><option value="true">Açık</option><option value="false">Kapalı</option></select><small>Alıcılar personel kartındaki WhatsApp mesaj tercihlerinden seçilir. Yalnızca bu şirketin Admin ve Kullanıcı hesaplarına gönderilir; Personel hesaplarına gönderilmez.</small></div>
+                    <div id="priceWhatsappSettingsPanel"></div>
                     <div style="padding:9px 11px;border:1px solid #bae6fd;border-radius:8px;background:#f0f9ff;color:#075985;font-size:.76rem;line-height:1.5;">Ortak alanlar: <strong>{AD}</strong>, <strong>{TARİH}</strong>. Yıllık izin mesajında ayrıca <strong>{YIL}</strong> ve <strong>{GÜN}</strong> kullanılabilir.</div>
                     <div style="display:flex;justify-content:flex-end;margin-top:12px;"><button id="ayarOtomatikBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">💾 Bildirim Metinlerini Kaydet</button></div>
-                </div></details>
-                <details id="ayarFiyatWhatsappDetayi" class="profile-section"><summary>WhatsApp Otomatik Fiyat Listesi Bildirimleri</summary><div>
-                    <div class="form-group"><label>Fiyat Listesi Değişikliği Bildirimi</label><select id="ayarWhatsappFiyatBildirimAktif"><option value="true">Açık</option><option value="false">Kapalı</option></select><small>Fiyat listesi gerçekten değiştiğinde yalnızca bu şirketin Admin ve Kullanıcı hesaplarına WhatsApp mesajı hazırlanır. Personel hesaplarına gönderilmez.</small></div>
-                    <div class="form-group"><label>Fiyat Listesi Değişikliği Mesajı</label><textarea id="ayarMagicBildirimFiyatDegisiklik" rows="6" maxlength="500" data-case-preserve="true"></textarea><small>Alanlar: {AD}, {LİSTE_ADI}, {DEĞİŞİKLİK_SAYISI}, {LİSTE_TARİHİ}, {TARİH}, {UYGULAMA_ADRESİ}</small></div>
-                    <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><button id="ayarFiyatBildirimKaydetBtn" type="button" class="btn-submit" style="width:auto;margin:0;padding:10px 18px;" onclick="otomatikBildirimMetinleriniKaydet(this)">Bildirim Ayarlarını Kaydet</button></div>
-                    <div id="priceWhatsappSettingsPanel"></div>
                 </div></details>
                 <details class="profile-section"><summary>Günlük Rapor ve Kart Okuma Ayarları</summary><div>
                     <div class="form-row">
@@ -29044,15 +29041,14 @@ function fdAracListeCiz(){
 })(window);
 </script>
 <script id="fdPriceWhatsappSettingsV233">
-/* Company-scoped price notifications settings. Reading this source never sends a message. */
+/* Company-scoped price template only. Recipients are chosen on personnel cards. */
 (function (root) {
     'use strict';
     const TEMPLATE = 'fiyat_listesi_bildirimi_v1';
-    const PHONE_KEY = 'whatsappFiyatBildirimTelefonlari';
     const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     const BODY = 'Sayın {{1}},\n\nYetkili kullanıcı olduğunuz işletmenin {{2}} kaydı güncellenmiştir.\n\n{{3}}\n\nBu bildirim, işletme hesabınızdaki güncel fiyat kayıtlarını takip etmeniz için gönderilmiştir.';
     const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const state = { host: null, key: '', epoch: 0, loaded: false, loading: false, busy: false, recipients: [], meta: null, error: '', promise: null };
+    const state = { host: null, key: '', epoch: 0, loaded: false, loading: false, busy: false, meta: null, error: '', promise: null };
 
     function context() {
         const user = typeof activeUser !== 'undefined' ? activeUser : root.activeUser;
@@ -29063,21 +29059,6 @@ function fdAracListeCiz(){
         const manager = ['Admin', 'Yonetici'].includes(role) && (!root.isManagerUser || root.isManagerUser());
         const allowed = secure === true && manager && UUID.test(company) && Boolean(account) && user?.sifreDegismeli !== true;
         return { allowed, role, company, account, key: [company, account, role, allowed].join('|') };
-    }
-
-    function normalizePhone(value) {
-        const raw = String(value ?? '').trim();
-        if (!raw || !/^[\d+\s().-]+$/.test(raw)) return '';
-        let digits = raw.replace(/\D/g, '');
-        if (digits.startsWith('00')) digits = digits.slice(2);
-        if (digits.length === 11 && digits.startsWith('0')) digits = '90' + digits.slice(1);
-        else if (digits.length === 10) digits = '90' + digits;
-        return /^90\d{10}$/.test(digits) ? digits : '';
-    }
-
-    function phoneText(value) {
-        const digits = normalizePhone(value);
-        return digits ? '+90 ' + digits.slice(2, 5) + ' ' + digits.slice(5, 8) + ' ' + digits.slice(8, 10) + ' ' + digits.slice(10) : '';
     }
 
     function assertCurrent(key, epoch = state.epoch) {
@@ -29093,7 +29074,7 @@ function fdAracListeCiz(){
     }
 
     async function api(action, payload = {}) {
-        const allowedActions = ['price-recipients', 'price-template-info', 'price-template-submit'];
+        const allowedActions = ['price-template-info', 'price-template-submit'];
         const current = context(), epoch = state.epoch;
         if (!current.allowed || !allowedActions.includes(action)) throw new Error('Bu ayarı görüntüleme yetkiniz yok.');
         if (action === 'price-template-submit' && current.role !== 'Admin') throw new Error('Şablon başvurusu için Admin yetkisi gerekir.');
@@ -29124,18 +29105,6 @@ function fdAracListeCiz(){
         return result;
     }
 
-    function safeRecipients(rows) {
-        const seen = new Set();
-        return (Array.isArray(rows) ? rows : []).filter(row => {
-            const valid = UUID.test(String(row?.id || '')) && ['Admin', 'Yonetici'].includes(row?.role) && !seen.has(row.id);
-            if (valid) seen.add(row.id);
-            return valid;
-        }).map(row => ({
-            id: String(row.id), name: String(row.name || 'İsimsiz hesap'), role: row.role,
-            overridePhone: String(row.overridePhone || ''), defaultPhone: normalizePhone(row.defaultPhone), phone: normalizePhone(row.phone)
-        }));
-    }
-
     function notice(message, type = 'success') {
         const node = state.host?.querySelector('[data-price-wa-notice]');
         if (node) { node.textContent = message; node.dataset.type = type; node.setAttribute('role', type === 'error' ? 'alert' : 'status'); }
@@ -29147,25 +29116,18 @@ function fdAracListeCiz(){
         const style = document.createElement('style'); style.id = 'fdPriceWhatsappSettingsStyle';
         style.textContent = `
         .fd-price-wa{margin:12px 0;border:1px solid #dce6ef;border-radius:10px;background:#fff;color:#334155;min-width:0;overflow:hidden}
-        .fd-price-wa *{box-sizing:border-box}.fd-price-wa-section{padding:14px}.fd-price-wa-section+.fd-price-wa-section{border-top:1px solid #e5edf4}
+        .fd-price-wa small{display:block;font-size:12px;line-height:1.5;margin-top:3px;color:#64748b}.fd-price-wa *{box-sizing:border-box}.fd-price-wa-section{padding:14px}.fd-price-wa-section+.fd-price-wa-section{border-top:1px solid #e5edf4}
         .fd-price-wa h4{font-size:.87rem;margin:0 0 5px;color:#153b55}.fd-price-wa p{font-size:.77rem;line-height:1.5;margin:5px 0 10px;color:#64748b}
         .fd-price-wa-toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.fd-price-wa-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
         .fd-price-wa button{border:1px solid #cbdbe7;border-radius:7px;background:#f8fafc;color:#135879;font:inherit;font-size:.76rem;padding:8px 11px;cursor:pointer;white-space:normal}
         .fd-price-wa button.fd-price-wa-primary{background:#0784b8;color:#fff;border-color:#0784b8}.fd-price-wa button:disabled{opacity:.55;cursor:default}
-        .fd-price-wa button:focus-visible,.fd-price-wa input:focus-visible{outline:2px solid #0284c7;outline-offset:2px}
-        .fd-price-wa table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:.79rem}.fd-price-wa th{text-align:left;font-weight:600;background:#f4f8fb;color:#506a80;padding:8px 10px}
-        .fd-price-wa td{padding:10px;border-top:1px solid #e5edf4;vertical-align:middle;overflow-wrap:anywhere}.fd-price-wa th:first-child{width:43%}
-        .fd-price-wa-account{display:block;font-weight:600}.fd-price-wa small{display:block;font-size:.72rem;line-height:1.5;margin-top:3px;color:#64748b}
-        .fd-price-wa input{width:100%;min-width:0;font:inherit;font-size:.8rem;line-height:1.4;height:35px;padding:6px 9px;border:1px solid #cbdbe7;border-radius:6px;color:#334155;background:white}
-        .fd-price-wa input[aria-invalid=true]{border-color:#ef4444}.fd-price-wa [data-price-wa-phone-state][data-missing=true]{color:#b45309}
+        .fd-price-wa button:focus-visible{outline:2px solid #0284c7;outline-offset:2px}
         .fd-price-wa-notice{font-size:.77rem;padding:0 14px 10px;line-height:1.5}.fd-price-wa-notice:empty{display:none}.fd-price-wa-notice[data-type=error]{color:#b91c1c}
         .fd-price-wa-notice[data-type=success]{color:#047857}.fd-price-wa-status{font-size:.75rem;font-weight:600;color:#64748b}.fd-price-wa-status[data-ready=true]{color:#047857}
         .fd-price-wa-template{padding:10px;margin:9px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;max-width:100%;overflow-wrap:anywhere;font-size:.76rem}
-        .fd-price-wa table{min-width:0;white-space:normal}
-        .fd-price-wa th,.fd-price-wa td,.fd-price-wa small{white-space:normal;overflow-wrap:anywhere}
         .fd-price-wa-template pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;margin:8px 0;font-size:inherit;line-height:1.6}
         .fd-price-wa-template summary{cursor:pointer}.fd-price-wa-template code{font-size:.73rem;overflow-wrap:anywhere}.fd-price-wa-empty{padding:10px;color:#64748b;font-size:.8rem}
-        @media(max-width:520px){.fd-price-wa-section{padding:11px}.fd-price-wa td,.fd-price-wa th{padding:8px 6px}.fd-price-wa th:first-child{width:40%}.fd-price-wa-actions{width:100%}.fd-price-wa-actions button{flex:1;min-width:0}.fd-price-wa-template{padding:9px}.fd-price-wa-notice{padding:0 11px 10px}}
+        @media(max-width:520px){.fd-price-wa-section{padding:11px}.fd-price-wa-actions{width:100%}.fd-price-wa-actions button{flex:1;min-width:0}.fd-price-wa-notice{padding:0 11px 10px}}
         `;
         document.head.appendChild(style);
     }
@@ -29188,30 +29150,7 @@ function fdAracListeCiz(){
             return;
         }
         const meta = metaView();
-        const rows = state.recipients.map(row => `<tr><td><span class="fd-price-wa-account">${escape(row.name)}</span><small>${row.role === 'Admin' ? 'Admin' : 'Kullanıcı'}</small><small>${row.defaultPhone ? 'Personel telefonu: ' + escape(phoneText(row.defaultPhone)) : 'Personel telefonu bulunmuyor.'}</small></td><td><input type="tel" inputmode="tel" maxlength="28" autocomplete="off" data-case-preserve="true" data-price-wa-phone="${escape(row.id)}" aria-label="${escape(row.name)} için bildirim telefonu" placeholder="${escape(phoneText(row.defaultPhone) || '05xx xxx xx xx')}" value="${escape(row.overridePhone)}" ${state.busy ? 'disabled' : ''}><small data-price-wa-phone-state="${escape(row.id)}"></small></td></tr>`).join('');
-        state.host.innerHTML = `<div class="fd-price-wa"><section class="fd-price-wa-section"><div class="fd-price-wa-toolbar"><div><h4>Fiyat Bildirimi Alıcıları</h4><p>Yalnızca bu şirketin Admin ve Kullanıcı hesapları. Boş bırakırsanız personele bağlı telefon kullanılır.</p></div><button type="button" data-price-wa-act="refresh" ${state.loading || state.busy ? 'disabled' : ''}>Yenile</button></div>${state.loading ? '<div class="fd-price-wa-empty" role="status">Alıcılar yükleniyor…</div>' : state.error ? '<div class="fd-price-wa-empty" role="alert">' + escape(state.error) + '</div>' : rows ? `<table><thead><tr><th>Hesap</th><th>Bildirim Telefonu</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="fd-price-wa-empty">Bu şirkette uygun alıcı hesabı bulunamadı.</div>'}<div class="fd-price-wa-toolbar" style="margin-top:10px"><small data-price-wa-count></small><button type="button" class="fd-price-wa-primary" data-price-wa-act="save" ${!state.loaded || !rows || state.busy || state.loading ? 'disabled' : ''}>${state.busy ? 'İşleniyor…' : 'Alıcı Telefonlarını Kaydet'}</button></div></section><section class="fd-price-wa-section"><div class="fd-price-wa-toolbar"><h4>Fiyat Mesajı Şablonu</h4><span class="fd-price-wa-status" data-ready="${meta.ready}" data-price-wa-meta-status>${escape(meta.status)}${meta.category ? ' · ' + escape(meta.category) : ''}</span></div><p data-price-wa-meta-reason>${escape(meta.reason)}</p><details class="fd-price-wa-template"><summary>Şablon bilgileri ve metni</summary><p><code>${TEMPLATE}</code> · Türkçe · Utility başvurusu</p><strong>${escape(state.meta?.headerText || 'Fiyat Listesi Güncellemesi')}</strong><pre>${escape(state.meta?.bodyText || BODY)}</pre><small>${escape(state.meta?.footerText || 'İşletmenizin yönetim sisteminden gönderilmiştir.')}</small></details><div class="fd-price-wa-actions"><button type="button" class="fd-price-wa-primary" data-price-wa-act="submit" ${state.busy || state.loading || current.role !== 'Admin' ? 'disabled' : ''}>Şablonu Hazırla</button><button type="button" data-price-wa-act="info" ${state.busy || state.loading ? 'disabled' : ''}>Durumu Kontrol Et</button><small>Personel mesajlarının şablonu değişmez.</small></div>${current.role !== 'Admin' ? '<small>Şablon başvurusunu Admin yapabilir.</small>' : ''}</section><div class="fd-price-wa-notice" data-price-wa-notice aria-live="polite"></div></div>`;
-        updatePhones();
-    }
-
-    function updatePhones() {
-        if (!state.host || !state.loaded) return;
-        const used = new Set(); let missing = 0, duplicates = 0;
-        for (const row of state.recipients) {
-            const input = state.host.querySelector('[data-price-wa-phone="' + row.id + '"]');
-            if (!input) continue;
-            const raw = input.value.trim(), override = normalizePhone(raw), phone = override || (!raw ? row.defaultPhone : '');
-            input.setAttribute('aria-invalid', raw && !override ? 'true' : 'false');
-            const status = state.host.querySelector('[data-price-wa-phone-state="' + row.id + '"]');
-            if (status) {
-                status.dataset.missing = String(!phone);
-                status.textContent = raw && !override ? 'Geçerli bir Türkiye telefonu yazın.' : !phone ? 'Telefon eklenmeden bu hesaba gönderilemez.' : (raw ? 'Bu telefon kullanılacak: ' : 'Personel telefonu kullanılacak: ') + phoneText(phone);
-            }
-            if (!phone) missing++;
-            else if (used.has(phone)) duplicates++;
-            else used.add(phone);
-        }
-        const count = state.host.querySelector('[data-price-wa-count]');
-        if (count) count.textContent = state.recipients.length + ' hesap · ' + used.size + ' farklı telefon' + (missing ? ' · ' + missing + ' telefon eksik / geçersiz' : '') + (duplicates ? ' · Ortak telefona tek mesaj gider.' : '');
+        state.host.innerHTML = `<div class="fd-price-wa"><section class="fd-price-wa-section"><div class="fd-price-wa-toolbar"><h4>Fiyat Bildirimi · Meta Şablonu</h4><span class="fd-price-wa-status" data-ready="${meta.ready}" data-price-wa-meta-status>${escape(meta.status)}${meta.category ? ' · ' + escape(meta.category) : ''}</span></div><p data-price-wa-meta-reason>${escape(meta.reason)}</p><details class="fd-price-wa-template"><summary>Şablon bilgileri ve metni</summary><p><code>${TEMPLATE}</code> · Türkçe · Utility başvurusu</p><strong>${escape(state.meta?.headerText || 'Fiyat Listesi Güncellemesi')}</strong><pre>${escape(state.meta?.bodyText || BODY)}</pre><small>${escape(state.meta?.footerText || 'İşletmenizin yönetim sisteminden gönderilmiştir.')}</small></details><div class="fd-price-wa-actions"><button type="button" class="fd-price-wa-primary" data-price-wa-act="submit" ${state.busy || state.loading || current.role !== 'Admin' ? 'disabled' : ''}>Şablonu Hazırla</button><button type="button" data-price-wa-act="info" ${state.busy || state.loading ? 'disabled' : ''}>Durumu Kontrol Et</button><small>Personel mesajlarının şablonu değişmez.</small></div>${current.role !== 'Admin' ? '<small>Şablon başvurusunu Admin yapabilir.</small>' : ''}</section><div class="fd-price-wa-notice" data-price-wa-notice aria-live="polite"></div></div>`;
     }
 
     async function refresh() {
@@ -29221,51 +29160,25 @@ function fdAracListeCiz(){
         if (!current.allowed || current.key !== state.key) { render(); return; }
         state.loading = true; state.error = ''; render();
         state.promise = (async () => {
-            const [recipients, meta] = await Promise.allSettled([api('price-recipients'), api('price-template-info')]);
             try {
+                const meta = await api('price-template-info');
                 assertCurrent(current.key, epoch);
-                if (recipients.status === 'fulfilled') { state.recipients = safeRecipients(recipients.value.recipients); state.loaded = true; }
-                else { state.loaded = false; state.recipients = []; state.error = recipients.reason?.message || 'Alıcılar alınamadı.'; }
-                state.meta = meta.status === 'fulfilled' ? meta.value : { ready: false, status: 'UNKNOWN', message: meta.reason?.message || 'Şablon durumu doğrulanamadı.' };
-            } catch (_) { return; }
+                state.meta = meta; state.loaded = true;
+            } catch (error) {
+                if (current.key !== context().key || epoch !== state.epoch) return;
+                state.meta = { ready: false, status: 'UNKNOWN', message: error.message || 'Şablon durumu doğrulanamadı.' };
+                state.loaded = false;
+            }
             finally { if (!releaseOldContext(epoch)) { state.loading = false; state.promise = null; render(); } }
         })();
         return state.promise;
     }
 
-    async function save() {
-        if (state.busy || state.loading || !state.loaded) return;
-        const current = context(), epoch = state.epoch, map = {};
-        try {
-            assertCurrent(current.key, epoch);
-            for (const row of state.recipients) {
-                const input = state.host?.querySelector('[data-price-wa-phone="' + row.id + '"]');
-                if (!input) throw new Error('Alıcı listesi değişti. Yenileyip tekrar deneyin.');
-                const raw = input.value.trim(), normalized = normalizePhone(raw);
-                if (raw && !normalized) { input.focus(); throw new Error(row.name + ' için geçerli bir Türkiye telefonu yazın.'); }
-                if (normalized) map[row.id] = normalized;
-            }
-            if (typeof root.sirketUygulamaAyarParcasiKaydet !== 'function') throw new Error('Ayar kaydetme bağlantısı hazır değil.');
-            state.busy = true; disableButtons(true);
-            const saveButton = state.host?.querySelector('[data-price-wa-act="save"]');
-            if (saveButton) saveButton.textContent = 'Kaydediliyor…';
-            const stored = await root.sirketUygulamaAyarParcasiKaydet({ [PHONE_KEY]: map });
-            assertCurrent(current.key, epoch);
-            const result = stored?.[PHONE_KEY];
-            if (!result || typeof result !== 'object' || Array.isArray(result) || Object.keys(result).length !== Object.keys(map).length || Object.keys(map).some(id => normalizePhone(result[id]) !== map[id])) throw new Error('Telefon ayarları sunucuda doğrulanamadı. Yenileyip kontrol edin.');
-            state.recipients.forEach(row => { row.overridePhone = map[row.id] || ''; row.phone = map[row.id] || row.defaultPhone; });
-            state.busy = false; render(); notice('Alıcı telefonları kaydedildi.');
-        } catch (error) { if (current.key === context().key && epoch === state.epoch) notice(error.message || 'Telefonlar kaydedilemedi.', 'error'); }
-        finally { if (!releaseOldContext(epoch)) { state.busy = false; disableButtons(false); const saveButton = state.host?.querySelector('[data-price-wa-act="save"]'); if (saveButton) saveButton.textContent = 'Alıcı Telefonlarını Kaydet'; updatePhones(); } }
-    }
-
     function disableButtons(disabled) {
-        state.host?.querySelectorAll('button,input').forEach(button => { button.disabled = disabled; });
+        state.host?.querySelectorAll('button').forEach(button => { button.disabled = disabled; });
         if (!disabled) {
             const submit = state.host?.querySelector('[data-price-wa-act="submit"]');
             if (submit) submit.disabled = context().role !== 'Admin';
-            const saveButton = state.host?.querySelector('[data-price-wa-act="save"]');
-            if (saveButton) saveButton.disabled = !state.loaded || !state.recipients.length;
         }
     }
 
@@ -29278,9 +29191,7 @@ function fdAracListeCiz(){
             state.busy = true; disableButtons(true);
             const result = await api(action === 'submit' ? 'price-template-submit' : 'price-template-info');
             assertCurrent(current.key, epoch); state.meta = result; state.busy = false;
-            // Preserve unsubmitted phone edits when refreshing only the Meta status.
-            const draft = new Map([...state.host.querySelectorAll('[data-price-wa-phone]')].map(input => [input.dataset.priceWaPhone, input.value]));
-            render(); state.host.querySelectorAll('[data-price-wa-phone]').forEach(input => { if (draft.has(input.dataset.priceWaPhone)) input.value = draft.get(input.dataset.priceWaPhone); }); updatePhones();
+            state.loaded = true; render();
             notice(action === 'submit' ? result.message || 'Şablon başvuru durumu güncellendi; onaydan önce fiyat mesajı gönderilmez.' : metaView().reason, metaView().ready ? 'success' : 'warning');
         } catch (error) {
             if (current.key === context().key && epoch === state.epoch) {
@@ -29295,7 +29206,7 @@ function fdAracListeCiz(){
 
     function reset() {
         state.epoch++; state.key = ''; state.loaded = false; state.loading = false; state.busy = false;
-        state.recipients = []; state.meta = null; state.error = ''; state.promise = null;
+        state.meta = null; state.error = ''; state.promise = null;
         if (state.host) { state.host.innerHTML = ''; state.host.onclick = null; state.host.oninput = null; }
         state.host = null;
     }
@@ -29310,19 +29221,17 @@ function fdAracListeCiz(){
             const button = event.target.closest('[data-price-wa-act]');
             if (!button || !element.contains(button) || button.disabled) return;
             event.preventDefault();
-            if (button.dataset.priceWaAct === 'save') void save();
-            else if (button.dataset.priceWaAct === 'refresh') void refresh();
-            else void template(button.dataset.priceWaAct);
+            if (!['info', 'submit'].includes(button.dataset.priceWaAct)) return;
+            void template(button.dataset.priceWaAct);
         };
-        element.oninput = event => { if (event.target.matches('[data-price-wa-phone]')) updatePhones(); };
         if (!current.allowed) { render(); return; }
         if (state.loading) return state.promise;
-        if (state.loaded) { if (!element.querySelector('[data-price-wa-act]')) render(); else updatePhones(); return; }
+        if (state.loaded) { if (!element.querySelector('[data-price-wa-act]')) render(); return; }
         return refresh();
     }
 
-    root.fdPriceWhatsappSettings = Object.freeze({ open, refresh, reset, normalizePhone, templateName: TEMPLATE });
-    if (typeof document !== 'undefined') document.getElementById('ayarFiyatWhatsappDetayi')?.addEventListener('toggle', function () {
+    root.fdPriceWhatsappSettings = Object.freeze({ open, refresh, reset, templateName: TEMPLATE });
+    if (typeof document !== 'undefined') document.getElementById('ayarOtomatikBildirimBolumu')?.addEventListener('toggle', function () {
         if (this.open) void open();
     });
 })(window);
@@ -29521,14 +29430,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v254';
+      const anahtar='fd-pwa-yenileme-v255';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=254',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=255',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
