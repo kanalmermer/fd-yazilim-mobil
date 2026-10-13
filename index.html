@@ -29358,7 +29358,7 @@ function fdAracListeCiz(){
     const preferences = employee => employee?.whatsappMesajTercihleri && typeof employee.whatsappMesajTercihleri === 'object' && !Array.isArray(employee.whatsappMesajTercihleri) ? { ...employee.whatsappMesajTercihleri } : {};
     const belongs = employee => Boolean(employee && typeof aktifSirketeAit === 'function' && aktifSirketeAit(employee));
     const findEmployee = id => (typeof personeller !== 'undefined' && Array.isArray(personeller) ? personeller : []).find(item => String(item.id) === String(id) && belongs(item));
-    const allowed = (employee, type) => !keys.has(type) || preferences(employee)[type] !== false;
+    const allowed = (employee, type) => type === 'price_list' ? preferences(employee)[type] === true : !keys.has(type) || preferences(employee)[type] !== false;
     const priceAudienceNote = 'Fiyat değişikliği mesajları yalnızca Admin ve Kullanıcı hesaplarına gönderilir.';
     const roleKey = value => String(value || '').trim().toLocaleLowerCase('tr-TR').replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/[^a-z0-9]/g, '');
     function priceEligible(employee) {
@@ -29374,7 +29374,9 @@ function fdAracListeCiz(){
             return explicitId ? explicitId === employeeId : String(account?.username || account?.legacy_username || '').trim() === employeeId;
         });
     }
-    const visibleTypes = employee => types.filter(type => type.key !== 'price_list' || priceEligible(employee));
+    // The preference stays visible on every card. Account-role authorization is
+    // checked independently by the sender; it must not hide this user's choice.
+    const visibleTypes = () => types;
 
     function installStyle() {
         if (document.getElementById('fdPersonelWhatsappTercihleriStyle')) return;
@@ -29519,14 +29521,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v253';
+      const anahtar='fd-pwa-yenileme-v254';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=253',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=254',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
