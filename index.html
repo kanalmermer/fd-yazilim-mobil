@@ -1675,13 +1675,30 @@
 #policeTakipApp .police-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px;background:linear-gradient(135deg,#ecfeff,#f0fdf4);border-color:#99f6e4}#policeTakipApp .police-hero h2{margin:0;color:#115e59}#policeTakipApp .police-hero p{margin:5px 0 0;color:#475569}.police-ozet-grid{grid-template-columns:repeat(4,minmax(150px,1fr));margin-bottom:14px}.police-filtre{display:grid;grid-template-columns:minmax(260px,1fr) 150px 190px 155px auto}.police-durum{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:.68rem;font-weight:850}.police-durum-gecen{background:#fee2e2;color:#b91c1c}.police-durum-yaklasan{background:#ffedd5;color:#c2410c}.police-durum-aktif{background:#dcfce7;color:#166534}.police-tur-rozet{display:inline-flex;padding:5px 8px;border-radius:999px;color:#fff;font-size:.68rem;font-weight:850;line-height:1.15;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}#policeTakipTablosu td:last-child .action-btns{display:flex;min-width:78px;gap:5px}#policeTakipTablosu td:last-child button{width:32px;height:32px;min-width:32px;min-height:32px;padding:0}.police-ayar-tur-satiri{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-bottom:7px}.police-ayar-tur-satiri button{width:36px;padding:0}@media(max-width:850px){.police-filtre{grid-template-columns:1fr 1fr}.police-ozet-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.police-filtre{grid-template-columns:1fr}.police-hero{align-items:stretch!important;flex-direction:column}}
 </style><style id="policeTakipDuzeltmeStilleri">
 .police-durum-planli{background:#e0f2fe;color:#075985}
-#modalPoliceKayit .police-varlik-arama{display:flex;align-items:center;gap:6px;margin-bottom:7px;min-width:0}
+#modalPoliceKayit .police-varlik-secici{position:relative;min-width:0}
+#modalPoliceKayit .police-varlik-ac{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:9px 12px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;text-align:left;font:inherit;font-size:14px;cursor:pointer;box-shadow:0 1px 2px #0f172a04}
+#modalPoliceKayit .police-varlik-ac[aria-expanded="true"],#modalPoliceKayit .police-varlik-ac:focus-visible{outline:2px solid #7dd3fc;outline-offset:1px;border-color:#38bdf8}
+#modalPoliceKayit .police-varlik-ac[aria-invalid="true"]{border-color:#f87171}
+#modalPoliceKayit #policeHedefGorunen{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#modalPoliceKayit .police-varlik-ok{flex:none;color:#64748b;font-size:17px;transition:transform .15s}
+#modalPoliceKayit .police-varlik-ac[aria-expanded="true"] .police-varlik-ok{transform:rotate(180deg)}
+#modalPoliceKayit .police-varlik-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:25;display:flex;flex-direction:column;min-height:0;max-height:340px;border:1px solid #b6d0de;border-radius:11px;background:#fff;box-shadow:0 10px 25px #16354b20;overflow:hidden}
+#modalPoliceKayit .police-varlik-panel[hidden]{display:none!important}
+#modalPoliceKayit .police-varlik-panel.yukari{top:auto;bottom:calc(100% + 6px)}
+#modalPoliceKayit .police-varlik-arama{display:flex;align-items:center;gap:6px;padding:10px;border-bottom:1px solid #e2e8f0;background:#f8fafc;min-width:0;flex-shrink:0}
 #modalPoliceKayit .police-varlik-arama input{flex:1 1 auto;min-width:0;margin:0}
 #modalPoliceKayit #policeHedefArama::-webkit-search-cancel-button{-webkit-appearance:none}
 #modalPoliceKayit .police-varlik-arama button{flex:0 0 34px;width:34px;height:36px;padding:0;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;color:#475569;font-size:20px;cursor:pointer}
 #modalPoliceKayit .police-varlik-arama button:disabled{opacity:.4;cursor:default}
-#modalPoliceKayit #policeHedefId{width:100%;min-width:0;max-width:100%}
-#modalPoliceKayit #policeHedefAramaOzeti{display:block;margin-top:5px;color:#64748b;font-size:12px;line-height:1.45}
+#modalPoliceKayit #policeHedefId{position:absolute;left:0;top:0;width:1px;height:1px;min-height:0;padding:0;border:0;opacity:0;pointer-events:none}
+#modalPoliceKayit #policeHedefAramaOzeti{display:block;padding:7px 11px;margin:0;color:#64748b;font-size:11px;line-height:1.4;background:#fff;flex-shrink:0}
+#modalPoliceKayit #policeHedefListe{overflow:auto;overscroll-behavior:contain;min-height:0;flex:1;padding:0 5px 5px;scrollbar-width:thin}
+#modalPoliceKayit .police-varlik-sonuc{display:block;width:100%;border:0;border-radius:7px;background:transparent;padding:9px 10px;min-height:43px;text-align:left;color:#334155;cursor:pointer;font:inherit;overflow-wrap:anywhere}
+#modalPoliceKayit .police-varlik-sonuc:hover,#modalPoliceKayit .police-varlik-sonuc.klavye-aktif{background:#eaf5fa;color:#075985}
+#modalPoliceKayit .police-varlik-sonuc[aria-selected="true"]{box-shadow:inset 3px 0 #0d9488;background:#f0faf7}
+#modalPoliceKayit .police-varlik-sonuc strong{display:block;font-size:13px;font-weight:600;line-height:1.45}
+#modalPoliceKayit .police-varlik-sonuc small{display:block;font-size:11px;color:#64748b;margin-top:2px;line-height:1.4}
+#modalPoliceKayit .police-varlik-mevcut{padding:4px 10px;color:#64748b;font-size:10px}
 @media(min-width:851px){#policeOzetleri{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
 #policeTakipTablosu td:nth-child(2) .police-varlik-link{all:unset;display:inline;cursor:pointer;color:inherit;font:inherit;font-weight:inherit;text-decoration:none}
 #policeTakipTablosu td:nth-child(2) .police-varlik-link:hover{text-decoration:underline;text-decoration-color:#94a3b8;text-underline-offset:3px}
@@ -2342,7 +2359,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         <div class="modal-header"><h3 id="policeModalBaslik">🛡️ Yeni Poliçe</h3><button type="button" class="modal-close" onclick="modalKapat('modalPoliceKayit')">✕</button></div>
         <form id="policeForm" class="modal-body" onsubmit="policeKaydet(event)"><input type="hidden" id="policeEditId"><div class="profile-layout">
             <div class="form-group"><label>Varlık Türü</label><select id="policeHedefTip" required onchange="policeHedefSecenekleriniDoldur()"></select></div>
-            <div class="form-group" id="policeHedefSecimGrubu"><label for="policeHedefId">Varlık</label><div class="police-varlik-arama"><input id="policeHedefArama" type="search" placeholder="Varlık adı veya UAVT ara" aria-label="Varlık listesinde ara" aria-controls="policeHedefId" autocomplete="off" oninput="policeHedefAramasiniUygula()" onkeydown="if(event.key==='Enter'||event.key==='ArrowDown'){event.preventDefault();document.getElementById('policeHedefId').focus();}"><button id="policeHedefAramaTemizle" type="button" title="Aramayı temizle" aria-label="Varlık aramasını temizle" disabled onclick="policeHedefAramasiniTemizle()">×</button></div><select id="policeHedefId" required aria-describedby="policeHedefAramaOzeti" onchange="policeHedefBilgisiniGuncelle()"></select><small id="policeHedefAramaOzeti" role="status" aria-live="polite"></small></div>
+            <div class="form-group" id="policeHedefSecimGrubu"><label id="policeHedefEtiket" for="policeHedefAc">Varlık</label><div class="police-varlik-secici" id="policeHedefSecici"><button id="policeHedefAc" type="button" class="police-varlik-ac" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls="policeHedefListe" aria-labelledby="policeHedefEtiket policeHedefGorunen" onclick="policeHedefListesiniAc()" onkeydown="policeHedefKlavye(event)"><span id="policeHedefGorunen">Varlık seçin</span><span class="police-varlik-ok" aria-hidden="true">⌄</span></button><select id="policeHedefId" tabindex="-1" aria-hidden="true" required onchange="policeHedefBilgisiniGuncelle();policeHedefSeciciGuncelle()"></select><div id="policeHedefPanel" class="police-varlik-panel" hidden><div class="police-varlik-arama"><input id="policeHedefArama" type="search" placeholder="Varlık adı veya UAVT ara" aria-label="Varlık listesinde ara" aria-controls="policeHedefListe" autocomplete="off" oninput="policeHedefAramasiniUygula()" onkeydown="policeHedefKlavye(event)"><button id="policeHedefAramaTemizle" type="button" title="Aramayı temizle" aria-label="Varlık aramasını temizle" disabled onclick="policeHedefAramasiniTemizle()">×</button></div><small id="policeHedefAramaOzeti" role="status" aria-live="polite"></small><div id="policeHedefListe" role="listbox" aria-label="Varlıklar"></div></div></div></div>
             <div class="form-group" id="policeDigerAdGrubu" style="display:none"><label>Varlık Adı</label><input id="policeDigerAd" placeholder="Varlık adını yazın"></div>
             <div class="form-group"><label id="policeEslesmeKoduEtiket">Plaka / UAVT / Referans</label><input id="policeEslesmeKodu"></div>
             <div class="form-group"><label>Poliçe Türü</label><select id="policeTur" required></select></div>
@@ -21018,14 +21035,74 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(filtre){const onceki=filtre.value;filtre.innerHTML='<option value="">Tüm Varlıklar</option>'+turler.map(ad=>`<option value="${policeVarlikKodu(ad)}">${escapeDashboardText(ad)}</option>`).join('');if([...filtre.options].some(o=>o.value===onceki))filtre.value=onceki;}
     }
     function policeVarlikAramaAnahtari(deger){return String(deger||'').toLocaleLowerCase('tr-TR').replace(/ı/g,'i').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').replace(/\s+/g,' ').trim();}
+    function policeHedefPanelKonumunuAyarla(){
+        const panel=document.getElementById('policeHedefPanel'),ac=document.getElementById('policeHedefAc');if(!panel||panel.hidden||!ac)return;
+        const alan=ac.getBoundingClientRect(),govde=ac.closest('.modal-body').getBoundingClientRect(),viewport=window.visualViewport;
+        const ust=Math.max(govde.top,viewport?.offsetTop||0)+7,alt=Math.min(govde.bottom,(viewport?.offsetTop||0)+(viewport?.height||window.innerHeight))-7;
+        const asagi=alt-alan.bottom-6,yukari=alan.top-ust-6,ters=asagi<180&&yukari>asagi;
+        panel.classList.toggle('yukari',ters);panel.style.maxHeight=Math.max(100,Math.min(340,ters?yukari:asagi))+'px';
+    }
+    function policeHedefAktifSatiriAyarla(sira){
+        const liste=document.getElementById('policeHedefListe'),arama=document.getElementById('policeHedefArama'),ac=document.getElementById('policeHedefAc');if(!liste)return;
+        const satirlar=[...liste.querySelectorAll('[role="option"]')],aktif=sira>=0&&satirlar.length?satirlar[Math.min(sira,satirlar.length-1)]:null;
+        liste.dataset.aktif=aktif?String(satirlar.indexOf(aktif)):'-1';satirlar.forEach(s=>s.classList.toggle('klavye-aktif',s===aktif));
+        for(const el of [arama,ac]){if(!el)continue;if(aktif)el.setAttribute('aria-activedescendant',aktif.id);else el.removeAttribute('aria-activedescendant');}
+        if(aktif&&!document.getElementById('policeHedefPanel').hidden){const r=aktif.getBoundingClientRect(),kutu=liste.getBoundingClientRect();if(r.top<kutu.top)liste.scrollTop-=kutu.top-r.top;else if(r.bottom>kutu.bottom)liste.scrollTop+=r.bottom-kutu.bottom;}
+    }
+    function policeHedefSeciciGuncelle(){
+        const secici=document.getElementById('policeHedefSecici'),select=document.getElementById('policeHedefId'),liste=document.getElementById('policeHedefListe'),ac=document.getElementById('policeHedefAc');if(!secici||!select||!liste)return;
+        const secilen=(select.fdPoliceHedefListe||[]).find(x=>x.id===select.value),etiket=document.getElementById('policeHedefGorunen');etiket.textContent=secilen?.ad||'Varlık seçin';ac.title=secilen?.ad||'Varlık listesini aç';if(secilen)ac.removeAttribute('aria-invalid');
+        let i=0;liste.innerHTML=[...select.options].filter(o=>o.value).map(o=>{
+            const parcalar=o.textContent.split(' · '),ad=parcalar.shift(),detay=parcalar.join(' · '),korunan=o.parentElement.tagName==='OPTGROUP',id='policeHedefSonuc_'+i++;
+            return(korunan?'<div class="police-varlik-mevcut">Mevcut seçim</div>':'')+'<button type="button" tabindex="-1" role="option" class="police-varlik-sonuc" id="'+id+'" data-id="'+escapeDashboardText(o.value)+'" '+(korunan?'data-korunan="1" ':'')+'aria-selected="'+String(o.value===select.value)+'" onclick="policeHedefListesindenSec(this.dataset.id)"><strong>'+escapeDashboardText(ad)+'</strong>'+(detay?'<small>'+escapeDashboardText(detay)+'</small>':'')+'</button>';
+        }).join('');
+        const satirlar=[...liste.querySelectorAll('[role="option"]')],arama=document.getElementById('policeHedefArama');
+        policeHedefAktifSatiriAyarla(arama.value?satirlar.findIndex(s=>!s.dataset.korunan):Math.max(0,satirlar.findIndex(s=>s.dataset.id===select.value)));
+        if(!secici.dataset.dinleyiciler){
+            secici.dataset.dinleyiciler='1';
+            select.addEventListener('invalid',event=>{event.preventDefault();ac.setAttribute('aria-invalid','true');policeHedefListesiniAc(true);});
+            document.addEventListener('pointerdown',event=>{if(!secici.contains(event.target))policeHedefListesiniKapat();},true);
+            document.getElementById('policeForm').addEventListener('reset',()=>policeHedefListesiniKapat());
+            window.addEventListener('resize',policeHedefPanelKonumunuAyarla);window.visualViewport?.addEventListener('resize',policeHedefPanelKonumunuAyarla);
+            document.addEventListener('scroll',event=>{if(event.target!==liste)policeHedefPanelKonumunuAyarla();},true);
+        }
+        policeHedefPanelKonumunuAyarla();
+    }
+    function policeHedefListesiniKapat(odak=false){
+        const panel=document.getElementById('policeHedefPanel'),ac=document.getElementById('policeHedefAc');if(panel)panel.hidden=true;
+        if(ac){ac.setAttribute('aria-expanded','false');ac.removeAttribute('aria-activedescendant');if(odak)ac.focus();}
+        document.getElementById('policeHedefArama')?.removeAttribute('aria-activedescendant');
+    }
+    function policeHedefListesiniAc(acik){
+        const panel=document.getElementById('policeHedefPanel'),ac=document.getElementById('policeHedefAc'),arama=document.getElementById('policeHedefArama');if(!panel||!ac)return;
+        if(acik!==true&&!panel.hidden){policeHedefListesiniKapat();return;}
+        if(panel.hidden){arama.value='';policeHedefAramasiniUygula();}
+        panel.hidden=false;ac.setAttribute('aria-expanded','true');policeHedefPanelKonumunuAyarla();arama.focus({preventScroll:true});
+    }
+    function policeHedefListesindenSec(id){
+        const select=document.getElementById('policeHedefId');if(!select||(select.fdPoliceHedefListe||[]).every(x=>x.id!==String(id)))return;
+        select.value=String(id);if(select.value!==String(id))return;
+        select.dispatchEvent(new Event('change',{bubbles:true}));policeHedefListesiniKapat(true);
+    }
+    function policeHedefKlavye(event){
+        const panel=document.getElementById('policeHedefPanel'),liste=document.getElementById('policeHedefListe');if(!panel||!liste)return;
+        if(event.key==='Escape'&&!panel.hidden){event.preventDefault();event.stopPropagation();policeHedefListesiniKapat(true);return;}
+        if(event.key==='Tab'&&!panel.hidden){policeHedefListesiniKapat();return;}
+        if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)&&(event.target.id==='policeHedefAc'||event.key.startsWith('Arrow'))){
+            event.preventDefault();const kapali=panel.hidden;policeHedefListesiniAc(true);const n=liste.querySelectorAll('[role="option"]').length,onceki=Number(liste.dataset.aktif??-1);
+            policeHedefAktifSatiriAyarla(event.key==='Home'?0:event.key==='End'?n-1:kapali?(event.key==='ArrowUp'?n-1:0):event.key==='ArrowDown'?Math.min(n-1,onceki+1):Math.max(0,onceki-1));return;
+        }
+        if(event.key==='Enter'&&!panel.hidden){event.preventDefault();event.stopPropagation();const satir=liste.querySelectorAll('[role="option"]')[Number(liste.dataset.aktif)];if(satir)policeHedefListesindenSec(satir.dataset.id);}
+    }
     function policeHedefAramasiniUygula(secili){
         const select=document.getElementById('policeHedefId'),arama=document.getElementById('policeHedefArama'),ozet=document.getElementById('policeHedefAramaOzeti'),temizle=document.getElementById('policeHedefAramaTemizle');if(!select)return;
         const liste=select.fdPoliceHedefListe||[],aranan=policeVarlikAramaAnahtari(arama?.value),kompakt=aranan.replace(/\s/g,''),secim=String(secili??select.value??''),secilen=liste.find(x=>x.id===secim),sonuclar=liste.filter(x=>{const ad=policeVarlikAramaAnahtari(x.ad);return !aranan||ad.includes(aranan)||ad.replace(/\s/g,'').includes(kompakt);}),korunan=secilen&&!sonuclar.some(x=>x.id===secilen.id),option=x=>`<option value="${escapeDashboardText(x.id)}">${escapeDashboardText(x.ad)}</option>`;
         select.innerHTML='<option value="">'+(sonuclar.length?'Varlık seçin':'Aramaya uygun varlık bulunamadı')+'</option>'+(korunan?'<optgroup label="Mevcut seçim">'+option(secilen)+'</optgroup>':'')+sonuclar.map(option).join('');select.value=secilen?secilen.id:'';
-        if(ozet)ozet.textContent=(sonuclar.length?sonuclar.length+' varlık'+(aranan?' bulundu':' listeleniyor'):'Aramaya uygun varlık bulunamadı')+(korunan?' · Mevcut seçim korunuyor':'');if(temizle)temizle.disabled=!arama?.value;policeHedefBilgisiniGuncelle();
+        if(ozet)ozet.textContent=(sonuclar.length?sonuclar.length+' varlık'+(aranan?' bulundu':' listeleniyor'):'Aramaya uygun varlık bulunamadı')+(korunan?' · Mevcut seçim korunuyor':'');if(temizle)temizle.disabled=!arama?.value;policeHedefBilgisiniGuncelle();policeHedefSeciciGuncelle();
     }
     function policeHedefAramasiniTemizle(){const arama=document.getElementById('policeHedefArama');if(arama)arama.value='';policeHedefAramasiniUygula();arama?.focus();}
     policeHedefSecenekleriniDoldur=function(secili=''){
+        policeHedefListesiniKapat();
         const tip=document.getElementById('policeHedefTip')?.value||'arac',select=document.getElementById('policeHedefId'),secimGrubu=document.getElementById('policeHedefSecimGrubu'),serbest=document.getElementById('policeDigerAdGrubu'),bagli=policeBagliVarlikTuruMu(tip);
         const liste=tip==='arac'?araclar.filter(a=>aktifSirketeAit(a)&&(policeMetinAnahtari(a.durum)!=='SATILDI'||String(a.id)===String(secili))).map(a=>({id:String(a.id),ad:a.plaka+' · '+[a.marka,a.model].filter(Boolean).join(' ')})):tip==='daire'||tip==='isyeri'?kiraDaireler().filter(d=>aktifSirketeAit(d)&&((d.mulkTuru==='isyeri'?'isyeri':'daire')===tip||String(d.id)===String(secili))).map(d=>({id:String(d.id),ad:(d.kisaAd||d.ad||'İsimsiz mülk')+(d.uavt?' · UAVT '+d.uavt:' · UAVT YOK')})):[];
         secimGrubu.style.display=bagli?'':'none';serbest.style.display=bagli?'none':'';select.required=bagli;document.getElementById('policeDigerAd').required=!bagli;select.fdPoliceHedefListe=liste.sort((a,b)=>a.ad.localeCompare(b.ad,'tr',{numeric:true}));const arama=document.getElementById('policeHedefArama');if(arama){arama.value='';arama.placeholder=tip==='arac'?'Plaka, marka veya model ara':'Daire/işyeri adı veya UAVT ara';}policeHedefAramasiniUygula(String(secili||''));
@@ -29415,14 +29492,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v251';
+      const anahtar='fd-pwa-yenileme-v252';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=251',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=252',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
