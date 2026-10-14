@@ -20064,18 +20064,25 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     function magicpassCalismaAraliklariniKaydaCevir(araliklar){
         return araliklar.map(a=>{const giris=magicpassTamDakika(a.giris),cikis=magicpassTamDakika(a.cikis);return{girisZamani:giris?giris.toISOString():'',cikisZamani:cikis?cikis.toISOString():''};});
     }
-    function magicpassAralikSureleriniHesapla(araliklar,saatler,tatil=false){
+    function magicpassPazarYemekMolasiSaatleri(tarihKey){
+        const ayarlar=typeof uygulamaAyarlari==='object'?uygulamaAyarlari:null,kural=ayarlar?.magicpassPazarYemekMolasi;
+        if(kural?.aktif!==true||!/^\d{4}-(0[1-9]|1[0-2])$/.test(String(kural.gecerliAydan||''))||String(tarihKey).slice(0,7)<kural.gecerliAydan)return null;
+        const saat=/^([01]\d|2[0-3]):[0-5]\d$/;
+        if(!saat.test(String(kural.baslangic||''))||!saat.test(String(kural.bitis||''))||kural.bitis<=kural.baslangic)return null;
+        return{bas:magicpassSaatliTarih(tarihKey,kural.baslangic),bit:magicpassSaatliTarih(tarihKey,kural.bitis)};
+    }
+    function magicpassAralikSureleriniHesapla(araliklar,saatler,tatil=false,pazarYemekMolasi=null){
         return araliklar.map(aralik=>{
-            const {giris,cikis}=aralik;let normal=0,brutMesai=0;
+            const {giris,cikis}=aralik;let normal=0,brutMesai=0,yemekMolasiDakika=0;
             if(giris&&cikis&&cikis>giris){
-                if(tatil)brutMesai=magicpassFarkDakika(cikis,giris);
+                if(tatil){yemekMolasiDakika=pazarYemekMolasi?magicpassAralikDakikasi(giris,cikis,pazarYemekMolasi.bas,pazarYemekMolasi.bit):0;brutMesai=Math.max(0,magicpassFarkDakika(cikis,giris)-yemekMolasiDakika);}
                 else{
                     const normalBas=new Date(Math.max(giris,saatler.bas)),normalBit=new Date(Math.min(cikis,saatler.bit));
                     normal=Math.max(0,magicpassFarkDakika(normalBit,normalBas)-magicpassAralikDakikasi(normalBas,normalBit,saatler.yemekBas,saatler.yemekBit));
                     brutMesai=magicpassFarkDakika(cikis,new Date(Math.max(giris,saatler.mesaiBas||saatler.bit)));
                 }
             }
-            return{...aralik,normal,brutMesai,mesai:brutMesai};
+            return{...aralik,normal,brutMesai,mesai:brutMesai,...(pazarYemekMolasi?{yemekMolasiDakika}:{})};
         });
     }
     function magicpassAralikNetMesaisiniDagit(araliklar,kesinti){
@@ -20109,7 +20116,8 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         else if(hareketler.length>=2){giris=new Date(hareketler[0].zamanDamgasi);cikis=hareketler.length%2===0?new Date(hareketler[hareketler.length-1].zamanDamgasi):null;}
         else if(hareketler.length===1){const tek=new Date(hareketler[0].zamanDamgasi),orta=new Date((saatler.bas.getTime()+saatler.bit.getTime())/2);if(tek<=orta)giris=tek;else cikis=tek;}
         giris=magicpassTamDakika(giris);cikis=magicpassTamDakika(cikis);saatler.bas=magicpassTamDakika(saatler.bas);saatler.bit=magicpassTamDakika(saatler.bit);saatler.mesaiBas=magicpassTamDakika(saatler.mesaiBas);saatler.sinir=magicpassTamDakika(saatler.sinir);saatler.yemekBas=magicpassTamDakika(saatler.yemekBas);saatler.yemekBit=magicpassTamDakika(saatler.yemekBit);
-        let calismaAraliklari=magicpassAralikSureleriniHesapla(duzeltme?duzeltmeAraliklari:magicpassCalismaAraliklari(hareketler,saatler),saatler,Boolean(tatilAdi));
+        const pazarYemekMolasi=gunTuru==='pazar'?magicpassPazarYemekMolasiSaatleri(tarihKey):null;
+        let calismaAraliklari=magicpassAralikSureleriniHesapla(duzeltme?duzeltmeAraliklari:magicpassCalismaAraliklari(hareketler,saatler),saatler,Boolean(tatilAdi),pazarYemekMolasi);
         const simdi=magicpassTamDakika(new Date()),vardiyaBasladi=simdi>=saatler.bas,vardiyaBitti=simdi>saatler.bit;
         const ilkGiris=duzeltme?duzeltmeAraliklari[0]?.giris:giris;
         let normal=0,gec=ilkGiris?magicpassFarkDakika(ilkGiris,saatler.bas):0,erken=cikis?magicpassFarkDakika(saatler.bit,cikis):0,brutMesai=0,mesai=0,durum='Tamam',seviye='tamam';const uyarilar=[];
@@ -20127,7 +20135,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             else{durum='Çıkış Yok';seviye='hata';uyarilar.push('Çıkış Yok');}
             if(gec>0)uyarilar.push('Geç geldi '+magicpassDakikaMetni(gec));
         }else if(tatilAdi){
-            brutMesai=magicpassFarkDakika(cikis,giris);mesai=brutMesai;durum=tatilAdi+' Çalışması';
+            brutMesai=calismaAraliklari.reduce((t,a)=>t+a.brutMesai,0);mesai=brutMesai;durum=tatilAdi+' Çalışması';
         }else{
             normal=magicpassFarkDakika(new Date(Math.min(cikis,saatler.bit)),new Date(Math.max(giris,saatler.bas)));normal=Math.max(0,normal-magicpassAralikDakikasi(giris,cikis,saatler.yemekBas,saatler.yemekBit));
             brutMesai=magicpassFarkDakika(cikis,saatler.mesaiBas||saatler.bit);mesai=Math.max(0,brutMesai-gec-erken);
@@ -20140,7 +20148,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const eksikGiris=calismaAraliklari.some(a=>!a.giris&&a.cikis),eksikCikis=calismaAraliklari.some(a=>a.giris&&!a.cikis);
             if(eksikGiris||eksikCikis){if(eksikGiris&&!uyarilar.includes('Giriş Yok'))uyarilar.push('Giriş Yok');if(eksikCikis&&!uyarilar.includes('Çıkış Yok'))uyarilar.push('Çıkış Yok');durum=eksikGiris&&eksikCikis?'Giriş / Çıkış Yok':eksikGiris?'Giriş Yok':vardiyaBitti?'Çıkış Yok':'İçeride';seviye=vardiyaBitti||eksikGiris?'hata':'tamam';}
         }else if(calismaAraliklari.length){calismaAraliklari[0]={...calismaAraliklari[0],normal,brutMesai,mesai};}
-        return{tarih:tarihKey,vardiya,giris,cikis,normal,gec,erken,brutMesai,mesai,durum,seviye,uyarilar,hareketler,duzeltme,gunTuru,tatilAdi,calismaAraliklari};
+        return{tarih:tarihKey,vardiya,giris,cikis,normal,gec,erken,brutMesai,mesai,durum,seviye,uyarilar,hareketler,duzeltme,gunTuru,tatilAdi,calismaAraliklari,...(pazarYemekMolasi?{yemekMolasiDakika:calismaAraliklari.reduce((t,a)=>t+Number(a.yemekMolasiDakika||0),0)}:{})};
     };
 
     magicpassVardiyaMenuDoldur=function(){
@@ -26171,7 +26179,7 @@ body.fd-vk-detail-open{overflow:hidden}
 <script id="fdHesapDonemKorumaV220">
 // Only synchronous calculation boundaries are scoped. Never retain a global
 // historical settings object across an await, write, or company change.
-const FD_DONEM_AYAR_ALANLARI=['primTutari','primDevamsizlikSiniri','primYarimGunEksikMesaiDakika','gunlukCalismaSaati','mesaiKatsayisi','mesaiYuvarlamaAdimi','vardiyaTanimlari','vardiyaGunduzBaslik','vardiyaGeceBaslik','magicpassGunduzBaslangic','magicpassGunduzBitis','magicpassGunduzMesaiSiniri','magicpassGeceBaslangic','magicpassGeceBitis','magicpassGeceMesaiSiniri','magicpassMukerrerBasimDakika','magicpassGunlukMesaiEsikDakika','magicpassGunlukMesaiEsikAyarlandiV2','magicpassGunlukEksikMesaiEsikDakika'];
+const FD_DONEM_AYAR_ALANLARI=['primTutari','primDevamsizlikSiniri','primYarimGunEksikMesaiDakika','gunlukCalismaSaati','mesaiKatsayisi','mesaiYuvarlamaAdimi','vardiyaTanimlari','vardiyaGunduzBaslik','vardiyaGeceBaslik','magicpassGunduzBaslangic','magicpassGunduzBitis','magicpassGunduzMesaiSiniri','magicpassGeceBaslangic','magicpassGeceBitis','magicpassGeceMesaiSiniri','magicpassMukerrerBasimDakika','magicpassGunlukMesaiEsikDakika','magicpassGunlukMesaiEsikAyarlandiV2','magicpassGunlukEksikMesaiEsikDakika','magicpassPazarYemekMolasi'];
 const FD_DONEM_UCRET_ALANLARI=['ucret','gunlukUcret','gunlukYevmiye','ucretTutari','maas','maasTutari','primVar'];
 let fdHesapAktifDonem='';
 function fdDonemSurumuBul(history,month){return (Array.isArray(history)?history:[]).filter(x=>/^\d{4}-\d{2}$/.test(String(x.from||''))&&String(x.from)<=String(month)&&x.values&&typeof x.values==='object').sort((a,b)=>String(b.from).localeCompare(String(a.from)))[0]||null;}
@@ -29471,14 +29479,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v259';
+      const anahtar='fd-pwa-yenileme-v260';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=259',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=260',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
