@@ -4883,21 +4883,23 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
     let supabaseKaydetmeKuyrugu = Promise.resolve();
     let supabaseKaydetmeBekleyen = 0;
-    function supabaseVerileriKaydet() {
+    function supabaseVerileriKaydet(kapsam = null) {
+        const kayitKapsami = kapsam == null ? null : { modul:String(kapsam.modul||''), personelId:String(kapsam.personelId||''), tarih:String(kapsam.tarih||'') };
+        if (kayitKapsami && (kayitKapsami.modul !== 'vardiya' || !kayitKapsami.personelId || !/^\d{4}-\d{2}-\d{2}$/.test(kayitKapsami.tarih))) return Promise.reject(new Error('Giriş–çıkış kayıt kapsamı geçersiz.'));
         const fdVeriOturumu = fdPortalVeriOturumu();
         supabaseKaydetmeBekleyen++;
-        const islem = supabaseKaydetmeKuyrugu.catch(() => {}).then(() => { if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; önceki kayıt işlemi iptal edildi.'); return supabaseVerileriKaydetGercek(fdVeriOturumu); }).finally(() => { supabaseKaydetmeBekleyen = Math.max(0, supabaseKaydetmeBekleyen - 1); });
+        const islem = supabaseKaydetmeKuyrugu.catch(() => {}).then(() => { if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; önceki kayıt işlemi iptal edildi.'); return supabaseVerileriKaydetGercek(fdVeriOturumu,kayitKapsami); }).finally(() => { supabaseKaydetmeBekleyen = Math.max(0, supabaseKaydetmeBekleyen - 1); });
         supabaseKaydetmeKuyrugu = islem;
         return islem;
     }
 
-    async function supabaseVerileriKaydetGercek(fdVeriOturumu = fdPortalVeriOturumu()) {
+    async function supabaseVerileriKaydetGercek(fdVeriOturumu = fdPortalVeriOturumu(), kayitKapsami = null) {
         if (!activeUser?.sirketId) throw new Error('Şirket oturumu bulunamadı.');
         const kapsamDogrula = () => { if (!fdPortalVeriOturumuGecerli(fdVeriOturumu)) throw new Error('Oturum değişti; önceki kayıt işlemi iptal edildi.'); };
         kapsamDogrula();
         const sirketId = String(activeUser.sirketId);
         if (activeUser?.rol === 'Personel') { veriOnbelleginiKaydet(); return; }
-        if (yuklenenVeriler.has('sirketler') && veriDegistiMi('sirketler')) {
+        if (!kayitKapsami && yuklenenVeriler.has('sirketler') && veriDegistiMi('sirketler')) {
             const sirketlerJson = JSON.stringify(sirketler), sirket = JSON.parse(sirketlerJson).find(item => String(item.id) === sirketId);
             if (sirket) {
                 const { error } = await supabaseClient.from('companies').update({ short_name:sirket.kisaAd || sirket.ad || null, title:sirket.unvan || sirket.kisaAd || sirket.ad || null, data:sirket }).eq('id', sirketId);
@@ -4907,8 +4909,18 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         }
         const anahtarlar = ['personeller', 'izinler', 'kullanicilar', 'puantaj', 'subeler', 'avanslar', 'ekOdemeler', 'kkd', 'vardiya', 'irsaliyeler', 'kiratakip', 'ihracat', 'icralar', 'araclar', 'akaryakit'];
         const atlananKapaliDonemler = new Set(); let basariliKayitSayisi = 0;
+        const kayitKapsaminda = kayit => !kayitKapsami || (kayit.kayitTipi === 'magicpassDuzeltme' && String(kayit.pId) === kayitKapsami.personelId && String(kayit.tarih) === kayitKapsami.tarih && String(kayit.sirketId||sirketId) === sirketId);
+        const kapsamliIstegiCalistir = async olustur => {
+            kapsamDogrula();let sonuc=await olustur();kapsamDogrula();
+            // SQL 57014 explicitly aborts the statement. Retry this day's stable-ID
+            // operation once only; never retry ambiguous network/permission errors.
+            if(kayitKapsami && sonuc.error?.code==='57014' && /statement timeout/i.test(sonuc.error.message||'')){
+                kapsamDogrula();sonuc=await olustur();kapsamDogrula();
+            }
+            return sonuc;
+        };
         for (const anahtar of anahtarlar) {
-            kapsamDogrula(); if (!yuklenenVeriler.has(anahtar)) continue;
+            kapsamDogrula(); if ((kayitKapsami && anahtar !== kayitKapsami.modul) || !yuklenenVeriler.has(anahtar)) continue;
             // Snapshot the values sent, not mutable local data after an awaited reply.
             const yeniJson = JSON.stringify(veriDizisiniGetir(anahtar));
             if (veriSonKayitGoruntuleri.get(anahtar) === yeniJson) continue;
@@ -4927,7 +4939,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 if (gonderilen === undefined ? !guncel : JSON.stringify(guncel) === JSON.stringify(gonderilen)) supabaseYerelKaydiGeriAl(anahtar,legacyId,eskiHarita.get(legacyId));
             };
             const degisenler = [];
-            yeniHarita.forEach((kayit,legacyId) => { if (eskiHarita.get(legacyId) !== JSON.stringify(kayit)) degisenler.push({company_id:sirketId,module:anahtar,legacy_id:legacyId,record_year:supabaseKayitYili(anahtar,kayit),employee_legacy_id:supabasePersonelKimligi(kayit,anahtar)||null,data:kayit}); });
+            yeniHarita.forEach((kayit,legacyId) => { if (kayitKapsaminda(kayit) && eskiHarita.get(legacyId) !== JSON.stringify(kayit)) degisenler.push({company_id:sirketId,module:anahtar,legacy_id:legacyId,record_year:supabaseKayitYili(anahtar,kayit),employee_legacy_id:supabasePersonelKimligi(kayit,anahtar)||null,data:kayit}); });
             try {
                 if (anahtar === 'avanslar') {
                     // Never send a blind bulk upsert/delete of financial records.
@@ -4951,9 +4963,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                     continue;
                 }
                 if (degisenler.length) {
-                    let istek = supabaseClient.from('portal_records').upsert(degisenler,{onConflict:'company_id,module,legacy_id'});
-                    if (anahtar === 'personeller') istek = istek.select('module,legacy_id,data');
-                    const {error,data:kaydedilenSatirlar} = await istek; kapsamDogrula();
+                    const {error,data:kaydedilenSatirlar} = await kapsamliIstegiCalistir(()=>{
+                        let istek = supabaseClient.from('portal_records').upsert(degisenler,{onConflict:'company_id,module,legacy_id'});
+                        if (anahtar === 'personeller') istek = istek.select('module,legacy_id,data');
+                        return istek;
+                    });
                     if (!error) {
                         if (anahtar === 'personeller') fdUcretDonemleriniYereldeGuncelle(kaydedilenSatirlar);
                         uygulandi(degisenler,kaydedilenSatirlar); basariliKayitSayisi += degisenler.length;
@@ -4970,9 +4984,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                         }
                     }
                 }
-                const silinenler = [...eskiHarita.keys()].filter(id => !yeniHarita.has(id));
+                const silinenler = [...eskiHarita.keys()].filter(id => !yeniHarita.has(id) && kayitKapsaminda(JSON.parse(eskiHarita.get(id))));
                 if (silinenler.length) {
-                    kapsamDogrula(); const {error} = await supabaseClient.from('portal_records').delete().eq('company_id',sirketId).eq('module',anahtar).in('legacy_id',silinenler); kapsamDogrula();
+                    const {error} = await kapsamliIstegiCalistir(()=>supabaseClient.from('portal_records').delete().eq('company_id',sirketId).eq('module',anahtar).in('legacy_id',silinenler));
                     if (!error) { silinenler.forEach(id=>sunucuHaritasi.delete(id)); basariliKayitSayisi += silinenler.length; }
                     else {
                         if (!supabaseKapaliDonemHatasiMi(error)) throw error;
@@ -19884,7 +19898,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(oncekiHesap){const oncekiGiris=oncekiHesap.giris instanceof Date&&!Number.isNaN(oncekiHesap.giris.getTime())?oncekiHesap.giris:null,oncekiCikis=oncekiHesap.cikis instanceof Date&&!Number.isNaN(oncekiHesap.cikis.getTime())?oncekiHesap.cikis:null;yeniKayit.denetimOnceki={...(mevcutDuzeltme||yeniKayit),calismaAraliklari:magicpassCalismaAraliklariniKaydaCevir(oncekiHesap.calismaAraliklari?.length?oncekiHesap.calismaAraliklari:[{giris:oncekiGiris,cikis:oncekiCikis}]),girisZamani:oncekiGiris?oncekiGiris.toISOString():'',cikisZamani:oncekiCikis?oncekiCikis.toISOString():'',giris:oncekiGiris?magicpassYerelTarihSaatDegeri(oncekiGiris).slice(11,16):'',cikis:oncekiCikis?magicpassYerelTarihSaatDegeri(oncekiCikis).slice(11,16):''};delete yeniKayit.denetimOnceki.denetimOnceki;}
         vardiyaKayitlari.push(yeniKayit);
         magicpassDuzeltmeIslemKilidi(true);
-        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(!vardiyaKayitlari.some(k=>magicpassDuzeltmeKayitlariAyniMi(k,yeniKayit)))throw new Error('Bu günün düzeltmesi kaydedilmedi; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast(mevcutDuzeltme?'Giriş–çıkış düzeltmesi güncellendi.':'Ayrıntılı giriş–çıkış düzeltmesi kaydedildi.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId,yeniKayit);showToast('Düzeltme kaydedilemedi: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
+        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet({modul:'vardiya',personelId:pId,tarih});if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(!vardiyaKayitlari.some(k=>magicpassDuzeltmeKayitlariAyniMi(k,yeniKayit)))throw new Error('Bu günün düzeltmesi kaydedilmedi; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast(mevcutDuzeltme?'Giriş–çıkış düzeltmesi güncellendi.':'Ayrıntılı giriş–çıkış düzeltmesi kaydedildi.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId,yeniKayit);showToast('Düzeltme kaydedilemedi: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
     }
 
     function magicpassDuzeltmeKayitlariAyniMi(a,b){
@@ -19908,7 +19922,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(!varMi)return showToast('Bu gün için kayıtlı manuel düzeltme yok.','warning');if(!(await fdYuzerOnaySor('Bu güne ait manuel giriş–çıkış düzeltmesi kaldırılsın mı?','Düzeltmeyi Kaldır','Kaldır')))return;
         if(magicpassDuzeltmeKayitIslemi||!magicpassDuzeltmeOturumuGecerli(oturum))return;const oncekiListe=vardiyaKayitlari.slice();magicpassDuzeltmeIslemKilidi(true);
         vardiyaKayitlari=vardiyaKayitlari.filter(k=>!(k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)));
-        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet();if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(vardiyaKayitlari.some(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)))throw new Error('Düzeltme kaldırılamadı; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast('Manuel düzeltme kaldırıldı.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId);showToast('Düzeltme kaldırılamadı: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
+        try{yuklenenVeriler.add('vardiya');await supabaseVerileriKaydet({modul:'vardiya',personelId:pId,tarih});if(!magicpassDuzeltmeOturumuGecerli(oturum))return;if(vardiyaKayitlari.some(k=>k.kayitTipi==='magicpassDuzeltme'&&aktifSirketeAit(k)&&String(k.pId)===String(pId)&&String(k.tarih)===String(tarih)))throw new Error('Düzeltme kaldırılamadı; dönem kilidini kontrol edin.');modalKapat('modalMagicpassDuzeltme');magicpassAylikCizelgeyiCiz();showToast('Manuel düzeltme kaldırıldı.');}catch(error){if(!magicpassDuzeltmeOturumuGecerli(oturum))return;magicpassDuzeltmeKaydiniGeriAl(pId,tarih,oncekiListe,oturum.sirketId);showToast('Düzeltme kaldırılamadı: '+(error.message||error),'error');}finally{magicpassDuzeltmeIslemKilidi(false);}
     }
 
     magicpassSeciliGunlereGunTuruAta=async function(gunTuru){
@@ -29479,14 +29493,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v260';
+      const anahtar='fd-pwa-yenileme-v261';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=260',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=261',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
