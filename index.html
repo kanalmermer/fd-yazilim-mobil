@@ -29474,6 +29474,63 @@ function fdAracListeCiz(){
     wrap('openPersonelDetayModal', mountDetail, true);
 })(window);
 </script>
+<script id="fdWhatsappFullTemplatePreviewV262">
+/* Read-only, complete WhatsApp previews next to the editable message bodies. */
+(function(root){
+ 'use strict';
+ const state={key:'',epoch:0,loaded:0,promise:null,personnel:null,price:null,error:''};
+ const signature='Kanal Mermer bildirim sisteminden gönderilmiştir.';
+ function context(){const u=typeof activeUser!=='undefined'?activeUser:null;return u&&['Admin','Yonetici'].includes(u.rol)?[u.sirketId,u.supabaseUserId||u.id||u.tcNo,u.rol].join('|'):''}
+ function content(name,message){let value=String(message||'').trim();for(const prefix of ['Sayın '+name+',',name+',']){if(name&&value.slice(0,prefix.length).toLocaleLowerCase('tr-TR')===prefix.toLocaleLowerCase('tr-TR')){value=value.slice(prefix.length).trimStart();break}}if(value.endsWith(signature))value=value.slice(0,-signature.length).trimEnd();return value}
+ function render(template,message,title,price=false,name='{AD}'){
+  const parts=Array.isArray(template?.components)?template.components:[],body=parts.find(p=>p.type==='BODY');
+  if(!body?.text)return '';
+  const two=body.text.includes('{{2}}')&&!body.text.includes('{{3}}');
+  const parameters=two?[name,content(name,message)]:[name,price?'fiyat listesi':title,message];
+  return parts.filter(p=>['HEADER','BODY','FOOTER'].includes(p.type)&&typeof p.text==='string').map(p=>p.text.replace(/\{\{\s*(\d+)\s*\}\}/g,(match,n)=>parameters[Number(n)-1]??match)).join('\n\n');
+ }
+ function paint(){
+  document.querySelectorAll('textarea[id^="ayarMagicBildirim"]').forEach(input=>{
+   const box=input.parentElement.querySelector('.fd-wa-full-template');if(!box)return;
+   const price=input.id==='ayarMagicBildirimFiyatDegisiklik',template=price?state.price:state.personnel;
+   const label=box.querySelector('strong'),status=box.querySelector('small'),pre=box.querySelector('pre');
+   const approved=template?.status==='APPROVED'&&template?.category==='UTILITY';
+   label.textContent=approved?'WhatsApp’a gidecek tam mesaj':template?.category==='MARKETING'?'Şablondaki tam mesaj':template?'Onay sonrası tam mesaj':'Tam mesaj önizlemesi';
+   status.textContent=template?(template.category==='MARKETING'?'Meta pazarlama olarak sınıflandırdı · Şablonlu gönderim bekletiliyor':approved?'Onaylı':template.status==='PENDING'?'Meta onayı bekleniyor':String(template.status||'Onay doğrulanamadı')):(state.error||'Şablon kontrol ediliyor…');
+   pre.textContent=template?render(template,input.value,input.parentElement.querySelector('label')?.textContent||'Bilgilendirme',price):'Tam mesaj henüz doğrulanamadı.';
+  });
+ }
+ async function load(force=false){
+  const key=context();if(!key)return;
+  if(state.key!==key){state.key=key;state.epoch++;state.loaded=0;state.promise=null;state.personnel=null;state.price=null;state.error=''}
+  if(state.promise)return state.promise;if(!force&&Date.now()-state.loaded<60000){paint();return}
+  const epoch=state.epoch;state.error='';paint();
+  const valid=()=>context()===key&&state.key===key&&state.epoch===epoch;
+  const promise=(async()=>{
+   try{
+    const [p,f]=await Promise.all([whatsappCagir({action:'template-info',utility:true}),whatsappCagir({action:'price-template-info'})]);
+    if(!valid())return;
+    state.personnel=(p.templates||[]).find(t=>t.name===p.templateName&&t.language==='tr')||null;
+    state.price=(f.templates||[]).find(t=>t.name===f.templateName&&t.language==='tr')||null;
+    state.loaded=Date.now();state.error=state.personnel?'':'Personel şablonu doğrulanamadı.';
+   }catch(error){if(!valid())return;state.error='Tam mesaj doğrulanamadı. Durumu yenileyin.';state.personnel=null;state.price=null}
+   finally{if(valid()){state.promise=null;paint()}}
+  })();state.promise=promise;return promise;
+ }
+ function install(){
+  if(!context())return;
+  if(!document.getElementById('fdWhatsappFullPreviewStyle')){const style=document.createElement('style');style.id='fdWhatsappFullPreviewStyle';style.textContent='.fd-wa-full-template{margin:8px 0 14px;padding:11px 13px;border:1px solid #c9e2d7;border-radius:9px;background:#f3faf6}.fd-wa-full-template>div{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.fd-wa-full-template strong{font-size:12px;color:#22543d}.fd-wa-full-template small{font-size:11px;color:#64748b}.fd-wa-full-template pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 inherit;font-family:inherit;margin:8px 0 0;color:#253e35}.fd-wa-full-template button{border:0;background:transparent;color:#0369a1;font-size:11px;cursor:pointer;padding:2px 0}';document.head.append(style)}
+  document.querySelectorAll('textarea[id^="ayarMagicBildirim"]').forEach(input=>{
+   if(input.parentElement.querySelector('.fd-wa-full-template'))return;
+   const box=document.createElement('section');box.className='fd-wa-full-template';box.innerHTML='<div><strong></strong><small></small><button type="button">Durumu yenile</button></div><pre></pre>';
+   input.parentElement.append(box);input.addEventListener('input',paint);box.querySelector('button').onclick=()=>load(true);
+  });paint();return load();
+ }
+ root.fdWhatsappTamSablonOnizle={install,refresh:()=>load(true),render,content};
+ const previous=root.magicpassGunlukRaporAyarlariniDoldur;
+ if(typeof previous==='function')root.magicpassGunlukRaporAyarlariniDoldur=function(){const value=previous.apply(this,arguments);install();return value};
+})(window);
+</script>
 
 <script id="fdPwaKurulumScripti">
 (function(){
@@ -29493,14 +29550,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v261';
+      const anahtar='fd-pwa-yenileme-v262';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=261',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=262',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
