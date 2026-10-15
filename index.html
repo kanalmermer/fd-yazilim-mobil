@@ -29486,7 +29486,7 @@ function fdAracListeCiz(){
   const parts=Array.isArray(template?.components)?template.components:[],body=parts.find(p=>p.type==='BODY');
   if(!body?.text)return '';
   const two=body.text.includes('{{2}}')&&!body.text.includes('{{3}}');
-  const parameters=two?[name,content(name,message)]:[name,price?'fiyat listesi':title,message];
+  const parameters=(two?[name,content(name,message)]:[name,price?'fiyat listesi':title,message]).map(value=>String(value||'').replace(/[\r\n\t]+/g,' ').replace(/ {4,}/g,' ').trim());
   return parts.filter(p=>['HEADER','BODY','FOOTER'].includes(p.type)&&typeof p.text==='string').map(p=>p.text.replace(/\{\{\s*(\d+)\s*\}\}/g,(match,n)=>parameters[Number(n)-1]??match)).join('\n\n');
  }
  function paint(){
@@ -29550,14 +29550,14 @@ function fdAracListeCiz(){
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v262';
+      const anahtar='fd-pwa-yenileme-v263';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=262',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=263',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
