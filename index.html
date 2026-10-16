@@ -15810,8 +15810,9 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
             const toplamUcretGunu = toplamX + toplamPazar + toplamResmiTatil + toplamY + toplamU;
             const fazlaMesaiSaati = String(ozet.fazlaMesaiSaatiManuel) === 'true' ? Number(ozet.fazlaMesaiSaati || 0) : magicpassAylikMesaiSaati(p, ay, yil);
             const gunlukCalismaSaati = ayarSayisi('gunlukCalismaSaati', 7.5);
-            const pazarMesaiSaati = String(ozet.pazarMesaiSaatiManuel) === 'true' ? Number(ozet.pazarMesaiSaati || 0) : pazarCalisma * gunlukCalismaSaati;
-            const resmiTatilMesaiSaati = String(ozet.resmiTatilMesaiSaatiManuel) === 'true' ? Number(ozet.resmiTatilMesaiSaati || 0) : resmiTatilCalisma * gunlukCalismaSaati + magicpassAylikYarimResmiTatilMesaiSaati(p, ay, yil);
+            const birlesikMesai = magicpassBirlesikMesaiDonemiMi(p, ay, yil);
+            const pazarMesaiSaati = String(ozet.pazarMesaiSaatiManuel) === 'true' ? Number(ozet.pazarMesaiSaati || 0) : birlesikMesai ? 0 : pazarCalisma * gunlukCalismaSaati;
+            const resmiTatilMesaiSaati = String(ozet.resmiTatilMesaiSaatiManuel) === 'true' ? Number(ozet.resmiTatilMesaiSaati || 0) : birlesikMesai ? 0 : resmiTatilCalisma * gunlukCalismaSaati + magicpassAylikYarimResmiTatilMesaiSaati(p, ay, yil);
             const primVar = p.primVar === 'Evet' && primDurumu.hakkiVar;
             const primTutari = String(ozet.primTutariManuel) === 'true' ? Number(ozet.primTutari || 0) : (primVar ? primSabitTutar : 0);
             const avansKesintisi = personelAylikAvansKesintisi(p.id, ay, yil);
@@ -20225,16 +20226,16 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         if(/ücretli|ucretli|düğün|dugun|evlenme|doğum|dogum|ölüm|olum|babalık|babalik|süt izni|sut izni/.test(anahtar))return' magicpass-izin-ucretli';
         return' magicpass-izin-diger';
     }
-    // Yalnızca listede hesaplanmış net dakikaları ayırır; saat/ücret kayıtlarını değiştirmez.
+    // Türlerin toplamı - ayın geç/erken toplamı. Günlük netleri toplamaz;
+    // ham kayıtları değiştirmez ve net sonucu yalnızca aktarımda yuvarlar.
     function magicpassMesaiTurlerineGoreTopla(liste){
         // Aylık mahsup puantajla aynıdır. Günlük sıfıra sabitlenen netleri
         // toplamak, başka günlerdeki karşılanmamış eksikleri kaybettirir.
         const ozet={normal:0,pazar:0,resmi:0,brut:0,gec:0,erken:0,eksik:0,mahsup:0,kalanEksik:0,gunlukNet:0,gunlerArasiMahsup:0,ayriResmi:0,toplam:0,puantaj:0,yuvarlama:0},dakika=deger=>Number.isFinite(Number(deger))?Math.max(0,Number(deger)):0;
         for(const kayit of liste||[]){
-            const brut=dakika(kayit.brutMesai),net=dakika(kayit.mesai),ayriResmi=Math.min(net,Math.max(0,dakika(kayit.resmiTatilMesaiDakika)-brut));
-            // Arefe mesaisi mevcut puantajda ayrı resmî tatil alanındadır;
-            // fazla mesai havuzuna ikinci kez katılmaz, ayrıca açıklanır.
-            const resmi=kayit.gunTuru==='resmiTatil'?brut:Math.min(brut,dakika(kayit.resmiTatilMesaiDakika));
+            const hamBrut=dakika(kayit.brutMesai),net=dakika(kayit.mesai),brut=Math.max(hamBrut,net),ayriResmi=Math.min(net,Math.max(0,dakika(kayit.resmiTatilMesaiDakika)-hamBrut));
+            // Yarım günlük resmî tatil de resmî tatil grubuna dahildir.
+            const resmi=kayit.gunTuru==='resmiTatil'||kayit.gunTuru==='yarimResmiTatil'?brut:Math.min(brut,dakika(kayit.resmiTatilMesaiDakika));
             ozet.resmi+=resmi;ozet[kayit.gunTuru==='pazar'?'pazar':'normal']+=brut-resmi;
             ozet.brut+=brut;ozet.gec+=dakika(kayit.gec);ozet.erken+=dakika(kayit.erken);
             ozet.gunlukNet+=Math.max(0,net-ayriResmi);ozet.ayriResmi+=ayriResmi;
@@ -20247,16 +20248,42 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         ozet.yuvarlama=Math.max(0,ozet.puantaj-ozet.toplam);
         return ozet;
     }
-    function magicpassAylikMesaiAciklamalari(){return [];}
-    function magicpassAylikTabloOzetiniEkle(tablo){tablo?.tFoot?.remove();}
+    function magicpassBirlesikMesaiDonemiMi(personel,ay,yil){
+        // Yeni yöntem açık Ekim 2026 döneminden itibaren uygulanır.
+        // Önceki dönemlerin maaş hesabını geriye dönük değiştirmez.
+        const donem=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0');
+        return donem>='2026-10'&&magicpassTopluSaatAydaKayitVarMi(personel,donem);
+    }
+    function magicpassAylikPuantajMesaiHesabi(liste,donem){
+        const hesap=magicpassMesaiTurlerineGoreTopla(liste);
+        if(String(donem)>='2026-10')return hesap;
+        const toplam=alan=>(liste||[]).reduce((t,k)=>t+Number(k[alan]||0),0),net=Math.max(0,toplam('brutMesai')-toplam('gec')-toplam('erken'));
+        const yuvarla=()=>Math.round(mesaiSaatiniYukariYarimaYuvarla(net/60)*60);
+        return {...hesap,toplam:net,puantaj:typeof fdHesapDonemindeCalistir==='function'?fdHesapDonemindeCalistir(donem,yuvarla):yuvarla()};
+    }
+    function magicpassAylikOzetKalemleri(liste){
+        const hesap=magicpassMesaiTurlerineGoreTopla(liste);
+        return [
+            [['erken','Erken Çıkılan',hesap.erken],['gec','Geç Kalınan',hesap.gec],['gecerken','Geç + Erken Toplamı',hesap.eksik]],
+            [['normal','Hafta İçi Mesai',hesap.normal],['resmi','Resmî Tatil Mesaisi',hesap.resmi],['pazar','Pazar Mesaisi',hesap.pazar],['mesai','Toplam Yapılan Mesai',hesap.brut]],
+            [['net','Net Kalan Mesai',hesap.toplam]]
+        ];
+    }
+    function magicpassAylikMesaiAciklamalari(liste){
+        return magicpassAylikOzetKalemleri(liste).flat().map(([,ad,dakika])=>ad+': '+magicpassDakikaMetni(dakika));
+    }
+    function magicpassAylikTabloOzetiniEkle(tablo,liste){
+        if(!tablo)return;tablo.tFoot?.remove();
+        const hucre=tablo.createTFoot().insertRow().insertCell();hucre.colSpan=tablo.tHead?.rows[0]?.cells.length||12;
+        hucre.style.cssText='white-space:normal!important;text-align:left!important;padding:8px!important;font-size:11px;color:#52647a;line-height:1.5';
+        hucre.textContent='Not: '+magicpassAylikMesaiAciklamalari(liste).join(' · ');
+    }
     function magicpassAylikPdfOzetHtml(liste){
-        const toplam=alan=>liste.reduce((t,k)=>t+Number(k[alan]||0),0),alanlar=[['Geç Kalınan',toplam('gec')],['Erken Çıkılan',toplam('erken')],['Fazla Mesai',liste.reduce((t,k)=>t+magicpassYapilanMesaiDakikasi(k),0)]];
-        return '<section style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:8px 0">'+alanlar.map(([ad,dakika])=>'<div style="padding:8px 10px;background:#f4f8fb;border:1px solid #d7e1e9;border-radius:5px;font-size:10px;line-height:1.4"><span>'+ad+'</span><strong style="display:block;font-size:14px;color:#173c4a">'+magicpassDakikaMetni(dakika)+'</strong></div>').join('')+'</section>';
+        return magicpassAylikOzetKalemleri(liste).map(grup=>'<section style="display:grid;grid-template-columns:repeat('+grup.length+',minmax(0,1fr));gap:6px;margin:6px 0">'+grup.map(([key,ad,dakika])=>'<div style="padding:6px 9px;background:'+(key==='net'?'#eef8f5':'#f4f8fb')+';border:1px solid #d7e1e9;border-radius:5px;font-size:10px;line-height:1.4"><span>'+ad+'</span><strong style="display:block;font-size:14px;color:#173c4a">'+magicpassDakikaMetni(dakika)+'</strong></div>').join('')+'</section>').join('');
     }
     function magicpassNetMesaiOzetHtml(liste){return magicpassAylikOzetHtml(liste);}
     function magicpassAylikOzetHtml(liste){
-        const toplam=alan=>liste.reduce((t,k)=>t+Number(k[alan]||0),0),kalem=(key,ad,dakika)=>'<div data-magicpass-metrik="'+key+'"><span>'+ad+'</span><strong>'+magicpassDakikaMetni(dakika)+'</strong></div>';
-        return '<section class="magicpass-sade-ozet" aria-label="Çalışma süreleri toplamları">'+kalem('gec','Geç Kalınan',toplam('gec'))+kalem('erken','Erken Çıkılan',toplam('erken'))+kalem('mesai','Fazla Mesai',liste.reduce((t,k)=>t+magicpassYapilanMesaiDakikasi(k),0))+'</section>';
+        return '<section class="magicpass-sade-ozet" aria-label="Aylık mesai hesabı">'+magicpassAylikOzetKalemleri(liste).map((grup,i)=>'<div class="magicpass-ozet-satiri magicpass-ozet-satiri-'+i+'">'+grup.map(([key,ad,dakika])=>'<div data-magicpass-metrik="'+key+'"><span>'+ad+'</span><strong>'+magicpassDakikaMetni(dakika)+'</strong></div>').join('')+'</div>').join('')+'</section>';
     }
     magicpassAylikCizelgeyiCiz=function(){
         const tbody=document.querySelector('#magicpassAylikTablo tbody');if(!tbody)return;tbody.closest('table')?.tFoot?.remove();const personel=personeller.find(p=>String(p.id)===String(document.getElementById('magicpassPersonel')?.value)&&aktifSirketeAit(p)&&(!isPersonelUser()||String(p.id)===String(activeUser?.tcNo||'')));magicpassSeciliGunler.clear();const baslik=document.getElementById('magicpassSeciliPersonelBaslik'),bilgi=document.getElementById('magicpassSeciliPersonelBilgi');
@@ -20276,7 +20303,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     magicpassAylikMesaiSaati=function(personel,ay,yil){
         if(!personel?.cihazPersonelNo)return 0;
         const ayDegeri=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0'),liste=magicpassAylikCizelgeVerisi(personel,ayDegeri),toplam=alan=>liste.reduce((t,k)=>t+Number(k[alan]||0),0);
-        return magicpassMesaiTurlerineGoreTopla(liste).puantaj/60;
+        return magicpassAylikPuantajMesaiHesabi(liste,ayDegeri).puantaj/60;
     };
     magicpassAylikExcelAl=function(){
         const personel=magicpassRaporPersoneli();if(!personel)return showToast('Önce soldaki listeden personel seçin.','warning');if(typeof XLSX==='undefined')return showToast('Excel kütüphanesi yüklenemedi.','error');
@@ -20284,6 +20311,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
         const hesap=magicpassMesaiTurlerineGoreTopla(liste);
         const veri=[['AYLIK PERSONEL GİRİŞ–ÇIKIŞ RAPORU'],['Personel',personel.ad||'-'],['Şube',personel.sube||'Merkez'],['Görev',personel.gorev||'-'],['Cihaz No',personel.cihazPersonelNo||'-'],['Dönem',ay],[],['Tarih','Gün','Vardiya','Giriş','Çıkış','Normal','Geç','Erken','Fazla Mesai','Toplam Çalışma','Durum','Açıklama'],...satirlar,[],['TOPLAM','','','','',magicpassDakikaMetni(toplam('normal')),magicpassDakikaMetni(hesap.gec),magicpassDakikaMetni(hesap.erken),magicpassDakikaMetni(liste.reduce((t,k)=>t+magicpassYapilanMesaiDakikasi(k),0)),magicpassDakikaMetni(liste.reduce((t,k)=>t+magicpassToplamCalismaDakikasi(k),0))]];
         const ws=XLSX.utils.aoa_to_sheet(veri),wb=XLSX.utils.book_new();ws['!cols']=[{wch:12},{wch:11},{wch:13},{wch:8},{wch:8},{wch:9},{wch:8},{wch:8},{wch:14},{wch:16},{wch:22},{wch:35}];ws['!pageSetup']={orientation:'landscape',paperSize:9,fitToWidth:1,fitToHeight:1};ws['!margins']={left:.2,right:.2,top:.3,bottom:.3,header:.1,footer:.1};ws['!printArea']='A1:L'+veri.length;XLSX.utils.book_append_sheet(wb,ws,'Giriş Çıkış');
+        const bilgi=[['Personel',personel.ad||'-'],['Dönem',ay],...magicpassAylikOzetKalemleri(liste).flat().map(([,ad,dakika])=>[ad,magicpassDakikaMetni(dakika)])],bilgiSayfasi=XLSX.utils.aoa_to_sheet(bilgi);bilgiSayfasi['!cols']=[{wch:28},{wch:24}];XLSX.utils.book_append_sheet(wb,bilgiSayfasi,'Rapor Bilgisi');
         XLSX.writeFile(wb,magicpassRaporDosyaAdi(personel,'xlsx'));showToast('Aylık giriş–çıkış Excel raporu hazırlandı.');
     };
 
@@ -20517,6 +20545,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     };
 
     magicpassPuantajaAktar = async function() {
+        if(isPersonelUser())return showToast('Puantaja aktarım yetkiniz yok.','warning');
         const ayMetni = document.getElementById('magicpassAy')?.value;
         if (!ayMetni) return;
         const tarih = ayMetni + '-00';
@@ -20526,7 +20555,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
 
         aktifler.forEach(personel => {
             const liste = magicpassAylikCizelgeVerisi(personel, ayMetni);
-            const hesap = magicpassMesaiTurlerineGoreTopla(liste);
+            const hesap = magicpassAylikPuantajMesaiHesabi(liste, ayMetni);
             const aylikNetDakika = hesap.toplam;
             const yuvarlanmis = hesap.puantaj / 60;
             const mevcut = puantajVerileri.find(k =>
@@ -20549,6 +20578,11 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
                 fazlaMesaiSaati:yuvarlanmis,
                 fazlaMesaiSaatiManuel:'false',
                 fazlaMesaiKaynagi:'MagicPass',
+                ...(ayMetni>='2026-10'?{
+                    fazlaMesaiHesapSurumu:'birlesik-v1',
+                    ...(String(mevcut?.pazarMesaiSaatiManuel)!=='true'?{pazarMesaiSaati:0}:{}),
+                    ...(String(mevcut?.resmiTatilMesaiSaatiManuel)!=='true'?{resmiTatilMesaiSaati:0}:{})
+                }:{}),
                 fazlaMesaiHamDakika:aylikNetDakika
             };
             if (mevcut) puantajVerileri[puantajVerileri.indexOf(mevcut)] = yeni;
@@ -20924,7 +20958,7 @@ body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
     magicpassAylikMesaiSaati=function(personel,ay,yil){
         const ayDegeri=String(yil)+'-'+String(Number(ay)+1).padStart(2,'0');if(!magicpassTopluSaatAydaKayitVarMi(personel,ayDegeri))return 0;
         const liste=magicpassAylikCizelgeVerisi(personel,ayDegeri),toplam=alan=>liste.reduce((t,k)=>t+Number(k[alan]||0),0);
-        return magicpassMesaiTurlerineGoreTopla(liste).puantaj/60;
+        return magicpassAylikPuantajMesaiHesabi(liste,ayDegeri).puantaj/60;
     };
 
     const fdOpenVardiyaAppOnceki=openVardiyaApp;
@@ -23639,7 +23673,7 @@ document.addEventListener('click',function(e){
             }
             if(harf==='X')toplamX++;else if(harf==='HS'||harf==='PZ'){if(tarihNesnesi<=bugun){toplamPazar++;if(harf==='PZ')pazarCalisma++}}else if(harf==='RT'||harf==='RC'){if(tarihNesnesi<=bugun){toplamResmiTatil++;if(harf==='RC')resmiTatilCalisma++}}else if(harf==='Y')toplamY++;else if(harf==='Ü')toplamU++;
         }
-        const ozet=maasOzetKaydiBul(personel.id,ay,yil)||{},gunluk=personelGunlukUcretiniGetir(personel),ucretGunu=toplamX+toplamPazar+toplamResmiTatil+toplamY+toplamU,calismaSaati=ayarSayisi('gunlukCalismaSaati',7.5),fazla=String(ozet.fazlaMesaiSaatiManuel)==='true'?Number(ozet.fazlaMesaiSaati||0):magicpassAylikMesaiSaati(personel,ay,yil),pazar=String(ozet.pazarMesaiSaatiManuel)==='true'?Number(ozet.pazarMesaiSaati||0):pazarCalisma*calismaSaati,resmi=String(ozet.resmiTatilMesaiSaatiManuel)==='true'?Number(ozet.resmiTatilMesaiSaati||0):resmiTatilCalisma*calismaSaati+magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil),primDurumu=personelPrimDurumu(personel,ay,yil),prim=String(ozet.primTutariManuel)==='true'?Number(ozet.primTutari||0):(personel.primVar==='Evet'&&primDurumu.hakkiVar?primSabitTutariniGetir():0),avans=personelAylikAvansKesintisi(personel.id,ay,yil),icra=personelIcraKayitlari(personel.id).length?personelAylikIcraKesintisi(personel.id,ay,yil):Number(ozet.icraKesintisi||0),bes=Math.max(0,Number(ozet.besKesintisi||0)),saatlik=gunluk/calismaSaati*ayarSayisi('mesaiKatsayisi',1.5);
+        const ozet=maasOzetKaydiBul(personel.id,ay,yil)||{},gunluk=personelGunlukUcretiniGetir(personel),ucretGunu=toplamX+toplamPazar+toplamResmiTatil+toplamY+toplamU,calismaSaati=ayarSayisi('gunlukCalismaSaati',7.5),fazla=String(ozet.fazlaMesaiSaatiManuel)==='true'?Number(ozet.fazlaMesaiSaati||0):magicpassAylikMesaiSaati(personel,ay,yil),pazar=String(ozet.pazarMesaiSaatiManuel)==='true'?Number(ozet.pazarMesaiSaati||0):magicpassBirlesikMesaiDonemiMi(personel,ay,yil)?0:pazarCalisma*calismaSaati,resmi=String(ozet.resmiTatilMesaiSaatiManuel)==='true'?Number(ozet.resmiTatilMesaiSaati||0):magicpassBirlesikMesaiDonemiMi(personel,ay,yil)?0:resmiTatilCalisma*calismaSaati+magicpassAylikYarimResmiTatilMesaiSaati(personel,ay,yil),primDurumu=personelPrimDurumu(personel,ay,yil),prim=String(ozet.primTutariManuel)==='true'?Number(ozet.primTutari||0):(personel.primVar==='Evet'&&primDurumu.hakkiVar?primSabitTutariniGetir():0),avans=personelAylikAvansKesintisi(personel.id,ay,yil),icra=personelIcraKayitlari(personel.id).length?personelAylikIcraKesintisi(personel.id,ay,yil):Number(ozet.icraKesintisi||0),bes=Math.max(0,Number(ozet.besKesintisi||0)),saatlik=gunluk/calismaSaati*ayarSayisi('mesaiKatsayisi',1.5);
         return Number((ucretGunu*gunluk+saatlik*(fazla+pazar+resmi)+prim-avans-icra-bes).toFixed(2));
     }
     function bordroMaasKarsilastirmaModaliniKur(){
@@ -26239,11 +26273,15 @@ body.fd-vk-detail-open{overflow:hidden}
 #magicpassAylikTablo th:nth-child(11),#magicpassAylikTablo td:nth-child(11){width:145px;overflow:hidden;text-overflow:ellipsis}
 #magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:84px}
 #magicpassGunlukTablo{min-width:1250px}
-:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div{display:flex;flex-direction:column;gap:6px;padding:11px 13px;border:1px solid #dae4ee;border-radius:9px;background:#f7f9fc;min-width:0}
-:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div>span{font-size:12px;line-height:1.4;color:#617187;font-weight:500;white-space:normal}
-:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div>strong{font-size:20px;line-height:1.3;color:#183449;font-weight:650;font-variant-numeric:tabular-nums}
-@media(max-width:600px){:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div{padding:9px 8px}:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div>span{font-size:11px}:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet>div>strong{font-size:18px}}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet{display:grid;grid-template-columns:1fr;gap:8px}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri-1{grid-template-columns:repeat(4,minmax(0,1fr))}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri-2{grid-template-columns:1fr}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]{display:flex;flex-direction:column;gap:5px;padding:9px 12px;border:1px solid #dae4ee;border-radius:9px;background:#f7f9fc;min-width:0}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>span{font-size:12px;line-height:1.4;color:#617187;font-weight:500;white-space:normal}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>strong{font-size:19px;line-height:1.3;color:#183449;font-weight:650;font-variant-numeric:tabular-nums}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik="net"]{flex-direction:row;align-items:center;justify-content:space-between;background:#eef8f5;border-color:#a9ccc5}
+@media(max-width:600px){:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri-1{grid-template-columns:repeat(2,minmax(0,1fr))}:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]{padding:9px 8px}:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>span{font-size:11px}:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>strong{font-size:18px}}
 </style>
 <script id="fdHesapDonemKorumaV220">
 // Only synchronous calculation boundaries are scoped. Never retain a global
@@ -29620,14 +29658,14 @@ window.fdPersonnelTemplateCatalog=[{"key":"magicpassBildirimGelmediMetni","title
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v270';
+      const anahtar='fd-pwa-yenileme-v271';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=270',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=271',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
