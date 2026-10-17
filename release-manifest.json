@@ -1,10 +1,10 @@
 {
-  "release": "fd-modular-20261017-2c1edf4b431e",
+  "release": "fd-modular-20261017-s2-5acfc9b59380",
   "assets": [
     {
       "path": "core/catalog.js",
-      "sha256": "22067c1af3fab98713cb24eb93c2825ca5ee5f73b2a9b41acb2489e385aa4642",
-      "bytes": 809
+      "sha256": "07a3bdc3b5bea328aca69aba008eaf59abd255a771265a9f56ce9d44158249d9",
+      "bytes": 1677
     },
     {
       "path": "core/data-access.js",
@@ -18,13 +18,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d05e522a5cbd9633e27a4602054eb2abb44d4d6cf728dfd731c05f84cc04b5df",
-      "bytes": 2459
+      "sha256": "d7949b910cf5ecd4b35e8024d47e9863c1da295644056d18eaff0b07f9fc41a8",
+      "bytes": 2464
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "5a9ed8060785e91a1dfcfabea2f9563a3d09850ddd4fb77bbb8f3025d1f7095f",
-      "bytes": 11086
+      "sha256": "2231d077140f8de5d468e736dd9f92e599d2c5fbc84d8fc9aeea321ffef8acbb",
+      "bytes": 11160
     },
     {
       "path": "core/permissions.js",
@@ -37,9 +37,9 @@
       "bytes": 26127
     },
     {
-      "path": "legacy/01-kullaniciModulu.js",
-      "sha256": "76d8f23e97b9c9784bed8f4b489f881ac8f8662f0b1572287cfac8be3786f7a6",
-      "bytes": 14439
+      "path": "core/user-entrypoints.js",
+      "sha256": "c8b985ee8f032ffa8aa13f688d182b68b2f93086dccf20a6b601c0a920fcb45b",
+      "bytes": 438
     },
     {
       "path": "legacy/03-legacy-3.js",
@@ -322,11 +322,6 @@
       "bytes": 4621
     },
     {
-      "path": "legacy/styles/04.css",
-      "sha256": "a775fdd7258adda886a2814526f49b69b45887403c6138a1cf8385bdc6f3ae25",
-      "bytes": 1415
-    },
-    {
       "path": "legacy/styles/05.css",
       "sha256": "ba96331feb674c0d7d3df7b0f430dd6dad820e3b1b5b3203417e5b1fd5d5eba5",
       "bytes": 951
@@ -533,8 +528,8 @@
     },
     {
       "path": "modules/ihracat/manifest.json",
-      "sha256": "a92a76a6f1690871083b69d7b284a58ee477557c3e6a3ae068fd7fc1b93a438b",
-      "bytes": 957
+      "sha256": "5d323b58117a5fe5b87ecc22627414ae0d269ba7f32791659e274362ed78a0e0",
+      "bytes": 1031
     },
     {
       "path": "modules/ihracat/module.js",
@@ -552,9 +547,34 @@
       "bytes": 14460
     },
     {
+      "path": "modules/kullanici/manifest.json",
+      "sha256": "fe83bea7bc034020ed284f368dee19248b64226b64d5d9794a468d53bc0f79de",
+      "bytes": 1056
+    },
+    {
+      "path": "modules/kullanici/module.js",
+      "sha256": "f9e3af2dc0e6363333716b5d74f47ab79546fc9a28c1974c35ffcbdc5aa4b58f",
+      "bytes": 14590
+    },
+    {
+      "path": "modules/kullanici/style.css",
+      "sha256": "a775fdd7258adda886a2814526f49b69b45887403c6138a1cf8385bdc6f3ae25",
+      "bytes": 1415
+    },
+    {
+      "path": "modules/kullanici/view.html",
+      "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
+      "bytes": 2307
+    },
+    {
       "path": "shared/export-compat.js",
       "sha256": "23a5bb81bb42bd9673851f45cffa5a34ab712fbe895fc3cbbbda2578facf541d",
       "bytes": 733
+    },
+    {
+      "path": "shared/user-accounts.js",
+      "sha256": "9c6990c1af77a4e15ef30b7b70d710653af7ebd41ce9152806e742f6120c1a38",
+      "bytes": 870
     },
     {
       "path": "shared/utilities.js",

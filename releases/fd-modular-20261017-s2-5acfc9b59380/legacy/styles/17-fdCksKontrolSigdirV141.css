@@ -1,0 +1,29 @@
+
+#fdCksPdfKontrolModal .fd-cks-review-card{width:min(1500px,calc(100vw - 20px))!important;max-width:none!important}
+#fdCksPdfKontrolModal .fd-cks-review-table-wrap{overflow-x:hidden!important;overflow-y:auto}
+#fdCksPdfKontrolModal .fd-cks-review-table{width:100%;min-width:0!important;table-layout:fixed;font-size:.72rem}
+#fdCksPdfKontrolModal .fd-cks-review-table th{white-space:normal;line-height:1.15;padding:8px 6px}
+#fdCksPdfKontrolModal .fd-cks-review-table td{padding:7px 6px;overflow-wrap:anywhere}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(1){width:38px}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(2){width:38px}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(3){width:86px}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(4){width:16%}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(5){width:19%}
+#fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(6){width:23%}
+#fdCksPdfKontrolModal .fd-cks-product strong,#fdCksPdfKontrolModal .fd-cks-product small,#fdCksPdfKontrolModal .fd-cks-prev span,#fdCksPdfKontrolModal .fd-cks-prev small{display:block}
+#fdCksPdfKontrolModal .fd-cks-product small,#fdCksPdfKontrolModal .fd-cks-prev small{margin-top:3px;color:#64748b;font-size:.67rem;font-weight:600;line-height:1.2}
+#fdCksPdfKontrolModal .fd-cks-match{display:grid;grid-template-columns:minmax(0,1fr) 29px;min-width:0!important;width:100%}
+#fdCksPdfKontrolModal .fd-cks-match-label{max-width:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:820px){
+ #fdCksPdfKontrolModal .fd-cks-review-card{width:calc(100vw - 10px)!important;height:calc(100vh - 10px)!important;max-height:none!important}
+ #fdCksPdfKontrolModal .fd-cks-review-table{min-width:0!important;font-size:.67rem}
+ #fdCksPdfKontrolModal .fd-cks-review-table th,#fdCksPdfKontrolModal .fd-cks-review-table td{padding:6px 4px}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(1){width:30px}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(2){width:30px}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(3){width:72px}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(4){width:18%}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(5){width:20%}
+ #fdCksPdfKontrolModal .fd-cks-review-table th:nth-child(6){width:24%}
+ #fdCksPdfKontrolModal .fd-cks-review-summary{padding:9px 10px}
+}
+
