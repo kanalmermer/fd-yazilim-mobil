@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261017-s7-05e6e4c8f940",
+  "release": "fd-modular-20261017-s8-03d589dada45",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "88eec8e37fd3a38765460822372df7d477a869842f74b69fad7f321898209344",
-      "bytes": 12914
+      "sha256": "42fc95018852132b25693f8f672f5f13d314c4c870a30d5bc6d291b20c596353",
+      "bytes": 16236
     },
     {
       "path": "core/company-entrypoints.js",
@@ -47,6 +47,11 @@
       "bytes": 5506
     },
     {
+      "path": "core/rental-entrypoints.js",
+      "sha256": "65cd5d56bf4c591259321abd8d60735267d7599fa34ad089308bf8b6af715d8c",
+      "bytes": 13407
+    },
+    {
       "path": "core/session.js",
       "sha256": "96a53c441c480e29aa5780f27cdf9bd775ec2cf24724dc04e9551ad9239fe63c",
       "bytes": 26127
@@ -68,8 +73,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "91f4aea770dcd1e46f09344177f40eb8d40be6448784e7a46bc43a02823cd661",
-      "bytes": 1257224
+      "sha256": "5df147bd2136e6f36b2e2c969f8c49384f4eb7f51788dee2fb6a7ccc33c704ee",
+      "bytes": 1104042
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -83,8 +88,8 @@
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
-      "sha256": "1b2f4234519ea7c34ef88d7e3f64b384da1a161cfa2483bd97c961704ddee679",
-      "bytes": 51217
+      "sha256": "fa84fa179fb9c03ab685e2390fd48fddef6ffcbc526d9b9d2579296f370a584a",
+      "bytes": 48927
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
@@ -113,8 +118,8 @@
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
-      "sha256": "04b889136f36462185103e715f67d822f51585441448e308b454e125a91d996b",
-      "bytes": 25851
+      "sha256": "00c48e11e9e403092575f3a95acd5695a15118c486ba3f038fac16c2c875974d",
+      "bytes": 21335
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
@@ -138,8 +143,8 @@
     },
     {
       "path": "legacy/17-fdV144KatmanOturumAbonelik.js",
-      "sha256": "c6dc672e016dd4c648f18f8327428d304b3d89b56d4564c5791cb5b55480ced8",
-      "bytes": 7727
+      "sha256": "c82df1a39684353b302af10e2fd3d7f87817b85144528d66855f005b487d130a",
+      "bytes": 4467
     },
     {
       "path": "legacy/18-fdCksDuzenlemeGuvenligiV145.js",
@@ -183,18 +188,18 @@
     },
     {
       "path": "legacy/26-fdKiraSozlesmeDogrudanV152.js",
-      "sha256": "5a35e9c08777cd03c3eb0357aaf8c2f7dc4cb450451ad6e536ed9a8654e4e02a",
-      "bytes": 4559
+      "sha256": "06ba8afbc1112270d3f6ae9d81a64bd222531b2f78a5ad10127c374a502b2321",
+      "bytes": 58
     },
     {
       "path": "legacy/27-fdKiraSozlesmeButonBagV153.js",
-      "sha256": "ea4c8862c5d6c13626d24ebbd01a21dbc548e485d51500ed364cf20ff8afe287",
-      "bytes": 445
+      "sha256": "06ba8afbc1112270d3f6ae9d81a64bd222531b2f78a5ad10127c374a502b2321",
+      "bytes": 58
     },
     {
       "path": "legacy/28-fdKiraPdfKesintisizV155.js",
-      "sha256": "307d137c834c72fb5dbdcc1ae1a04ab0d2db3b63ac0ea967604c7bd69bc3a665",
-      "bytes": 3623
+      "sha256": "06ba8afbc1112270d3f6ae9d81a64bd222531b2f78a5ad10127c374a502b2321",
+      "bytes": 58
     },
     {
       "path": "legacy/29-fdBordroBelgeleriV184.js",
@@ -218,8 +223,8 @@
     },
     {
       "path": "legacy/33-fdOperasyonGenisletmeV149.js",
-      "sha256": "8c0b097ef274f4d7af065a062a3dfdba482647e14c094b5e74579ea2342d6834",
-      "bytes": 32537
+      "sha256": "fbfe898b6193132811858ff7fdf6ff3a0903628c371e355fb045cb4aa0ff279b",
+      "bytes": 24252
     },
     {
       "path": "legacy/34-fdVarlikKisileriV150.js",
@@ -243,8 +248,8 @@
     },
     {
       "path": "legacy/38-fdKiraTasarimV214.js",
-      "sha256": "3bb4787d4fc9444596646a6a98c34af35c4965d0bf438990c79cbbae7fe0bc2f",
-      "bytes": 20275
+      "sha256": "b741eccd25e62a5bcd8f32eae9a9dc746e91bed6eb9e61e688cc4d9e75c84937",
+      "bytes": 70
     },
     {
       "path": "legacy/39-fdPersonelTasarimV217.js",
@@ -328,13 +333,13 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "5c8b6a3d12260b84226d5ec271b66c48701ef8cfb9c47136339a87b781307b2b",
-      "bytes": 160000
+      "sha256": "25142551554b7cd12938520ae1886c912f5bc42e0664883198dfee36f7f842c4",
+      "bytes": 150014
     },
     {
       "path": "legacy/styles/01.css",
-      "sha256": "190a91e70d10367d607b031f4d8c0d7c082770a26881526333c773f54e0ad496",
-      "bytes": 1386
+      "sha256": "e906f09381bb9cac9217ed1bde30a1790812908a32a16ea4a89b7879b6c88be0",
+      "bytes": 33
     },
     {
       "path": "legacy/styles/02-policeTakipStilleri.css",
@@ -358,8 +363,8 @@
     },
     {
       "path": "legacy/styles/07-evrakOnizlemeStilleri.css",
-      "sha256": "d58d68c3f367741e214d3a03c864bb17b02de2bb57303a1ed0d78bee1634faaa",
-      "bytes": 17313
+      "sha256": "d955a4c5f14ed5ed7c169cedf95a9de624351bea30edcd2c89ae02a63a144120",
+      "bytes": 17242
     },
     {
       "path": "legacy/styles/08.css",
@@ -423,8 +428,8 @@
     },
     {
       "path": "legacy/styles/20-fdV144KatmanVeAbonelikStil.css",
-      "sha256": "47469afe5bd6bfc668c3f8155847443450ff9e3ce3864d5601d9d49ea73ffd44",
-      "bytes": 202
+      "sha256": "303298156fbf5c12d5a9170112e39610e6e00622567170adb84fc7a1462f60aa",
+      "bytes": 47
     },
     {
       "path": "legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css",
@@ -453,8 +458,8 @@
     },
     {
       "path": "legacy/styles/26-fdOperasyonGenisletmeV149Stil.css",
-      "sha256": "30de31eaae84088739bc8087ea95a7cc0f7c98252ab8d2cd32b1e0cdaae28c2b",
-      "bytes": 2837
+      "sha256": "9bd81aca586cb23022200c6129961286dcbc68e2fb7fca7073f1f47a9a24f246",
+      "bytes": 2690
     },
     {
       "path": "legacy/styles/27-fdVarlikKisileriV150Style.css",
@@ -498,8 +503,8 @@
     },
     {
       "path": "legacy/styles/35-fdKiraTasarimV214Style.css",
-      "sha256": "473da88004def50d2e8081a0eca5b99a181612927034762597889e1b90ae0e46",
-      "bytes": 17670
+      "sha256": "642e28d8ebbda34e7169fb25e775f4b658bd058448de665cece101f3ea2cc9ca",
+      "bytes": 161
     },
     {
       "path": "legacy/styles/36-fdPersonelTasarimV217Style.css",
@@ -612,6 +617,26 @@
       "bytes": 14460
     },
     {
+      "path": "modules/kira/manifest.json",
+      "sha256": "d16b06f3a8424ebf2ed5854bd417ec0e3db0fb174848741f7fc9dc787a4fc5b8",
+      "bytes": 4145
+    },
+    {
+      "path": "modules/kira/module.js",
+      "sha256": "c498646a02da43f4cfaa038095985c46df2ea29af1902bd98077a8d3e8a1487d",
+      "bytes": 220657
+    },
+    {
+      "path": "modules/kira/style.css",
+      "sha256": "9257a91b0f5394f1e048247becb28a71277a79c9d07779d1a7e7b0b62a8afafd",
+      "bytes": 30635
+    },
+    {
+      "path": "modules/kira/view.html",
+      "sha256": "04c174e1d7778f312ff2311c090565f4d36c01c4804430ebbd46c8f03d49f5da",
+      "bytes": 16226
+    },
+    {
       "path": "modules/kullanici/manifest.json",
       "sha256": "fe83bea7bc034020ed284f368dee19248b64226b64d5d9794a468d53bc0f79de",
       "bytes": 1056
@@ -720,6 +745,11 @@
       "path": "shared/policy-data.js",
       "sha256": "f89e2a9cb6ca3ae7d6c8240210db4a7bb8078d83b9d14460108d2b2cf3fae7be",
       "bytes": 15163
+    },
+    {
+      "path": "shared/rental-data.js",
+      "sha256": "20062bc25d5176d280fd8e11ce01e2cb1706cc55cd11f9b8fed19b2a3705ece2",
+      "bytes": 12421
     },
     {
       "path": "shared/settings-data.js",

@@ -1,0 +1,9 @@
+
+#cksTakipApp .cks-missing-row{background:#fffaf0}
+#cksTakipApp .cks-missing-row:hover{background:#fff4d8}
+#cksTakipApp .cks-missing-row td:first-child{box-shadow:inset 4px 0 0 #f59e0b}
+#cksTakipApp .cks-missing-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#ffedd5;color:#c2410c;font-size:.69rem;font-weight:900}
+#cksTakipApp .cks-new-badge{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-size:.68rem;font-weight:850}
+@media(max-width:950px){#cksTakipApp .cks-toolbar{grid-template-columns:1fr 145px 180px}#cksTakipApp .cks-toolbar .cks-btn{grid-column:auto}}
+@media(max-width:720px){#cksTakipApp .cks-toolbar{grid-template-columns:1fr 1fr}#cksTakipApp .cks-toolbar input{grid-column:1/-1}}
+
