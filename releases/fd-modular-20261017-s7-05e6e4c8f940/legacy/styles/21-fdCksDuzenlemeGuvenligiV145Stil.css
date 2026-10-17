@@ -1,0 +1,5 @@
+
+#fdCksCokluDuzenleModal .fd-cks-edit-choice{grid-template-columns:64px minmax(0,1fr) auto}
+#fdCksCokluDuzenleModal .fd-cks-choice-actions{display:flex;align-items:center;gap:6px}
+#fdCksCokluDuzenleModal .fd-cks-choice-actions .delete{background:#fee2e2;color:#dc2626}
+

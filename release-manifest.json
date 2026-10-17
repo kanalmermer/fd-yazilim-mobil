@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261017-s6-0a34d158659b",
+  "release": "fd-modular-20261017-s7-05e6e4c8f940",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "407ce7e4790c134c4dd0d2bc7cc632d91478e1f3eaa7ce9096171ec3c990b059",
-      "bytes": 11175
+      "sha256": "88eec8e37fd3a38765460822372df7d477a869842f74b69fad7f321898209344",
+      "bytes": 12914
     },
     {
       "path": "core/company-entrypoints.js",
@@ -42,6 +42,11 @@
       "bytes": 4986
     },
     {
+      "path": "core/policy-entrypoints.js",
+      "sha256": "1e74adcbe2864e337a272f5d0bb208883a6670f175fc276d144a140aab6228a2",
+      "bytes": 5506
+    },
+    {
       "path": "core/session.js",
       "sha256": "96a53c441c480e29aa5780f27cdf9bd775ec2cf24724dc04e9551ad9239fe63c",
       "bytes": 26127
@@ -63,8 +68,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "7700a1eac242835b6bf1ee81433a6983dc320d117ab0516df4f33b3f72b21a50",
-      "bytes": 1307035
+      "sha256": "91f4aea770dcd1e46f09344177f40eb8d40be6448784e7a46bc43a02823cd661",
+      "bytes": 1257224
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -333,18 +338,18 @@
     },
     {
       "path": "legacy/styles/02-policeTakipStilleri.css",
-      "sha256": "a4f3d5359ba19e3318dc9fe324f71dd708ad835748cb7cc3d7d5921f1bd28fa1",
-      "bytes": 1373
+      "sha256": "e1f3df207c572d39126698501877378fce32f0d0e5f39652596d7a42f2574fd4",
+      "bytes": 53
     },
     {
       "path": "legacy/styles/03-policeTakipDuzeltmeStilleri.css",
-      "sha256": "71bcfbfcf67bec7c4f7572c6dcefe729f35e0a37b179d12d3e08b33838b15a75",
-      "bytes": 4621
+      "sha256": "40c453e743468e4bc4520181a2aac306bad83a3356dac1d10ff9d0728d8ee13c",
+      "bytes": 28
     },
     {
       "path": "legacy/styles/05.css",
-      "sha256": "3382c0ccffaf634f5e4cc39f75b323d1292e4c7798889189929676bb51d6f944",
-      "bytes": 652
+      "sha256": "b9950ddbb7a3d96d95be77a112ddd9c94f196d16610642541923fda634405c9f",
+      "bytes": 28
     },
     {
       "path": "legacy/styles/06-evrakTakipStilleri.css",
@@ -627,6 +632,26 @@
       "bytes": 2307
     },
     {
+      "path": "modules/police/manifest.json",
+      "sha256": "2b587b6fd887d35d23e0b2e71f71f6c6c9ca80b4b9b66476d0bf28a29d9648cb",
+      "bytes": 2170
+    },
+    {
+      "path": "modules/police/module.js",
+      "sha256": "ac0193d0aff49abe752a9f5e7aac57b49367f172133e9dbb2f0672be779be6f0",
+      "bytes": 49810
+    },
+    {
+      "path": "modules/police/style.css",
+      "sha256": "41df152898654d74c0f378cc1f0b4aad4ffd6a64244ee3ba75a608db0b5e405a",
+      "bytes": 5568
+    },
+    {
+      "path": "modules/police/view.html",
+      "sha256": "1aaf454182a64a8ea17f75778fe61fe123ea9cbd73badcef496b0aaa56f09f98",
+      "bytes": 6487
+    },
+    {
       "path": "modules/sirket/manifest.json",
       "sha256": "99e84b2e2ba1638d649774bbed85127a9dd2b9862e08de15fad2bb3f73e1b33a",
       "bytes": 1142
@@ -685,6 +710,16 @@
       "path": "shared/export-compat.js",
       "sha256": "23a5bb81bb42bd9673851f45cffa5a34ab712fbe895fc3cbbbda2578facf541d",
       "bytes": 733
+    },
+    {
+      "path": "shared/policy-badges.css",
+      "sha256": "2445df3449b665fda1f860c74e46cf6f1ee6f088dcfcc1f72bd392ccfb684d0f",
+      "bytes": 1119
+    },
+    {
+      "path": "shared/policy-data.js",
+      "sha256": "f89e2a9cb6ca3ae7d6c8240210db4a7bb8078d83b9d14460108d2b2cf3fae7be",
+      "bytes": 15163
     },
     {
       "path": "shared/settings-data.js",
