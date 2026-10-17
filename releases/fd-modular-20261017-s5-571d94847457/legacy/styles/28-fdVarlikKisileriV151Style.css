@@ -1,0 +1,25 @@
+
+.arac-mobil-kartlar{display:none}
+.arac-mobil-kart{min-width:0;border:1px solid #dbe3ee;border-radius:13px;background:#fff;padding:13px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.arac-mobil-kart-ust,.arac-mobil-islemler{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.arac-mobil-plaka{all:unset;cursor:pointer;color:inherit;font:inherit;font-weight:inherit;text-decoration:none}.arac-mobil-plaka:hover{text-decoration:underline;text-decoration-color:#94a3b8;text-underline-offset:3px}
+.arac-mobil-kart>strong{display:block;margin:8px 0 10px;color:#0f172a}
+.arac-mobil-kart dl{display:grid;gap:7px;margin:0 0 11px}
+.arac-mobil-kart dl div{display:grid;grid-template-columns:108px minmax(0,1fr);gap:8px}
+.arac-mobil-kart dt{color:#64748b;font-size:.72rem}
+.arac-mobil-kart dd{margin:0;color:#334155;font-size:.78rem;font-weight:750;overflow-wrap:anywhere}
+.arac-mobil-islemler button{flex:1;min-height:42px}
+@media(max-width:900px){
+    .arac-mobil-kartlar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+    .arac-masaustu-tablosu{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .arac-mobil-kartlar:not(:empty)+.arac-masaustu-tablosu{display:none!important}
+    #arac-tab-araclar>.card>.module-subnav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible!important;gap:7px!important}
+    #arac-tab-araclar>.card>.module-subnav>button{width:100%;min-width:0;min-height:42px;margin:0!important;padding:8px 6px!important;white-space:normal;line-height:1.2}
+    #arac-tab-araclar>.card>.module-subnav>button:last-child{grid-column:1/-1}
+}
+@media(max-width:620px){
+    .arac-mobil-kartlar{grid-template-columns:1fr}
+    .arac-mobil-kart{padding:12px}
+    .arac-mobil-kart dl div{grid-template-columns:102px minmax(0,1fr)}
+}
+

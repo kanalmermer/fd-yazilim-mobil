@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261017-s5-e2cf43979631",
+  "release": "fd-modular-20261017-s5-571d94847457",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "3d1336d4a6165fb38e0543b17a71cc60051c82bb878dd6e09c4da051c23d22e7",
+      "sha256": "b238f6b6f5f8f2e77de09f4f4e4a6fe2ad766fffb9a6664bda4b2b6d9d098608",
       "bytes": 6492
     },
     {
@@ -623,13 +623,13 @@
     },
     {
       "path": "modules/varlikkisileri/manifest.json",
-      "sha256": "6d9f99046e1853b5d652c7e782ee362e7c41a907dcbfd885057e8207fd2ce229",
+      "sha256": "b20c474962786bb491c400562d9aeb3a1e5bcded3a7956b75d4045d84810684d",
       "bytes": 1449
     },
     {
       "path": "modules/varlikkisileri/module.js",
-      "sha256": "2f2aeb3216a04e08fae983ffa139a269a2c8cfae43b24b3e145c034f1a13e29c",
-      "bytes": 39730
+      "sha256": "4ada990fd0b3fdbf78660a92512420b006b62b42839d0a9112723b65dca8916a",
+      "bytes": 39873
     },
     {
       "path": "modules/varlikkisileri/style.css",

@@ -1,0 +1,4 @@
+
+#cksDetayGovde tr.fd-cks-year-row{box-shadow:inset 4px 0 0 var(--fd-cks-yil-renk)}
+#cksDetayGovde .cks-year.fd-cks-year-badge{border:1px solid var(--fd-cks-yil-kenar);background:var(--fd-cks-yil-arka)!important;color:var(--fd-cks-yil-yazi)!important;box-shadow:0 2px 7px color-mix(in srgb,var(--fd-cks-yil-kenar) 24%,transparent)}
+
