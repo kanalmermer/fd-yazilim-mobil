@@ -1,0 +1,4 @@
+# Versioned resources are content-addressed by the release manifest.
+# Preserve exact bytes; automatic CRLF conversion breaks integrity verification.
+/releases/** -text
+/release-manifest.json -text

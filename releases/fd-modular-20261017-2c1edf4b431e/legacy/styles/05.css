@@ -1,0 +1,5 @@
+
+#ayarlarApp main{max-width:1560px!important}#ayarlarApp .ayarlar-modul-satiri{grid-template-columns:48px minmax(170px,.85fr) minmax(220px,1.15fr) minmax(390px,1.7fr) 72px}
+#ayarlarApp .ayarlar-roller{overflow:visible;max-height:none}
+@media(max-width:1100px){#ayarlarApp .ayarlar-modul-satiri{grid-template-columns:44px 1fr}}.police-tur-belge-link{display:inline-flex;text-decoration:none;border:0;padding:0;background:transparent;cursor:pointer;font:inherit;border-radius:999px;outline:0}.police-tur-belge-link:hover .police-tur-rozet{transform:translateY(-1px);filter:brightness(.88);box-shadow:0 3px 8px rgba(15,23,42,.25)}.police-tur-belge-link:focus-visible{box-shadow:0 0 0 3px #bae6fd}
+#policeTakipTablosu td:nth-child(3),#policeTakipTablosu td:nth-child(8),#policeTakipTablosu td:nth-child(9){vertical-align:middle}#policeTakipTablosu td:nth-child(9){text-align:center}#policeTakipTablosu td:nth-child(9) .action-btns{justify-content:center}

@@ -1,0 +1,565 @@
+{
+  "release": "fd-modular-20261017-2c1edf4b431e",
+  "assets": [
+    {
+      "path": "core/catalog.js",
+      "sha256": "22067c1af3fab98713cb24eb93c2825ca5ee5f73b2a9b41acb2489e385aa4642",
+      "bytes": 809
+    },
+    {
+      "path": "core/data-access.js",
+      "sha256": "8d63dcea8528b87e0142ba412bbcb340b18f8c5d1b8e8259d703b8cdc9d92bac",
+      "bytes": 38708
+    },
+    {
+      "path": "core/module-entrypoints.js",
+      "sha256": "baf92167a827dd0431bb782725cf0e97a4431fbf617629bcf744e152b1f33032",
+      "bytes": 229
+    },
+    {
+      "path": "core/module-integration.js",
+      "sha256": "d05e522a5cbd9633e27a4602054eb2abb44d4d6cf728dfd731c05f84cc04b5df",
+      "bytes": 2459
+    },
+    {
+      "path": "core/module-loader.js",
+      "sha256": "5a9ed8060785e91a1dfcfabea2f9563a3d09850ddd4fb77bbb8f3025d1f7095f",
+      "bytes": 11086
+    },
+    {
+      "path": "core/permissions.js",
+      "sha256": "234f1b06724a634d23c3b6096d19dc808fe9194792237b48042c555fdbf1a7e9",
+      "bytes": 16088
+    },
+    {
+      "path": "core/session.js",
+      "sha256": "96a53c441c480e29aa5780f27cdf9bd775ec2cf24724dc04e9551ad9239fe63c",
+      "bytes": 26127
+    },
+    {
+      "path": "legacy/01-kullaniciModulu.js",
+      "sha256": "76d8f23e97b9c9784bed8f4b489f881ac8f8662f0b1572287cfac8be3786f7a6",
+      "bytes": 14439
+    },
+    {
+      "path": "legacy/03-legacy-3.js",
+      "sha256": "04a76e20256d4460da502c50f0557cd082c24007b2b196ff78623ef37bae9ee1",
+      "bytes": 1564637
+    },
+    {
+      "path": "legacy/04-tapuTakipScripti.js",
+      "sha256": "8398c962def1092d2f8356feacf09fb99cb9a3175525088148837a72b187bdc5",
+      "bytes": 151168
+    },
+    {
+      "path": "legacy/05-tapuCksScripti.js",
+      "sha256": "848bd581b9197eaa60b5224c0069b3d02a777057623ca533e3f618312752b3f1",
+      "bytes": 129067
+    },
+    {
+      "path": "legacy/06-evrakTakipScripti.js",
+      "sha256": "b54d2ab79b319e60146cd1a4cffc5eb5a07ecfd272a0d30ac22f5beb94ab1cc5",
+      "bytes": 53566
+    },
+    {
+      "path": "legacy/07-cksTamSayfaScripti.js",
+      "sha256": "aef0897e9149ca0b5980958aa26ed906213128f31e6a2b6383d6f38cd1481ed1",
+      "bytes": 20297
+    },
+    {
+      "path": "legacy/08-cksV128Duzeltme.js",
+      "sha256": "0fdc7c1d8e80177f94b8a1cd2f0aeacf32f7ab2c5671281d7ee54685773e5b8d",
+      "bytes": 4257
+    },
+    {
+      "path": "legacy/09-cksKonumSadelestirme.js",
+      "sha256": "5e0fbcc7b8a6fba6c6d45834202215a33fb3a81bde280f0a58ebcf05cf27b277",
+      "bytes": 423
+    },
+    {
+      "path": "legacy/10-cksYillikBelgeScripti.js",
+      "sha256": "ffd372a671bc69cf625e9351497221f8a63fa0d636b26594a337dded54287dce",
+      "bytes": 9112
+    },
+    {
+      "path": "legacy/11-cksKisiBelgesiV130.js",
+      "sha256": "695b21ed9bb175ad0271381ff7cd5cd7f65ceaa55f16055dac74eb4f35993bb1",
+      "bytes": 9007
+    },
+    {
+      "path": "legacy/12-fdTopluDuzeltmelerV132.js",
+      "sha256": "04b889136f36462185103e715f67d822f51585441448e308b454e125a91d996b",
+      "bytes": 25851
+    },
+    {
+      "path": "legacy/13-fdCksPdfAktarimV134.js",
+      "sha256": "a216c8b3f3b5786779ac961306475085e83f5478c76dd1b0260831acafac96ef",
+      "bytes": 17840
+    },
+    {
+      "path": "legacy/14-fdCksFormSecimV138.js",
+      "sha256": "35a0a22c5559696d99e45bc8c594c83c02d7c05ada8589eb525d67fdd8f4a30b",
+      "bytes": 3205
+    },
+    {
+      "path": "legacy/15-fdCksYilRenkleriV142.js",
+      "sha256": "7a6aeb3164933461db577b8fdc97cfd4ef0f7ba9aa9d5645f7361d24ea247e5f",
+      "bytes": 1431
+    },
+    {
+      "path": "legacy/16-fdCksCokluDuzenleV143.js",
+      "sha256": "37a672fa0c42188248dbaec471735be6a3d53075fd5cc50cb8bdbc818e6be05e",
+      "bytes": 2750
+    },
+    {
+      "path": "legacy/17-fdV144KatmanOturumAbonelik.js",
+      "sha256": "c6dc672e016dd4c648f18f8327428d304b3d89b56d4564c5791cb5b55480ced8",
+      "bytes": 7727
+    },
+    {
+      "path": "legacy/18-fdCksDuzenlemeGuvenligiV145.js",
+      "sha256": "2baf1ba17d80e34c3fd71699eae2ccab6218bb5a6c447b035e87bd196046e883",
+      "bytes": 2951
+    },
+    {
+      "path": "legacy/19-fdCksDuzenlemeModalKurV145.js",
+      "sha256": "d5d3c9a0001868396604aef7e3a4b3b4b20f26882d040635e315cb9547b1c2f0",
+      "bytes": 525
+    },
+    {
+      "path": "legacy/20-fdTapuCksEslemeV146.js",
+      "sha256": "c660996e5b7f9fbe99250f349f770dd378b5abf09b23b792e6a2b60695fb1136",
+      "bytes": 7023
+    },
+    {
+      "path": "legacy/21-fdCksTumTarlalarV147.js",
+      "sha256": "ddfa7fc05fb8e57a4b91aa2256e7dbdb5094610d820348065c875b56a3feb307",
+      "bytes": 1587
+    },
+    {
+      "path": "legacy/22-fdCksYetimPdfKayitlariV148.js",
+      "sha256": "9a4a4b08a64a2247c30827999483d02d5bd56ce013a36fdffd1c643bf90e47b0",
+      "bytes": 2352
+    },
+    {
+      "path": "legacy/23-fdPdfVeFiltreV149.js",
+      "sha256": "7690e7b7a1e43b4a28be738a4c7aafd953e523d6690164d8a7ed85f160f8edbc",
+      "bytes": 19076
+    },
+    {
+      "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
+      "sha256": "329fd7ae52a171245f596c06c55cc659b4b071a1b92713cecfcea3091a818986",
+      "bytes": 3411
+    },
+    {
+      "path": "legacy/25-fdElKitabiKiraPdfV151.js",
+      "sha256": "9a3f4e2ac46974df47b0917168a5b3c073e23cb80c27885c93d9343d8335c953",
+      "bytes": 1928
+    },
+    {
+      "path": "legacy/26-fdKiraSozlesmeDogrudanV152.js",
+      "sha256": "5a35e9c08777cd03c3eb0357aaf8c2f7dc4cb450451ad6e536ed9a8654e4e02a",
+      "bytes": 4559
+    },
+    {
+      "path": "legacy/27-fdKiraSozlesmeButonBagV153.js",
+      "sha256": "ea4c8862c5d6c13626d24ebbd01a21dbc548e485d51500ed364cf20ff8afe287",
+      "bytes": 445
+    },
+    {
+      "path": "legacy/28-fdKiraPdfKesintisizV155.js",
+      "sha256": "307d137c834c72fb5dbdcc1ae1a04ab0d2db3b63ac0ea967604c7bd69bc3a665",
+      "bytes": 3623
+    },
+    {
+      "path": "legacy/29-fdBordroBelgeleriV184.js",
+      "sha256": "99e7e6a09e5a0bdc267e04ea7e03713c568fc8c05ec6e9571b1c5ceb63c40bed",
+      "bytes": 53027
+    },
+    {
+      "path": "legacy/30-fdBildirimSistemi.js",
+      "sha256": "168a7c3a5b4480ca5324c32560876f56bf3369a461676a957426f1d570e55438",
+      "bytes": 76838
+    },
+    {
+      "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
+      "sha256": "ec38dfc6dda8b7890202204df56bc534b356925ab7484ba5cc162d56e1a1b8a4",
+      "bytes": 8118
+    },
+    {
+      "path": "legacy/32-fdxWorkCenterFreshV1.js",
+      "sha256": "e3dbdd0c452f1f254f70733ef0cd8701bfce4dd4fa42d422f0f8acfa930edd6a",
+      "bytes": 78413
+    },
+    {
+      "path": "legacy/33-fdOperasyonGenisletmeV149.js",
+      "sha256": "6a29c98aa130bd52fb5cabeb864e6459bb5c9a61cd4bf579d0950f30360d5590",
+      "bytes": 53444
+    },
+    {
+      "path": "legacy/34-fdVarlikKisileriV150.js",
+      "sha256": "6bd43f59740991b079c6f6abc717715019248acb04db3d36194f2f83ef0decde",
+      "bytes": 48854
+    },
+    {
+      "path": "legacy/35-fdInsaatFiyatModulu.js",
+      "sha256": "b9bc84ad6d09609e822238029c706b6f2269a74e58a98f7eb5ec20b51e6ac0cd",
+      "bytes": 21629
+    },
+    {
+      "path": "legacy/36-fdFiyatTeklifV2Modulu.js",
+      "sha256": "7043c3df9b75bbb5e71b0d22d8527580442176bde6126644eb591c74654fcb39",
+      "bytes": 63524
+    },
+    {
+      "path": "legacy/37-fdSiparisTakipV2.js",
+      "sha256": "dfbd0c499b9ab20c4f4d7dfe392f724538a474a8d05d1cbcb3e58675807dd959",
+      "bytes": 88965
+    },
+    {
+      "path": "legacy/38-fdKiraTasarimV214.js",
+      "sha256": "3bb4787d4fc9444596646a6a98c34af35c4965d0bf438990c79cbbae7fe0bc2f",
+      "bytes": 20275
+    },
+    {
+      "path": "legacy/39-fdPersonelTasarimV217.js",
+      "sha256": "e1ef66956c72e64995d223dff85dd999628977b02b4e185f05ebb76a6f501823",
+      "bytes": 3409
+    },
+    {
+      "path": "legacy/40-fdHesapDonemKorumaV220.js",
+      "sha256": "161cf9eef4325046a2f3ef30ee3d3196cb63ea5560692e9ca81a2c0f0160d277",
+      "bytes": 4895
+    },
+    {
+      "path": "legacy/41-fdTopluZamDonemV249.js",
+      "sha256": "078e234f774337e634c03ae0283a8c723388038613c21fc4c1e0036a71ffc27f",
+      "bytes": 7809
+    },
+    {
+      "path": "legacy/42-fdAracKullanimV222.js",
+      "sha256": "a7a4681230658623c9f0cc8e2f98377c220a19727c5b7e9af8ae50eeb70e8657",
+      "bytes": 12630
+    },
+    {
+      "path": "legacy/43-fdAyarKullanimV225.js",
+      "sha256": "13b3aac7624e00bded4aa5c0d8f0a409f3d64c6913c3059e2d8d7922bbbeba2d",
+      "bytes": 6996
+    },
+    {
+      "path": "legacy/44-fdTapuKullanimV226.js",
+      "sha256": "9e6d417753b28a187c1f6a063f8c4a5de87074dbbe7372df31c6717fe50aef6d",
+      "bytes": 8206
+    },
+    {
+      "path": "legacy/45-fdUnifiedOutputCoreV227.js",
+      "sha256": "0566c0dc18f6bf20b70347d803c71fc39fd5179a526b102f0bca582451ed912c",
+      "bytes": 88309
+    },
+    {
+      "path": "legacy/46-fdUnifiedOutputUiV227.js",
+      "sha256": "dcf4402b5693a2d05ca9bf4e9c2a94d4422450dff6da14eb19924e1d0fe7559e",
+      "bytes": 31397
+    },
+    {
+      "path": "legacy/47-fdIsgWorkspaceV228.js",
+      "sha256": "83e6f053ec94da4464932d355e24d62a42ab017c1c84e9b9b24ba616f660744c",
+      "bytes": 92287
+    },
+    {
+      "path": "legacy/48-fdIsgDocumentsV228.js",
+      "sha256": "5627ad1225f27294b24f36b001a0258a69fa07ab2c546ca59b685f4437e9e5d5",
+      "bytes": 43902
+    },
+    {
+      "path": "legacy/49-fdIsgIntegrationV228.js",
+      "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
+      "bytes": 21743
+    },
+    {
+      "path": "legacy/50-fdAttendanceRenderPerformance.js",
+      "sha256": "6c0dc29405bcdad4a9e37b5e45555c9575244b14d61b0da7848d96383d35e2f3",
+      "bytes": 963
+    },
+    {
+      "path": "legacy/51-fdPriceWhatsappSettingsV233.js",
+      "sha256": "763cb94fe5d48f5048f9ae17a90652e140052b3e5ec25039b146c9c8db655ec8",
+      "bytes": 14375
+    },
+    {
+      "path": "legacy/52-fdPersonelWhatsappTercihleriScript.js",
+      "sha256": "058040ff7d0ed8b23b5c25171ac9d78cae25d908be5260e0c29a87ec03d11cd2",
+      "bytes": 13227
+    },
+    {
+      "path": "legacy/53-fdPersonnelTemplateCatalogV264.js",
+      "sha256": "74385f7e50d7005e42f26a3914390cd9ed6c0dde4957dee7bf0b39cf556a5066",
+      "bytes": 10787
+    },
+    {
+      "path": "legacy/54-fdWhatsappFullTemplatePreviewV262.js",
+      "sha256": "90b06c13214166fd2ccdb1b1dea72cbeae6fc303513bd9234e6475f9d0efc51e",
+      "bytes": 6895
+    },
+    {
+      "path": "legacy/styles/00.css",
+      "sha256": "67af8e2c8c1b98b910a4b46d8a27301d09c05d570cf8a1bfebcee3333303e2d9",
+      "bytes": 168039
+    },
+    {
+      "path": "legacy/styles/01.css",
+      "sha256": "190a91e70d10367d607b031f4d8c0d7c082770a26881526333c773f54e0ad496",
+      "bytes": 1386
+    },
+    {
+      "path": "legacy/styles/02-policeTakipStilleri.css",
+      "sha256": "fc8e7e48048dd6965c9b804cd0e39786e95438fd862c8254ea3059ebbf7f1559",
+      "bytes": 1529
+    },
+    {
+      "path": "legacy/styles/03-policeTakipDuzeltmeStilleri.css",
+      "sha256": "71bcfbfcf67bec7c4f7572c6dcefe729f35e0a37b179d12d3e08b33838b15a75",
+      "bytes": 4621
+    },
+    {
+      "path": "legacy/styles/04.css",
+      "sha256": "a775fdd7258adda886a2814526f49b69b45887403c6138a1cf8385bdc6f3ae25",
+      "bytes": 1415
+    },
+    {
+      "path": "legacy/styles/05.css",
+      "sha256": "ba96331feb674c0d7d3df7b0f430dd6dad820e3b1b5b3203417e5b1fd5d5eba5",
+      "bytes": 951
+    },
+    {
+      "path": "legacy/styles/06-evrakTakipStilleri.css",
+      "sha256": "b949405c8d809abdb57c9c1dd8182f1ea1e72f443075caa36c9d08cf9eb6c02d",
+      "bytes": 7997
+    },
+    {
+      "path": "legacy/styles/07-evrakOnizlemeStilleri.css",
+      "sha256": "d58d68c3f367741e214d3a03c864bb17b02de2bb57303a1ed0d78bee1634faaa",
+      "bytes": 17313
+    },
+    {
+      "path": "legacy/styles/08.css",
+      "sha256": "3803752109844b3169585a86be01f783732cbe9e12af968573fc1b2dd10244c9",
+      "bytes": 466
+    },
+    {
+      "path": "legacy/styles/09.css",
+      "sha256": "44f41169cf9e6c1acd0087ed907e142cf6ea90f13d31f4f61c0e8214b07fae01",
+      "bytes": 284
+    },
+    {
+      "path": "legacy/styles/10.css",
+      "sha256": "d64df6c8810236779068ebbe689cbaf319c17916b726399622972173e524dec5",
+      "bytes": 11263
+    },
+    {
+      "path": "legacy/styles/11.css",
+      "sha256": "1d60115d834a6261fece3aa43fa56a4f00793d5853d703b95b87bcd3405d36a2",
+      "bytes": 998
+    },
+    {
+      "path": "legacy/styles/12.css",
+      "sha256": "eb21106fea7cbec4c4421afd66b0967d1764f3b16103a5a2298f6a4d1981252b",
+      "bytes": 3233
+    },
+    {
+      "path": "legacy/styles/13.css",
+      "sha256": "916402efc663f5ded9094a5bf78b261aae5d29dcba52205bff42746e772ee9da",
+      "bytes": 6129
+    },
+    {
+      "path": "legacy/styles/14-tapuCksStili.css",
+      "sha256": "39ee202ba38e32f9e6d6bb06773381852314d0e7a27ae3186f85b53a2e170538",
+      "bytes": 1505
+    },
+    {
+      "path": "legacy/styles/15-fdTopluDuzeltmelerV132Stil.css",
+      "sha256": "fbe4e21d987af57dc0014594c57d5054d5bfdc7100024cc65a1b3b971e1caca3",
+      "bytes": 3608
+    },
+    {
+      "path": "legacy/styles/16-fdCksPdfAktarimV134Stil.css",
+      "sha256": "c5aa0e54d2d104998ab1599dc9fecab08960fe0593c1a12155201e92b518ebc9",
+      "bytes": 3278
+    },
+    {
+      "path": "legacy/styles/17-fdCksKontrolSigdirV141.css",
+      "sha256": "7d4f9436bdcaef7f208510dea9b69d47241e073adaa1479ee0e57eb4bfa16647",
+      "bytes": 2387
+    },
+    {
+      "path": "legacy/styles/18-fdCksYilRenkleriV142Stil.css",
+      "sha256": "505727fea2d0ec15ac8737a533e18fbbc1bf67df4fa3cd7d1548cc033fafe7d9",
+      "bytes": 333
+    },
+    {
+      "path": "legacy/styles/19-fdCksCokluDuzenleV143Stil.css",
+      "sha256": "714f62c693b7c0eb6ceda26945a1a71882e0d76391eb5b001c141e27e6668edf",
+      "bytes": 652
+    },
+    {
+      "path": "legacy/styles/20-fdV144KatmanVeAbonelikStil.css",
+      "sha256": "47469afe5bd6bfc668c3f8155847443450ff9e3ce3864d5601d9d49ea73ffd44",
+      "bytes": 202
+    },
+    {
+      "path": "legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css",
+      "sha256": "c1f941c24065731b9d83feb7627f8c29a43cf48486d3b50dbbdc35e5a7341059",
+      "bytes": 270
+    },
+    {
+      "path": "legacy/styles/22-fdCksTumTarlalarV147Stil.css",
+      "sha256": "95dcc6b2080fa4977a60160490371d2924ab660eaf9eede696df97fbd42cbc52",
+      "bytes": 804
+    },
+    {
+      "path": "legacy/styles/23-fdPdfVeFiltreV149Stil.css",
+      "sha256": "7336484b04ab8ffcd7d14bb7cb24098796cd56d45aa66b166cfc387af4a038a0",
+      "bytes": 718
+    },
+    {
+      "path": "legacy/styles/24-fdBordroBelgeleriV184Stil.css",
+      "sha256": "dad17788ac128f2b1387f4d976c686ee0b03c0caefeac4285f6a1dc64d17f180",
+      "bytes": 6552
+    },
+    {
+      "path": "legacy/styles/25-fdxWorkCenterStyles.css",
+      "sha256": "8f646f8e6061954b0561a4f25c1049ed5d31d7fe934877dd2a5227ff099d0c68",
+      "bytes": 9284
+    },
+    {
+      "path": "legacy/styles/26-fdOperasyonGenisletmeV149Stil.css",
+      "sha256": "9ab97eb3da59708de20134e8527011a20fa718f3b9533fc9e403791950c54c60",
+      "bytes": 5600
+    },
+    {
+      "path": "legacy/styles/27-fdVarlikKisileriV150Style.css",
+      "sha256": "12e2eb0a9288cfcb9dd021aff84c62e3c2ea442d8295077465e680e1c227324a",
+      "bytes": 3255
+    },
+    {
+      "path": "legacy/styles/28-fdVarlikKisileriV151Style.css",
+      "sha256": "24cb7b9acab27cb3af326587ea29a4fcdf110ed23694f9e4440a2873bb59d9f3",
+      "bytes": 2299
+    },
+    {
+      "path": "legacy/styles/29-fdVarlikKisileriV152Style.css",
+      "sha256": "940058ec75f2287410c8c2c688e21f1fe74ab2ad31b987873e03b78e0dacf997",
+      "bytes": 12245
+    },
+    {
+      "path": "legacy/styles/30-fdInsaatFiyatStili.css",
+      "sha256": "74d1e6a422af839cb87ee8590045f32c2211407a5766241115b42ca0dd8c0ad9",
+      "bytes": 6399
+    },
+    {
+      "path": "legacy/styles/31-fdFiyatTeklifV2Stili.css",
+      "sha256": "6477c309bfa691d365b95f3bf4478b91e09d9cce8912fcf2f13ad31bb6d3cb13",
+      "bytes": 7556
+    },
+    {
+      "path": "legacy/styles/32-fdFiyatTeklifV3Stili.css",
+      "sha256": "881195123ae9a240f49c49b1932b502314c81d3abe6d793aa21576b7b8bf99ea",
+      "bytes": 415
+    },
+    {
+      "path": "legacy/styles/33-fdFiyatTeklifV4Stili.css",
+      "sha256": "ec663b3b622344414158aec05ef49a8dd2885774769001265ae7cbffa5739f55",
+      "bytes": 3500
+    },
+    {
+      "path": "legacy/styles/34-magicpassDurumSutunuKesinHiza.css",
+      "sha256": "3c02abade7e8eafddab7fc3e23d915cfc532149ad7a52d38dc021f6ece60ff2d",
+      "bytes": 1477
+    },
+    {
+      "path": "legacy/styles/35-fdKiraTasarimV214Style.css",
+      "sha256": "473da88004def50d2e8081a0eca5b99a181612927034762597889e1b90ae0e46",
+      "bytes": 17670
+    },
+    {
+      "path": "legacy/styles/36-fdPersonelTasarimV217Style.css",
+      "sha256": "06aa4534db2a5b04d268c3ae79b8d4f06bacf5b1ff18437212ee4e90f5d0153e",
+      "bytes": 14169
+    },
+    {
+      "path": "legacy/styles/37-fdPersonelOkunurlukV220.css",
+      "sha256": "ce975de4cf50793831a93e77b2bb3b6d896ef548da91b4d29ca007ed1cd5d02a",
+      "bytes": 1815
+    },
+    {
+      "path": "legacy/styles/38-fdAttendanceBalanceDisplayV268.css",
+      "sha256": "3ddde8bb683d80d8682893d722e311edb574bcb8190b7789c86123654f605bbb",
+      "bytes": 1523
+    },
+    {
+      "path": "legacy/styles/39-fdTopluZamDonemStilV249.css",
+      "sha256": "958654af4423af79f868c25f72f10480bf7c01116a23298b7f8217f9d50f64ec",
+      "bytes": 536
+    },
+    {
+      "path": "legacy/styles/40-fdAracTasarimV222.css",
+      "sha256": "2ceffb7242c9544adbe029355e8317ac596c2cdbc418604d2fcb0450252e676f",
+      "bytes": 10403
+    },
+    {
+      "path": "legacy/styles/41-fdAyarTasarimV225.css",
+      "sha256": "46675a5d91ee2476bb56cb86653e17d425eb4a06be1643eceb3676f0cc87fb80",
+      "bytes": 4980
+    },
+    {
+      "path": "legacy/styles/42-fdTapuTasarimV226.css",
+      "sha256": "0cf8e6a8c9d251ac6f607f4d5f6aa1315260a3fc808122ce42810e17d23e4f61",
+      "bytes": 5423
+    },
+    {
+      "path": "legacy/styles/43-fdUnifiedOutputStyleV227.css",
+      "sha256": "72b6b0301e0f81373a649b51ae01a6fc5256ab3dd92cc11ab9ed5e5fc67b3153",
+      "bytes": 5230
+    },
+    {
+      "path": "legacy/styles/44-fdIsgStyleV228.css",
+      "sha256": "ecb88537e9f8404061cafe804b6511bd64602a433e6252886f644e9afeff3027",
+      "bytes": 16675
+    },
+    {
+      "path": "legacy/styles/45-fdPriceRowOrderStyle.css",
+      "sha256": "59f55ea2de5de136f97eee107cf38dda37aa7647191bccbb259bc929b297a996",
+      "bytes": 887
+    },
+    {
+      "path": "modules/ihracat/manifest.json",
+      "sha256": "a92a76a6f1690871083b69d7b284a58ee477557c3e6a3ae068fd7fc1b93a438b",
+      "bytes": 957
+    },
+    {
+      "path": "modules/ihracat/module.js",
+      "sha256": "41e39c307ba31211ca8de46abdded8113abc64bdc8dc4b42a396d09e529d7d6a",
+      "bytes": 141233
+    },
+    {
+      "path": "modules/ihracat/style.css",
+      "sha256": "d25e1fa664d7febf80b8ce41a747e46e1879f13168e67d3d0ffe5b0d4d24c6cf",
+      "bytes": 3572
+    },
+    {
+      "path": "modules/ihracat/view.html",
+      "sha256": "a39fb1f959f40beaa5dea0da027ea0c7ebb60cf4f2016205ddff11c4a027e9c6",
+      "bytes": 14460
+    },
+    {
+      "path": "shared/export-compat.js",
+      "sha256": "23a5bb81bb42bd9673851f45cffa5a34ab712fbe895fc3cbbbda2578facf541d",
+      "bytes": 733
+    },
+    {
+      "path": "shared/utilities.js",
+      "sha256": "438e399322da154dacf9ebf13f71937160f2fe835514761c11f20a466cf799c1",
+      "bytes": 6349
+    }
+  ]
+}
