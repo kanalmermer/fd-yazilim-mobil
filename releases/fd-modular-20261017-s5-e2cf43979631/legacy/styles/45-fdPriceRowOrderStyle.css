@@ -1,0 +1,9 @@
+
+#fdFtEditorModal .fd-ft-editor-row{grid-template-columns:minmax(180px,1.35fr) 100px 82px 90px minmax(130px,1fr) 132px}
+#fdFtEditorModal .fd-ft-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:4px;min-width:0}
+#fdFtEditorModal .fd-ft-row-actions span{font-size:11px;color:#64748b;min-width:14px;text-align:center}
+#fdFtEditorModal .fd-ft-row-actions button{width:34px;min-width:34px;height:36px;font-size:17px}
+#fdFtEditorModal .fd-ft-row-actions button:not([data-price-row-action="remove"]){color:#0369a1;background:#eff6ff;border-color:#bfdbfe}
+#fdFtEditorModal .fd-ft-row-actions button:disabled{opacity:.35;cursor:default}
+@media(max-width:760px){#fdFtEditorModal .fd-ft-editor-row{grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)}#fdFtEditorModal .fd-ft-row-actions{grid-column:1/-1}#fdFtEditorModal .fd-ft-row-actions button{width:40px;height:40px}}
+

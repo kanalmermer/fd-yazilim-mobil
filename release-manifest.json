@@ -1,10 +1,15 @@
 {
-  "release": "fd-modular-20261017-s4-db3a8be4194d",
+  "release": "fd-modular-20261017-s5-e2cf43979631",
   "assets": [
     {
+      "path": "core/asset-people-entrypoints.js",
+      "sha256": "3c974ea16478da2a3f38a27159552d7e9f1caa32689f8adf29c81b5535bddc00",
+      "bytes": 2854
+    },
+    {
       "path": "core/catalog.js",
-      "sha256": "c0f8e09bc03be72c32d54e0f1ba66c2acc1f53d5778af3cc62e1608faa13fc8d",
-      "bytes": 5361
+      "sha256": "3d1336d4a6165fb38e0543b17a71cc60051c82bb878dd6e09c4da051c23d22e7",
+      "bytes": 6492
     },
     {
       "path": "core/company-entrypoints.js",
@@ -203,13 +208,13 @@
     },
     {
       "path": "legacy/33-fdOperasyonGenisletmeV149.js",
-      "sha256": "64ca14aaae38136c28c622efc6efcd1a227f79ca2351719e9fa4b1d5c0bab097",
-      "bytes": 51978
+      "sha256": "d75a2b8ec0d739e5c3d954d4ceaadcbc7e0cd53cd165e83ea5f0c0ca7a7aff58",
+      "bytes": 48769
     },
     {
       "path": "legacy/34-fdVarlikKisileriV150.js",
-      "sha256": "6bd43f59740991b079c6f6abc717715019248acb04db3d36194f2f83ef0decde",
-      "bytes": 48854
+      "sha256": "df538d94c3628b132f884fa3c230d515086124c7a3c2f788550024842188c926",
+      "bytes": 94
     },
     {
       "path": "legacy/35-fdInsaatFiyatModulu.js",
@@ -443,18 +448,18 @@
     },
     {
       "path": "legacy/styles/27-fdVarlikKisileriV150Style.css",
-      "sha256": "12e2eb0a9288cfcb9dd021aff84c62e3c2ea442d8295077465e680e1c227324a",
-      "bytes": 3255
+      "sha256": "3197afc24a208fbc2411a8cd9651211a272dcd23f81e238dd3c23c2b1185781d",
+      "bytes": 273
     },
     {
       "path": "legacy/styles/28-fdVarlikKisileriV151Style.css",
-      "sha256": "24cb7b9acab27cb3af326587ea29a4fcdf110ed23694f9e4440a2873bb59d9f3",
-      "bytes": 2299
+      "sha256": "01efa0849751634c9da78a3a0a8aa6264f7b31d61139d57f7b571e19a6b6e081",
+      "bytes": 1854
     },
     {
       "path": "legacy/styles/29-fdVarlikKisileriV152Style.css",
-      "sha256": "940058ec75f2287410c8c2c688e21f1fe74ab2ad31b987873e03b78e0dacf997",
-      "bytes": 12245
+      "sha256": "ec4a9d673c19c5b884f6d108abcbd7acbe0dac8135dccc2b54d3f0be15c252e8",
+      "bytes": 57
     },
     {
       "path": "legacy/styles/30-fdInsaatFiyatStili.css",
@@ -615,6 +620,36 @@
       "path": "modules/sirket/view.html",
       "sha256": "f1bea589e3cb951702f5d5bb9e6d1f27f4a1450ba4f6bc1480cb368018a99454",
       "bytes": 8780
+    },
+    {
+      "path": "modules/varlikkisileri/manifest.json",
+      "sha256": "6d9f99046e1853b5d652c7e782ee362e7c41a907dcbfd885057e8207fd2ce229",
+      "bytes": 1449
+    },
+    {
+      "path": "modules/varlikkisileri/module.js",
+      "sha256": "2f2aeb3216a04e08fae983ffa139a269a2c8cfae43b24b3e145c034f1a13e29c",
+      "bytes": 39730
+    },
+    {
+      "path": "modules/varlikkisileri/style.css",
+      "sha256": "1db817167e5802f605ed11c8b38d7d3456e667872647761b40fa41fd2089176f",
+      "bytes": 17026
+    },
+    {
+      "path": "modules/varlikkisileri/view.html",
+      "sha256": "a22a5148d52716c149b43c82d2b7bb923d5963c4fc16ecfcc93058f888517c2d",
+      "bytes": 5741
+    },
+    {
+      "path": "shared/asset-people-data.js",
+      "sha256": "14970753762d55fb45874b7b5e04af41cab87d43d4f55c83d02a3bf83abfc666",
+      "bytes": 6039
+    },
+    {
+      "path": "shared/asset-people-registration.js",
+      "sha256": "722d8b1dd96f8e0cc97b4831a66917d394a2ede3854d33907b7c696b7e3f7aef",
+      "bytes": 3545
     },
     {
       "path": "shared/company-branches.js",
