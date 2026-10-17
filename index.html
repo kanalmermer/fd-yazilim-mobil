@@ -20,17 +20,17 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/00.css">
+    <link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/00.css">
 
-<link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/01.css">
-<link rel="stylesheet" id="policeTakipStilleri" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/02-policeTakipStilleri.css"><link rel="stylesheet" id="policeTakipDuzeltmeStilleri" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/03-policeTakipDuzeltmeStilleri.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/01.css">
+<link rel="stylesheet" id="policeTakipStilleri" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/02-policeTakipStilleri.css"><link rel="stylesheet" id="policeTakipDuzeltmeStilleri" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/03-policeTakipDuzeltmeStilleri.css">
 
-<link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/05.css">
-<link rel="stylesheet" id="evrakTakipStilleri" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/06-evrakTakipStilleri.css">
-<link rel="stylesheet" id="evrakOnizlemeStilleri" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/07-evrakOnizlemeStilleri.css"><link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/08.css"><link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/09.css"><script>window.FD_ASSET_BASE="./releases/fd-modular-20261017-s5-571d94847457/";</script>
-<meta name="fd-modular-release" content="fd-modular-20261017-s5-571d94847457">
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/catalog.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/module-loader.js"></script>
+<link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/05.css">
+<link rel="stylesheet" id="evrakTakipStilleri" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/06-evrakTakipStilleri.css">
+<link rel="stylesheet" id="evrakOnizlemeStilleri" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/07-evrakOnizlemeStilleri.css"><link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/08.css"><link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/09.css"><script>window.FD_ASSET_BASE="./releases/fd-modular-20261017-s6-0a34d158659b/";</script>
+<meta name="fd-modular-release" content="fd-modular-20261017-s6-0a34d158659b">
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/catalog.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/module-loader.js"></script>
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="FD Yazılım"><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
 </head>
 <body>
@@ -408,197 +408,38 @@
 <!-- ARAÇ TAKİP MODÜLÜ -->
 <div id="modalIhracatCekiKopyala" data-fd-module-placeholder="ihracat" style="display:none"></div>
 
-<div id="aracTakipApp" style="display:none;">
-    <div class="app-layout"><main style="width:100%;padding:22px;max-width:1500px;margin:0 auto;">
-        <section id="aracTurOzetAlani" class="personel-summary" style="margin-bottom:14px;"><div class="personel-summary-grid" id="aracTurOzetleri" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));">
-            <article class="personel-summary-card"><span>Toplam Araç</span><strong id="aracToplamSayisi">0</strong></article>
-        </div></section>
-        <div class="module-subnav" id="aracAnaSekmeler" style="margin-bottom:14px;"><button type="button" class="active" onclick="aracAnaSekmeDegistir('arac-tab-araclar',this)">🚘 Araçlar</button><button type="button" onclick="aracAnaSekmeDegistir('arac-tab-akaryakit',this)">⛽ Akaryakıt Takip</button><button type="button" onclick="aracAnaSekmeDegistir('arac-tab-mtv',this)">💳 MTV</button><button type="button" onclick="aracAnaSekmeDegistir('arac-tab-sigorta',this)">🛡️ Sigorta & Kasko</button><button type="button" onclick="aracAnaSekmeDegistir('arac-tab-vize',this)">📅 Vize / Muayene</button><button type="button" onclick="aracAnaSekmeDegistir('arac-tab-bakim',this)">🔧 Bakım</button></div>
-        <section id="arac-tab-araclar" class="tab-content active"><div class="card">
-            <div class="module-subnav" style="margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><button id="btnAracAktif" type="button" class="active" onclick="aracListeModunuDegistir('aktif',this)">Aktif Araçlar</button><button type="button" onclick="aracListeModunuDegistir('satilan',this)">Satılan Araçlar</button><button type="button" onclick="aracListeModunuDegistir('tumu',this)">Tüm Araçlar</button><button type="button" class="btn-export btn-excel" style="margin-left:auto;" onclick="aracExportModaliniAc('excel')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracExportModaliniAc('pdf')">📄 PDF</button><button type="button" class="btn-submit" style="width:auto;margin:0;padding:9px 16px;" onclick="aracFormunuAc()">＋ Yeni Araç Kaydı</button></div>
-            <div class="filter-bar" style="margin:0 0 14px;"><input id="aracArama" type="search" placeholder="🔍 Plaka, araç sahibi, marka, model, şasi veya sürücü ara..." oninput="aracListesiniCiz()"><select id="aracSahibiFiltre" onchange="aracListesiniCiz()"><option value="">Tüm Araç Sahipleri</option></select><select id="aracDurumFiltre" onchange="aracListesiniCiz()"><option value="">Tüm Durumlar</option><option>Aktif</option><option>Serviste</option><option>Satıldı</option><option>Pasif</option></select><select id="aracUyariFiltre" onchange="aracListesiniCiz()"><option value="">Tüm Tarihler</option><option value="gecen">Süresi Geçenler</option><option value="yaklasan">Yaklaşanlar</option><option value="normal">Süresi Uygun</option></select></div>
-            <div id="aracMobilKartlar" class="arac-mobil-kartlar" aria-live="polite"></div><div class="table-wrapper arac-masaustu-tablosu"><table id="aracTakipTablosu"><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Araç Sahibi</th><th>Model Yılı</th><th>Araç Türü</th><th>Şasi No</th><th>Motor No</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="aracTakipBody"></tbody></table></div>
-        </div></section>
-        <section id="arac-tab-akaryakit" class="tab-content"><div class="card">
-            <div class="card-header" style="flex-wrap:wrap;gap:10px;"><h2>⛽ Akaryakıt ve Depo Takibi</h2><div class="action-btns"><button class="btn-modern btn-detail-modern" onclick="akaryakitFormunuAc('depo')">＋ Depo Ekle</button><button class="btn-modern btn-edit-modern" onclick="akaryakitFormunuAc('giris')">📥 Yeni Yakıt Girişi</button><button class="btn-submit" style="width:auto;margin:0;padding:8px 14px;" onclick="akaryakitFormunuAc('cikis')">⛽ Yakıt Ver</button><button class="btn-export btn-excel" onclick="akaryakitRaporAl('excel')">📊 Excel</button><button class="btn-export btn-pdf" onclick="akaryakitRaporAl('pdf')">📄 PDF</button></div></div>
-            <div id="akaryakitDepoOzetleri" class="personel-summary-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:15px;"></div>
-            <div class="filter-bar" style="margin:0 0 14px;"><input id="akaryakitArama" type="text" placeholder="🔍 Plaka, depo, alan veya veren kişi ara..." oninput="akaryakitListesiniCiz()"><select id="akaryakitDepoFiltre" onchange="akaryakitListesiniCiz()"><option value="">Tüm Depolar</option></select><select id="akaryakitTurFiltre" onchange="akaryakitListesiniCiz()"><option value="">Tüm Hareketler</option><option value="giris">Depoya Giriş</option><option value="cikis">Araca Verilen</option></select><button type="button" class="btn-modern" style="min-width:auto;padding:8px 11px;" onclick="akaryakitAyDegistir(-1)">&#8592; Önceki Ay</button><input id="akaryakitAyFiltre" type="month" onchange="akaryakitListesiniCiz()"><button type="button" class="btn-modern" style="min-width:auto;padding:8px 11px;" onclick="akaryakitAyDegistir(1)">Sonraki Ay &#8594;</button></div>
-            <div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka / İşlem</th><th>Litre</th><th title="Saati olmayan aynı gün kayıtlarında depo girişleri önce hesaplanır.">İşlem Sonrası Kalan</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th><th>İşlem</th></tr></thead><tbody id="akaryakitBody"></tbody></table></div>
-        </div></section>
-        <section id="arac-tab-mtv" class="tab-content"><div class="card"><div class="card-header" style="flex-wrap:wrap;gap:10px;"><h2>💳 MTV Ödeme Takibi</h2><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><label style="font-weight:700;">Yıl:</label><select id="aracMtvYil" onchange="aracMtvListesiniCiz()" style="width:105px;"></select><button type="button" class="btn-export btn-excel" onclick="aracMtvSablonuIndir()">📥 MTV Şablonu</button><button type="button" class="btn-export" style="background:#0f766e;color:#fff;" onclick="document.getElementById('aracMtvExcel').click()">📤 Ödeme Listesi Yükle</button><input id="aracMtvExcel" type="file" accept=".xlsx,.xls" hidden onchange="aracMtvExcelYukle(this)"></div></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracMtvArama" type="text" placeholder="🔍 Plaka, marka veya model ara..." oninput="aracMtvListesiniCiz()"><select id="aracMtvDurumFiltre" onchange="aracMtvListesiniCiz()"><option value="">Tüm Ödeme Durumları</option><option value="tam">Tamamı Ödendi</option><option value="eksik">Eksik Ödeme</option><option value="gecikmis">Gecikmiş Ödeme</option></select></div><p style="margin:0 0 14px;color:#64748b;">1. taksit son ödeme 31 Ocak, 2. taksit son ödeme 31 Temmuz.</p><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>1. Taksit Tutarı</th><th>1. Taksit Durumu</th><th>2. Taksit Tutarı</th><th>2. Taksit Durumu</th><th>İşlem</th></tr></thead><tbody id="aracMtvBody"></tbody></table></div></div></section>
-        <section id="arac-tab-sigorta" class="tab-content"><div class="card"><div class="card-header"><h2>🛡️ Trafik Sigortası ve Kasko Takibi</h2></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracSigortaArama" type="text" placeholder="🔍 Plaka, şirket veya poliçe ara..." oninput="aracSigortaListesiniCiz()"><select id="aracSigortaDurumFiltre" onchange="aracSigortaListesiniCiz()"><option value="">Tüm Poliçeler</option><option value="eksik">Eksik Poliçe</option><option value="gecen">Süresi Geçen</option><option value="yaklasan">Süresi Yaklaşan</option><option value="normal">Süresi Uygun</option></select></div><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Sigorta Şirketi / Poliçe</th><th>Sigorta Bitişi</th><th>Sigorta PDF</th><th>Kasko Şirketi / Poliçe</th><th>Kasko Bitişi</th><th>Kasko PDF</th></tr></thead><tbody id="aracSigortaBody"></tbody></table></div></div></section>
-        <section id="arac-tab-vize" class="tab-content"><div class="card"><div class="card-header"><h2>📅 Araç Vize / Muayene Takibi</h2></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracVizeArama" type="text" placeholder="🔍 Plaka, marka veya model ara..." oninput="aracVizeListesiniCiz()"><select id="aracVizeDurumFiltre" onchange="aracVizeListesiniCiz()"><option value="">Tüm Vize Durumları</option><option value="Kusursuz Geçti">Kusursuz Geçti</option><option value="Hafif Kusurlu Geçti">Hafif Kusurlu Geçti</option><option value="Kaldı">Kaldı</option><option value="gecen">Süresi Geçen</option><option value="yaklasan">Süresi Yaklaşan</option></select></div><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Araç Muayene Tarihi</th><th>Araç Muayene Bitişi</th><th>Egzoz Muayene Tarihi</th><th>Egzoz Muayene Bitişi</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="aracVizeBody"></tbody></table></div></div></section>
-        <section id="arac-tab-bakim" class="tab-content"><div class="card"><div class="card-header"><h2>🔧 Araç Bakım Takibi</h2></div><div class="filter-bar" style="margin:0 0 14px;"><input id="aracBakimArama" type="text" placeholder="🔍 Plaka, marka veya model ara..." oninput="aracBakimOzetListesiniCiz()"><select id="aracBakimDurumFiltre" onchange="aracBakimOzetListesiniCiz()"><option value="">Tüm Bakım Durumları</option><option value="kayitli">Bakım Kaydı Olan</option><option value="kayitsiz">Bakım Kaydı Olmayan</option><option value="gecen">Bakımı Geçen</option><option value="yaklasan">Bakımı Yaklaşan</option></select></div><div class="table-wrapper"><table><thead><tr><th>#</th><th>Plaka</th><th>Araç</th><th>Son Bakım KM</th><th>Son Bakım Tarihi</th><th>Sonraki Bakım Tarihi</th><th>Sonraki Bakım KM</th><th>İşlem</th></tr></thead><tbody id="aracBakimOzetBody"></tbody></table></div></div></section>
-    </main></div>
-</div>
+<div id="aracTakipApp" data-fd-module-placeholder="arac" style="display:none"></div>
+<div id="modalAracCeza" data-fd-module-placeholder="arac" style="display:none"></div>
+<div id="modalTrafikCezaGecmisi" data-fd-module-placeholder="arac" style="display:none"></div>
+<div id="aracCezaNedenListesi" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracKayit" class="modal-overlay">
-    <div class="modal-card" style="max-width:1180px;">
-        <div class="modal-header"><h3 id="aracModalBaslik">🚘 Yeni Araç Kaydı</h3><button class="modal-close" onclick="aracFormunuKapat()">✕</button></div>
-        <div class="modal-body"><form id="aracForm" onsubmit="aracKaydet(event)">
-            <input type="hidden" id="aracEditId">
-            <details class="profile-section" open><summary>Araç Kimlik ve Teknik Bilgileri</summary><div class="profile-layout">
-                <div class="form-group"><label>Plaka</label><input id="aracPlaka" required placeholder="15 ABC 123"></div><div class="form-group"><label>Araç Türü</label><select id="aracTuru" required onchange="aracTuruneGoreAlanlariGuncelle()"><option value="">Seçiniz</option><option>Otomobil</option><option>Kamyonet</option><option>Kamyon</option><option>Çekici</option><option>Yarı Römork</option><option>Minibüs</option><option>Otobüs</option><option>İş Makinesi</option><option>Motosiklet</option><option>Diğer</option></select></div>
-                <div class="form-group"><label>Marka</label><input id="aracMarka" required></div><div class="form-group"><label>Model</label><input id="aracModel" required></div><div class="form-group"><label>Model Yılı</label><input id="aracModelYili" type="number" min="1950" max="2100"></div><div class="form-group"><label>Renk</label><input id="aracRenk"></div>
-                <div class="form-group" data-arac-motorlu-alan><label>Yakıt Türü</label><select id="aracYakit"><option value="">Seçiniz</option><option>Dizel</option><option>Benzin</option><option>LPG</option><option>Hibrit</option><option>Elektrik</option></select></div><div class="form-group" data-arac-motorlu-alan><label>Vites</label><select id="aracVites"><option value="">Seçiniz</option><option>Manuel</option><option>Otomatik</option><option>Yarı Otomatik</option></select></div>
-                <div class="form-group"><label>Şasi No</label><input id="aracSasiNo" required></div><div class="form-group" data-arac-motorlu-alan><label>Motor No</label><input id="aracMotorNo" required></div><div class="form-group"><label>Ruhsat Seri No</label><input id="aracRuhsatSeriNo"></div><div class="form-group" data-arac-motorlu-alan><label>Mevcut Kilometre</label><input id="aracKm" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div>
-                <div class="form-group"><label>Durum</label><select id="aracDurum"><option>Aktif</option><option>Serviste</option><option>Satıldı</option><option>Pasif</option></select></div><div class="form-group"><label>Şube / Kullanım Yeri</label><input id="aracSube" list="aracSubeListesi"><datalist id="aracSubeListesi"></datalist></div><div class="form-group"><label>Araç Sahibi</label><input id="aracSahibi" list="fdVarlikKisileriListesi" placeholder="Kişi seçin veya yeni ad yazın"><small>Tapu ve kira sahipleriyle ortak kişi listesini kullanır.</small></div><div class="form-group"><label>Zimmetli / Kullanan Personel</label><select id="aracPersonelId"><option value="">Atanmamış</option></select></div><div class="form-group" style="grid-column:1/-1"><label>Bu Araçta Takip Edilecek İşlemler</label><div style="display:flex;gap:18px;flex-wrap:wrap;padding:11px 13px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc"><label style="display:flex;align-items:center;gap:7px"><input id="aracMtvTakip" type="checkbox" checked> MTV</label><label style="display:flex;align-items:center;gap:7px"><input id="aracSigortaTakip" type="checkbox" checked> Sigorta / Kasko</label><label style="display:flex;align-items:center;gap:7px"><input id="aracVizeTakip" type="checkbox" checked> Vize / Muayene</label></div><small>İşareti kaldırılan işlem bu aracın takip listelerinde ve uyarılarında gösterilmez.</small></div>
+<div id="modalAracKayit" data-fd-module-placeholder="arac" style="display:none"></div>
 
-            </div></details>
-            <details class="profile-section"><summary>Satın Alma ve Satış Bilgileri</summary><div class="profile-layout">
-                <div class="form-group"><label>Alış Tarihi</label><input id="aracAlisTarihi" type="date"></div><div class="form-group"><label>Kimden / Nereden Alındı</label><input id="aracSatici"></div><div class="form-group"><label>Alış Bedeli (TL)</label><input id="aracAlisBedeli" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group" data-arac-motorlu-alan><label>Alış Kilometresi</label><input id="aracAlisKm" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Fatura / Belge No</label><input id="aracFaturaNo"></div>
-                <div class="form-group"><label>Satış Tarihi</label><input id="aracSatisTarihi" type="date"></div><div class="form-group"><label>Satılan Kişi / Kurum</label><input id="aracAlici"></div><div class="form-group"><label>Satış Bedeli (TL)</label><input id="aracSatisBedeli" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div>
-            </div></details>
-            <details class="profile-section"><summary>Drive Belgeleri</summary><div><p style="margin:0 0 12px;color:#64748b;">Araç görseli ve belgeler Drive’daki <strong>FD YAZILIM / ARAÇ TAKİP</strong> klasörüne kaydedilir. Yeni dosya seçerseniz mevcut dosyanın yerini alır.</p><div class="profile-layout">
-                <div class="form-group"><label>Araç Görseli</label><input id="aracFoto" type="file" accept="image/jpeg,image/png,image/webp" onchange="aracFotoSecildi(this)"><div id="aracFotoOnizleme" style="margin-top:8px;"></div></div>                <div class="form-group"><label>Alış Noter Satış Sözleşmesi</label><input id="aracNoterPdf" type="file" accept="application/pdf"><div id="aracNoterPdfMevcut"></div></div><div class="form-group"><label>Ruhsat Görseli / PDF</label><input id="aracRuhsatPdf" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" onchange="aracRuhsatDosyasiSecildi(this)"><div id="aracRuhsatOkumaDurumu" style="display:none;margin-top:7px;padding:8px;border-radius:8px;font-size:.78rem;font-weight:700;"></div><div id="aracRuhsatPdfMevcut"></div></div>
-            </div></div></details>
-            <div class="form-group"><label>Açıklama / Not</label><textarea id="aracAciklama" rows="3"></textarea></div><button id="btnAracKaydet" type="submit" class="btn-submit">💾 Araç Kaydını Kaydet</button>
-        </form></div>
-    </div>
-</div>
+<div id="modalAracBakim" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracBakim" class="modal-overlay">
-    <div class="modal-card" style="max-width:1050px;">
-        <div class="modal-header"><h3 id="aracBakimBaslik">🔧 Araç Bakım Geçmişi</h3><button class="modal-close" onclick="aracBakimModaliniKapat()">✕</button></div>
-        <div class="modal-body"><input type="hidden" id="aracBakimAracId">
-            <form id="aracBakimForm" onsubmit="aracBakimKaydet(event)" class="card" style="background:#f8fafc;margin-bottom:16px;">
-                <div class="profile-layout"><div class="form-group"><label>Bakım Tarihi</label><input id="aracBakimTarihi" type="date" required onchange="aracBakimVarsayilanlariniUygula(true)"></div><div class="form-group"><label>Kilometre</label><input id="aracBakimKm" type="text" inputmode="numeric" required oninput="paraGirisiFormatla(this)" onchange="aracBakimVarsayilanlariniUygula(true)"></div><div class="form-group"><label>Bakım Türü</label><select id="aracBakimTuru" required onchange="aracBakimVarsayilanlariniUygula(true)"><option>Periyodik Bakım</option><option>Arıza / Onarım</option><option>Lastik</option><option>Kaporta / Boya</option><option>Muayene Hazırlığı</option><option>Diğer</option></select></div><div class="form-group"><label>Servis / Usta</label><input id="aracBakimServis"></div><div class="form-group"><label>Bakım Tutarı (TL)</label><input id="aracBakimTutar" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Sonraki Bakım Tarihi</label><input id="aracBakimSonrakiTarih" type="date"></div><div class="form-group"><label>Sonraki Bakım KM</label><input id="aracBakimSonrakiKm" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Bakım Faturası / Servis Formu (PDF)</label><input id="aracBakimPdf" type="file" accept="application/pdf"></div></div>
-                <div class="form-group"><label>Yapılan İşlemler / Değişen Parçalar</label><textarea id="aracBakimIslemler" rows="2" required></textarea></div><button type="submit" class="btn-submit">＋ Bakım Kaydını Ekle</button>
-            </form>
-            <div class="filter-bar" style="margin:0 0 14px;"><input id="aracBakimGecmisArama" type="text" placeholder="🔍 İşlem, servis veya bakım türü ara..." oninput="aracBakimListesiniCiz()"><select id="aracBakimGecmisTur" onchange="aracBakimListesiniCiz()"><option value="">Tüm Bakım Türleri</option><option>Periyodik Bakım</option><option>Arıza / Onarım</option><option>Lastik</option><option>Kaporta / Boya</option><option>Muayene Hazırlığı</option><option>Diğer</option></select><input id="aracBakimGecmisBaslangic" type="date" title="Başlangıç tarihi" onchange="aracBakimListesiniCiz()"><input id="aracBakimGecmisBitis" type="date" title="Bitiş tarihi" onchange="aracBakimListesiniCiz()"></div>
-            <div class="table-wrapper"><table><thead><tr><th>Tarih</th><th>KM</th><th>Bakım Türü</th><th>Yapılan İşlemler</th><th>Servis</th><th>Tutar</th><th>Sonraki Bakım</th><th>Belge</th><th>İşlem</th></tr></thead><tbody id="aracBakimBody"></tbody></table></div>
-        </div>
-    </div>
-</div>
+<div id="modalAkaryakit" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAkaryakit" class="modal-overlay">
-    <div class="modal-card" style="max-width:1180px;"><div class="modal-header"><h3 id="akaryakitModalBaslik">⛽ Akaryakıt İşlemi</h3><button class="modal-close" onclick="document.getElementById('modalAkaryakit').style.display='none'">✕</button></div><div class="modal-body">
-        <form id="akaryakitForm" onsubmit="akaryakitKaydet(event)"><input type="hidden" id="akaryakitFormTuru" data-case-preserve="true"><input type="hidden" id="akaryakitEditId" data-case-preserve="true"><div id="akaryakitDepoAlanlari" class="profile-layout"><div class="form-group"><label>Depo Adı</label><input id="akaryakitDepoAdi"></div><div class="form-group"><label>Depo Kapasitesi (Litre)</label><input id="akaryakitDepoKapasite" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Başlangıç Stoku (Litre)</label><input id="akaryakitDepoBaslangic" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div></div>
-        <div id="akaryakitHareketAlanlari" class="profile-layout" style="display:none;"><div class="form-group"><label>Tarih ve Saat</label><input id="akaryakitTarih" type="datetime-local"></div><div class="form-group"><label>Depo</label><select id="akaryakitDepoId"></select></div><div class="form-group akaryakit-cikis"><label>Araç</label><select id="akaryakitAracId"></select></div><div class="form-group akaryakit-cikis"><label>Araç KM</label><input id="akaryakitKm" type="text" inputmode="numeric" oninput="paraGirisiFormatla(this)"></div><div class="form-group"><label>Litre</label><input id="akaryakitLitre" type="text" inputmode="decimal" oninput="paraGirisiFormatla(this)"></div><div class="form-group akaryakit-giris"><label>Tedarikçi / Açıklama</label><input id="akaryakitTedarikci"></div><div class="form-group akaryakit-cikis"><label>Yakıtı Alan</label><input id="akaryakitAlan"></div><div class="form-group akaryakit-cikis"><label>Yakıtı Veren</label><input id="akaryakitVeren"></div></div>
-        <div id="akaryakitTopluAlan" style="display:none;"><p style="margin:0 0 12px;color:#64748b;">Tarih, depo, plaka ve litre zorunludur. KM, yakıtı alan ve yakıtı veren isteğe bağlıdır. Yeni satırda depo ve yakıtı veren kişi bir üst satırdan otomatik kopyalanır.</p><datalist id="akaryakitPersonelAdlari"></datalist><datalist id="akaryakitAracPlakalari"></datalist><div class="table-wrapper"><table><thead><tr><th>#</th><th>Tarih</th><th>Depo</th><th>Plaka</th><th>KM</th><th>Litre</th><th>Yakıtı Alan</th><th>Yakıtı Veren</th><th></th></tr></thead><tbody id="akaryakitTopluBody"></tbody></table></div><button type="button" class="btn-modern btn-detail-modern" style="margin-top:10px;" onclick="akaryakitTopluSatirEkle()">＋ Yeni Satır Ekle</button></div>
-        <button id="akaryakitKaydetBtn" type="submit" class="btn-submit">💾 Kaydet</button></form>
-    </div></div>
-</div>
+<div id="modalAkaryakitAracDetay" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAkaryakitAracDetay" class="modal-overlay">
-    <div class="modal-card" style="width:96%;max-width:1180px;height:92vh;">
-        <div class="modal-header"><h3 id="akaryakitAracDetayBaslik">⛽ Araç Yakıt Geçmişi</h3><button class="modal-close" onclick="document.getElementById('modalAkaryakitAracDetay').style.display='none'">✕</button></div>
-        <div class="modal-body" style="overflow:auto;">
-            <div class="akaryakit-detail-toolbar"><select id="akaryakitDetayYil" title="Yıl" onchange="akaryakitDetayDonemSecildi()"></select><select id="akaryakitDetayAy" title="Ay" onchange="akaryakitDetayDonemSecildi()"><option value="">Tüm Aylar</option><option value="01">Ocak</option><option value="02">Şubat</option><option value="03">Mart</option><option value="04">Nisan</option><option value="05">Mayıs</option><option value="06">Haziran</option><option value="07">Temmuz</option><option value="08">Ağustos</option><option value="09">Eylül</option><option value="10">Ekim</option><option value="11">Kasım</option><option value="12">Aralık</option></select><input id="akaryakitDetayBaslangic" type="date" title="Başlangıç tarihi" onchange="akaryakitAracDetayiniCiz()"><input id="akaryakitDetayBitis" type="date" title="Bitiş tarihi" onchange="akaryakitAracDetayiniCiz()"><button class="btn-export btn-excel" onclick="akaryakitAracRaporAl('excel')">📊 Excel</button><button class="btn-export btn-pdf" onclick="akaryakitAracRaporAl('pdf')">📄 PDF</button></div>
-            <input type="hidden" id="akaryakitDetayAracId">
-            <div id="akaryakitDetayOzet"></div>
-            <section class="akaryakit-report-section"><h3>Aylık Yakıt Miktarı</h3><div id="akaryakitDetayGrafik" style="display:flex;align-items:flex-end;gap:8px;padding:15px;border:1px solid #dbe5ef;border-radius:10px;"></div></section>
-            <section class="akaryakit-report-section"><h3>İki Yakıt Alımı Arasındaki Tüketim</h3><div class="table-wrapper"><table><thead><tr><th>Önceki Yakıt Tarihi</th><th>Son Yakıt Tarihi</th><th>Önceki KM</th><th>Son KM</th><th>Yapılan KM</th><th>Alınan Yakıt</th><th>100 KM Tüketim</th></tr></thead><tbody id="akaryakitAralikBody"></tbody></table></div></section>
-            <section class="akaryakit-report-section"><h3>Aylık Tüketim Özeti</h3><div class="table-wrapper"><table><thead><tr><th>Ay</th><th>Yakıt Alım Sayısı</th><th>Toplam Yakıt</th><th>Hesaplanan KM</th><th>Ortalama Tüketim</th></tr></thead><tbody id="akaryakitAylikOzetBody"></tbody></table></div></section>
-            <section class="akaryakit-report-section"><h3>Yıllık Tüketim Özeti</h3><div class="table-wrapper"><table><thead><tr><th>Yıl</th><th>Yakıt Alım Sayısı</th><th>Toplam Yakıt</th><th>Hesaplanan KM</th><th>Ortalama Tüketim</th></tr></thead><tbody id="akaryakitYillikOzetBody"></tbody></table></div></section>
-            <section class="akaryakit-report-section"><h3>Yakıt Teslim Kayıtları</h3><div class="table-wrapper"><table><thead><tr><th>Tarih</th><th>Depo</th><th>Litre</th><th>İşlem Sonrası Kalan</th><th>KM</th><th>Alan</th><th>Veren</th><th>100 KM Tüketim</th></tr></thead><tbody id="akaryakitDetayBody"></tbody></table></div></section>
-        </div>
-    </div>
-</div>
+<div id="modalAkaryakitTuketimNotu" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAkaryakitTuketimNotu" class="modal-overlay">
-    <div class="modal-card" style="max-width:720px;">
-        <div class="modal-header"><h3 id="akaryakitTuketimNotuBaslik">⛽ Yakıt Tüketim Bilgisi</h3><button class="modal-close" onclick="document.getElementById('modalAkaryakitTuketimNotu').style.display='none'">✕</button></div>
-        <div class="modal-body">
-            <input type="hidden" id="akaryakitTuketimKayitId">
-            <div class="profile-layout" style="grid-template-columns:1fr 1.4fr 1.4fr;"><div class="form-group"><label>Plaka</label><input id="akaryakitTuketimPlaka" readonly></div><div class="form-group"><label>Sürücü Adı</label><input id="akaryakitTuketimSurucu" list="akaryakitPersonelAdlari" oninput="akaryakitTuketimNotuOnizle()"></div><div class="form-group"><label>Yakıt Tarih Aralığı</label><input id="akaryakitTuketimTarihAraligi" readonly></div></div>
-            <div class="form-group"><label>Güzergâh / Sefer Bilgileri</label><textarea id="akaryakitTuketimGuzergah" rows="7" placeholder="Her güzergâhı veya seferi ayrı satıra yazın" oninput="akaryakitTuketimNotuOnizle()"></textarea></div>
-            <div id="akaryakitTuketimGoruntuAlani" style="margin-top:14px;padding:22px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#111827;font-family:Arial,sans-serif;line-height:1.55;"></div>
-            <div style="display:flex;gap:9px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap;"><button id="akaryakitTuketimBilgiSilBtn" type="button" class="btn-modern btn-del-modern" onclick="akaryakitTuketimNotunuSil()">🗑️ Bilgileri Sil</button><button type="button" class="btn-export" style="background:#475569;color:#fff;" onclick="akaryakitTuketimMetniniKopyala()">📋 Tüm Bilgileri Yazı Olarak Kopyala</button><button type="button" class="btn-submit" style="width:auto;margin:0;padding:9px 18px;" onclick="akaryakitTuketimNotunuKaydet()">💾 Bilgileri Kaydet</button></div>
-        </div>
-    </div>
-</div>
+<div id="modalAracMtvGecmis" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracMtvGecmis" class="modal-overlay">
-    <div class="modal-card" style="max-width:900px;">
-        <div class="modal-header"><h3 id="aracMtvGecmisBaslik">💳 MTV Ödeme Geçmişi</h3><button class="modal-close" onclick="document.getElementById('modalAracMtvGecmis').style.display='none'">✕</button></div>
-        <div class="modal-body"><div class="table-wrapper"><table><thead><tr><th>Yıl</th><th>Taksit</th><th>Son Ödeme</th><th>Ödeme Tarihi</th><th>Ödenen Tutar</th><th>Referans No</th><th>Durum</th></tr></thead><tbody id="aracMtvGecmisBody"></tbody></table></div></div>
-    </div>
-</div>
+<div id="modalAracMtvOdeme" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracMtvOdeme" class="modal-overlay">
-    <div class="modal-card" style="max-width:620px;">
-        <div class="modal-header"><h3 id="aracMtvOdemeBaslik">💳 MTV Ödemesi Gir</h3><button class="modal-close" onclick="document.getElementById('modalAracMtvOdeme').style.display='none'">✕</button></div>
-        <div class="modal-body"><form id="aracMtvOdemeForm" onsubmit="aracMtvElleKaydet(event)"><input type="hidden" id="aracMtvOdemeAracId"><div class="profile-layout"><div class="form-group"><label>Yıl</label><input id="aracMtvOdemeYil" type="number" min="2000" max="2100" required onchange="aracMtvElleSecimiDegisti()"></div><div class="form-group"><label>Taksit</label><select id="aracMtvOdemeTaksit" required onchange="aracMtvElleSecimiDegisti()"><option value="1">1. Taksit</option><option value="2">2. Taksit</option></select></div><div class="form-group"><label>Ödeme Tarihi</label><input id="aracMtvOdemeTarihi" type="date" required></div><div class="form-group"><label>Ödenen Tutar (TL)</label><input id="aracMtvOdemeTutari" type="text" inputmode="decimal" required oninput="paraGirisiVirgulluFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)" placeholder="0,00"></div><div class="form-group"><label>Referans / Dekont No</label><input id="aracMtvOdemeReferans"></div></div><div id="aracMtvOdemeDurumu" style="display:none;margin:0 0 10px;padding:10px;border-radius:8px;background:#e0f2fe;color:#075985;font-weight:700;"></div><button id="aracMtvOdemeKaydetBtn" type="submit" class="btn-submit">💾 MTV Ödemesini Kaydet</button></form></div>
-    </div>
-</div>
+<div id="modalAracSigorta" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracSigorta" class="modal-overlay">
-    <div class="modal-card" style="max-width:1050px;">
-        <div class="modal-header"><h3 id="aracSigortaModalBaslik">🛡️ Sigorta ve Kasko</h3><button class="modal-close" onclick="aracSigortaModaliniKapat()">✕</button></div>
-        <div class="modal-body"><input type="hidden" id="aracSigortaAracId"><input type="hidden" id="aracPoliceKayitModu" value="yeni"><input type="hidden" id="aracPoliceGecmisId">
-            <form id="aracSigortaForm" onsubmit="aracSigortaKaydet(event)" class="card" style="background:#f8fafc;margin-bottom:16px;">
-                <div class="profile-layout">
-                    <div class="form-group"><label>Trafik Sigortası Şirketi</label><input id="takipSigortaSirketi"></div><div class="form-group"><label>Poliçe No</label><input id="takipSigortaPoliceNo"></div><div class="form-group"><label>Poliçe Bedeli (TL)</label><input id="takipSigortaBedeli" type="text" inputmode="decimal" oninput="paraGirisiVirgulluFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)" placeholder="0,00"></div><div class="form-group"><label>Başlangıç</label><input id="takipSigortaBaslangic" type="date"></div><div class="form-group"><label>Bitiş</label><input id="takipSigortaBitis" type="date"></div><div class="form-group"><label>Sigorta Poliçesi (PDF)</label><input id="takipSigortaPdf" type="file" accept="application/pdf"></div>
-                    <div class="form-group"><label>Kasko Şirketi</label><input id="takipKaskoSirketi"></div><div class="form-group"><label>Poliçe No</label><input id="takipKaskoPoliceNo"></div><div class="form-group"><label>Poliçe Bedeli (TL)</label><input id="takipKaskoBedeli" type="text" inputmode="decimal" oninput="paraGirisiVirgulluFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)" placeholder="0,00"></div><div class="form-group"><label>Başlangıç</label><input id="takipKaskoBaslangic" type="date"></div><div class="form-group"><label>Bitiş</label><input id="takipKaskoBitis" type="date"></div><div class="form-group"><label>Kasko Poliçesi (PDF)</label><input id="takipKaskoPdf" type="file" accept="application/pdf"></div>
-                </div><button id="aracSigortaKaydetBtn" type="submit" class="btn-submit">💾 Sigorta / Kasko Bilgilerini Kaydet</button>
-            </form>
-            <h3 style="margin:8px 0 12px;">Geçmiş Poliçeler</h3>
-            <div class="table-wrapper"><table><thead><tr><th>Tür</th><th>Şirket</th><th>Poliçe No</th><th>Poliçe Bedeli</th><th>Başlangıç</th><th>Bitiş</th><th>Belge</th><th>İşlem</th></tr></thead><tbody id="aracSigortaGecmisBody"></tbody></table></div>
-        </div>
-    </div>
-</div>
+<div id="modalAracBelgeler" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracBelgeler" class="modal-overlay">
-    <div class="modal-card" style="max-width:720px;">
-        <div class="modal-header"><h3 id="aracBelgelerBaslik">📁 Araç Belgeleri</h3><button class="modal-close" onclick="document.getElementById('modalAracBelgeler').style.display='none'">✕</button></div>
-        <div class="modal-body" id="aracBelgelerBody"></div>
-    </div>
-</div>
+<div id="modalAracVize" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracVize" class="modal-overlay">
-    <div class="modal-card" style="max-width:900px;">
-        <div class="modal-header"><h3 id="aracVizeModalBaslik">📅 Vize / Muayene</h3><button class="modal-close" onclick="document.getElementById('modalAracVize').style.display='none'">✕</button></div>
-        <div class="modal-body"><input type="hidden" id="aracVizeAracId"><input type="hidden" id="aracVizeGecmisId">
-            <form id="aracVizeForm" onsubmit="aracVizeKaydet(event)" class="card" style="background:#f8fafc;margin-bottom:16px;"><input type="hidden" id="aracVizeKayitModu" value="yeni"><div class="profile-layout"><div class="form-group"><label>Araç Muayene Tarihi</label><input id="takipMuayeneTarihi" type="date" required></div><div class="form-group"><label>Araç Muayene Geçerlilik Bitişi</label><input id="takipMuayeneBitis" type="date" required></div><div class="form-group"><label>Egzoz Emisyon Muayene Tarihi</label><input id="takipEgzozMuayeneTarihi" type="date"></div><div class="form-group"><label>Egzoz Emisyon Geçerlilik Bitişi</label><input id="takipEgzozMuayeneBitis" type="date"></div><div class="form-group"><label>Muayene Sonucu</label><select id="takipMuayeneDurumu" required onchange="aracVizeDurumunaGoreKusurAlani()"><option value="">Seçiniz</option><option>Kusursuz Geçti</option><option>Hafif Kusurlu Geçti</option><option>Kaldı</option></select></div></div><div class="form-group" id="takipMuayeneKusurlariAlani"><label>Tespit Edilen Kusurlar</label><textarea id="takipMuayeneKusurlari" rows="3" placeholder="Muayenede belirtilen kusurları yazın"></textarea></div><button id="aracVizeKaydetBtn" type="submit" class="btn-submit">💾 Vize ve Egzoz Muayenesini Kaydet</button></form>
-            <h3 style="margin:8px 0 12px;">Geçmiş Vize İşlemleri</h3><div class="table-wrapper"><table class="arac-vize-gecmis-tablosu"><thead><tr><th>Araç Muayene</th><th>Araç Muayene Bitişi</th><th>Egzoz Muayene</th><th>Egzoz Bitişi</th><th>Sonuç</th><th>Kusurlar</th><th>Kayıt</th><th>İşlem</th></tr></thead><tbody id="aracVizeGecmisBody"></tbody></table></div>
-        </div>
-    </div>
-</div>
+<div id="modalAracVizeKusurDetay" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracVizeKusurDetay" class="modal-overlay">
-    <div class="modal-card" style="max-width:620px;">
-        <div class="modal-header"><h3>🔎 Muayenede Tespit Edilen Kusurlar</h3><button class="modal-close" onclick="document.getElementById('modalAracVizeKusurDetay').style.display='none'">✕</button></div>
-        <div class="modal-body"><p id="aracVizeKusurDetayMetni"></p></div>
-    </div>
-</div>
+<div id="modalAracExport" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracExport" class="modal-overlay">
-    <div class="modal-card" style="max-width:620px;">
-        <div class="modal-header"><h3>Dışa Aktarılacak Araç Alanları</h3><button class="modal-close" onclick="document.getElementById('modalAracExport').style.display='none'">✕</button></div>
-        <div class="modal-body"><p style="color:#64748b;margin-bottom:14px;">İstediğiniz alanları seçin. Ekrandaki aktif, satılan veya tüm araç filtresi uygulanır.</p><div id="aracExportFields" class="profile-layout"></div><div style="display:flex;gap:10px;margin-top:18px;"><button type="button" class="btn-cancel" style="margin:0;" onclick="document.getElementById('modalAracExport').style.display='none'">İptal</button><button type="button" class="btn-submit" id="btnAracExportOnay" onclick="aracSeciliAlanlariAktar()">Dışa Aktar</button></div></div>
-    </div>
-</div>
+<div id="modalAracDetay" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<div id="modalAracDetay" class="modal-overlay">
-    <div class="modal-card" style="width:95%;max-width:1150px;height:90vh;">
-        <div class="modal-header"><h3 id="aracDetayBaslik">🚘 Araç Detayı</h3><button class="modal-close" onclick="aracDetayModaliniKapat()">✕</button></div>
-        <div class="modal-body" style="overflow:auto;">
-            <div class="workspace-nav" id="aracDetaySekmeler" style="margin-bottom:16px;flex-wrap:wrap;">
-                <button type="button" class="active" onclick="aracDetaySekmeDegistir('arac-detay-genel',this)">Araç Bilgileri</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-satis',this)">Alış / Satış</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-belgeler',this)">Belgeler</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-mtv',this)">MTV</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-sigorta',this)">Sigorta / Kasko</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-vize',this)">Vize</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-bakim',this)">Bakım</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-yakit',this)">Yakıt</button>
-                <button type="button" onclick="aracDetaySekmeDegistir('arac-detay-cezalar',this)">Trafik Cezaları</button>
-            </div>
-            <section id="arac-detay-genel" class="tab-content active"></section>
-            <section id="arac-detay-satis" class="tab-content"></section>
-            <section id="arac-detay-belgeler" class="tab-content"></section>
-            <section id="arac-detay-mtv" class="tab-content"></section>
-            <section id="arac-detay-sigorta" class="tab-content"></section>
-            <section id="arac-detay-vize" class="tab-content"></section>
-            <section id="arac-detay-bakim" class="tab-content"></section>
-            <section id="arac-detay-yakit" class="tab-content"></section>
-            <section id="arac-detay-cezalar" class="tab-content"></section>
-        </div>
-    </div>
-</div>
-
-<link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/10.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/10.css">
 
 <!-- PERSONEL DASHBOARD -->
 <div id="ayarlarApp" data-fd-module-placeholder="ayarlar" style="display:none"></div>
@@ -1158,7 +999,7 @@
                 <h2>Kaydedilen Avanslar</h2>
                 <div class="action-btns"><button type="button" class="btn-modern btn-detail-modern" id="avansListeYenileBtn" onclick="avansListeyiYenile()">↻ Yenile</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKayitListesiBody','excel','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKayitListesiBody','pdf','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📄 PDF</button></div>
             </div>
-            <link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/11.css">
+            <link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/11.css">
             <div class="avans-kayit-filtreleri">
                 <div class="avans-filtre-arama"><label>Personel veya avans ara</label><input id="avansKayitArama" type="search" placeholder="Ad, avans no veya açıklama" oninput="renderAvansKayitListesi()"></div>
                 <div><label>Kayıt ayı</label><input id="avansKayitAyFiltre" type="month" onchange="renderAvansKayitListesi()"></div>
@@ -1190,7 +1031,7 @@
                 <div class="action-btns avans-gelecek-aksiyonlar"><div class="avans-ay-araligi"><label for="avansGelecekBaslangicAy">Başlangıç ayı<input id="avansGelecekBaslangicAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label><label for="avansGelecekBitisAy">Bitiş ayı<input id="avansGelecekBitisAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label></div><div class="avans-plan-ciktilari"><button type="button" class="btn-export avans-goruntu-btn" onclick="avansGelecekGoruntuAl(this)">Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="avansGelecekExcelAl()">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div></div>
             </div>
             <p id="avansGelecekDonemHatasi" role="status" aria-live="polite" style="display:none;color:#b91c1c;margin:0 0 12px;"></p>
-            <link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/12.css"><div class="table-wrapper"><table class="avans-matris"><thead id="avansGelecekHead"></thead><tbody id="avansGelecekBody"></tbody><tfoot id="avansGelecekToplam"></tfoot></table></div>
+            <link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/12.css"><div class="table-wrapper"><table class="avans-matris"><thead id="avansGelecekHead"></thead><tbody id="avansGelecekBody"></tbody><tfoot id="avansGelecekToplam"></tfoot></table></div>
         </div>
     </main></div>
 </div>
@@ -2049,24 +1890,26 @@
     </div>
 </div>
 
-<script id="kullaniciYetkilendirmeModulu" src="./releases/fd-modular-20261017-s5-571d94847457/core/permissions.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/user-accounts.js"></script>
-<script id="fdUserEntrypoints" src="./releases/fd-modular-20261017-s5-571d94847457/core/user-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/export-compat.js"></script>
-<script id="fdModuleEntrypoints" src="./releases/fd-modular-20261017-s5-571d94847457/core/module-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/session.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/data-access.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/utilities.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/asset-people-data.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/asset-people-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/settings-data.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/settings-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/shared/company-branches.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/company-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/legacy/03-legacy-3.js"></script>
+<script id="kullaniciYetkilendirmeModulu" src="./releases/fd-modular-20261017-s6-0a34d158659b/core/permissions.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/user-accounts.js"></script>
+<script id="fdUserEntrypoints" src="./releases/fd-modular-20261017-s6-0a34d158659b/core/user-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/export-compat.js"></script>
+<script id="fdModuleEntrypoints" src="./releases/fd-modular-20261017-s6-0a34d158659b/core/module-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/session.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/data-access.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/utilities.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/vehicle-data.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/vehicle-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/asset-people-data.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/asset-people-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/settings-data.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/settings-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/company-branches.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/company-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/03-legacy-3.js"></script>
 
 <!-- TAPU TAKİP MODÜLÜ BAŞLANGIÇ -->
-<link rel="stylesheet" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/13.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/13.css">
 
 <div id="tapuTakipApp">
   <div class="tapu-shell">
@@ -2125,112 +1968,112 @@
   </div>
 </div>
 
-<script id="tapuTakipScripti" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/04-tapuTakipScripti.js"></script>
-<link rel="stylesheet" id="tapuCksStili" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/14-tapuCksStili.css">
+<script id="tapuTakipScripti" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/04-tapuTakipScripti.js"></script>
+<link rel="stylesheet" id="tapuCksStili" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/14-tapuCksStili.css">
 <div id="modalTapuCksGenel" class="modal-overlay" style="display:none;z-index:10027"><div class="modal-card" style="width:min(1180px,97vw);max-height:94vh"><div class="modal-header"><h3>🌾 ÇKS Kayıtları</h3><button type="button" class="modal-close" onclick="tapuCksGenelKapat()">✕</button></div><div class="modal-body" style="padding:0;overflow:hidden"><div class="tapu-cks-toolbar"><input id="tapuCksGenelArama" class="tapu-field" type="search" placeholder="Ada, parsel, ürün, eken kişi veya ÇKS sahibi ara..." oninput="tapuCksGenelCiz()"><select id="tapuCksGenelYil" class="tapu-field" onchange="tapuCksGenelCiz()"><option value="">Tüm yıllar</option></select><select id="tapuCksGenelSahip" class="tapu-field" onchange="tapuCksGenelCiz()"><option value="">Tüm ÇKS sahipleri</option></select><button id="tapuCksYeniGenelBtn" type="button" class="tapu-btn tapu-save" onclick="tapuCksFormuAc()">＋ Yeni Kayıt</button></div><div class="tapu-cks-modal-table"><table class="tapu-cks-table"><thead><tr><th>Ada / Parsel</th><th>Konum</th><th>Yıl</th><th>Ürün</th><th>Eken / Durum</th><th>ÇKS Sahibi</th><th>Eşleşme</th><th>İşlem</th></tr></thead><tbody id="tapuCksGenelGovde"></tbody></table></div></div></div></div>
 <div id="modalTapuCksKayit" class="modal-overlay" style="display:none;z-index:10029"><div class="modal-card" style="width:min(760px,96vw)"><div class="modal-header"><h3 id="tapuCksFormBaslik">Yeni ÇKS Kaydı</h3><button type="button" class="modal-close" onclick="tapuCksFormuKapat()">✕</button></div><form class="modal-body" onsubmit="tapuCksKaydet(event)"><input id="tapuCksId" type="hidden"><div class="tapu-form-grid"><div class="tapu-form-group tapu-span-3"><label>Tapu / Parsel *</label><select id="tapuCksTapuSec" class="tapu-field" required></select></div><div class="tapu-form-group"><label>ÇKS Yılı *</label><input id="tapuCksYil" class="tapu-field" type="number" min="2000" max="2100" required></div><div class="tapu-form-group tapu-span-2"><label>Ürün / Kullanım</label><input id="tapuCksUrun" class="tapu-field" placeholder="Örn. BUĞDAY MAKARNALIK"></div><div class="tapu-form-group tapu-span-2"><label>Eken Kişi / Durum</label><input id="tapuCksEken" class="tapu-field" placeholder="Örn. MUHAMMET ÖZGEN EKİYOR"></div><div class="tapu-form-group"><label>ÇKS Sahibi</label><input id="tapuCksSahibi" class="tapu-field"></div><div class="tapu-form-group tapu-span-3"><label>Açıklama</label><textarea id="tapuCksAciklama" class="tapu-field" rows="3"></textarea></div></div><div class="tapu-savebar"><button type="button" class="tapu-btn tapu-cancel" onclick="tapuCksFormuKapat()">Vazgeç</button><button id="tapuCksKaydetBtn" type="submit" class="tapu-btn tapu-save">Kaydet</button></div></form></div></div>
-<script id="tapuCksScripti" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/05-tapuCksScripti.js"></script>
+<script id="tapuCksScripti" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/05-tapuCksScripti.js"></script>
 
 <!-- TAPU TAKİP MODÜLÜ BİTİŞ -->
 
-<script id="evrakTakipScripti" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/06-evrakTakipScripti.js"></script>
-<script id="cksTamSayfaScripti" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/07-cksTamSayfaScripti.js"></script>
-<script id="cksV128Duzeltme" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/08-cksV128Duzeltme.js"></script>
-<script id="cksKonumSadelestirme" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/09-cksKonumSadelestirme.js"></script>
-<script id="cksYillikBelgeScripti" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/10-cksYillikBelgeScripti.js"></script>
-<script id="cksKisiBelgesiV130" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/11-cksKisiBelgesiV130.js"></script>
-<link rel="stylesheet" id="fdTopluDuzeltmelerV132Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/15-fdTopluDuzeltmelerV132Stil.css">
-<script id="fdTopluDuzeltmelerV132" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/12-fdTopluDuzeltmelerV132.js"></script>
-<link rel="stylesheet" id="fdCksPdfAktarimV134Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/16-fdCksPdfAktarimV134Stil.css">
-<script id="fdCksPdfAktarimV134" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/13-fdCksPdfAktarimV134.js"></script>
+<script id="evrakTakipScripti" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/06-evrakTakipScripti.js"></script>
+<script id="cksTamSayfaScripti" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/07-cksTamSayfaScripti.js"></script>
+<script id="cksV128Duzeltme" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/08-cksV128Duzeltme.js"></script>
+<script id="cksKonumSadelestirme" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/09-cksKonumSadelestirme.js"></script>
+<script id="cksYillikBelgeScripti" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/10-cksYillikBelgeScripti.js"></script>
+<script id="cksKisiBelgesiV130" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/11-cksKisiBelgesiV130.js"></script>
+<link rel="stylesheet" id="fdTopluDuzeltmelerV132Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/15-fdTopluDuzeltmelerV132Stil.css">
+<script id="fdTopluDuzeltmelerV132" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/12-fdTopluDuzeltmelerV132.js"></script>
+<link rel="stylesheet" id="fdCksPdfAktarimV134Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/16-fdCksPdfAktarimV134Stil.css">
+<script id="fdCksPdfAktarimV134" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/13-fdCksPdfAktarimV134.js"></script>
 
-<script id="fdCksFormSecimV138" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/14-fdCksFormSecimV138.js"></script>
+<script id="fdCksFormSecimV138" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/14-fdCksFormSecimV138.js"></script>
 
-<link rel="stylesheet" id="fdCksKontrolSigdirV141" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/17-fdCksKontrolSigdirV141.css">
+<link rel="stylesheet" id="fdCksKontrolSigdirV141" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/17-fdCksKontrolSigdirV141.css">
 
-<link rel="stylesheet" id="fdCksYilRenkleriV142Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/18-fdCksYilRenkleriV142Stil.css">
-<script id="fdCksYilRenkleriV142" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/15-fdCksYilRenkleriV142.js"></script>
+<link rel="stylesheet" id="fdCksYilRenkleriV142Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/18-fdCksYilRenkleriV142Stil.css">
+<script id="fdCksYilRenkleriV142" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/15-fdCksYilRenkleriV142.js"></script>
 
-<link rel="stylesheet" id="fdCksCokluDuzenleV143Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/19-fdCksCokluDuzenleV143Stil.css">
-<script id="fdCksCokluDuzenleV143" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/16-fdCksCokluDuzenleV143.js"></script>
+<link rel="stylesheet" id="fdCksCokluDuzenleV143Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/19-fdCksCokluDuzenleV143Stil.css">
+<script id="fdCksCokluDuzenleV143" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/16-fdCksCokluDuzenleV143.js"></script>
 
-<link rel="stylesheet" id="fdV144KatmanVeAbonelikStil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/20-fdV144KatmanVeAbonelikStil.css">
-<script id="fdV144KatmanOturumAbonelik" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/17-fdV144KatmanOturumAbonelik.js"></script>
+<link rel="stylesheet" id="fdV144KatmanVeAbonelikStil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/20-fdV144KatmanVeAbonelikStil.css">
+<script id="fdV144KatmanOturumAbonelik" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/17-fdV144KatmanOturumAbonelik.js"></script>
 
-<link rel="stylesheet" id="fdCksDuzenlemeGuvenligiV145Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css">
-<script id="fdCksDuzenlemeGuvenligiV145" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/18-fdCksDuzenlemeGuvenligiV145.js"></script>
+<link rel="stylesheet" id="fdCksDuzenlemeGuvenligiV145Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css">
+<script id="fdCksDuzenlemeGuvenligiV145" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/18-fdCksDuzenlemeGuvenligiV145.js"></script>
 
-<script id="fdCksDuzenlemeModalKurV145" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/19-fdCksDuzenlemeModalKurV145.js"></script>
+<script id="fdCksDuzenlemeModalKurV145" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/19-fdCksDuzenlemeModalKurV145.js"></script>
 
-<script id="fdTapuCksEslemeV146" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/20-fdTapuCksEslemeV146.js"></script>
+<script id="fdTapuCksEslemeV146" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/20-fdTapuCksEslemeV146.js"></script>
 
-<link rel="stylesheet" id="fdCksTumTarlalarV147Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/22-fdCksTumTarlalarV147Stil.css">
-<script id="fdCksTumTarlalarV147" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/21-fdCksTumTarlalarV147.js"></script>
+<link rel="stylesheet" id="fdCksTumTarlalarV147Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/22-fdCksTumTarlalarV147Stil.css">
+<script id="fdCksTumTarlalarV147" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/21-fdCksTumTarlalarV147.js"></script>
 
-<script id="fdCksYetimPdfKayitlariV148" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/22-fdCksYetimPdfKayitlariV148.js"></script>
-<link rel="stylesheet" id="fdPdfVeFiltreV149Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/23-fdPdfVeFiltreV149Stil.css">
-<script id="fdPdfVeFiltreV149" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/23-fdPdfVeFiltreV149.js"></script>
+<script id="fdCksYetimPdfKayitlariV148" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/22-fdCksYetimPdfKayitlariV148.js"></script>
+<link rel="stylesheet" id="fdPdfVeFiltreV149Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/23-fdPdfVeFiltreV149Stil.css">
+<script id="fdPdfVeFiltreV149" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/23-fdPdfVeFiltreV149.js"></script>
 
-<script id="fdHizliBelgeVardiyaFiltreV150" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/24-fdHizliBelgeVardiyaFiltreV150.js"></script>
-<script id="fdElKitabiKiraPdfV151" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/25-fdElKitabiKiraPdfV151.js"></script>
-<script id="fdKiraSozlesmeDogrudanV152" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/26-fdKiraSozlesmeDogrudanV152.js"></script>
-<script id="fdKiraSozlesmeButonBagV153" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/27-fdKiraSozlesmeButonBagV153.js"></script>
-<script id="fdKiraPdfKesintisizV155" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/28-fdKiraPdfKesintisizV155.js"></script>
-<link rel="stylesheet" id="fdBordroBelgeleriV184Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/24-fdBordroBelgeleriV184Stil.css">
-<script id="fdBordroBelgeleriV184" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/29-fdBordroBelgeleriV184.js"></script>
+<script id="fdHizliBelgeVardiyaFiltreV150" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/24-fdHizliBelgeVardiyaFiltreV150.js"></script>
+<script id="fdElKitabiKiraPdfV151" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/25-fdElKitabiKiraPdfV151.js"></script>
+<script id="fdKiraSozlesmeDogrudanV152" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/26-fdKiraSozlesmeDogrudanV152.js"></script>
+<script id="fdKiraSozlesmeButonBagV153" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/27-fdKiraSozlesmeButonBagV153.js"></script>
+<script id="fdKiraPdfKesintisizV155" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/28-fdKiraPdfKesintisizV155.js"></script>
+<link rel="stylesheet" id="fdBordroBelgeleriV184Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/24-fdBordroBelgeleriV184Stil.css">
+<script id="fdBordroBelgeleriV184" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/29-fdBordroBelgeleriV184.js"></script>
 
-<script id="fdBildirimSistemi" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/30-fdBildirimSistemi.js"></script>
+<script id="fdBildirimSistemi" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/30-fdBildirimSistemi.js"></script>
 
-<script id="fdKvkkAydinlatmaSistemi" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/31-fdKvkkAydinlatmaSistemi.js"></script>
+<script id="fdKvkkAydinlatmaSistemi" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/31-fdKvkkAydinlatmaSistemi.js"></script>
 
-<link rel="stylesheet" id="fdxWorkCenterStyles" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/25-fdxWorkCenterStyles.css">
+<link rel="stylesheet" id="fdxWorkCenterStyles" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/25-fdxWorkCenterStyles.css">
 
-<script id="fdxWorkCenterFreshV1" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/32-fdxWorkCenterFreshV1.js"></script>
+<script id="fdxWorkCenterFreshV1" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/32-fdxWorkCenterFreshV1.js"></script>
 
-<link rel="stylesheet" id="fdOperasyonGenisletmeV149Stil" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/26-fdOperasyonGenisletmeV149Stil.css">
-<script id="fdOperasyonGenisletmeV149" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/33-fdOperasyonGenisletmeV149.js"></script>
-<link rel="stylesheet" id="fdVarlikKisileriV150Style" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/27-fdVarlikKisileriV150Style.css">
-<link rel="stylesheet" id="fdVarlikKisileriV151Style" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/28-fdVarlikKisileriV151Style.css">
-<link rel="stylesheet" id="fdVarlikKisileriV152Style" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/29-fdVarlikKisileriV152Style.css">
-<script id="fdVarlikKisileriV150" src="./releases/fd-modular-20261017-s5-571d94847457/shared/asset-people-registration.js"></script>
-<link rel="stylesheet" id="fdInsaatFiyatStili" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/30-fdInsaatFiyatStili.css">
-<script id="fdInsaatFiyatModulu" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/35-fdInsaatFiyatModulu.js"></script>
-<link rel="stylesheet" id="fdFiyatTeklifV2Stili" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/31-fdFiyatTeklifV2Stili.css">
-<link rel="stylesheet" id="fdFiyatTeklifV3Stili" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/32-fdFiyatTeklifV3Stili.css">
-<link rel="stylesheet" id="fdFiyatTeklifV4Stili" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/33-fdFiyatTeklifV4Stili.css">
-<script id="fdFiyatTeklifV2Modulu" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/36-fdFiyatTeklifV2Modulu.js"></script>
-<script id="fdSiparisTakipV2" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/37-fdSiparisTakipV2.js"></script>
+<link rel="stylesheet" id="fdOperasyonGenisletmeV149Stil" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/26-fdOperasyonGenisletmeV149Stil.css">
+<script id="fdOperasyonGenisletmeV149" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/33-fdOperasyonGenisletmeV149.js"></script>
+<link rel="stylesheet" id="fdVarlikKisileriV150Style" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/27-fdVarlikKisileriV150Style.css">
+<link rel="stylesheet" id="fdVarlikKisileriV151Style" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/28-fdVarlikKisileriV151Style.css">
+<link rel="stylesheet" id="fdVarlikKisileriV152Style" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/29-fdVarlikKisileriV152Style.css">
+<script id="fdVarlikKisileriV150" src="./releases/fd-modular-20261017-s6-0a34d158659b/shared/asset-people-registration.js"></script>
+<link rel="stylesheet" id="fdInsaatFiyatStili" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/30-fdInsaatFiyatStili.css">
+<script id="fdInsaatFiyatModulu" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/35-fdInsaatFiyatModulu.js"></script>
+<link rel="stylesheet" id="fdFiyatTeklifV2Stili" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/31-fdFiyatTeklifV2Stili.css">
+<link rel="stylesheet" id="fdFiyatTeklifV3Stili" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/32-fdFiyatTeklifV3Stili.css">
+<link rel="stylesheet" id="fdFiyatTeklifV4Stili" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/33-fdFiyatTeklifV4Stili.css">
+<script id="fdFiyatTeklifV2Modulu" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/36-fdFiyatTeklifV2Modulu.js"></script>
+<script id="fdSiparisTakipV2" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/37-fdSiparisTakipV2.js"></script>
 </body>
-<link rel="stylesheet" id="magicpassDurumSutunuKesinHiza" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/34-magicpassDurumSutunuKesinHiza.css">
-<link rel="stylesheet" id="fdKiraTasarimV214Style" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/35-fdKiraTasarimV214Style.css">
-<script id="fdKiraTasarimV214" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/38-fdKiraTasarimV214.js"></script>
-<link rel="stylesheet" id="fdPersonelTasarimV217Style" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/36-fdPersonelTasarimV217Style.css">
-<script id="fdPersonelTasarimV217" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/39-fdPersonelTasarimV217.js"></script>
-<link rel="stylesheet" id="fdPersonelOkunurlukV220" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/37-fdPersonelOkunurlukV220.css">
-<link rel="stylesheet" id="fdAttendanceBalanceDisplayV268" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/38-fdAttendanceBalanceDisplayV268.css">
-<script id="fdHesapDonemKorumaV220" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/40-fdHesapDonemKorumaV220.js"></script>
-<link rel="stylesheet" id="fdTopluZamDonemStilV249" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/39-fdTopluZamDonemStilV249.css">
-<script id="fdTopluZamDonemV249" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/41-fdTopluZamDonemV249.js"></script>
-<link rel="stylesheet" id="fdAracTasarimV222" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/40-fdAracTasarimV222.css">
-<script id="fdAracKullanimV222" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/42-fdAracKullanimV222.js"></script>
-<link rel="stylesheet" id="fdAyarTasarimV225" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/41-fdAyarTasarimV225.css">
-<script id="fdAyarKullanimV225" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/43-fdAyarKullanimV225.js"></script>
-<link rel="stylesheet" id="fdTapuTasarimV226" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/42-fdTapuTasarimV226.css">
-<script id="fdTapuKullanimV226" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/44-fdTapuKullanimV226.js"></script>
-<link rel="stylesheet" id="fdUnifiedOutputStyleV227" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/43-fdUnifiedOutputStyleV227.css">
-<script id="fdUnifiedOutputCoreV227" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/45-fdUnifiedOutputCoreV227.js"></script>
-<script id="fdUnifiedOutputUiV227" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/46-fdUnifiedOutputUiV227.js"></script>
-<link rel="stylesheet" id="fdIsgStyleV228" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/44-fdIsgStyleV228.css">
-<script id="fdIsgWorkspaceV228" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/47-fdIsgWorkspaceV228.js"></script>
-<script id="fdIsgDocumentsV228" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/48-fdIsgDocumentsV228.js"></script>
-<script id="fdIsgIntegrationV228" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/49-fdIsgIntegrationV228.js"></script>
-<script id="fdAttendanceRenderPerformance" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/50-fdAttendanceRenderPerformance.js"></script>
-<link rel="stylesheet" id="fdPriceRowOrderStyle" href="./releases/fd-modular-20261017-s5-571d94847457/legacy/styles/45-fdPriceRowOrderStyle.css">
-<script id="fdPriceWhatsappSettingsV233" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/51-fdPriceWhatsappSettingsV233.js"></script>
-<script id="fdPersonelWhatsappTercihleriScript" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/52-fdPersonelWhatsappTercihleriScript.js"></script>
-<script id="fdPersonnelTemplateCatalogV264" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/53-fdPersonnelTemplateCatalogV264.js"></script>
-<script id="fdWhatsappFullTemplatePreviewV262" src="./releases/fd-modular-20261017-s5-571d94847457/legacy/54-fdWhatsappFullTemplatePreviewV262.js"></script>
-<script src="./releases/fd-modular-20261017-s5-571d94847457/core/module-integration.js"></script>
+<link rel="stylesheet" id="magicpassDurumSutunuKesinHiza" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/34-magicpassDurumSutunuKesinHiza.css">
+<link rel="stylesheet" id="fdKiraTasarimV214Style" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/35-fdKiraTasarimV214Style.css">
+<script id="fdKiraTasarimV214" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/38-fdKiraTasarimV214.js"></script>
+<link rel="stylesheet" id="fdPersonelTasarimV217Style" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/36-fdPersonelTasarimV217Style.css">
+<script id="fdPersonelTasarimV217" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/39-fdPersonelTasarimV217.js"></script>
+<link rel="stylesheet" id="fdPersonelOkunurlukV220" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/37-fdPersonelOkunurlukV220.css">
+<link rel="stylesheet" id="fdAttendanceBalanceDisplayV268" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/38-fdAttendanceBalanceDisplayV268.css">
+<script id="fdHesapDonemKorumaV220" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/40-fdHesapDonemKorumaV220.js"></script>
+<link rel="stylesheet" id="fdTopluZamDonemStilV249" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/39-fdTopluZamDonemStilV249.css">
+<script id="fdTopluZamDonemV249" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/41-fdTopluZamDonemV249.js"></script>
+
+
+<link rel="stylesheet" id="fdAyarTasarimV225" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/41-fdAyarTasarimV225.css">
+<script id="fdAyarKullanimV225" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/43-fdAyarKullanimV225.js"></script>
+<link rel="stylesheet" id="fdTapuTasarimV226" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/42-fdTapuTasarimV226.css">
+<script id="fdTapuKullanimV226" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/44-fdTapuKullanimV226.js"></script>
+<link rel="stylesheet" id="fdUnifiedOutputStyleV227" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/43-fdUnifiedOutputStyleV227.css">
+<script id="fdUnifiedOutputCoreV227" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/45-fdUnifiedOutputCoreV227.js"></script>
+<script id="fdUnifiedOutputUiV227" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/46-fdUnifiedOutputUiV227.js"></script>
+<link rel="stylesheet" id="fdIsgStyleV228" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/44-fdIsgStyleV228.css">
+<script id="fdIsgWorkspaceV228" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/47-fdIsgWorkspaceV228.js"></script>
+<script id="fdIsgDocumentsV228" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/48-fdIsgDocumentsV228.js"></script>
+<script id="fdIsgIntegrationV228" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/49-fdIsgIntegrationV228.js"></script>
+<script id="fdAttendanceRenderPerformance" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/50-fdAttendanceRenderPerformance.js"></script>
+<link rel="stylesheet" id="fdPriceRowOrderStyle" href="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/styles/45-fdPriceRowOrderStyle.css">
+<script id="fdPriceWhatsappSettingsV233" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/51-fdPriceWhatsappSettingsV233.js"></script>
+<script id="fdPersonelWhatsappTercihleriScript" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/52-fdPersonelWhatsappTercihleriScript.js"></script>
+<script id="fdPersonnelTemplateCatalogV264" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/53-fdPersonnelTemplateCatalogV264.js"></script>
+<script id="fdWhatsappFullTemplatePreviewV262" src="./releases/fd-modular-20261017-s6-0a34d158659b/legacy/54-fdWhatsappFullTemplatePreviewV262.js"></script>
+<script src="./releases/fd-modular-20261017-s6-0a34d158659b/core/module-integration.js"></script>
 <script id="fdPwaKurulumScripti">
 (function(){
   let kurulumOlayi=null;
@@ -2249,14 +2092,14 @@
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v280';
+      const anahtar='fd-pwa-yenileme-v281';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=280',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=281',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });

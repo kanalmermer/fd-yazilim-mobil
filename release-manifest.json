@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261017-s5-571d94847457",
+  "release": "fd-modular-20261017-s6-0a34d158659b",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "b238f6b6f5f8f2e77de09f4f4e4a6fe2ad766fffb9a6664bda4b2b6d9d098608",
-      "bytes": 6492
+      "sha256": "407ce7e4790c134c4dd0d2bc7cc632d91478e1f3eaa7ce9096171ec3c990b059",
+      "bytes": 11175
     },
     {
       "path": "core/company-entrypoints.js",
@@ -57,9 +57,14 @@
       "bytes": 438
     },
     {
+      "path": "core/vehicle-entrypoints.js",
+      "sha256": "84478400c2df11e0ce4ec069f952aa9eec4d8c86c8a6c864f8b5efcf568959f9",
+      "bytes": 16940
+    },
+    {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "eed32b57fc74d18f882ed58e66184ece0af65fbaf2d5a048e3d0559ce1f1a5cf",
-      "bytes": 1462005
+      "sha256": "7700a1eac242835b6bf1ee81433a6983dc320d117ab0516df4f33b3f72b21a50",
+      "bytes": 1307035
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -208,8 +213,8 @@
     },
     {
       "path": "legacy/33-fdOperasyonGenisletmeV149.js",
-      "sha256": "d75a2b8ec0d739e5c3d954d4ceaadcbc7e0cd53cd165e83ea5f0c0ca7a7aff58",
-      "bytes": 48769
+      "sha256": "8c0b097ef274f4d7af065a062a3dfdba482647e14c094b5e74579ea2342d6834",
+      "bytes": 32537
     },
     {
       "path": "legacy/34-fdVarlikKisileriV150.js",
@@ -253,8 +258,8 @@
     },
     {
       "path": "legacy/42-fdAracKullanimV222.js",
-      "sha256": "a7a4681230658623c9f0cc8e2f98377c220a19727c5b7e9af8ae50eeb70e8657",
-      "bytes": 12630
+      "sha256": "8d348245005172f3e7af5022f19873ba2bfdc1521296da0e48e2a5db2179f4ac",
+      "bytes": 67
     },
     {
       "path": "legacy/43-fdAyarKullanimV225.js",
@@ -268,8 +273,8 @@
     },
     {
       "path": "legacy/45-fdUnifiedOutputCoreV227.js",
-      "sha256": "0566c0dc18f6bf20b70347d803c71fc39fd5179a526b102f0bca582451ed912c",
-      "bytes": 88309
+      "sha256": "2cd8b767ea4676954a7883d96fd13fd51ef07459b13c69fbe945d39d5f0219aa",
+      "bytes": 88459
     },
     {
       "path": "legacy/46-fdUnifiedOutputUiV227.js",
@@ -318,8 +323,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "99429c5309e038add75908c8b1ccea237e230ec81a97867e35aea59f53372604",
-      "bytes": 166070
+      "sha256": "5c8b6a3d12260b84226d5ec271b66c48701ef8cfb9c47136339a87b781307b2b",
+      "bytes": 160000
     },
     {
       "path": "legacy/styles/01.css",
@@ -443,8 +448,8 @@
     },
     {
       "path": "legacy/styles/26-fdOperasyonGenisletmeV149Stil.css",
-      "sha256": "9ab97eb3da59708de20134e8527011a20fa718f3b9533fc9e403791950c54c60",
-      "bytes": 5600
+      "sha256": "30de31eaae84088739bc8087ea95a7cc0f7c98252ab8d2cd32b1e0cdaae28c2b",
+      "bytes": 2837
     },
     {
       "path": "legacy/styles/27-fdVarlikKisileriV150Style.css",
@@ -453,8 +458,8 @@
     },
     {
       "path": "legacy/styles/28-fdVarlikKisileriV151Style.css",
-      "sha256": "01efa0849751634c9da78a3a0a8aa6264f7b31d61139d57f7b571e19a6b6e081",
-      "bytes": 1854
+      "sha256": "154a0b52152ad79d0d322de4410fb0f09038a4ba842676eca283c97767988be9",
+      "bytes": 56
     },
     {
       "path": "legacy/styles/29-fdVarlikKisileriV152Style.css",
@@ -513,8 +518,8 @@
     },
     {
       "path": "legacy/styles/40-fdAracTasarimV222.css",
-      "sha256": "2ceffb7242c9544adbe029355e8317ac596c2cdbc418604d2fcb0450252e676f",
-      "bytes": 10403
+      "sha256": "a52f43cef1af290ea58419cf8e2505b97379c7d5188bcd5e0f4e63c3a1ac63db",
+      "bytes": 55
     },
     {
       "path": "legacy/styles/41-fdAyarTasarimV225.css",
@@ -540,6 +545,26 @@
       "path": "legacy/styles/45-fdPriceRowOrderStyle.css",
       "sha256": "59f55ea2de5de136f97eee107cf38dda37aa7647191bccbb259bc929b297a996",
       "bytes": 887
+    },
+    {
+      "path": "modules/arac/manifest.json",
+      "sha256": "c973c32055f8ccae1ee7bda257b4ce7b27f25c13957a5f3937a016b7d3616caa",
+      "bytes": 5776
+    },
+    {
+      "path": "modules/arac/module.js",
+      "sha256": "0ba7b01bd5f2b67585b412b427d547d73d0fa2228120b8acccca61374fc386d6",
+      "bytes": 219972
+    },
+    {
+      "path": "modules/arac/style.css",
+      "sha256": "b863529bbe600b115d66c8ad0103597f0dc6bf7ac52a5ec725ec10f88b063263",
+      "bytes": 22747
+    },
+    {
+      "path": "modules/arac/view.html",
+      "sha256": "085ce249702d72fcb5d39fa9d5ca6e523406243616a20b7da156ecb7e4118e72",
+      "bytes": 41989
     },
     {
       "path": "modules/ayarlar/manifest.json",
@@ -675,6 +700,11 @@
       "path": "shared/utilities.js",
       "sha256": "438e399322da154dacf9ebf13f71937160f2fe835514761c11f20a466cf799c1",
       "bytes": 6349
+    },
+    {
+      "path": "shared/vehicle-data.js",
+      "sha256": "66f2eea61c07c415765e60d3f2ddadfd36803da96d9cbd2219d29db699146285",
+      "bytes": 11199
     }
   ]
 }
