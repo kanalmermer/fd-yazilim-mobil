@@ -1,10 +1,15 @@
 {
-  "release": "fd-modular-20261017-s2-5acfc9b59380",
+  "release": "fd-modular-20261017-s3-790c5759750b",
   "assets": [
     {
       "path": "core/catalog.js",
-      "sha256": "07a3bdc3b5bea328aca69aba008eaf59abd255a771265a9f56ce9d44158249d9",
-      "bytes": 1677
+      "sha256": "ba1c4e9ba87d63b4b83c58875d7ef27d72758d96627487c9ae16fdba61b55d27",
+      "bytes": 2548
+    },
+    {
+      "path": "core/company-entrypoints.js",
+      "sha256": "2bc48631b02c4ef350973d58d44ef3fd52774abfce1927503d6bb2518f0b25fb",
+      "bytes": 451
     },
     {
       "path": "core/data-access.js",
@@ -43,8 +48,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "04a76e20256d4460da502c50f0557cd082c24007b2b196ff78623ef37bae9ee1",
-      "bytes": 1564637
+      "sha256": "e690c009724f4a22c6491611c7a62070b92283730ef778fd0dae1024a9523525",
+      "bytes": 1527356
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -303,8 +308,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "67af8e2c8c1b98b910a4b46d8a27301d09c05d570cf8a1bfebcee3333303e2d9",
-      "bytes": 168039
+      "sha256": "f0b668448669121698716dbfbc8a289884b611cf171ecf27369e3d4e3ccd2f0d",
+      "bytes": 166348
     },
     {
       "path": "legacy/styles/01.css",
@@ -564,6 +569,31 @@
     {
       "path": "modules/kullanici/view.html",
       "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
+      "bytes": 2307
+    },
+    {
+      "path": "modules/sirket/manifest.json",
+      "sha256": "99e84b2e2ba1638d649774bbed85127a9dd2b9862e08de15fad2bb3f73e1b33a",
+      "bytes": 1142
+    },
+    {
+      "path": "modules/sirket/module.js",
+      "sha256": "d82c105b85bf5d00c79551127d75bffccf6b95985f0b93ec86cf323bbd86af2c",
+      "bytes": 41541
+    },
+    {
+      "path": "modules/sirket/style.css",
+      "sha256": "52d1b344eb03df9d439d4cd751c6b7a6b7cb90a9cbc7c03b26c61e76ef383833",
+      "bytes": 1661
+    },
+    {
+      "path": "modules/sirket/view.html",
+      "sha256": "f1bea589e3cb951702f5d5bb9e6d1f27f4a1450ba4f6bc1480cb368018a99454",
+      "bytes": 8780
+    },
+    {
+      "path": "shared/company-branches.js",
+      "sha256": "764748c6b5bdabccc2ec064b0484a204a4561f6b28c3f706238831ad4499b863",
       "bytes": 2307
     },
     {

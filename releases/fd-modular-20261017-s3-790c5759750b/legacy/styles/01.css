@@ -1,0 +1,8 @@
+
+    #kiraDetayIcerik #kiraDaireDetayYil { width:112px; min-width:112px; height:38px; padding:7px 30px 7px 11px; border:1px solid #7dd3fc; border-radius:9px; background-color:#fff; color:#075985; font-weight:850; }
+    #kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet) { max-height:560px; border:1px solid #dbe5ef; border-radius:11px; background:#fff; box-shadow:0 4px 14px rgba(15,23,42,.045); }
+    #kiraDetayIcerik .kira-yillik-ozet { min-width:1120px; table-layout:fixed; }
+    #kiraDetayIcerik .kira-yillik-ozet th:nth-child(1){width:92px}#kiraDetayIcerik .kira-yillik-ozet th:nth-child(2){width:180px}#kiraDetayIcerik .kira-yillik-ozet th:nth-child(3),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(5),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(6),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(7),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(8){width:112px}#kiraDetayIcerik .kira-yillik-ozet th:nth-child(4){width:112px}#kiraDetayIcerik .kira-yillik-ozet th:last-child{width:118px}
+    #kiraDetayIcerik .kira-yillik-ozet td { overflow:hidden; text-overflow:ellipsis; }
+    @media(max-width:1180px){#kiraDetayIcerik .kira-detail-toolbar{grid-template-columns:repeat(3,minmax(145px,1fr)) !important}#kiraDetayIcerik .kira-detail-toolbar>*{width:100% !important;justify-self:stretch !important}#kiraDetayIcerik .kira-detail-toolbar>span{padding:7px 0 0 !important}}
+
