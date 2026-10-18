@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s11-db2a03478584",
+  "release": "fd-modular-20261018-s12-c47510d2ff50",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "24f5c252772a66f32a8d6a56995e74e16ea3e67e5ed4feec84747420d9df9009",
-      "bytes": 20997
+      "sha256": "55c53ce145ea31ea0f8ab8fdbe075f6edbdaf61020ba0c8573af9408fd7a3bea",
+      "bytes": 22652
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -55,6 +55,11 @@
       "path": "core/policy-entrypoints.js",
       "sha256": "1e74adcbe2864e337a272f5d0bb208883a6670f175fc276d144a140aab6228a2",
       "bytes": 5506
+    },
+    {
+      "path": "core/price-entrypoints.js",
+      "sha256": "fa7666c13b78718b366871ed77b6f0f7110435932aeb4931b0339992ea0d658a",
+      "bytes": 5891
     },
     {
       "path": "core/rental-entrypoints.js",
@@ -248,13 +253,13 @@
     },
     {
       "path": "legacy/35-fdInsaatFiyatModulu.js",
-      "sha256": "b9bc84ad6d09609e822238029c706b6f2269a74e58a98f7eb5ec20b51e6ac0cd",
-      "bytes": 21629
+      "sha256": "803511ea27187f8a42430c0f67a4bdd7c24a74965b245198808d5ac12e748bf1",
+      "bytes": 150
     },
     {
       "path": "legacy/36-fdFiyatTeklifV2Modulu.js",
-      "sha256": "7043c3df9b75bbb5e71b0d22d8527580442176bde6126644eb591c74654fcb39",
-      "bytes": 63524
+      "sha256": "803511ea27187f8a42430c0f67a4bdd7c24a74965b245198808d5ac12e748bf1",
+      "bytes": 150
     },
     {
       "path": "legacy/37-fdSiparisTakipV2.js",
@@ -493,23 +498,23 @@
     },
     {
       "path": "legacy/styles/30-fdInsaatFiyatStili.css",
-      "sha256": "74d1e6a422af839cb87ee8590045f32c2211407a5766241115b42ca0dd8c0ad9",
-      "bytes": 6399
+      "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
+      "bytes": 66
     },
     {
       "path": "legacy/styles/31-fdFiyatTeklifV2Stili.css",
-      "sha256": "6477c309bfa691d365b95f3bf4478b91e09d9cce8912fcf2f13ad31bb6d3cb13",
-      "bytes": 7556
+      "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
+      "bytes": 66
     },
     {
       "path": "legacy/styles/32-fdFiyatTeklifV3Stili.css",
-      "sha256": "881195123ae9a240f49c49b1932b502314c81d3abe6d793aa21576b7b8bf99ea",
-      "bytes": 415
+      "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
+      "bytes": 66
     },
     {
       "path": "legacy/styles/33-fdFiyatTeklifV4Stili.css",
-      "sha256": "ec663b3b622344414158aec05ef49a8dd2885774769001265ae7cbffa5739f55",
-      "bytes": 3500
+      "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
+      "bytes": 66
     },
     {
       "path": "legacy/styles/34-magicpassDurumSutunuKesinHiza.css",
@@ -568,8 +573,8 @@
     },
     {
       "path": "legacy/styles/45-fdPriceRowOrderStyle.css",
-      "sha256": "59f55ea2de5de136f97eee107cf38dda37aa7647191bccbb259bc929b297a996",
-      "bytes": 887
+      "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
+      "bytes": 66
     },
     {
       "path": "modules/arac/manifest.json",
@@ -670,6 +675,26 @@
       "path": "modules/ihracat/view.html",
       "sha256": "a39fb1f959f40beaa5dea0da027ea0c7ebb60cf4f2016205ddff11c4a027e9c6",
       "bytes": 14460
+    },
+    {
+      "path": "modules/insaatfiyat/manifest.json",
+      "sha256": "eb6cd4aad32cb66fb0703125eaf52e49fe0ca2e136fba567de43ee01934068e8",
+      "bytes": 2106
+    },
+    {
+      "path": "modules/insaatfiyat/module.js",
+      "sha256": "5d50a5be1c29e25a74d4cadc64e34545c99666c7c49752fd32af4da010cf69c2",
+      "bytes": 64004
+    },
+    {
+      "path": "modules/insaatfiyat/style.css",
+      "sha256": "8d1de4ef78bd29e9c61665a7fef1b239f1eaa09ad323d2c4dba114ac8190aede",
+      "bytes": 18761
+    },
+    {
+      "path": "modules/insaatfiyat/view.html",
+      "sha256": "695a1c6917f19ffc46b3307b9ffd8abfc527590af13d445cac35d95dab5374ae",
+      "bytes": 6408
     },
     {
       "path": "modules/kira/manifest.json",
