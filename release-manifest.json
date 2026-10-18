@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s13-20dd44226c53",
+  "release": "fd-modular-20261018-s14-95d607d2d54e",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "97df5ee1330fdbe79e6f72f50d57dd92008ef9240597790f98ac97d3da1aafa3",
-      "bytes": 24496
+      "sha256": "ec4c787468788648918142fcbedd82ccb962c40e0f325744b323e87be4260212",
+      "bytes": 25951
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -97,9 +97,14 @@
       "bytes": 16940
     },
     {
+      "path": "core/waybill-entrypoints.js",
+      "sha256": "7bced2db049ca22d07bd3bc5489fe461a85c836ac273c9500ad172124afbae24",
+      "bytes": 3651
+    },
+    {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "5df147bd2136e6f36b2e2c969f8c49384f4eb7f51788dee2fb6a7ccc33c704ee",
-      "bytes": 1104042
+      "sha256": "2e04d9989585e4adbb979d5dc788b3ba845e31a1899b4cb75de1fe4315e7fe67",
+      "bytes": 1086327
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -143,8 +148,8 @@
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
-      "sha256": "00c48e11e9e403092575f3a95acd5695a15118c486ba3f038fac16c2c875974d",
-      "bytes": 21335
+      "sha256": "00a1417027b187b0f141bf2d9a4f2e23c7dde44e4a283effeb3259d5d72aec7a",
+      "bytes": 19045
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
@@ -358,8 +363,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "25142551554b7cd12938520ae1886c912f5bc42e0664883198dfee36f7f842c4",
-      "bytes": 150014
+      "sha256": "fa173de4f9771b50acb7c7cfc823375f24f4361f37e923983a0c25f8650216a0",
+      "bytes": 147411
     },
     {
       "path": "legacy/styles/01.css",
@@ -702,6 +707,26 @@
       "bytes": 6408
     },
     {
+      "path": "modules/irsaliye/manifest.json",
+      "sha256": "2e1ed5a2317a8b80f123ac5ffab2ba7dfc09df8e7764fea8f31f84562c3af46f",
+      "bytes": 1839
+    },
+    {
+      "path": "modules/irsaliye/module.js",
+      "sha256": "cf25b502e3296dc8f41efa6897c96eaba313da1fcd541e407a99e45687e35e17",
+      "bytes": 26990
+    },
+    {
+      "path": "modules/irsaliye/style.css",
+      "sha256": "590f49dcadefcfaee0f52f52331ca4d40a591761c74dad1e9204d39e750c1fc4",
+      "bytes": 2595
+    },
+    {
+      "path": "modules/irsaliye/view.html",
+      "sha256": "845761a7296c374666d7add3f2aac9e5482ea478c0d25f7c33e136149b40e26a",
+      "bytes": 6489
+    },
+    {
       "path": "modules/kira/manifest.json",
       "sha256": "d16b06f3a8424ebf2ed5854bd417ec0e3db0fb174848741f7fc9dc787a4fc5b8",
       "bytes": 4145
@@ -920,6 +945,11 @@
       "path": "shared/vehicle-data.js",
       "sha256": "66f2eea61c07c415765e60d3f2ddadfd36803da96d9cbd2219d29db699146285",
       "bytes": 11199
+    },
+    {
+      "path": "shared/waybill-data.js",
+      "sha256": "4ce9127a94883835324788177a5fafb554db03befaa597f66bd20afb8097df40",
+      "bytes": 599
     }
   ]
 }
