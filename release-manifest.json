@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s9-40151ce4a57f",
+  "release": "fd-modular-20261018-s10-f838ded02f50",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,13 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "1616553ed428ccc6ea896c8e68469e7cde3aea3545ed71490b574a5ba40b7687",
-      "bytes": 17405
+      "sha256": "9b14d44b3f98d16040dbad8ad557bccf6bf456a84e5e5f01eb4e6c78ee1ef09d",
+      "bytes": 19066
+    },
+    {
+      "path": "core/cks-entrypoints.js",
+      "sha256": "fc0636262b5ea35b3feed46231dbe3cb6e3b884565a06d6b1bb72291fb728b9e",
+      "bytes": 7025
     },
     {
       "path": "core/company-entrypoints.js",
@@ -88,8 +93,8 @@
     },
     {
       "path": "legacy/05-tapuCksScripti.js",
-      "sha256": "8a5081207da85381514290bf3101b33c233419a376d8b7754b3cca069893ceda",
-      "bytes": 127790
+      "sha256": "5f3ba18b530d5e1014ec23610c53c74a377a8a9c5ddf428e4aab03a80325dff2",
+      "bytes": 82
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
@@ -98,28 +103,28 @@
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
-      "sha256": "6439a546c09ca659dea29ebca91218be83834e10b687a8410f01f99f33b209af",
-      "bytes": 20110
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/08-cksV128Duzeltme.js",
-      "sha256": "0fdc7c1d8e80177f94b8a1cd2f0aeacf32f7ab2c5671281d7ee54685773e5b8d",
-      "bytes": 4257
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/09-cksKonumSadelestirme.js",
-      "sha256": "5e0fbcc7b8a6fba6c6d45834202215a33fb3a81bde280f0a58ebcf05cf27b277",
-      "bytes": 423
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/10-cksYillikBelgeScripti.js",
-      "sha256": "ffd372a671bc69cf625e9351497221f8a63fa0d636b26594a337dded54287dce",
-      "bytes": 9112
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/11-cksKisiBelgesiV130.js",
-      "sha256": "695b21ed9bb175ad0271381ff7cd5cd7f65ceaa55f16055dac74eb4f35993bb1",
-      "bytes": 9007
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
@@ -128,23 +133,23 @@
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
-      "sha256": "3df4220ae45c8d12b9d9bbd9689330f3a7e3ce068c229370b995856368051bae",
-      "bytes": 17849
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/14-fdCksFormSecimV138.js",
-      "sha256": "35a0a22c5559696d99e45bc8c594c83c02d7c05ada8589eb525d67fdd8f4a30b",
-      "bytes": 3205
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/15-fdCksYilRenkleriV142.js",
-      "sha256": "7a6aeb3164933461db577b8fdc97cfd4ef0f7ba9aa9d5645f7361d24ea247e5f",
-      "bytes": 1431
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/16-fdCksCokluDuzenleV143.js",
-      "sha256": "37a672fa0c42188248dbaec471735be6a3d53075fd5cc50cb8bdbc818e6be05e",
-      "bytes": 2750
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/17-fdV144KatmanOturumAbonelik.js",
@@ -153,13 +158,13 @@
     },
     {
       "path": "legacy/18-fdCksDuzenlemeGuvenligiV145.js",
-      "sha256": "2baf1ba17d80e34c3fd71699eae2ccab6218bb5a6c447b035e87bd196046e883",
-      "bytes": 2951
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/19-fdCksDuzenlemeModalKurV145.js",
-      "sha256": "d5d3c9a0001868396604aef7e3a4b3b4b20f26882d040635e315cb9547b1c2f0",
-      "bytes": 525
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/20-fdTapuCksEslemeV146.js",
@@ -168,13 +173,13 @@
     },
     {
       "path": "legacy/21-fdCksTumTarlalarV147.js",
-      "sha256": "ddfa7fc05fb8e57a4b91aa2256e7dbdb5094610d820348065c875b56a3feb307",
-      "bytes": 1587
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/22-fdCksYetimPdfKayitlariV148.js",
-      "sha256": "9a4a4b08a64a2247c30827999483d02d5bd56ce013a36fdffd1c643bf90e47b0",
-      "bytes": 2352
+      "sha256": "5781649171605ed72e85d05691d60924b8c3359edd34eb01c4149cdf29665e7a",
+      "bytes": 64
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
@@ -413,23 +418,23 @@
     },
     {
       "path": "legacy/styles/16-fdCksPdfAktarimV134Stil.css",
-      "sha256": "c5aa0e54d2d104998ab1599dc9fecab08960fe0593c1a12155201e92b518ebc9",
-      "bytes": 3278
+      "sha256": "9870c59888d4425fed9112fd6a4bf746d8c6f2159fc3c8c4d3ea420bb33e30cb",
+      "bytes": 28
     },
     {
       "path": "legacy/styles/17-fdCksKontrolSigdirV141.css",
-      "sha256": "7d4f9436bdcaef7f208510dea9b69d47241e073adaa1479ee0e57eb4bfa16647",
-      "bytes": 2387
+      "sha256": "9d6357c4b7c83f1ff35613304efda0b6c6e6b3d47fb4c7d6991e242b79dee581",
+      "bytes": 29
     },
     {
       "path": "legacy/styles/18-fdCksYilRenkleriV142Stil.css",
-      "sha256": "505727fea2d0ec15ac8737a533e18fbbc1bf67df4fa3cd7d1548cc033fafe7d9",
-      "bytes": 333
+      "sha256": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
+      "bytes": 2
     },
     {
       "path": "legacy/styles/19-fdCksCokluDuzenleV143Stil.css",
-      "sha256": "714f62c693b7c0eb6ceda26945a1a71882e0d76391eb5b001c141e27e6668edf",
-      "bytes": 652
+      "sha256": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
+      "bytes": 2
     },
     {
       "path": "legacy/styles/20-fdV144KatmanVeAbonelikStil.css",
@@ -438,13 +443,13 @@
     },
     {
       "path": "legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css",
-      "sha256": "c1f941c24065731b9d83feb7627f8c29a43cf48486d3b50dbbdc35e5a7341059",
-      "bytes": 270
+      "sha256": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
+      "bytes": 2
     },
     {
       "path": "legacy/styles/22-fdCksTumTarlalarV147Stil.css",
-      "sha256": "95dcc6b2080fa4977a60160490371d2924ab660eaf9eede696df97fbd42cbc52",
-      "bytes": 804
+      "sha256": "a3cf375eec340a5ec2644399122c5f77528564435ecbd40703745021578bf52b",
+      "bytes": 54
     },
     {
       "path": "legacy/styles/23-fdPdfVeFiltreV149Stil.css",
@@ -543,8 +548,8 @@
     },
     {
       "path": "legacy/styles/42-fdTapuTasarimV226.css",
-      "sha256": "2e41c19bec5c63d8b7c7119e6f63aac742a5f021749b9c27906c5e691251ca1d",
-      "bytes": 1367
+      "sha256": "2df79aa96f0611df87df9f07f85ec4fb11f48331a234844d1d01d6aff5b8e434",
+      "bytes": 741
     },
     {
       "path": "legacy/styles/43-fdUnifiedOutputStyleV227.css",
@@ -600,6 +605,26 @@
       "path": "modules/ayarlar/view.html",
       "sha256": "b0d21e1de1c1295f10927352acef701264690a6c86d6c076760fd2cb42892e05",
       "bytes": 24688
+    },
+    {
+      "path": "modules/cks/manifest.json",
+      "sha256": "f469b93ad0537cccbaa06715def5480470953577486be50826495f2a1412609b",
+      "bytes": 2144
+    },
+    {
+      "path": "modules/cks/module.js",
+      "sha256": "a512546c0b22a43a9c35990d5c8a143f1f1ba80eb50a8abb7a5838f0f35a25e5",
+      "bytes": 79963
+    },
+    {
+      "path": "modules/cks/style.css",
+      "sha256": "81db2f114af6d4c1b79d0aef54897035c812f450b788ad9737f6ebb318d9b288",
+      "bytes": 15559
+    },
+    {
+      "path": "modules/cks/view.html",
+      "sha256": "e464ac543197ee19fd40f6e022b31ec7471e09e9431b98fa09677809357cc068",
+      "bytes": 8360
     },
     {
       "path": "modules/ihracat/manifest.json",
@@ -752,6 +777,11 @@
       "bytes": 3545
     },
     {
+      "path": "shared/cks-data.js",
+      "sha256": "8cfd127afbaf09605dfdfad36096ca005c9627a4bac8e3aa2e6b1d8db2ff3393",
+      "bytes": 119314
+    },
+    {
       "path": "shared/company-branches.js",
       "sha256": "764748c6b5bdabccc2ec064b0484a204a4561f6b28c3f706238831ad4499b863",
       "bytes": 2307
@@ -780,6 +810,11 @@
       "path": "shared/settings-data.js",
       "sha256": "7b17654f28b6bc9949d3babcf7197fbe7217de3713ee382e42ed6a66e978784d",
       "bytes": 7131
+    },
+    {
+      "path": "shared/title-cks-history.js",
+      "sha256": "68fc016b3075f8d365ae5d5bb2208cec2d0351e634c4b3933832407d8a8737f8",
+      "bytes": 2480
     },
     {
       "path": "shared/title-cks-matching.js",
