@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261017-s8-03d589dada45",
+  "release": "fd-modular-20261018-s9-40151ce4a57f",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "42fc95018852132b25693f8f672f5f13d314c4c870a30d5bc6d291b20c596353",
-      "bytes": 16236
+      "sha256": "1616553ed428ccc6ea896c8e68469e7cde3aea3545ed71490b574a5ba40b7687",
+      "bytes": 17405
     },
     {
       "path": "core/company-entrypoints.js",
@@ -62,6 +62,11 @@
       "bytes": 8857
     },
     {
+      "path": "core/title-entrypoints.js",
+      "sha256": "6f662ac736b7bd64431efcf72f11208faecb74a169a34039048f695aaa379921",
+      "bytes": 3776
+    },
+    {
       "path": "core/user-entrypoints.js",
       "sha256": "c8b985ee8f032ffa8aa13f688d182b68b2f93086dccf20a6b601c0a920fcb45b",
       "bytes": 438
@@ -78,13 +83,13 @@
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
-      "sha256": "8398c962def1092d2f8356feacf09fb99cb9a3175525088148837a72b187bdc5",
-      "bytes": 151168
+      "sha256": "3eb88bd9fa3e8e2c0f855ad9d7a0c1be10dc014d76bafff3acfe25e07cfcc1b7",
+      "bytes": 69
     },
     {
       "path": "legacy/05-tapuCksScripti.js",
-      "sha256": "848bd581b9197eaa60b5224c0069b3d02a777057623ca533e3f618312752b3f1",
-      "bytes": 129067
+      "sha256": "8a5081207da85381514290bf3101b33c233419a376d8b7754b3cca069893ceda",
+      "bytes": 127790
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
@@ -93,8 +98,8 @@
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
-      "sha256": "aef0897e9149ca0b5980958aa26ed906213128f31e6a2b6383d6f38cd1481ed1",
-      "bytes": 20297
+      "sha256": "6439a546c09ca659dea29ebca91218be83834e10b687a8410f01f99f33b209af",
+      "bytes": 20110
     },
     {
       "path": "legacy/08-cksV128Duzeltme.js",
@@ -123,8 +128,8 @@
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
-      "sha256": "a216c8b3f3b5786779ac961306475085e83f5478c76dd1b0260831acafac96ef",
-      "bytes": 17840
+      "sha256": "3df4220ae45c8d12b9d9bbd9689330f3a7e3ce068c229370b995856368051bae",
+      "bytes": 17849
     },
     {
       "path": "legacy/14-fdCksFormSecimV138.js",
@@ -158,8 +163,8 @@
     },
     {
       "path": "legacy/20-fdTapuCksEslemeV146.js",
-      "sha256": "c660996e5b7f9fbe99250f349f770dd378b5abf09b23b792e6a2b60695fb1136",
-      "bytes": 7023
+      "sha256": "50f16d0b0f3716fea7088270ca8418769b1854a0995a8fd92cabc32ca09bdfb2",
+      "bytes": 65
     },
     {
       "path": "legacy/21-fdCksTumTarlalarV147.js",
@@ -278,8 +283,8 @@
     },
     {
       "path": "legacy/44-fdTapuKullanimV226.js",
-      "sha256": "9e6d417753b28a187c1f6a063f8c4a5de87074dbbe7372df31c6717fe50aef6d",
-      "bytes": 8206
+      "sha256": "8168b722bb9276d3b4dcf111cc6e5185507b41a3901096303beb6cded82afbe0",
+      "bytes": 49
     },
     {
       "path": "legacy/45-fdUnifiedOutputCoreV227.js",
@@ -393,8 +398,8 @@
     },
     {
       "path": "legacy/styles/13.css",
-      "sha256": "916402efc663f5ded9094a5bf78b261aae5d29dcba52205bff42746e772ee9da",
-      "bytes": 6129
+      "sha256": "120459e52d2e1eb54eb1235ef8891a692e7bbf323f6b46a781e86779c13d84a8",
+      "bytes": 1667
     },
     {
       "path": "legacy/styles/14-tapuCksStili.css",
@@ -538,8 +543,8 @@
     },
     {
       "path": "legacy/styles/42-fdTapuTasarimV226.css",
-      "sha256": "0cf8e6a8c9d251ac6f607f4d5f6aa1315260a3fc808122ce42810e17d23e4f61",
-      "bytes": 5423
+      "sha256": "2e41c19bec5c63d8b7c7119e6f63aac742a5f021749b9c27906c5e691251ca1d",
+      "bytes": 1367
     },
     {
       "path": "legacy/styles/43-fdUnifiedOutputStyleV227.css",
@@ -697,6 +702,26 @@
       "bytes": 8780
     },
     {
+      "path": "modules/tapu/manifest.json",
+      "sha256": "7cf78becc05ac889b21030c3ff0e79f75cfbc2dcd3bd9df803f788a22e014ce2",
+      "bytes": 1542
+    },
+    {
+      "path": "modules/tapu/module.js",
+      "sha256": "ae001908cafb1ee3df4f49f37e66dbdfda02a7b2be12c4456f5245d1625cec88",
+      "bytes": 33962
+    },
+    {
+      "path": "modules/tapu/style.css",
+      "sha256": "4e22eae7b9dae99929f81a8149370a26881882755e3375d453a26ffa7458f00f",
+      "bytes": 9550
+    },
+    {
+      "path": "modules/tapu/view.html",
+      "sha256": "01af7cd93f8e2e7711e634f9f784850f51917517e4575285c671a04e156d82f0",
+      "bytes": 7440
+    },
+    {
       "path": "modules/varlikkisileri/manifest.json",
       "sha256": "b20c474962786bb491c400562d9aeb3a1e5bcded3a7956b75d4045d84810684d",
       "bytes": 1449
@@ -755,6 +780,16 @@
       "path": "shared/settings-data.js",
       "sha256": "7b17654f28b6bc9949d3babcf7197fbe7217de3713ee382e42ed6a66e978784d",
       "bytes": 7131
+    },
+    {
+      "path": "shared/title-cks-matching.js",
+      "sha256": "ca9d8bb6a6ea2342dfbadc78f6b619929ea1b158b79bbe9d60eb06ec419be4e2",
+      "bytes": 6257
+    },
+    {
+      "path": "shared/title-data.js",
+      "sha256": "d5a60d5070cb9eec0d0c8f735196cbc937d43a5147179a188529a14156e60fff",
+      "bytes": 135429
     },
     {
       "path": "shared/user-accounts.js",
