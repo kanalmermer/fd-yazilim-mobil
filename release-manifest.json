@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s10-f838ded02f50",
+  "release": "fd-modular-20261018-s11-db2a03478584",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "9b14d44b3f98d16040dbad8ad557bccf6bf456a84e5e5f01eb4e6c78ee1ef09d",
-      "bytes": 19066
+      "sha256": "24f5c252772a66f32a8d6a56995e74e16ea3e67e5ed4feec84747420d9df9009",
+      "bytes": 20997
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -25,6 +25,11 @@
       "path": "core/data-access.js",
       "sha256": "8d63dcea8528b87e0142ba412bbcb340b18f8c5d1b8e8259d703b8cdc9d92bac",
       "bytes": 38708
+    },
+    {
+      "path": "core/document-entrypoints.js",
+      "sha256": "5f5357e2dae5c226b9bd0f35659da59258ac575142d68c75b534ca49f7c79747",
+      "bytes": 6548
     },
     {
       "path": "core/module-entrypoints.js",
@@ -98,8 +103,8 @@
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
-      "sha256": "fa84fa179fb9c03ab685e2390fd48fddef6ffcbc526d9b9d2579296f370a584a",
-      "bytes": 48927
+      "sha256": "ca4dec3645ebf4a9b7890a3df5125cb92cae9d74e1ada63dc01e98e201213afa",
+      "bytes": 11865
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
@@ -368,13 +373,13 @@
     },
     {
       "path": "legacy/styles/06-evrakTakipStilleri.css",
-      "sha256": "b949405c8d809abdb57c9c1dd8182f1ea1e72f443075caa36c9d08cf9eb6c02d",
-      "bytes": 7997
+      "sha256": "c252436ef304d97e8d0703d0732a4701cd5da49c184c7ddbe9641f7d0c441611",
+      "bytes": 28
     },
     {
       "path": "legacy/styles/07-evrakOnizlemeStilleri.css",
-      "sha256": "d955a4c5f14ed5ed7c169cedf95a9de624351bea30edcd2c89ae02a63a144120",
-      "bytes": 17242
+      "sha256": "5580816cf58b3012eca8afe820413f2f19e641485e225e99d306ea9f86ed1b74",
+      "bytes": 15448
     },
     {
       "path": "legacy/styles/08.css",
@@ -627,6 +632,26 @@
       "bytes": 8360
     },
     {
+      "path": "modules/evrak/manifest.json",
+      "sha256": "b271a9d5f124ca7cbfd466cae2dc35d0872fe445b9b72ac029e66de54eae2a19",
+      "bytes": 2433
+    },
+    {
+      "path": "modules/evrak/module.js",
+      "sha256": "1a6d1a63c51b4421c4bcc2a1ed61e9efe31b86421ff95f0ba054216305ea1f28",
+      "bytes": 44618
+    },
+    {
+      "path": "modules/evrak/style.css",
+      "sha256": "9d079bff43d445b1928ce08a775948792f7c1d0b7729a8850302ae1025972585",
+      "bytes": 10100
+    },
+    {
+      "path": "modules/evrak/view.html",
+      "sha256": "a27718b71f9eba06a1b527e72153172ede3581a8527afc2157c75980de950197",
+      "bytes": 7716
+    },
+    {
       "path": "modules/ihracat/manifest.json",
       "sha256": "5d323b58117a5fe5b87ecc22627414ae0d269ba7f32791659e274362ed78a0e0",
       "bytes": 1031
@@ -785,6 +810,11 @@
       "path": "shared/company-branches.js",
       "sha256": "764748c6b5bdabccc2ec064b0484a204a4561f6b28c3f706238831ad4499b863",
       "bytes": 2307
+    },
+    {
+      "path": "shared/document-data.js",
+      "sha256": "0fe96fd4dfb7e26cb968812bc1b9d043577ee31bf3da733355679a348992d930",
+      "bytes": 4019
     },
     {
       "path": "shared/export-compat.js",
