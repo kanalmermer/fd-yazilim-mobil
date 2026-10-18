@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s14-95d607d2d54e",
+  "release": "fd-modular-20261018-s15-9623ca9d696b",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ec4c787468788648918142fcbedd82ccb962c40e0f325744b323e87be4260212",
-      "bytes": 25951
+      "sha256": "0d5ecd827f943f9f68b8937a8d30da82cca6e6de3f83e93ccb0c5ccc5cc0bd49",
+      "bytes": 27123
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -32,14 +32,19 @@
       "bytes": 6548
     },
     {
+      "path": "core/isg-entrypoints.js",
+      "sha256": "3a6fe1f6179d11abf1054b395a4ac16d7048bbad528e507603af05c88511e6a1",
+      "bytes": 2848
+    },
+    {
       "path": "core/module-entrypoints.js",
       "sha256": "baf92167a827dd0431bb782725cf0e97a4431fbf617629bcf744e152b1f33032",
       "bytes": 229
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d7949b910cf5ecd4b35e8024d47e9863c1da295644056d18eaff0b07f9fc41a8",
-      "bytes": 2464
+      "sha256": "18df2c2d65d1c2a31eb34a82c3ddfa6cfb33ae165f3d25b972a85813b9f4b07f",
+      "bytes": 2686
     },
     {
       "path": "core/module-loader.js",
@@ -322,21 +327,6 @@
       "bytes": 31397
     },
     {
-      "path": "legacy/47-fdIsgWorkspaceV228.js",
-      "sha256": "83e6f053ec94da4464932d355e24d62a42ab017c1c84e9b9b24ba616f660744c",
-      "bytes": 92287
-    },
-    {
-      "path": "legacy/48-fdIsgDocumentsV228.js",
-      "sha256": "5627ad1225f27294b24f36b001a0258a69fa07ab2c546ca59b685f4437e9e5d5",
-      "bytes": 43902
-    },
-    {
-      "path": "legacy/49-fdIsgIntegrationV228.js",
-      "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
-      "bytes": 21743
-    },
-    {
       "path": "legacy/50-fdAttendanceRenderPerformance.js",
       "sha256": "6c0dc29405bcdad4a9e37b5e45555c9575244b14d61b0da7848d96383d35e2f3",
       "bytes": 963
@@ -577,11 +567,6 @@
       "bytes": 5230
     },
     {
-      "path": "legacy/styles/44-fdIsgStyleV228.css",
-      "sha256": "ecb88537e9f8404061cafe804b6511bd64602a433e6252886f644e9afeff3027",
-      "bytes": 16675
-    },
-    {
       "path": "legacy/styles/45-fdPriceRowOrderStyle.css",
       "sha256": "0a721ec12e039f647d844d1b3f658d7ad20816c54c95cc598cd31a1d7402d27f",
       "bytes": 66
@@ -725,6 +710,26 @@
       "path": "modules/irsaliye/view.html",
       "sha256": "845761a7296c374666d7add3f2aac9e5482ea478c0d25f7c33e136149b40e26a",
       "bytes": 6489
+    },
+    {
+      "path": "modules/isg/manifest.json",
+      "sha256": "464003f594eb66d0c956265d4f2611c240d1dc6b66050082067e61625bbf532a",
+      "bytes": 1531
+    },
+    {
+      "path": "modules/isg/module.js",
+      "sha256": "4b9bfea3b78c3a381b69466567cf248aa7aaeea0e2d309decee1b5dddc23f7b6",
+      "bytes": 149152
+    },
+    {
+      "path": "modules/isg/style.css",
+      "sha256": "ecb88537e9f8404061cafe804b6511bd64602a433e6252886f644e9afeff3027",
+      "bytes": 16675
+    },
+    {
+      "path": "modules/isg/view.html",
+      "sha256": "0d93f7902c8215f0cd7e5649f87389bae6c82f96234229e1dd79ff032e6067cd",
+      "bytes": 45
     },
     {
       "path": "modules/kira/manifest.json",
@@ -895,6 +900,11 @@
       "path": "shared/export-compat.js",
       "sha256": "23a5bb81bb42bd9673851f45cffa5a34ab712fbe895fc3cbbbda2578facf541d",
       "bytes": 733
+    },
+    {
+      "path": "shared/isg-session-integration.js",
+      "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
+      "bytes": 21743
     },
     {
       "path": "shared/policy-badges.css",

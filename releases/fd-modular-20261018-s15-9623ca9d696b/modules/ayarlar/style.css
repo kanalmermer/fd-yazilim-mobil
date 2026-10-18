@@ -1,0 +1,184 @@
+.irsaliye-birim-yonetimi { display:grid; gap:8px; margin-top:8px; }
+.irsaliye-birim-satiri { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; }
+.irsaliye-birim-satiri input { min-width:0; }
+@media (max-width:600px) {
+        #ayarlarApp main { width:100%; min-width:0; }
+    }
+@media (max-width:600px) {
+        #ayarlarApp main { padding:10px 10px calc(18px + env(safe-area-inset-bottom)) !important; }
+    }
+.police-ayar-tur-satiri{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-bottom:7px}
+.police-ayar-tur-satiri button{width:36px;padding:0}
+#ayarlarApp main{max-width:1560px!important}
+#ayarlarApp .ayarlar-modul-satiri{grid-template-columns:48px minmax(170px,.85fr) minmax(220px,1.15fr) minmax(390px,1.7fr) 72px}
+#ayarlarApp .ayarlar-roller{overflow:visible;max-height:none}
+@media(max-width:1100px){#ayarlarApp .ayarlar-modul-satiri{grid-template-columns:44px 1fr}}
+#ayarlarApp{background:#f4f7fb;min-height:calc(100vh - 72px)}
+#ayarlarApp main{max-width:1380px!important;padding:18px!important}
+#ayarlarApp .ayarlar-ana-kart{border:0;box-shadow:0 16px 45px rgba(15,23,42,.09);padding:0;overflow:visible;background:transparent}
+.ayarlar-ust{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border-radius:16px 16px 0 0}
+.ayarlar-ust h2{margin:0;font-size:1.2rem}
+.ayarlar-ust p{margin:0;color:#cbd5e1;line-height:1.5}
+.ayarlar-kabuk{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:600px;background:#fff;border-radius:0}
+.ayarlar-sol-menu{padding:14px 10px;background:#f8fafc;border-right:1px solid #e2e8f0}
+.ayarlar-sol-menu button{width:100%;display:flex;align-items:center;gap:8px;text-align:left;border:0;background:transparent;color:#475569;padding:9px 10px;border-radius:9px;font-size:.79rem;font-weight:800;cursor:pointer;margin-bottom:4px}
+.ayarlar-sol-menu button:hover{background:#eaf2ff;color:#1d4ed8}
+.ayarlar-sol-menu button.active{background:#dbeafe;color:#1d4ed8;box-shadow:inset 3px 0 #2563eb}
+.ayarlar-icerik{padding:18px;min-width:0}
+.ayarlar-panel{display:none}
+.ayarlar-panel.active{display:block}
+.ayarlar-panel-baslik{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin:0 0 12px;padding-bottom:11px;border-bottom:1px solid #e2e8f0}
+.ayarlar-panel-baslik h3{margin:0 0 4px;color:#0f172a;font-size:1rem}
+.ayarlar-panel-baslik p{margin:0;color:#64748b;font-size:.8rem;line-height:1.45}
+#ayarlarApp .profile-section{margin:0 0 8px;border:1px solid #dbe4ee;border-radius:10px;box-shadow:none;overflow:hidden;background:#fff}
+#ayarlarApp .profile-section[open]{border-color:#93c5fd;box-shadow:0 5px 14px rgba(37,99,235,.06)}
+#ayarlarApp .profile-section summary{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#f8fafc;color:#0f4c6e;font-size:.8rem;font-weight:850;cursor:pointer;list-style:none}
+#ayarlarApp .profile-section summary::-webkit-details-marker{display:none}
+#ayarlarApp .profile-section summary::before{content:'›';font-size:1rem;line-height:1;transition:transform .15s}
+#ayarlarApp .profile-section[open]>summary::before{transform:rotate(90deg)}
+#ayarlarApp .profile-section>div{padding:12px 13px}
+.ayarlar-modul-araclar{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ayarlar-modul-araclar input{flex:1;min-width:180px;height:36px;padding:7px 11px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc}
+.ayarlar-modul-araclar span{white-space:nowrap;color:#64748b;font-size:.73rem;font-weight:800}
+.ayarlar-modul-listesi{display:grid;gap:6px}
+.ayarlar-modul-satiri{display:block;border:1px solid #dbe4ee;border-radius:10px;background:#fff;overflow:hidden;transition:.16s}
+.ayarlar-modul-satiri:hover{border-color:#93c5fd}
+.ayarlar-modul-satiri[open]{border-color:#60a5fa;box-shadow:0 6px 16px rgba(37,99,235,.08)}
+.ayarlar-modul-ozet{display:grid;grid-template-columns:32px minmax(180px,.85fr) minmax(250px,1.15fr) auto 16px;gap:10px;align-items:center;padding:9px 11px;background:#fff;cursor:pointer;list-style:none}
+.ayarlar-modul-ozet::-webkit-details-marker{display:none}
+.ayarlar-modul-ozet::after{content:'›';font-size:1.15rem;font-weight:900;color:#64748b;transition:transform .15s}
+.ayarlar-modul-satiri[open]>.ayarlar-modul-ozet::after{transform:rotate(90deg)}
+.ayarlar-modul-no{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#eff6ff;color:#2563eb;font-size:.72rem;font-weight:900}
+.ayarlar-modul-kimlik{min-width:0}
+.ayarlar-modul-kimlik strong{display:block;color:#0f172a;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ayarlar-modul-kimlik small{display:block;margin-top:2px;color:#64748b;font-size:.67rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ayarlar-modul-yetki-ozet{display:flex;flex-wrap:wrap;gap:5px}
+.ayarlar-modul-yetki-ozet span{padding:3px 7px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:.64rem;font-weight:800}
+.ayarlar-modul-durum{padding:4px 8px;border-radius:999px;background:#dcfce7;color:#047857;font-size:.66rem;font-weight:900}
+.ayarlar-modul-durum.pasif{background:#f1f5f9;color:#64748b}
+.ayarlar-modul-govde{display:grid;grid-template-columns:58px minmax(260px,.85fr) minmax(360px,1.15fr);gap:12px;align-items:start;padding:12px;border-top:1px solid #e2e8f0;background:#fbfdff}
+.ayarlar-modul-bilgiler{display:grid;gap:8px}
+.ayarlar-modul-alan{display:grid;gap:4px}
+.ayarlar-modul-alan>span{color:#475569;font-size:.69rem;font-weight:850}
+.ayarlar-modul-satiri input[type="text"],.ayarlar-modul-satiri textarea{width:100%;min-width:0}
+.ayarlar-modul-satiri textarea{min-height:58px;resize:vertical}
+.ayarlar-modul-sira{display:grid;grid-template-columns:1fr;gap:5px}
+.ayarlar-modul-sira span{text-align:center;color:#64748b;font-size:.62rem;font-weight:850}
+.ayarlar-modul-sira button{border:1px solid #cbd5e1;background:#fff;border-radius:7px;height:30px;cursor:pointer;font-weight:900;color:#475569}
+.ayarlar-modul-sira button:hover{background:#dbeafe;color:#1d4ed8}
+.ayarlar-roller{display:grid;grid-template-columns:repeat(2,minmax(125px,1fr));gap:7px;overflow:visible;max-height:none}
+.ayar-rol-yetki{display:grid;grid-template-columns:auto minmax(105px,1fr);align-items:center;gap:7px;border:1px solid #cbd5e1;border-radius:9px;padding:6px 8px;background:#f8fafc;font-size:.7rem;font-weight:850;color:#475569}
+.ayar-rol-yetki select{min-width:0;width:100%;padding:6px;border-radius:7px;font-size:.72rem;background:#fff}
+.ayar-rol-yetki:has(select[data-seviye="okuma"]){background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.ayar-rol-yetki:has(select[data-seviye="yazma"]){background:#ecfdf5;border-color:#6ee7b7;color:#047857}
+.ayar-yetki-kapsam{display:grid;gap:8px}
+.ayar-yetki-grup{display:grid;gap:6px}
+.ayar-yetki-grup-baslik{font-size:.69rem;font-weight:900;color:#334155}
+.ayar-istisna-detay{border:1px solid #dbe4ee;border-radius:9px;background:#fff;overflow:hidden}
+.ayar-istisna-detay>summary{display:flex;justify-content:space-between;align-items:center;padding:7px 9px;background:#f8fafc;color:#334155;font-size:.69rem;font-weight:850;cursor:pointer;list-style:none}
+.ayar-istisna-detay>summary::-webkit-details-marker{display:none}
+.ayar-istisna-detay>summary b{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#e0f2fe;color:#0369a1;font-size:.62rem}
+.ayar-istisna-icerik{display:grid;gap:6px;padding:7px}
+.ayar-istisna-listesi{display:grid;gap:5px}
+.ayar-kullanici-istisna{display:grid;grid-template-columns:minmax(90px,1fr) minmax(110px,.9fr) 30px;gap:5px;align-items:center;border:1px solid #dbe4ee;border-radius:8px;padding:5px;background:#fff}
+.ayar-kullanici-istisna strong{font-size:.7rem;overflow:hidden;text-overflow:ellipsis}
+.ayar-kullanici-istisna select{width:100%;min-width:0;padding:5px}
+.ayar-kullanici-istisna button{height:29px;border:1px solid #fecaca;border-radius:7px;background:#fff1f2;color:#be123c;cursor:pointer;font-weight:900}
+.ayar-istisna-ekle{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px}
+.ayar-istisna-ekle select{min-width:0;width:100%;padding:6px}
+.ayar-istisna-ekle button{padding:6px 9px;border:0;border-radius:7px;background:#e0f2fe;color:#0369a1;font-size:.7rem;font-weight:850;cursor:pointer}
+.ayarlar-aktif{display:flex}
+.ayarlar-aktif label{display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:.72rem;font-weight:850;color:#475569}
+.ayarlar-kaydet-cubugu{position:sticky;bottom:0;z-index:5;display:flex!important;justify-content:space-between!important;align-items:center;margin:0!important;padding:11px 14px;background:#18243a;border-top:1px solid #2d3b52;border-radius:0 0 16px 16px;box-shadow:0 10px 24px rgba(15,23,42,.16)}
+.ayarlar-kaydet-cubugu::before{content:'Değişiklikler seçili şirket için geçerli olur.';color:#cbd5e1;font-size:.84rem;font-weight:700}
+@media(max-width:1100px){.ayarlar-modul-ozet{grid-template-columns:32px minmax(160px,1fr) minmax(220px,1fr) auto 16px}}
+@media(max-width:1100px){.ayarlar-modul-govde{grid-template-columns:52px minmax(220px,.8fr) minmax(300px,1.2fr)}}
+@media(max-width:980px){.ayarlar-kabuk{grid-template-columns:1fr}}
+@media(max-width:980px){.ayarlar-sol-menu{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:4}}
+@media(max-width:980px){.ayarlar-sol-menu button{width:auto;white-space:nowrap;margin:0 4px 0 0}}
+@media(max-width:980px){.ayarlar-icerik{padding:14px}}
+@media(max-width:980px){.ayarlar-modul-ozet{grid-template-columns:30px minmax(155px,1fr) auto 16px}}
+@media(max-width:980px){.ayarlar-modul-yetki-ozet{display:none}}
+@media(max-width:980px){.ayarlar-modul-govde{grid-template-columns:50px minmax(0,1fr)}}
+@media(max-width:980px){.ayarlar-modul-govde>.ayar-yetki-kapsam{grid-column:2}}
+@media(max-width:980px){.ayarlar-ust{border-radius:12px 12px 0 0}}
+@media(max-width:980px){.ayarlar-kabuk{border-radius:0}}
+@media(max-width:980px){.ayarlar-kaydet-cubugu{border-radius:0 0 12px 12px}}
+@media(max-width:600px){.ayarlar-ust{padding:13px 14px}}
+@media(max-width:600px){.ayarlar-ust h2{font-size:1rem}}
+@media(max-width:600px){.ayarlar-icerik{padding:10px}}
+@media(max-width:600px){.ayarlar-panel-baslik p{font-size:.73rem}}
+@media(max-width:600px){.ayarlar-modul-araclar{align-items:stretch;flex-direction:column;gap:5px}}
+@media(max-width:600px){.ayarlar-modul-ozet{grid-template-columns:28px minmax(0,1fr) auto 14px;gap:7px;padding:8px}}
+@media(max-width:600px){.ayarlar-modul-kimlik small{display:none}}
+@media(max-width:600px){.ayarlar-modul-govde{grid-template-columns:1fr;padding:9px}}
+@media(max-width:600px){.ayarlar-modul-govde>*{grid-column:1!important}}
+@media(max-width:600px){.ayarlar-modul-sira{grid-template-columns:30px 30px auto;justify-content:start;align-items:center}}
+@media(max-width:600px){.ayarlar-roller{grid-template-columns:1fr}}
+@media(max-width:600px){.ayar-rol-yetki{grid-template-columns:80px 1fr}}
+@media(max-width:600px){.ayarlar-kaydet-cubugu::before{display:none}}
+#ayarlarApp main{max-width:1560px!important;padding:20px!important}
+#ayarlarApp .ayarlar-ana-kart{box-shadow:none!important}
+#ayarlarApp .ayarlar-ust{background:#fff;color:#19394b;border:1px solid #dbe5ee;border-radius:14px 14px 0 0;padding:18px 22px}
+#ayarlarApp .ayarlar-ust h2{font-size:21px;font-weight:650}
+#ayarlarApp .ayarlar-ust p{color:#6b8194;font-size:13px;margin-top:5px}
+#ayarlarApp .ayarlar-kabuk{grid-template-columns:240px minmax(0,1fr);border:1px solid #dbe5ee;border-top:0;min-height:540px}
+#ayarlarApp .ayarlar-sol-menu{background:#f7fafc;padding:15px 12px}
+#ayarlarApp .ayarlar-sol-menu button{font-size:14px;font-weight:550;line-height:1.4;padding:12px 11px;margin-bottom:6px;color:#456074}
+#ayarlarApp .ayarlar-sol-menu button.active{background:#e4f3f7;color:#086780;box-shadow:inset 3px 0 #0d91a5}
+#ayarlarApp .ayarlar-sol-menu button:hover{background:#edf5f8;color:#075a70}
+#ayarlarApp .ayarlar-icerik{padding:22px;min-width:0}
+#ayarlarApp .ayarlar-panel-baslik h3{font-size:19px;font-weight:650}
+#ayarlarApp .ayarlar-panel-baslik p{font-size:13px}
+#ayarlarApp .profile-section{margin-bottom:12px;border-color:#dbe5ee}
+#ayarlarApp .profile-section>summary{font-size:14px;font-weight:600;background:#f6fafc;color:#294f65;padding:14px 16px}
+#ayarlarApp .profile-section[open]>summary{background:#eff8fa;color:#086780}
+#ayarlarApp .profile-section>div{padding:18px}
+#ayarlarApp .form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#ayarlarApp .form-group{min-width:0;margin-bottom:16px}
+#ayarlarApp .form-group>label{font-size:13px;font-weight:600;line-height:1.45;color:#385468;margin-bottom:6px}
+#ayarlarApp :is(input,select,textarea){max-width:100%;font-size:14px;box-sizing:border-box}
+#ayarlarApp .form-group :is(input:not([type=checkbox]):not([type=file]),select,textarea){width:100%;border:1px solid #cbdbe6;border-radius:8px;padding:10px 12px;background:#fff;color:#253d4e;min-height:40px}
+#ayarlarApp textarea{resize:vertical;line-height:1.5}
+#ayarlarApp small{font-size:12px!important;line-height:1.5;color:#6b8194}
+#ayarlarApp .form-group small{display:block;margin-top:6px}
+#ayarlarApp .ayarlar-modul-ozet{grid-template-columns:32px minmax(0,1fr) minmax(210px,.85fr) auto 16px}
+#ayarlarApp .ayarlar-modul-govde{grid-template-columns:48px minmax(0,1fr) minmax(0,1.2fr)}
+#ayarlarApp .ayarlar-modul-kimlik strong{font-size:14px}
+#ayarlarApp .ayarlar-roller{grid-template-columns:1fr}
+#ayarlarApp .ayar-rol-yetki{font-size:13px;grid-template-columns:100px minmax(0,1fr)}
+#ayarlarApp .ayarlar-kaydet-cubugu{background:#fff;border:1px solid #dbe5ee;border-top:0;box-shadow:0 -3px 15px #263b4e08;gap:12px;padding:12px 18px;bottom:0;border-radius:0 0 14px 14px}
+#ayarlarApp .ayarlar-kaydet-cubugu::before{display:none}
+#ayarlarApp .ayarlar-kaydet-cubugu .btn-submit{font-size:14px;box-shadow:none}
+.fd-ayar-arama{border:1px solid #dbe5ee;border-top:0;padding:14px 22px;background:#fff;position:relative}
+.fd-ayar-arama input{width:100%;padding:11px 13px;border:1px solid #cbdbe6;border-radius:9px;background:#f8fbfd!important}
+.fd-ayar-sonuclar{display:grid;gap:6px;margin-top:10px;max-height:300px;overflow:auto}
+.fd-ayar-sonuclar[hidden]{display:none}
+.fd-ayar-sonuclar button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:#f6fafc;border:1px solid #dbe5ee;border-radius:8px;padding:10px 12px;color:#294f65;font-size:14px;cursor:pointer}
+.fd-ayar-sonuclar button:hover{background:#e4f3f7}
+.fd-ayar-vurgu{outline:2px solid #52aabe;outline-offset:4px;border-radius:6px}
+.fd-ayar-durum{font-size:13px;color:#6b8194}
+.fd-ayar-durum.degisti{color:#986409}
+.fd-ayar-bilgi{padding:12px 14px;margin:0 0 14px;border:1px solid #cce7ec;background:#f2fafb;border-radius:9px;color:#426574;font-size:13px;line-height:1.55}
+@media(max-width:980px){#ayarlarApp .ayarlar-kabuk{grid-template-columns:1fr}}
+@media(max-width:980px){#ayarlarApp .ayarlar-sol-menu{position:static;flex-wrap:nowrap;overflow-x:auto}}
+@media(max-width:980px){#ayarlarApp .ayarlar-sol-menu button{flex:none;width:auto;margin-bottom:0}}
+@media(max-width:980px){#ayarlarApp .ayarlar-icerik{padding:16px}}
+@media(max-width:980px){#ayarlarApp .ayarlar-modul-ozet{grid-template-columns:32px minmax(0,1fr) auto 16px}}
+@media(max-width:980px){#ayarlarApp .ayarlar-modul-govde{grid-template-columns:40px minmax(0,1fr)}}
+@media(max-width:980px){#ayarlarApp .ayarlar-modul-govde>.ayar-yetki-kapsam{grid-column:2}}
+@media(max-width:600px){#ayarlarApp main{padding:10px!important}}
+@media(max-width:600px){#ayarlarApp .ayarlar-ust{padding:15px;align-items:flex-start}}
+@media(max-width:600px){#ayarlarApp .ayarlar-ust h2{font-size:18px}}
+@media(max-width:600px){#ayarlarApp .ayarlar-ust .badge{max-width:110px;white-space:normal}}
+@media(max-width:600px){#ayarlarApp .form-row{grid-template-columns:1fr;gap:0}}
+@media(max-width:600px){#ayarlarApp .profile-section>div{padding:13px}}
+@media(max-width:600px){#ayarlarApp .ayarlar-panel-baslik h3{font-size:17px}}
+@media(max-width:600px){#ayarlarApp .ayarlar-modul-govde{grid-template-columns:1fr}}
+@media(max-width:600px){#ayarlarApp .ayarlar-modul-govde>*{grid-column:1!important}}
+@media(max-width:600px){.fd-ayar-arama{padding:12px 14px}}
+@media(max-width:600px){#ayarlarApp .ayarlar-kaydet-cubugu{flex-wrap:wrap;padding:12px}}
+@media(max-width:600px){#ayarlarApp .ayarlar-kaydet-cubugu .btn-submit{width:100%!important}}
+@media(max-width:600px){.fd-ayar-durum{font-size:12px}}
+
+.fd-wa-full-template{margin:8px 0 14px;padding:11px 13px;border:1px solid #c9e2d7;border-radius:9px;background:#f3faf6}.fd-wa-full-template>div{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.fd-wa-full-template strong{font-size:12px;color:#22543d}.fd-wa-full-template small{font-size:11px;color:#64748b}.fd-wa-full-template pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 inherit;font-family:inherit;margin:8px 0 0;color:#253e35}.fd-wa-full-template button{border:0;background:transparent;color:#0369a1;font-size:11px;cursor:pointer;padding:2px 0}
