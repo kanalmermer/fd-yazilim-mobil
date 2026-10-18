@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261018-s12-c47510d2ff50",
+  "release": "fd-modular-20261018-s13-20dd44226c53",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "55c53ce145ea31ea0f8ab8fdbe075f6edbdaf61020ba0c8573af9408fd7a3bea",
-      "bytes": 22652
+      "sha256": "97df5ee1330fdbe79e6f72f50d57dd92008ef9240597790f98ac97d3da1aafa3",
+      "bytes": 24496
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -45,6 +45,11 @@
       "path": "core/module-loader.js",
       "sha256": "47cf22fe72beb81df9dcad2176cf4251f9a4e6957508baad26c0d45b8d0e8d16",
       "bytes": 12008
+    },
+    {
+      "path": "core/order-entrypoints.js",
+      "sha256": "97b838f81f1f8d5e2ff6e5d4b0f874f305085f67d9211f99a9a0e96022e1c78f",
+      "bytes": 6375
     },
     {
       "path": "core/permissions.js",
@@ -193,8 +198,8 @@
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
-      "sha256": "7690e7b7a1e43b4a28be738a4c7aafd953e523d6690164d8a7ed85f160f8edbc",
-      "bytes": 19076
+      "sha256": "40f1f748790f5ecb69190868e55538312ca87a36e69f8461a50f30f706b9a801",
+      "bytes": 19602
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
@@ -263,8 +268,8 @@
     },
     {
       "path": "legacy/37-fdSiparisTakipV2.js",
-      "sha256": "dfbd0c499b9ab20c4f4d7dfe392f724538a474a8d05d1cbcb3e58675807dd959",
-      "bytes": 88965
+      "sha256": "83a478573562869443f94d178f430ad99ec16579c1fe2a7d57adcd7c2442a067",
+      "bytes": 108
     },
     {
       "path": "legacy/38-fdKiraTasarimV214.js",
@@ -755,6 +760,26 @@
       "path": "modules/police/view.html",
       "sha256": "1aaf454182a64a8ea17f75778fe61fe123ea9cbd73badcef496b0aaa56f09f98",
       "bytes": 6487
+    },
+    {
+      "path": "modules/siparistakip/manifest.json",
+      "sha256": "f05640369e34f8b433a0dcb62d16c980b465aa4c0a4425fc2a3727a492d7b202",
+      "bytes": 2319
+    },
+    {
+      "path": "modules/siparistakip/module.js",
+      "sha256": "239bc35a6c2feb86f142bd862abe83618b6bf8aa85bb979484f6a45244dc5078",
+      "bytes": 55351
+    },
+    {
+      "path": "modules/siparistakip/style.css",
+      "sha256": "eb5ce0dbfbdcfbd4a465d6430851e3e2f8c1c34b684a94c19f6f2bfb7f700906",
+      "bytes": 27588
+    },
+    {
+      "path": "modules/siparistakip/view.html",
+      "sha256": "e423c04871b538b594dea18530107a265fd51c24abd450772bccc3dc4c8ddeef",
+      "bytes": 11838
     },
     {
       "path": "modules/sirket/manifest.json",
