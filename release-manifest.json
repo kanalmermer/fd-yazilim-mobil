@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s16-de669b9a9173",
+  "release": "fd-modular-20261019-s17-c85f38676a79",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "4fd4caf364a1f2472b0e3fd3337b8e195ca1735252c096006c5e55a600c188a3",
-      "bytes": 28386
+      "sha256": "1d015e48a0b441cd297b906e0908fa2c5afe7139819a9740cc75e74e7f591505",
+      "bytes": 29478
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -42,14 +42,19 @@
       "bytes": 2848
     },
     {
+      "path": "core/kkd-entrypoints.js",
+      "sha256": "01ed2613a936d4f17b1a2a47fe714115439f01bffef0e539878184b9fdca9b96",
+      "bytes": 2803
+    },
+    {
       "path": "core/module-entrypoints.js",
       "sha256": "baf92167a827dd0431bb782725cf0e97a4431fbf617629bcf744e152b1f33032",
       "bytes": 229
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "640127d1d8e7a03ae7a290bdf93b3e23dc6f44030c84ece9a4587a5acc7fd60e",
-      "bytes": 2777
+      "sha256": "9fa7c17bd9e6da298f7310f513d4aa610f4facb9d071c1834dea1a4b7ede9f6f",
+      "bytes": 2825
     },
     {
       "path": "core/module-loader.js",
@@ -113,8 +118,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "bd8d687563f9e3dce7823aa466daf99e462961fa1a453d7526e8d6f96f8893ad",
-      "bytes": 1065274
+      "sha256": "3923c0d5de5e490b513c827078843b88c058442d7b462073c43c9fdf4ee23ba3",
+      "bytes": 1046261
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -775,6 +780,26 @@
       "path": "modules/kira/view.html",
       "sha256": "04c174e1d7778f312ff2311c090565f4d36c01c4804430ebbd46c8f03d49f5da",
       "bytes": 16226
+    },
+    {
+      "path": "modules/kkd/manifest.json",
+      "sha256": "7c0e6fc256b057a1234cc1a0d1413d0daa8d9fd98f5d58ef3e4805efec71a947",
+      "bytes": 1431
+    },
+    {
+      "path": "modules/kkd/module.js",
+      "sha256": "31f01c800b4da9263bec8bd4ad56f8e15dfd2438de4f7891f4c0d1690866567f",
+      "bytes": 25867
+    },
+    {
+      "path": "modules/kkd/style.css",
+      "sha256": "9daf5f0276e04944088c1a4dfd5de80914c0c6034e6fbcf218879f2ef8378066",
+      "bytes": 174
+    },
+    {
+      "path": "modules/kkd/view.html",
+      "sha256": "406542c5d48d00515e8f7ad7549c9cc5167768167816bf7ee516b67b60259490",
+      "bytes": 4478
     },
     {
       "path": "modules/kullanici/manifest.json",
