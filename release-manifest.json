@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s15-d03d45ff1911",
+  "release": "fd-modular-20261019-s15-ff668fdec5bd",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "90d1ebfec2894eece6b6658325f03014d3b36e5e65093b350852a9625d9eb8e1",
+      "sha256": "3fa912c2552a1df7f62bac9096424eaf38962def2800078ec6865bfb370795c9",
       "bytes": 27124
     },
     {
@@ -593,7 +593,7 @@
     },
     {
       "path": "modules/ayarlar/manifest.json",
-      "sha256": "b727629bc41cbaf1f3adecf0b07189245f1bb78430cac354db6a1e104d999552",
+      "sha256": "b105e401f156299f95e911b5be358dbc610d5214024ccc39ed4fcbfbfd9651d0",
       "bytes": 3404
     },
     {
@@ -603,8 +603,8 @@
     },
     {
       "path": "modules/ayarlar/style.css",
-      "sha256": "8d3836e0388ebe4c49698b9c54aa379ccd69a05b355928f1b6d875881f176580",
-      "bytes": 22177
+      "sha256": "e6e3e80d10ffb30e3f3088807d9259a997952885fc198be00bcde45f3032f9ee",
+      "bytes": 22404
     },
     {
       "path": "modules/ayarlar/view.html",
