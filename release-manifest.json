@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s18-3bbadddca198",
+  "release": "fd-modular-20261019-s19-1c6bdbe2a1db",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "c9c3eff260fadc3fd9e443d2725b8f68fd210abd09787c536f74695d691bdfdf",
-      "bytes": 30845
+      "sha256": "8c39d911a9e751b663aa3aaedca9d6bebb8c955db65350395c9ce5ff7aeabfb6",
+      "bytes": 31698
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -20,6 +20,11 @@
       "path": "core/company-entrypoints.js",
       "sha256": "2bc48631b02c4ef350973d58d44ef3fd52774abfce1927503d6bb2518f0b25fb",
       "bytes": 451
+    },
+    {
+      "path": "core/company-tools-entrypoints.js",
+      "sha256": "3857055e7b1a8a373930377b842b633fcac2517627568afdf91610eb608e48d3",
+      "bytes": 1905
     },
     {
       "path": "core/data-access.js",
@@ -53,8 +58,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "22d0e74aee5ebc8b6394ba866ad6191374c92eff5e8e8cdc2ba43eda82642b8f",
-      "bytes": 3059
+      "sha256": "12210d197f52c663d56846f58e2d5d249bd1460553eb06019da506dc320ea326",
+      "bytes": 3133
     },
     {
       "path": "core/module-loader.js",
@@ -267,11 +272,6 @@
       "bytes": 6652
     },
     {
-      "path": "legacy/33-fdOperasyonGenisletmeV149.js",
-      "sha256": "fbfe898b6193132811858ff7fdf6ff3a0903628c371e355fb045cb4aa0ff279b",
-      "bytes": 24252
-    },
-    {
       "path": "legacy/34-fdVarlikKisileriV150.js",
       "sha256": "df538d94c3628b132f884fa3c230d515086124c7a3c2f788550024842188c926",
       "bytes": 94
@@ -482,11 +482,6 @@
       "bytes": 6552
     },
     {
-      "path": "legacy/styles/26-fdOperasyonGenisletmeV149Stil.css",
-      "sha256": "9bd81aca586cb23022200c6129961286dcbc68e2fb7fca7073f1f47a9a24f246",
-      "bytes": 2690
-    },
-    {
       "path": "legacy/styles/27-fdVarlikKisileriV150Style.css",
       "sha256": "3197afc24a208fbc2411a8cd9651211a272dcd23f81e238dd3c23c2b1185781d",
       "bytes": 273
@@ -635,6 +630,26 @@
       "path": "modules/cks/view.html",
       "sha256": "e464ac543197ee19fd40f6e022b31ec7471e09e9431b98fa09677809357cc068",
       "bytes": 8360
+    },
+    {
+      "path": "modules/companytools/manifest.json",
+      "sha256": "94a70698ec4c047246c10c2de34702aaac0bed8c94cd424e562ce99e10fbb68b",
+      "bytes": 1123
+    },
+    {
+      "path": "modules/companytools/module.js",
+      "sha256": "2c255202d875a2ca86088884b55c4ab841d8a1ea1bfc0ecfbbfc52f7e3a22546",
+      "bytes": 23749
+    },
+    {
+      "path": "modules/companytools/style.css",
+      "sha256": "384d4d6e178256b4b988a5c515bf3d11b21f8ea47c58dd68ba16b6a73abdd3dc",
+      "bytes": 2036
+    },
+    {
+      "path": "modules/companytools/view.html",
+      "sha256": "2054adcee6bff20dff639dbe0f517a9657a73fde7ccbe3a4ecfe02a5a3759bd8",
+      "bytes": 2130
     },
     {
       "path": "modules/ekodeme/manifest.json",
@@ -955,6 +970,16 @@
       "path": "shared/company-branches.js",
       "sha256": "764748c6b5bdabccc2ec064b0484a204a4561f6b28c3f706238831ad4499b863",
       "bytes": 2307
+    },
+    {
+      "path": "shared/company-tools-home.css",
+      "sha256": "fc600088f7dd6086a399f0111623eee32b0393d13298a5488ed319f770d7f85f",
+      "bytes": 677
+    },
+    {
+      "path": "shared/company-tools-home.js",
+      "sha256": "e784be9ead8f297f8c8b17007b789b877501cd4c0ff402b94412934d3bb8abea",
+      "bytes": 2359
     },
     {
       "path": "shared/document-data.js",
