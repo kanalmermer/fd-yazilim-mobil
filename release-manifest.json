@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s15-ff668fdec5bd",
+  "release": "fd-modular-20261019-s16-b976675c3961",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "3fa912c2552a1df7f62bac9096424eaf38962def2800078ec6865bfb370795c9",
-      "bytes": 27124
+      "sha256": "bfe5364dac8efe0cfeeffdbe0a2cf59d322b1abb34a111c830ff135ca2db4eb7",
+      "bytes": 28386
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -32,6 +32,11 @@
       "bytes": 6548
     },
     {
+      "path": "core/extra-payment-entrypoints.js",
+      "sha256": "e50e540977c4d242ad6a4c1de912afeca23431aa75c4183146270868cf6976b0",
+      "bytes": 3175
+    },
+    {
       "path": "core/isg-entrypoints.js",
       "sha256": "3a6fe1f6179d11abf1054b395a4ac16d7048bbad528e507603af05c88511e6a1",
       "bytes": 2848
@@ -43,8 +48,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "18df2c2d65d1c2a31eb34a82c3ddfa6cfb33ae165f3d25b972a85813b9f4b07f",
-      "bytes": 2686
+      "sha256": "640127d1d8e7a03ae7a290bdf93b3e23dc6f44030c84ece9a4587a5acc7fd60e",
+      "bytes": 2777
     },
     {
       "path": "core/module-loader.js",
@@ -108,8 +113,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "2e04d9989585e4adbb979d5dc788b3ba845e31a1899b4cb75de1fe4315e7fe67",
-      "bytes": 1086327
+      "sha256": "bd8d687563f9e3dce7823aa466daf99e462961fa1a453d7526e8d6f96f8893ad",
+      "bytes": 1065274
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -632,6 +637,26 @@
       "bytes": 8360
     },
     {
+      "path": "modules/ekodeme/manifest.json",
+      "sha256": "35fb23360b68fe263c2f9b6af517b263935f9cc2a680d0c910e6f4921f04b005",
+      "bytes": 1617
+    },
+    {
+      "path": "modules/ekodeme/module.js",
+      "sha256": "c4c78ee5877f05d8636c1fa8acc636b1fe7ed5a789e71b5766d5a5a7e52c8f9d",
+      "bytes": 26945
+    },
+    {
+      "path": "modules/ekodeme/style.css",
+      "sha256": "aafdb7c80dbec262ba15b5ab98a568e723d90755efe395c9016a66d94526cd83",
+      "bytes": 137
+    },
+    {
+      "path": "modules/ekodeme/view.html",
+      "sha256": "788564069c00424f3b78acb14b6c0acfd29c17c4a06952b2024cc7df8c97fdf3",
+      "bytes": 2866
+    },
+    {
       "path": "modules/evrak/manifest.json",
       "sha256": "b271a9d5f124ca7cbfd466cae2dc35d0872fe445b9b72ac029e66de54eae2a19",
       "bytes": 2433
@@ -900,6 +925,11 @@
       "path": "shared/export-compat.js",
       "sha256": "23a5bb81bb42bd9673851f45cffa5a34ab712fbe895fc3cbbbda2578facf541d",
       "bytes": 733
+    },
+    {
+      "path": "shared/extra-payment-data.js",
+      "sha256": "fee05ae48c44327c2f1cb88ae712644a517c7ac3d4ed743b3143fc676d2fcd3b",
+      "bytes": 2839
     },
     {
       "path": "shared/isg-session-integration.js",
