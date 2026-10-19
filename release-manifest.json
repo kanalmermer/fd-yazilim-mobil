@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s16-b976675c3961",
+  "release": "fd-modular-20261019-s16-de669b9a9173",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "bfe5364dac8efe0cfeeffdbe0a2cf59d322b1abb34a111c830ff135ca2db4eb7",
+      "sha256": "4fd4caf364a1f2472b0e3fd3337b8e195ca1735252c096006c5e55a600c188a3",
       "bytes": 28386
     },
     {
@@ -638,13 +638,13 @@
     },
     {
       "path": "modules/ekodeme/manifest.json",
-      "sha256": "35fb23360b68fe263c2f9b6af517b263935f9cc2a680d0c910e6f4921f04b005",
+      "sha256": "efa04ade93e6366c94e51df0baf83e016a9e23e9eb10de8995b9010e020dd2ef",
       "bytes": 1617
     },
     {
       "path": "modules/ekodeme/module.js",
-      "sha256": "c4c78ee5877f05d8636c1fa8acc636b1fe7ed5a789e71b5766d5a5a7e52c8f9d",
-      "bytes": 26945
+      "sha256": "39f2f0b897684e9f6e7a7ab1dd594bd70efe9a4296c913446cb1bf2d981869fe",
+      "bytes": 27203
     },
     {
       "path": "modules/ekodeme/style.css",
@@ -928,8 +928,8 @@
     },
     {
       "path": "shared/extra-payment-data.js",
-      "sha256": "fee05ae48c44327c2f1cb88ae712644a517c7ac3d4ed743b3143fc676d2fcd3b",
-      "bytes": 2839
+      "sha256": "38448a883efdaf24a27c131d9aa0e5297315b735ec267cbd34b2be4f180a1fa8",
+      "bytes": 3228
     },
     {
       "path": "shared/isg-session-integration.js",
