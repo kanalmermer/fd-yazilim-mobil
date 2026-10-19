@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s17-c85f38676a79",
+  "release": "fd-modular-20261019-s18-3bbadddca198",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "1d015e48a0b441cd297b906e0908fa2c5afe7139819a9740cc75e74e7f591505",
-      "bytes": 29478
+      "sha256": "c9c3eff260fadc3fd9e443d2725b8f68fd210abd09787c536f74695d691bdfdf",
+      "bytes": 30845
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "9fa7c17bd9e6da298f7310f513d4aa610f4facb9d071c1834dea1a4b7ede9f6f",
-      "bytes": 2825
+      "sha256": "22d0e74aee5ebc8b6394ba866ad6191374c92eff5e8e8cdc2ba43eda82642b8f",
+      "bytes": 3059
     },
     {
       "path": "core/module-loader.js",
@@ -115,6 +115,11 @@
       "path": "core/waybill-entrypoints.js",
       "sha256": "7bced2db049ca22d07bd3bc5489fe461a85c836ac273c9500ad172124afbae24",
       "bytes": 3651
+    },
+    {
+      "path": "core/workcenter-entrypoints.js",
+      "sha256": "c4fbd5f6c69434c8c37354d70c822ed4f25758a219d10536f80b4a834b8a4707",
+      "bytes": 4204
     },
     {
       "path": "legacy/03-legacy-3.js",
@@ -260,11 +265,6 @@
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
       "sha256": "965e08577f4a7e5e95b2cfd936465895c48f529337c68da1021e4d65fc7f5807",
       "bytes": 6652
-    },
-    {
-      "path": "legacy/32-fdxWorkCenterFreshV1.js",
-      "sha256": "e3dbdd0c452f1f254f70733ef0cd8701bfce4dd4fa42d422f0f8acfa930edd6a",
-      "bytes": 78413
     },
     {
       "path": "legacy/33-fdOperasyonGenisletmeV149.js",
@@ -480,11 +480,6 @@
       "path": "legacy/styles/24-fdBordroBelgeleriV184Stil.css",
       "sha256": "dad17788ac128f2b1387f4d976c686ee0b03c0caefeac4285f6a1dc64d17f180",
       "bytes": 6552
-    },
-    {
-      "path": "legacy/styles/25-fdxWorkCenterStyles.css",
-      "sha256": "8f646f8e6061954b0561a4f25c1049ed5d31d7fe934877dd2a5227ff099d0c68",
-      "bytes": 9284
     },
     {
       "path": "legacy/styles/26-fdOperasyonGenisletmeV149Stil.css",
@@ -922,6 +917,26 @@
       "bytes": 5741
     },
     {
+      "path": "modules/workcenter/manifest.json",
+      "sha256": "966cb460ef51dbc714fed3c3594a66eaf1cb3562729bcaea829cbdba7947f479",
+      "bytes": 1769
+    },
+    {
+      "path": "modules/workcenter/module.js",
+      "sha256": "523ae7bd4767b89bc882361ff17e19fa7e499fbd95c49211f92530bd337888c9",
+      "bytes": 67509
+    },
+    {
+      "path": "modules/workcenter/style.css",
+      "sha256": "161bad63b863dc7966100a310d318af73471da67f035ab07d724b30fd9a99fd2",
+      "bytes": 7576
+    },
+    {
+      "path": "modules/workcenter/view.html",
+      "sha256": "7f5afbeb21789410dabb025e5058674a510f8e8d1bd3e68eaa47b4d6a979296a",
+      "bytes": 8717
+    },
+    {
       "path": "shared/asset-people-data.js",
       "sha256": "14970753762d55fb45874b7b5e04af41cab87d43d4f55c83d02a3bf83abfc666",
       "bytes": 6039
@@ -1015,6 +1030,16 @@
       "path": "shared/waybill-data.js",
       "sha256": "4ce9127a94883835324788177a5fafb554db03befaa597f66bd20afb8097df40",
       "bytes": 599
+    },
+    {
+      "path": "shared/work-center-common.css",
+      "sha256": "a68726c744847cbe40760eed5c7028c2448a3400cc9439b48d1607536dc1f388",
+      "bytes": 1646
+    },
+    {
+      "path": "shared/work-center-services.js",
+      "sha256": "1735c3c06622e081432093e99e0709251fc642bc03ead39281afbf85f621315c",
+      "bytes": 11214
     }
   ]
 }

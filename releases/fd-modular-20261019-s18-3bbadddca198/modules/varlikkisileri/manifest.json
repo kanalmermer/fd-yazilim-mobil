@@ -1,0 +1,60 @@
+{
+  "name": "Kişiler ve Varlıklar",
+  "roots": [
+    "varlikKisileriApp",
+    "fdVarlikKisiDetay",
+    "fdVarlikKisiModal"
+  ],
+  "entrypoints": [
+    "fdVarlikKisileriniCiz",
+    "fdVkKayitAc",
+    "fdVkGorunumSec",
+    "fdVkFiltreDegisti",
+    "fdVkFiltreTemizle",
+    "fdVkSayfaDegistir",
+    "fdVkSayfaBoyutuDegistir",
+    "fdVkOzetSec",
+    "fdVarlikKaydiAc150",
+    "fdVarlikKisiDetayAc150",
+    "fdVarlikKisiDetayKapat",
+    "fdVarlikKisiFiltrele150",
+    "fdVarlikKisiDetayCiz150",
+    "fdVkDetayAraDegisti",
+    "fdVarlikKisiExcelAl",
+    "fdVarlikKisiPdfAl",
+    "fdVarlikKisiFormuAc",
+    "fdVarlikKisiKaydet",
+    "fdVarlikKisiYenile",
+    "openVarlikKisileriApp"
+  ],
+  "writeOperations": [
+    "fdVarlikKisiKaydet",
+    "fdVarlikKisiFormuAc"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/varlikkisileri/view.html",
+      "sha256": "a22a5148d52716c149b43c82d2b7bb923d5963c4fc16ecfcc93058f888517c2d",
+      "bytes": 5741,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/varlikkisileri/style.css",
+      "sha256": "1db817167e5802f605ed11c8b38d7d3456e667872647761b40fa41fd2089176f",
+      "bytes": 17026,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/varlikkisileri/module.js",
+      "sha256": "4ada990fd0b3fdbf78660a92512420b006b62b42839d0a9112723b65dca8916a",
+      "bytes": 39873,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
