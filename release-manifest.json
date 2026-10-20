@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s24-dc856fa56854",
+  "release": "fd-modular-20261020-s25-cc15c90dee47",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,8 +18,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "52730d207f77395a03878a6b9d46d5772da85c04c1199f85f5286d4d6ca16373",
-      "bytes": 40493
+      "sha256": "8c866fe7ec3195adaafc537ff1e823f50fa4291f9eb0f2a9a139f13b15ef1fa1",
+      "bytes": 42114
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -145,6 +145,11 @@
       "path": "core/weekly-roster-entrypoints.js",
       "sha256": "ced549fa4075c70c7d4328a1510bbfc70714734a6e9cab90bf2fab4640c38f93",
       "bytes": 5292
+    },
+    {
+      "path": "core/whatsapp-entrypoints.js",
+      "sha256": "509bb5fe19545f94ee9d097060035cd0f54f79edc5632de03d1e3927438d9e8c",
+      "bytes": 4143
     },
     {
       "path": "core/workcenter-entrypoints.js",
@@ -288,8 +293,8 @@
     },
     {
       "path": "legacy/30-fdBildirimSistemi.js",
-      "sha256": "109b634b9a32f41bbb489cf7aabeb10a8f1af9ad867610a6588910ae5384b1c6",
-      "bytes": 79216
+      "sha256": "f75bde10bf8b2ec4f24ea49941da1e41ef7b574ebdd204f4110aa21fbe1fb0e3",
+      "bytes": 17914
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
@@ -388,8 +393,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "393ff5009a6296a05db10ad10c8b9cd6b445701a949272cd948527ef00b20f8a",
-      "bytes": 134574
+      "sha256": "42e5836ee09df356d263bc57879c9bb7e91396dacf53343003ff3456ed1af408",
+      "bytes": 95539
     },
     {
       "path": "legacy/styles/01.css",
@@ -645,6 +650,26 @@
       "path": "modules/ayarlar/view.html",
       "sha256": "3389fbd6cacc124cc4d2311b51e0d2c42b4ad4020dce944cbe1ee54a68b2784a",
       "bytes": 24739
+    },
+    {
+      "path": "modules/bildirim/manifest.json",
+      "sha256": "9514612a438e516b41814388783c43d0af0e2e1150a23134798941c75570dac0",
+      "bytes": 2005
+    },
+    {
+      "path": "modules/bildirim/module.js",
+      "sha256": "c6e455286e81c165314fd61bf71dd179a27b9cfd6f9bd88c3571496065765006",
+      "bytes": 73405
+    },
+    {
+      "path": "modules/bildirim/style.css",
+      "sha256": "2c6e7f3404a84fc273cc39dd95bf4b4914feedf695a4e91f4d4bdac21a493e1d",
+      "bytes": 44930
+    },
+    {
+      "path": "modules/bildirim/view.html",
+      "sha256": "dd719b3ebe943607b0df9666033d3de955f27f2121dd436667ab903ad43e749a",
+      "bytes": 8231
     },
     {
       "path": "modules/cks/manifest.json",
@@ -1088,8 +1113,8 @@
     },
     {
       "path": "shared/attendance-queue-ui.css",
-      "sha256": "78ad00d40733a369bf9a8e93f3f9c10d5aa1d983e252a586341284543621ccad",
-      "bytes": 1377
+      "sha256": "1f7745d6442237c147ee2a4f81df8ecdfca5309995768be2f8daedc0fd2fe974",
+      "bytes": 563
     },
     {
       "path": "shared/bonus-data.js",
