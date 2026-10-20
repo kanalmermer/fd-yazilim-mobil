@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-c44a775b0a75",
+  "release": "fd-modular-20261020-s19-73ce2979b3fe",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "4c0f147d1d943d0216cfb16abe06a3875b38aff1769e049e7be47996582738d0",
+      "sha256": "bdc27f5dcb4eb4dc96d189af51b890d99f312776a62c4507f04ce27143ebc287",
       "bytes": 31698
     },
     {
@@ -93,8 +93,8 @@
     },
     {
       "path": "core/session.js",
-      "sha256": "96a53c441c480e29aa5780f27cdf9bd775ec2cf24724dc04e9551ad9239fe63c",
-      "bytes": 26127
+      "sha256": "ab1ff41c0e3c3dcd8b6c550754fb950bee348d7d08706aac030cb9514e9f5253",
+      "bytes": 26146
     },
     {
       "path": "core/settings-entrypoints.js",
@@ -268,8 +268,8 @@
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
-      "sha256": "965e08577f4a7e5e95b2cfd936465895c48f529337c68da1021e4d65fc7f5807",
-      "bytes": 6652
+      "sha256": "bf4df76abddc7b4681eae8e95b1f4be96404779c9657ec3356ab6fe12ab34ebc",
+      "bytes": 6726
     },
     {
       "path": "legacy/34-fdVarlikKisileriV150.js",
@@ -813,13 +813,13 @@
     },
     {
       "path": "modules/kullanici/manifest.json",
-      "sha256": "fe83bea7bc034020ed284f368dee19248b64226b64d5d9794a468d53bc0f79de",
+      "sha256": "1ca9e533745623ca503850b2dc42a572155b2a562918490758e7af4ddcdb3250",
       "bytes": 1056
     },
     {
       "path": "modules/kullanici/module.js",
-      "sha256": "f9e3af2dc0e6363333716b5d74f47ab79546fc9a28c1974c35ffcbdc5aa4b58f",
-      "bytes": 14590
+      "sha256": "f8db4c158c825911a3315a009b7f885f89328ed938795b4b929754d03a734c8b",
+      "bytes": 14665
     },
     {
       "path": "modules/kullanici/style.css",
