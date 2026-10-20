@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-2fa86b387618",
+  "release": "fd-modular-20261020-s19-c44a775b0a75",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "76fcd27a8a552120260cfea76e5b980f6d820d12dae348232559a7c5fb8f7993",
+      "sha256": "4c0f147d1d943d0216cfb16abe06a3875b38aff1769e049e7be47996582738d0",
       "bytes": 31698
     },
     {
@@ -263,8 +263,8 @@
     },
     {
       "path": "legacy/30-fdBildirimSistemi.js",
-      "sha256": "168a7c3a5b4480ca5324c32560876f56bf3369a461676a957426f1d570e55438",
-      "bytes": 76838
+      "sha256": "109b634b9a32f41bbb489cf7aabeb10a8f1af9ad867610a6588910ae5384b1c6",
+      "bytes": 79216
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
@@ -970,6 +970,11 @@
       "path": "shared/asset-people-registration.js",
       "sha256": "722d8b1dd96f8e0cc97b4831a66917d394a2ede3854d33907b7c696b7e3f7aef",
       "bytes": 3545
+    },
+    {
+      "path": "shared/attendance-queue-ui.css",
+      "sha256": "78ad00d40733a369bf9a8e93f3f9c10d5aa1d983e252a586341284543621ccad",
+      "bytes": 1377
     },
     {
       "path": "shared/cks-data.js",

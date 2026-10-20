@@ -1,0 +1,294 @@
+.kira-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+.kira-stat { padding:15px; border:1px solid #e2e8f0; border-radius:13px; background:#fff; box-shadow:0 4px 12px rgba(15,23,42,.04); }
+.kira-stat span { display:block; color:#64748b; font-size:.69rem; font-weight:850; }
+.kira-stat strong { display:block; margin-top:7px; font-size:1.25rem; }
+.kira-status { display:inline-flex; padding:5px 8px; border-radius:999px; font-size:.68rem; font-weight:850; }
+.kira-status-kirada { background:#dcfce7; color:#166534; }
+.kira-status-bosta { background:#fef3c7; color:#92400e; }
+.kira-status-kendisi { background:#dbeafe; color:#1d4ed8; }
+.kira-sahip-secim { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; max-height:155px; overflow:auto; padding:9px; border:1px solid #cbd5e1; border-radius:9px; background:#f8fafc; }
+.kira-sahip-secim label { display:flex; align-items:center; gap:9px; min-height:44px; padding:9px 11px; border:1px solid #e2e8f0; border-radius:9px; background:#fff; cursor:pointer; transition:.15s ease; }
+.kira-sahip-secim label:hover { border-color:#38bdf8; background:#f0f9ff; }
+.kira-sahip-secim label.secili { border-color:#0284c7; background:#e0f2fe; box-shadow:0 0 0 1px #0284c7 inset; }
+.kira-sahip-secim input { width:18px; height:18px; accent-color:#0284c7; }
+.kira-sahip-secim-ust { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 7px; color:#475569; font-size:.82rem; }
+#kiraTakipApp .card-header .action-btns { flex-wrap:wrap; justify-content:flex-end; }
+#kiraTakipApp .card-header .action-btns > input,#kiraTakipApp .card-header .action-btns > select { min-height:40px; }
+#kira-tab-daireler .card-header { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:18px; min-height:0; margin-bottom:10px; padding:4px 0 10px; }
+#kira-tab-daireler .card-header h2 { margin:0; white-space:nowrap; }
+#kira-tab-daireler .card-header .action-btns { display:grid; grid-template-columns:minmax(220px,1fr) 155px 205px auto auto auto; justify-self:end; align-items:center; width:min(100%,980px); gap:8px; }
+#kira-tab-daireler .card-header .action-btns > * { width:100%; min-width:0; margin:0; }
+#kira-tab-daireler .card-header .action-btns > button { width:auto; min-width:104px; }
+#kira-tab-raporlar .card-header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:18px; min-height:0; margin-bottom:14px; padding:3px 0 11px; }
+#kira-tab-raporlar .card-header h2 { margin:0; color:#0f172a; }
+#kira-tab-raporlar .card-header h2 small { display:block; margin-top:4px; color:#64748b; font-size:.72rem; font-weight:600; }
+#kira-tab-raporlar .card-header .action-btns { display:grid; grid-template-columns:minmax(230px,320px) 120px; width:auto; gap:8px; }
+#kira-tab-raporlar .card-header .action-btns > * { width:100%; min-width:0; margin:0; }
+#kiraDetayIcerik .kira-yillik-ozet { width:100%; min-width:980px; border-collapse:separate; border-spacing:0; font-size:.78rem; }
+#kiraDetayIcerik .kira-yillik-ozet thead th { position:sticky; top:0; z-index:2; padding:10px 9px; background:#e8f2f8; color:#164e63; border-bottom:1px solid #b9d5e3; font-size:.68rem; letter-spacing:.025em; text-transform:uppercase; }
+#kiraDetayIcerik .kira-yillik-ozet tbody td { padding:9px; border-bottom:1px solid #e8eef3; vertical-align:middle; }
+#kiraDetayIcerik .kira-yillik-ozet tbody tr:nth-child(even):not(.kira-odendi):not(.kira-odenmedi) { background:#f8fafc; }
+#kiraDetayIcerik .kira-yillik-ozet tbody tr:hover { box-shadow:inset 3px 0 #0284c7; }
+#kiraDetayIcerik .kira-yillik-ozet td:nth-child(3),#kiraDetayIcerik .kira-yillik-ozet td:nth-child(n+5):nth-child(-n+8),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(3),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(n+5):nth-child(-n+8){text-align:right;font-variant-numeric:tabular-nums}
+#kiraDetayIcerik .kira-yillik-ozet td:nth-child(4),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(4){text-align:center}
+#kiraDetayIcerik .kira-yillik-ozet td:last-child { width:112px; text-align:right; }
+#kiraDetayIcerik .kira-yillik-ozet td:last-child .btn-modern { width:102px; min-height:32px; padding:6px 9px; }
+#kiraDetayIcerik .kira-aylik-ozet-cubugu { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 9px; }
+#kiraDetayIcerik .kira-aylik-ozet-cubugu span { padding:6px 9px; border:1px solid #dbe5ef; border-radius:999px; background:#f8fafc; color:#475569; font-size:.7rem; font-weight:750; }
+#kiraMulkListesiTablosu{width:100%!important;min-width:0!important;table-layout:fixed;font-size:.75rem}
+#kiraMulkListesiTablosu th,#kiraMulkListesiTablosu td{padding:8px 6px;white-space:normal;overflow-wrap:anywhere;vertical-align:middle}
+#kiraMulkListesiTablosu th:nth-child(1){width:7%}
+#kiraMulkListesiTablosu th:nth-child(2){width:18%}
+#kiraMulkListesiTablosu th:nth-child(3){width:17%}
+#kiraMulkListesiTablosu th:nth-child(4){width:15%}
+#kiraMulkListesiTablosu th:nth-child(5){width:9%}
+#kiraMulkListesiTablosu th:nth-child(6){width:14%}
+#kiraMulkListesiTablosu th:nth-child(7){width:9%}
+#kiraMulkListesiTablosu th:nth-child(8){width:11%}
+#kiraMulkListesiTablosu td .action-btns{display:grid;grid-template-columns:1fr;gap:4px;min-width:0}
+#kiraMulkListesiTablosu td .action-btns .btn-modern{width:100%;min-width:0;min-height:29px;padding:5px 6px;font-size:.65rem}
+@media(max-width:1300px){#kira-tab-daireler .card-header{grid-template-columns:1fr;gap:10px}}
+@media(max-width:1300px){#kira-tab-daireler .card-header .action-btns{grid-template-columns:minmax(220px,1fr) 155px 205px;justify-self:stretch;width:100%;}}
+@media(max-width:760px){#kira-tab-raporlar .card-header{grid-template-columns:1fr}}
+@media(max-width:760px){#kira-tab-raporlar .card-header .action-btns{grid-template-columns:1fr;width:100%}}
+@media(max-width:620px){#kira-tab-daireler .card-header .action-btns{grid-template-columns:1fr}}
+@media(max-width:620px){#kira-tab-daireler .card-header .action-btns>button{width:100%;}}
+#kiraTakipApp .btn-modern,#kiraTakipApp .btn-submit,.kira-detail-actions button { min-height:38px; padding:8px 12px; margin:0; display:inline-flex; align-items:center; justify-content:center; gap:5px; white-space:nowrap; }
+#kiraTakipApp td .action-btns { display:grid; grid-template-columns:repeat(3,minmax(78px,1fr)); min-width:260px; }
+#kiraTakipApp #kiraMulkListesiTablosu{width:100%!important;min-width:0!important;max-width:100%!important;table-layout:fixed!important}
+#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;gap:5px!important;min-width:0!important;width:100%!important}
+#kiraTakipApp #kiraMulkListesiTablosu td .action-btns .btn-modern{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 30px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;margin:0!important;font-size:.82rem!important;line-height:1!important;border-radius:7px!important}
+#kira-tab-daireler .table-wrapper{width:100%;max-width:100%;overflow-x:hidden}
+.kira-link { all:unset; cursor:pointer; color:inherit; font:inherit; font-weight:inherit; line-height:inherit; text-decoration:none; }
+.kira-link:hover { color:inherit; text-decoration:underline; text-decoration-color:#94a3b8; text-underline-offset:3px; }
+.kira-link:focus-visible { outline:2px solid #94a3b8; outline-offset:2px; border-radius:3px; }
+.kira-detail-actions { display:grid; grid-template-columns:repeat(4,minmax(145px,1fr)); gap:8px; margin:14px 0 18px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:11px; }
+.kira-sahip-daire-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; margin:12px 0 18px; }
+.kira-sahip-daire-kart { padding:12px; border:1px solid #dbeafe; border-radius:10px; background:#f8fbff; }
+.kira-masraf-toolbar { display:grid; grid-template-columns:minmax(190px,1fr) auto minmax(190px,1fr) auto; gap:8px; align-items:center; width:100%; }
+.kira-abonelik-toolbar { display:grid; grid-template-columns:repeat(3,minmax(150px,1fr)) auto; gap:8px; align-items:center; width:100%; }
+.kira-fatura-odendi { color:#166534; font-weight:800; }
+.kira-fatura-bekliyor { color:#b45309; font-weight:800; }
+#kira-tab-daireler .card-header .action-btns > button:last-child{min-width:118px!important;padding-inline:12px!important;white-space:nowrap!important}
+#kiraDetayIcerik .kira-yillik-ozet td:last-child{width:178px!important;min-width:178px!important}
+#kiraDetayIcerik .kira-yillik-ozet td:last-child .btn-modern{width:auto!important;min-width:76px!important;padding:6px 8px!important;white-space:nowrap!important}
+@media(max-width:900px){.kira-detail-actions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.kira-masraf-toolbar{grid-template-columns:1fr auto}}
+@media(max-width:900px){#kiraTakipApp td .action-btns{grid-template-columns:1fr;min-width:115px}}
+@media(max-width:760px){.kira-abonelik-toolbar{grid-template-columns:1fr}}
+.kira-ay-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+.kira-ay-karti { padding:11px; border:1px solid #e2e8f0; border-radius:10px; background:#fff; }
+.kira-ay-karti.odendi { border-color:#86efac; background:#f0fdf4; }
+.kira-ay-karti.gecikti { border-color:#fdba74; background:#fff7ed; }
+.kira-ay-karti strong,.kira-ay-karti span { display:block; }
+.kira-ay-karti span { margin:5px 0; color:#64748b; font-size:.72rem; }
+@media(max-width:800px){.kira-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.kira-ay-grid{grid-template-columns:1fr}}
+@media(max-width:800px){.kira-sahip-secim{grid-template-columns:1fr}}
+#kiraDetayIcerik .kira-detail-toolbar { display:grid !important; grid-template-columns:repeat(6,max-content) minmax(24px,1fr) auto auto; gap:8px !important; align-items:center; padding:11px; border:1px solid #dbe5ef; border-radius:12px; background:#f8fafc; }
+#kiraDetayIcerik .kira-detail-toolbar > span { margin-left:0 !important; justify-self:end; padding-left:12px; color:#475569; font-size:.72rem; font-weight:850 !important; text-transform:uppercase; }
+#kiraDetayIcerik .kira-detail-toolbar .btn-excel { width:auto !important; min-width:88px; max-width:108px; justify-self:start !important; }
+#kiraDetayIcerik #kiraDaireDetayYil { width:112px; min-width:112px; height:38px; padding:7px 30px 7px 11px; border:1px solid #7dd3fc; border-radius:9px; background-color:#fff; color:#075985; font-weight:850; }
+#kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet) { max-height:560px; border:1px solid #dbe5ef; border-radius:11px; background:#fff; box-shadow:0 4px 14px rgba(15,23,42,.045); }
+#kiraDetayIcerik .kira-yillik-ozet { min-width:1120px; table-layout:fixed; }
+#kiraDetayIcerik .kira-yillik-ozet th:nth-child(1){width:92px}
+#kiraDetayIcerik .kira-yillik-ozet th:nth-child(2){width:180px}
+#kiraDetayIcerik .kira-yillik-ozet th:nth-child(3),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(5),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(6),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(7),#kiraDetayIcerik .kira-yillik-ozet th:nth-child(8){width:112px}
+#kiraDetayIcerik .kira-yillik-ozet th:nth-child(4){width:112px}
+#kiraDetayIcerik .kira-yillik-ozet th:last-child{width:118px}
+#kiraDetayIcerik .kira-yillik-ozet td { overflow:hidden; text-overflow:ellipsis; }
+@media(max-width:1180px){#kiraDetayIcerik .kira-detail-toolbar{grid-template-columns:repeat(3,minmax(145px,1fr)) !important}}
+@media(max-width:1180px){#kiraDetayIcerik .kira-detail-toolbar>*{width:100% !important;justify-self:stretch !important}}
+@media(max-width:1180px){#kiraDetayIcerik .kira-detail-toolbar>span{padding:7px 0 0 !important}}
+@media(max-width:760px){#kiraTakipApp .kira-masraf-toolbar{grid-template-columns:1fr!important}}
+#kiraAbonelikDurumFiltre{display:none!important}
+#modalKiraAbonelik #kiraAbonelikDurum,#modalKiraAbonelik #kiraAbonelikOdemeTarih{display:none!important}
+.kira-abonelik-toolbar{grid-template-columns:minmax(145px,1fr) minmax(145px,1fr) minmax(175px,1fr) auto auto auto!important}
+@media(max-width:760px){.kira-abonelik-toolbar{grid-template-columns:1fr!important}}
+#kiraTakipApp{color:#334155;background:#f3f6fa}
+#kiraTakipApp>main{padding:18px 22px 30px!important}
+#kiraTakipApp .app-header-bar{background:#fff;border-bottom:1px solid #e2e8f0;box-shadow:none;padding:17px 22px}
+#kiraTakipApp .app-header-bar strong{font-size:19px;font-weight:650;color:#172b42}
+.fd-kira-subtitle{font-size:12px;color:#748398;margin:5px 0 0}
+#kiraTakipApp .kira-stats,#modalKiraDaireDetay .kira-stats,#modalKiraSahipDetay .kira-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
+#kiraTakipApp .kira-stat,#modalKiraDaireDetay .kira-stat,#modalKiraSahipDetay .kira-stat{padding:16px;border:1px solid #dde5ee;border-radius:11px;background:#fff;box-shadow:none;min-width:0;border-top:3px solid #99b6c7}
+#kiraTakipApp .kira-stat span,#modalKiraDaireDetay .kira-stat span,#modalKiraSahipDetay .kira-stat span{font-size:10px;letter-spacing:.4px;color:#758599;font-weight:600}
+#kiraTakipApp .kira-stat strong,#modalKiraDaireDetay .kira-stat strong,#modalKiraSahipDetay .kira-stat strong{display:block;margin-top:6px;font-size:22px;color:#20374e;font-weight:650;overflow-wrap:anywhere}
+#kiraTakipApp #kiraSekmeler{display:flex;gap:5px;padding:5px;background:#e8eef4;border-radius:10px;box-shadow:none;flex-wrap:wrap!important;overflow:visible!important}
+#kiraTakipApp #kiraSekmeler button{border:0;background:transparent;color:#64748b;padding:10px 15px;border-radius:7px;font-size:12px;font-weight:500;white-space:nowrap}
+#kiraTakipApp #kiraSekmeler button.active{background:#fff;color:#155e75;box-shadow:0 2px 5px #0f172a0a}
+#kiraTakipApp .card{border:1px solid #dce5ee;border-radius:12px;background:#fff;box-shadow:0 3px 14px #0f172a04;padding:0;overflow:hidden}
+#kiraTakipApp .card-header{display:flex!important;align-items:center;justify-content:space-between;gap:14px;padding:17px 18px;border-bottom:1px solid #e5ebf2;background:#fff;flex-wrap:wrap}
+#kiraTakipApp .card-header h2{font-size:15px;font-weight:650;margin:0;color:#20374e}
+#kiraTakipApp .card-header h2 small{display:block;margin:5px 0 0;font-size:11px;font-weight:400;color:#7a899c;line-height:1.5}
+#kiraTakipApp .card-header>.action-btns{display:flex!important;flex-wrap:wrap!important;gap:7px;margin:0;min-width:0;width:auto;justify-content:flex-start}
+#kiraTakipApp #kira-tab-daireler .card-header>.action-btns>*{width:auto;min-width:0;flex:0 1 auto}
+#kiraTakipApp #kira-tab-daireler .card-header>.action-btns>select{width:170px;min-height:35px}
+#kiraTakipApp input,#kiraTakipApp select{height:35px;border:1px solid #d5e0ea;border-radius:7px;padding:7px 10px;font-size:13px;min-width:0;max-width:100%;background:#fff;color:#334155}
+#kiraTakipApp #kiraDaireArama{width:220px}
+#kiraTakipApp .btn-submit,#kiraTakipApp .btn-export,#kiraTakipApp .btn-modern,.fd-kira-export button{border-radius:7px;font-size:12px;padding:8px 11px;line-height:1.4;min-height:34px;box-shadow:none;margin:0;white-space:nowrap}
+#kiraTakipApp .table-wrapper,#modalKiraDaireDetay .table-wrapper,#modalKiraSahipDetay .table-wrapper{margin:0;max-width:100%;overflow:auto;border-radius:0;border:0;overscroll-behavior:contain}
+#kiraTakipApp table,#modalKiraDaireDetay table,#modalKiraSahipDetay table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.5;background:#fff}
+#kiraTakipApp #kiraMulkListesiTablosu{font-size:13px;line-height:1.5}
+#kiraTakipApp thead th,#modalKiraDaireDetay thead th,#modalKiraSahipDetay thead th{background:#f0f5fa!important;color:#50657a!important;font-size:12px;font-weight:600;letter-spacing:0;padding:11px 10px;border-bottom:1px solid #d9e4ef;white-space:normal!important;text-align:left}
+#kiraTakipApp tbody td,#modalKiraDaireDetay tbody td,#modalKiraSahipDetay tbody td{font-size:13px;line-height:1.5;padding:11px 10px;border-bottom:1px solid #edf1f6;color:#334155;overflow-wrap:anywhere;vertical-align:middle}
+#kiraTakipApp tbody small{font-size:11px;line-height:1.5;color:#64748b}
+#kiraTakipApp tbody tr:nth-child(even){background:#fbfcfe}
+#kiraTakipApp tbody tr:hover{background:#f0f8fc}
+#kiraTakipApp .kira-link,#modalKiraDaireDetay .kira-link,#modalKiraSahipDetay .kira-link{color:inherit!important;font:inherit!important;font-weight:500!important;text-align:left;background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
+#kiraTakipApp .kira-link:hover,#modalKiraSahipDetay .kira-link:hover{text-decoration:underline}
+#kiraTakipApp .badge,#kiraTakipApp .status-badge{font-size:11px;font-weight:600;padding:4px 6px;border-radius:5px}
+#kiraTakipApp .kira-status{font-size:11.5px;font-weight:600;line-height:1.5}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(1){width:7%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(2){width:18%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(3){width:17%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(4){width:15%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(5){width:9%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(6){width:14%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(7){width:9%}
+#kiraTakipApp #kiraMulkListesiTablosu th:nth-child(8){width:11%}
+#kiraTakipApp #kiraMulkListesiTablosu td:last-child{padding-left:6px;padding-right:6px}
+#kiraTakipApp #kiraMulkListesiTablosu :is(th,td):nth-child(7){text-align:right;font-variant-numeric:tabular-nums}
+.fd-kira-list-info{padding:10px 18px;border-top:1px solid #edf1f6;font-size:11px;color:#7b8b9f}
+#kiraTakipApp #kiraRaporOzet{padding:18px;margin:0}
+.fd-kira-period{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;color:#7b8b9f}
+.fd-kira-period label{display:flex;align-items:center;gap:5px}
+.fd-kira-num{text-align:right!important;font-variant-numeric:tabular-nums;white-space:nowrap!important}
+.fd-kira-total td{background:#edf5f8!important;border-top:2px solid #c0dbe5!important;font-weight:650;padding:13px 10px!important;color:#204b61!important}
+.fd-kira-report-detail{max-width:260px;font-size:11px;line-height:1.7}
+.fd-kira-report-detail summary{cursor:pointer;color:#51738c}
+#kiraTakipApp #kiraRaporTablo,#modalKiraSahipDetay #fdKiraSahipDetayTablo{width:100%!important;table-layout:fixed;min-width:760px}
+#kiraTakipApp #kiraRaporTablo th,#modalKiraSahipDetay #fdKiraSahipDetayTablo th{height:48px;box-sizing:border-box;vertical-align:middle;padding:10px 14px;line-height:1.45;letter-spacing:0}
+#kiraTakipApp #kiraRaporTablo th:first-child,#modalKiraSahipDetay #fdKiraSahipDetayTablo th:first-child{width:16%}
+#kiraTakipApp #kiraRaporTablo th:nth-child(n+2):nth-child(-n+5),#modalKiraSahipDetay #fdKiraSahipDetayTablo th:nth-child(n+2):nth-child(-n+5){width:16%;text-align:right}
+#kiraTakipApp #kiraRaporTablo th:nth-child(4),#modalKiraSahipDetay #fdKiraSahipDetayTablo th:nth-child(4){width:18%!important}
+#kiraTakipApp #kiraRaporTablo th:last-child,#modalKiraSahipDetay #fdKiraSahipDetayTablo th:last-child{width:18%}
+#kiraTakipApp #kiraRaporTablo td,#modalKiraSahipDetay #fdKiraSahipDetayTablo td{padding:12px 14px;line-height:1.5}
+#kiraTakipApp #kiraRaporTablo .fd-kira-report-detail,#modalKiraSahipDetay #fdKiraSahipDetayTablo .fd-kira-report-detail{max-width:100%;overflow-wrap:anywhere}
+.fd-kira-export{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.fd-kira-image{background:#0284c7!important;color:#fff!important;border:0;cursor:pointer}
+#modalKiraDaireDetay>.modal-card,#modalKiraSahipDetay>.modal-card{width:min(1200px,calc(100vw - 32px))!important;max-width:1200px!important;max-height:calc(100dvh - 32px)!important;border-radius:13px;box-shadow:0 16px 48px #0f172a25}
+#modalKiraDaireDetay .modal-header,#modalKiraSahipDetay .modal-header{background:#fff;color:#20374e;border-bottom:1px solid #e2e8f0;padding:17px 20px}
+#modalKiraDaireDetay .modal-header h3,#modalKiraSahipDetay .modal-header h3{font-size:17px;font-weight:650;color:inherit}
+#modalKiraDaireDetay .modal-close,#modalKiraSahipDetay .modal-close{color:#64748b}
+#modalKiraDaireDetay .modal-body,#modalKiraSahipDetay .modal-body{padding:18px 20px;overflow:auto;overscroll-behavior:contain;min-height:0;background:#fafcfe}
+#modalKiraDaireDetay .profile-layout,#modalKiraSahipDetay .profile-layout{padding:15px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;gap:14px}
+#modalKiraDaireDetay .profile-layout strong,#modalKiraSahipDetay .profile-layout strong{font-size:10px;color:#7b8b9f;font-weight:600}
+#modalKiraDaireDetay .profile-layout p,#modalKiraSahipDetay .profile-layout p{font-size:12px;margin:5px 0 0;overflow-wrap:anywhere}
+#modalKiraDaireDetay h3,#modalKiraSahipDetay h3{font-size:14px;font-weight:650;color:#36536b}
+#modalKiraDaireDetay .kira-detail-toolbar{gap:7px;margin:14px 0}
+#modalKiraDaireDetay .btn-modern,#modalKiraSahipDetay .btn-modern{font-size:11px;border-radius:7px;padding:7px 10px;box-shadow:none;white-space:normal;min-height:32px}
+#modalKiraDaireDetay .kira-yillik-ozet{table-layout:fixed;min-width:1050px}
+#modalKiraDaireDetay .kira-yillik-ozet td{white-space:normal!important;font-size:11px}
+#modalKiraDaireDetay .kira-yillik-ozet th:nth-child(1){width:10%}
+#modalKiraDaireDetay .kira-yillik-ozet th:nth-child(2){width:12%}
+#modalKiraDaireDetay .kira-yillik-ozet th:last-child{width:10%}
+#modalKiraDaireDetay .kira-yillik-ozet td:nth-child(n+5):not(:last-child){white-space:nowrap!important;font-size:10px;text-align:right}
+.fd-kira-cell-note{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.6}
+#modalKiraDaireDetay .kira-yillik-ozet .kira-odendi{background:#f0faf6}
+#modalKiraDaireDetay .kira-yillik-ozet .kira-odenmedi{background:#fff6f4}
+.fd-kira-section{margin-top:16px;border:1px solid #dce5ee;background:#fff;border-radius:10px;overflow:hidden}
+.fd-kira-section>summary{font-size:13px;font-weight:600;color:#45637a;padding:13px 15px;cursor:pointer;background:#f7fafc;list-style-position:inside}
+.fd-kira-section .table-wrapper{padding:0!important}
+#modalKiraSahipDetay .kira-sahip-daire-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
+#modalKiraSahipDetay .kira-sahip-daire-kart{border:1px solid #dce5ee;box-shadow:none;border-radius:9px;padding:13px;background:#fff}
+#modalKiraDaireDetay>.modal-card{width:min(1600px,calc(100vw - 32px))!important;max-width:1600px!important}
+#modalKiraDaireDetay #kiraDetayIcerik{font-size:13px;line-height:1.5}
+#modalKiraDaireDetay .modal-header h3{font-size:17px;line-height:1.4}
+#modalKiraDaireDetay #kiraDetayIcerik .profile-layout strong{font-size:11.5px;color:#52677b;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .profile-layout p{font-size:13px;line-height:1.5;margin-top:5px}
+#modalKiraDaireDetay #kiraDetayIcerik h3{font-size:15px;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-status{font-size:11.5px;font-weight:600;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .btn-modern{font-size:12px;line-height:1.4;min-height:36px;padding:8px 10px;border-radius:7px}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar{display:flex!important;flex-wrap:wrap!important;align-items:center;gap:8px!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>button{width:auto!important;flex:0 1 auto;max-width:100%;min-width:0;white-space:normal}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>.fd-kira-detail-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;flex:1 1 560px;width:auto!important;min-width:0;max-width:100%}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-detail-toolbar>.fd-kira-detail-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:0 1 auto;width:auto!important;min-width:0;max-width:100%;margin-left:auto}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-detail-year-label{font-size:12px;margin-left:0!important;font-weight:600!important;padding-left:0}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-detail-tools>.fd-output-menu{margin-left:0!important;flex:0 0 auto}
+#modalKiraDaireDetay #kiraDaireDetayYil{font-size:13px;font-weight:600;height:38px;width:112px!important;flex:0 0 112px}
+#modalKiraDaireDetay #kiraDetayIcerik table{font-size:13px;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik table thead th{font-size:12px;line-height:1.45;letter-spacing:0;text-transform:none;color:#466078!important;font-weight:600;padding:10px 9px;vertical-align:middle}
+#modalKiraDaireDetay #kiraDetayIcerik table tbody td{font-size:13px;line-height:1.5;padding:9px 6px;vertical-align:middle}
+#modalKiraDaireDetay #kiraDetayIcerik table small{font-size:11.5px;line-height:1.5}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet{width:100%!important;min-width:0;max-width:100%;table-layout:auto}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th{width:auto!important;position:sticky;top:0;z-index:2;padding:10px 6px}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(1){width:7%!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(2){width:16%!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:nth-child(4){width:8%!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet th:last-child{width:9%!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td{overflow:visible;text-overflow:clip;white-space:normal!important}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(3),#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:nth-child(n+5):not(:last-child){font-size:13px;white-space:nowrap!important;text-align:right;font-variant-numeric:tabular-nums}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:last-child{min-width:0!important;width:auto!important;text-align:center}
+#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet td:last-child .btn-modern{font-size:12px;width:100%!important;min-width:0!important;min-height:36px;display:flex;margin:2px 0;padding:6px 4px!important;white-space:normal!important}
+#modalKiraDaireDetay .modal-body{overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;min-height:0;-webkit-overflow-scrolling:touch}
+#modalKiraDaireDetay #kiraDetayIcerik .table-wrapper{max-width:100%;min-width:0;max-height:none!important;height:auto;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x pan-y}
+#modalKiraDaireDetay #kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet){overflow:visible;overscroll-behavior:auto}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-section{overflow:visible}
+@media(max-width:1099px){#modalKiraDaireDetay #kiraDetayIcerik .kira-yillik-ozet{min-width:1120px}}
+@media(max-width:1099px){#modalKiraDaireDetay #kiraDetayIcerik .table-wrapper:has(.kira-yillik-ozet){overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto}}
+#modalKiraDaireDetay #kiraDetayIcerik .fd-kira-section>summary{font-size:13px;line-height:1.5;color:#36536b}
+@media(max-width:1050px){#kiraTakipApp #kiraMulkListesiTablosu{min-width:1040px!important}}
+@media(max-width:1050px){#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{flex-wrap:wrap!important}}
+@media(max-width:1050px){#kiraTakipApp .card-header>.action-btns{width:100%}}
+@media(max-width:1050px){#kiraTakipApp #kiraDaireArama{flex:1}}
+@media(max-width:650px){
+#kiraTakipApp>main{padding:12px!important}
+}
+@media(max-width:650px){#kiraTakipApp .app-header-bar{padding:15px}
+}
+@media(max-width:650px){#kiraTakipApp .card-header{padding:13px}
+}
+@media(max-width:650px){#kiraTakipApp #kiraSekmeler button{padding:9px!important;font-size:11px!important;flex:1 1 130px!important;min-width:0!important;white-space:normal;justify-content:center}
+}
+@media(max-width:650px){
+#kiraTakipApp #kiraMulkListesiTablosu{min-width:0!important}
+}
+@media(max-width:650px){#kiraTakipApp #kira-tab-daireler .table-wrapper{max-height:none;overflow-y:visible}
+}
+@media(max-width:650px){
+#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(7){text-align:left}
+}
+@media(max-width:650px){
+#kiraTakipApp .kira-stats,#modalKiraDaireDetay .kira-stats,#modalKiraSahipDetay .kira-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+}
+@media(max-width:650px){#kiraTakipApp .kira-stat strong,#modalKiraDaireDetay .kira-stat strong,#modalKiraSahipDetay .kira-stat strong{font-size:17px}
+}
+@media(max-width:650px){
+#kiraTakipApp .card-header>.action-btns>*,#kiraTakipApp #kira-tab-daireler .card-header>.action-btns>*{flex:1 1 120px;width:auto!important}
+}
+@media(max-width:650px){#kiraTakipApp #kira-tab-daireler #kiraDaireArama{flex-basis:100%}
+}
+@media(max-width:650px){
+#kiraTakipApp #kiraMulkListesiTablosu,#kiraTakipApp #kiraMulkListesiTablosu tbody{display:block!important;width:100%!important}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu thead{display:none}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu tbody tr{display:grid!important;grid-template-columns:1fr 1fr;border-bottom:1px solid #dce5ee;padding:10px;gap:4px;background:#fff}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu td{display:block;min-width:0;border:0;padding:5px 7px;text-align:left;white-space:normal!important}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu td::before{content:attr(data-label);display:block;color:#64748b;font-size:11px;margin-bottom:4px}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(3),#kiraTakipApp #kiraMulkListesiTablosu td:nth-child(4),#kiraTakipApp #kiraMulkListesiTablosu td:last-child{grid-column:1/-1}
+}
+@media(max-width:650px){#kiraTakipApp #kiraMulkListesiTablosu td .action-btns{justify-content:flex-start!important}
+}
+@media(max-width:650px){
+#kiraTakipApp #kiraRaporOzet{padding:12px}
+}
+@media(max-width:650px){#kiraTakipApp #kiraRaporTablo{min-width:680px}
+}
+@media(max-width:650px){#kiraTakipApp .table-wrapper>table:not(#kiraMulkListesiTablosu){min-width:620px}
+}
+@media(max-width:650px){
+#modalKiraDaireDetay>.modal-card,#modalKiraSahipDetay>.modal-card{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}
+}
+@media(max-width:650px){#modalKiraDaireDetay .modal-body,#modalKiraSahipDetay .modal-body{padding:12px}
+}
+@media(max-width:650px){#modalKiraDaireDetay .profile-layout,#modalKiraSahipDetay .profile-layout{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){#modalKiraDaireDetay .kira-detail-toolbar{display:flex;flex-wrap:wrap}
+}
+@media(max-width:650px){#modalKiraDaireDetay .kira-detail-toolbar>*{max-width:100%;min-width:0}
+}
