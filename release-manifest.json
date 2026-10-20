@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-236c7c4c52fe",
+  "release": "fd-modular-20261020-s19-2fa86b387618",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "fb00c052e413d46430436e62b6499625dd61fbf392a3ca1e262fa3bce467f1a1",
+      "sha256": "76fcd27a8a552120260cfea76e5b980f6d820d12dae348232559a7c5fb8f7993",
       "bytes": 31698
     },
     {
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "fb92af321f89a47dbcb4337fc3b8ab49532523b38a2bf1c6f3d6163c3f22aea0",
-      "bytes": 40532
+      "sha256": "5d7862a48a3abe5bdbdec335a9f52a0a2d94e5ea3e989975b79f115de1cd90ae",
+      "bytes": 40653
     },
     {
       "path": "core/document-entrypoints.js",
@@ -128,8 +128,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "2fc9c30e87e456dac7deee49c01e8b35ae4a4e7fefa922280490a6e378fd24b6",
-      "bytes": 1046628
+      "sha256": "fd4e818d58ce6640c9feb58907eadbeab4fb35de3c4dad76b65da9027e7fba1d",
+      "bytes": 1045906
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1010,6 +1010,16 @@
       "path": "shared/isg-session-integration.js",
       "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
       "bytes": 21743
+    },
+    {
+      "path": "shared/personnel-fast.css",
+      "sha256": "e78f55b63b4452e5ac4a3bda2c850cb56c7204f3bd264b86d987805fb4328496",
+      "bytes": 578
+    },
+    {
+      "path": "shared/personnel-fast.js",
+      "sha256": "67782c13498937bb67e6f069599b25f5e1c022cddf516249ebb5bfecbc1323b7",
+      "bytes": 5502
     },
     {
       "path": "shared/policy-badges.css",
