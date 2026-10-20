@@ -1,0 +1,76 @@
+{
+  "name": "Denetim Merkezi ve Personel Talepleri",
+  "roots": [
+    "workCenterApp",
+    "fdxMyRequestsModal",
+    "fdxReviewModal",
+    "fdxAuditDetailModal"
+  ],
+  "entrypoints": [
+    "openWorkCenterApp",
+    "fdxKapat",
+    "fdxIsMerkeziAc",
+    "fdxTaleplerimAc",
+    "fdxSekmeAc",
+    "fdxTalepTuruDegisti",
+    "fdxTalepGonder",
+    "fdxTaleplerimiYukle",
+    "fdxTalepIptal",
+    "fdxTalepleriYukle",
+    "fdxTalepleriCiz",
+    "fdxTalepIncele",
+    "fdxTalepKarari",
+    "fdxKapanislariYukle",
+    "fdxKapanisAyDegisti",
+    "fdxAylikKontrol",
+    "fdxKapanisDurumDegistir",
+    "fdxPlanPersonelleriniDoldur",
+    "fdxPlanTumunuSec",
+    "fdxPlanHedefTuruDegisti",
+    "fdxPlanOlustur",
+    "fdxPlanlariYukle",
+    "fdxPlanDuzenle",
+    "fdxPlanIptal",
+    "fdxAuditYukle",
+    "fdxAuditFiltreDegisti",
+    "fdxAuditSayfaDegistir",
+    "fdxAuditCiz",
+    "fdxAuditDetay",
+    "fdxAuditGeriAl"
+  ],
+  "writeOperations": [
+    "fdxTalepGonder",
+    "fdxTalepIptal",
+    "fdxTalepKarari",
+    "fdxKapanisDurumDegistir",
+    "fdxPlanOlustur",
+    "fdxPlanIptal",
+    "fdxAuditGeriAl"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/workcenter/view.html",
+      "sha256": "7f5afbeb21789410dabb025e5058674a510f8e8d1bd3e68eaa47b4d6a979296a",
+      "bytes": 8717,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/workcenter/style.css",
+      "sha256": "161bad63b863dc7966100a310d318af73471da67f035ab07d724b30fd9a99fd2",
+      "bytes": 7576,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/workcenter/module.js",
+      "sha256": "523ae7bd4767b89bc882361ff17e19fa7e499fbd95c49211f92530bd337888c9",
+      "bytes": 67509,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

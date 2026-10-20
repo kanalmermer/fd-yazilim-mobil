@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s23-2e96af976384",
+  "release": "fd-modular-20261020-s24-dc856fa56854",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,8 +18,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d9ca8f06e82fbe6de7bb4ceb8ed75feeaf313758fbfae61996a8a12fd1ac6453",
-      "bytes": 38484
+      "sha256": "52730d207f77395a03878a6b9d46d5772da85c04c1199f85f5286d4d6ca16373",
+      "bytes": 40493
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -78,8 +78,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "b712734679348abdb6236b03bb7e77bf4b486979002e8806106b9f808333f97a",
-      "bytes": 3220
+      "sha256": "b24e777f00fbab08e1835328ed2e1715217737cadba8ddaf7e8eb4ce3953f794",
+      "bytes": 3250
     },
     {
       "path": "core/module-loader.js",
@@ -142,14 +142,19 @@
       "bytes": 3651
     },
     {
+      "path": "core/weekly-roster-entrypoints.js",
+      "sha256": "ced549fa4075c70c7d4328a1510bbfc70714734a6e9cab90bf2fab4640c38f93",
+      "bytes": 5292
+    },
+    {
       "path": "core/workcenter-entrypoints.js",
       "sha256": "c4fbd5f6c69434c8c37354d70c822ed4f25758a219d10536f80b4a834b8a4707",
       "bytes": 4204
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "fe426cafbb7fe059636e43dc0758c4ae131285b194b06b1a80685f8f220c1725",
-      "bytes": 771826
+      "sha256": "698dae47c417aba9223050d743812c10c43f5afdb13e66558dbceec67b77ec24",
+      "bytes": 736601
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -253,8 +258,8 @@
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
-      "sha256": "329fd7ae52a171245f596c06c55cc659b4b071a1b92713cecfcea3091a818986",
-      "bytes": 3411
+      "sha256": "9e2816f374e94561a4539b5a8577b68c601a1f58cfd504fc87697ddffc48d271",
+      "bytes": 1016
     },
     {
       "path": "legacy/25-fdElKitabiKiraPdfV151.js",
@@ -383,8 +388,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "6392280b7c2ab2fff9a5ae1b8ad745a3c1d23d89c42b3583275de7044ef960b2",
-      "bytes": 141371
+      "sha256": "393ff5009a6296a05db10ad10c8b9cd6b445701a949272cd948527ef00b20f8a",
+      "bytes": 134574
     },
     {
       "path": "legacy/styles/01.css",
@@ -1002,6 +1007,26 @@
       "bytes": 7440
     },
     {
+      "path": "modules/vardiya/manifest.json",
+      "sha256": "c33fd0d76c0c1d3aa015d3884f25871d5c52de6dc78c66ad10277ddff1c719c4",
+      "bytes": 2514
+    },
+    {
+      "path": "modules/vardiya/module.js",
+      "sha256": "6e4d29dfa1af0290be23669438abd184b313c56b92f8a380e4c317137a362e27",
+      "bytes": 56408
+    },
+    {
+      "path": "modules/vardiya/style.css",
+      "sha256": "396a6b7564abe60b2a1a49a5566ebe9995ce41d0063269ac262145284e39adc7",
+      "bytes": 7014
+    },
+    {
+      "path": "modules/vardiya/view.html",
+      "sha256": "b5ff2604d683f25daec494fc00ad0060ff2af4fcc1edfb9905e7676066ad18f6",
+      "bytes": 2437
+    },
+    {
       "path": "modules/varlikkisileri/manifest.json",
       "sha256": "b20c474962786bb491c400562d9aeb3a1e5bcded3a7956b75d4045d84810684d",
       "bytes": 1449
@@ -1218,8 +1243,8 @@
     },
     {
       "path": "shared/weekly-roster-safety.js",
-      "sha256": "317759ac75264cbc7f5572703686e4847cd6c4eb6698b95cd379a7df84b31185",
-      "bytes": 8836
+      "sha256": "bf61ab4e06fffaad823d24278d87d94cf0a67c33dab0fd1f6a20d680e379a892",
+      "bytes": 2729
     },
     {
       "path": "shared/work-center-common.css",

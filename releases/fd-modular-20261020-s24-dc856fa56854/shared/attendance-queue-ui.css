@@ -1,0 +1,13 @@
+/* Desktop attendance panels share the sidebar's grid-row height; mobile keeps
+   its original stacked/scrolling rules. No attendance calculation changes. */
+@media(min-width:901px){
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-layout{align-items:stretch}
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-panel{height:auto;min-height:0;align-self:stretch}
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-panel>.magicpass-aylik-table-wrap{flex:1 1 0;min-height:0;max-height:none;overflow:auto}
+}
+.fd-wa-queue-pagination{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px;padding:12px 14px;border:1px solid #dbe4ee;border-radius:10px;background:#f8fafc;color:#475569;font-size:.82rem}
+.fd-wa-queue-pagination>div{display:flex;flex-wrap:wrap;gap:6px}
+.fd-wa-queue-pagination button{padding:7px 12px;min-height:34px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#075985;font:inherit;cursor:pointer}
+.fd-wa-queue-pagination button:disabled{opacity:.45;cursor:default}
+.fd-wa-queue-pagination button:focus-visible{outline:2px solid #0284c7;outline-offset:2px}
+.fd-wa-queue-pagination[hidden],#fdWhatsappKuyrukListesi:not([data-loaded="1"])+.fd-wa-queue-pagination,#fdWhatsappKuyrukListesi[data-loading="1"]+.fd-wa-queue-pagination{display:none}
