@@ -1,0 +1,5 @@
+
+    body.personel-session #magicpassAltSekmeler button[onclick*="magicpass-tab-gunluk"],
+    body.personel-session #magicpass-tab-gunluk { display:none !important; }
+    body.personel-session #modalPersonelDetay .detay-tab-content:not(#detay-tab-ozluk) { display:none !important; }
+
