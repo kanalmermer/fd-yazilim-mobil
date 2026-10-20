@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-2b36be301795",
+  "release": "fd-modular-20261020-s19-b1f5e9bc35af",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7fd23b9dbb78726a3042905567880a3acefef09bf1b5191a4e81b8d45ced7536",
+      "sha256": "1f30c1e44b162fec54ff9f374fcb932c172d0267cd5494c8b570c6034040e1fe",
       "bytes": 31698
     },
     {
@@ -128,8 +128,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "58e5454b61624c1312027f10408bb7c5e5941a484797e68c9231017e51d072b4",
-      "bytes": 1045325
+      "sha256": "e3bcebabaf8bf69ce334fb518d58d7a8817b7649fad50a222bc068072eec59b2",
+      "bytes": 1046478
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1073,8 +1073,8 @@
     },
     {
       "path": "shared/weekly-roster-safety.js",
-      "sha256": "e074275bd737f0f70dbbf5bae0f055b3b9a4feacf247ce309f3f7c76e80bc581",
-      "bytes": 8131
+      "sha256": "317759ac75264cbc7f5572703686e4847cd6c4eb6698b95cd379a7df84b31185",
+      "bytes": 8836
     },
     {
       "path": "shared/work-center-common.css",
