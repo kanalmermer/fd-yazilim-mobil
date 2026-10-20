@@ -1,0 +1,21 @@
+#avansGelecekBody td[data-avans-personel]{cursor:context-menu}
+#avansGelecekBody td[data-avans-personel]:focus-visible{outline:2px solid #0284c7;outline-offset:-3px}
+.fd-avans-ertele-menu{position:fixed;z-index:250000;background:#fff;border:1px solid #dbe4ec;border-radius:10px;padding:5px;box-shadow:0 12px 36px #0f172a24;max-width:calc(100vw - 16px)}
+.fd-avans-ertele-menu button{display:block;border:0;background:transparent;color:#0f172a;padding:11px 15px;border-radius:6px;font:inherit;cursor:pointer;text-align:left}
+.fd-avans-ertele-menu button:hover,.fd-avans-ertele-menu button:focus{background:#eff6ff}
+.fd-avans-ertele-overlay{position:fixed;inset:0;z-index:250001;background:#0f172a77;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overflow:auto}
+.fd-avans-ertele-card{width:100%;max-width:530px;max-height:calc(100dvh - 32px);overflow:auto;background:white;border:1px solid #dbe4ec;border-radius:14px;box-shadow:0 20px 70px #0f172a33;color:#1e293b;font-size:14px;line-height:1.5}
+.fd-avans-ertele-card header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid #e2e8f0}
+.fd-avans-ertele-card h2{font-size:17px;margin:0}
+.fd-avans-ertele-card form{padding:0 20px 20px}
+.fd-avans-ertele-card label{display:grid;gap:6px;margin:16px 0 5px;font-weight:600}
+.fd-avans-ertele-card :is(input,select){width:100%;min-width:0;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a}
+.fd-avans-ertele-card button{font:inherit;cursor:pointer;border:1px solid #cbd5e1;border-radius:8px;padding:9px 13px;background:#fff;color:#334155}
+.fd-avans-ertele-card header button{font-size:23px;padding:0 8px;border:0}
+.fd-avans-ertele-card footer{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:18px}
+.fd-avans-ertele-card .fd-avans-ertele-save{background:#047857;border-color:#047857;color:white}
+.fd-avans-ertele-card .fd-avans-ertele-preview{padding:11px;background:#eff6ff;color:#1e40af;border-radius:8px}
+.fd-avans-ertele-card .fd-avans-ertele-note,.fd-avans-ertele-card small{font-size:12px;color:#64748b}
+.fd-avans-ertele-card [data-error]{color:#b91c1c;background:#fff1f2;padding:10px;border-radius:8px;overflow-wrap:anywhere}
+.fd-avans-ertele-card :disabled{opacity:.6;cursor:wait}
+@media(max-width:480px){.fd-avans-ertele-overlay{padding:10px}.fd-avans-ertele-card{max-height:calc(100dvh - 20px)}.fd-avans-ertele-card header{padding:14px}.fd-avans-ertele-card form{padding:0 14px 14px}}
