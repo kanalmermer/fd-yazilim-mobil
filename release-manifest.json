@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s22-c412ae3c59f2",
+  "release": "fd-modular-20261020-s23-257dad9c048e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,8 +18,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "e48965378d2834b02ceba8b1864b956058bbe9a457b2078fc4b35df274afce35",
-      "bytes": 35948
+      "sha256": "ad581baa5f29218c7632a73bf38dc65fc43090d85ad10e4744c33dcb508b3e04",
+      "bytes": 38484
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -67,14 +67,19 @@
       "bytes": 2803
     },
     {
+      "path": "core/leave-entrypoints.js",
+      "sha256": "0f3826cf8717dc53e9f2b86a2b5de2fa737261a8444519e6e77eca3029162e9f",
+      "bytes": 8715
+    },
+    {
       "path": "core/module-entrypoints.js",
       "sha256": "baf92167a827dd0431bb782725cf0e97a4431fbf617629bcf744e152b1f33032",
       "bytes": 229
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "994203bc5993d60c21599520d2817d37f88713402e7f227b8c24accb812c3d88",
-      "bytes": 3199
+      "sha256": "b712734679348abdb6236b03bb7e77bf4b486979002e8806106b9f808333f97a",
+      "bytes": 3220
     },
     {
       "path": "core/module-loader.js",
@@ -143,8 +148,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "b0cb6c1dcf28fb21eea30f4e82e93ab205fe74d48eb242ed1ce26b26ea48edf7",
-      "bytes": 861719
+      "sha256": "fe426cafbb7fe059636e43dc0758c4ae131285b194b06b1a80685f8f220c1725",
+      "bytes": 771826
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -158,8 +163,8 @@
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
-      "sha256": "e9283eb473b7f9a6a8d6836c9f0e25d3286f201a696c337a99363ce93b3ffa04",
-      "bytes": 11760
+      "sha256": "ab6bb8d4a5875a1c7d4967b7876024f72a5160361c29c8c526cc4cfc04f4a957",
+      "bytes": 10706
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
@@ -378,8 +383,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "fa173de4f9771b50acb7c7cfc823375f24f4361f37e923983a0c25f8650216a0",
-      "bytes": 147411
+      "sha256": "6392280b7c2ab2fff9a5ae1b8ad745a3c1d23d89c42b3583275de7044ef960b2",
+      "bytes": 141371
     },
     {
       "path": "legacy/styles/01.css",
@@ -817,6 +822,26 @@
       "bytes": 45
     },
     {
+      "path": "modules/izin/manifest.json",
+      "sha256": "eb7938addee88e4c9a0ebd2312f77ed0b193f5d3a86c2b05ce4e7dba9b24a396",
+      "bytes": 3154
+    },
+    {
+      "path": "modules/izin/module.js",
+      "sha256": "df710aca0e93cbdcafe5d6f238de745fb9b795be39972d722d69bc938b795c61",
+      "bytes": 102997
+    },
+    {
+      "path": "modules/izin/style.css",
+      "sha256": "085860f701019074f7d0243bdf7ca183b9a456507d6631c8a85bc73df0397a44",
+      "bytes": 6281
+    },
+    {
+      "path": "modules/izin/view.html",
+      "sha256": "5bf3c29620dfb2aae89e5bfda6a5c127e51bfaa708add9a6551ea4918f7b54bd",
+      "bytes": 22482
+    },
+    {
       "path": "modules/kira/manifest.json",
       "sha256": "d16b06f3a8424ebf2ed5854bd417ec0e3db0fb174848741f7fc9dc787a4fc5b8",
       "bytes": 4145
@@ -1095,6 +1120,16 @@
       "path": "shared/isg-session-integration.js",
       "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
       "bytes": 21743
+    },
+    {
+      "path": "shared/leave-dashboard.js",
+      "sha256": "90b5a0ed74e65b0e6739ff6459b9d000b304a42f37a7ae6134bd0986c6b696db",
+      "bytes": 2789
+    },
+    {
+      "path": "shared/leave-data.js",
+      "sha256": "d871c4c576e588d901a411cf58f7dbc068fbeb532fd7f946497e8543b845c7c2",
+      "bytes": 6885
     },
     {
       "path": "shared/payroll-matrix.js",

@@ -20,18 +20,18 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/00.css">
+    <link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/00.css">
 
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/01.css">
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/policy-badges.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/01.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/policy-badges.css">
 
 
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/05.css">
-<link rel="stylesheet" id="evrakTakipStilleri" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/06-evrakTakipStilleri.css">
-<link rel="stylesheet" id="evrakOnizlemeStilleri" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/07-evrakOnizlemeStilleri.css"><link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/08.css"><link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/09.css"><script>window.FD_ASSET_BASE="./releases/fd-modular-20261020-s22-c412ae3c59f2/";</script>
-<meta name="fd-modular-release" content="fd-modular-20261020-s22-c412ae3c59f2">
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/catalog.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/module-loader.js"></script>
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/05.css">
+<link rel="stylesheet" id="evrakTakipStilleri" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/06-evrakTakipStilleri.css">
+<link rel="stylesheet" id="evrakOnizlemeStilleri" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/07-evrakOnizlemeStilleri.css"><link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/08.css"><link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/09.css"><script>window.FD_ASSET_BASE="./releases/fd-modular-20261020-s23-257dad9c048e/";</script>
+<meta name="fd-modular-release" content="fd-modular-20261020-s23-257dad9c048e">
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/catalog.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/module-loader.js"></script>
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="FD Yazılım"><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
 </head>
 <body>
@@ -394,7 +394,7 @@
 
 <div id="modalAracDetay" data-fd-module-placeholder="arac" style="display:none"></div>
 
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/10.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/10.css">
 
 <!-- PERSONEL DASHBOARD -->
 <div id="ayarlarApp" data-fd-module-placeholder="ayarlar" style="display:none"></div>
@@ -562,240 +562,7 @@
 </div>
 
 <!-- 4. İZİN TAKİP SİSTEMİ MODÜLÜ -->
-<div id="izinTakipApp" style="display: none;">
-    <div class="app-header-bar">
-        <div class="workspace-nav" aria-label="Personel işlemleri menüsü">
-            <button type="button" onclick="openPersonelDashboard()">Dashboard</button>
-            <button type="button" onclick="openPersonelApp()">Personel Kayıtları</button>
-            <button type="button" class="active" onclick="openIzinTakipApp()">İzin Takibi</button>
-            <button type="button" onclick="openPuantajApp()">Puantaj</button>
-            <button type="button" onclick="openPrimApp()">Prim Takibi</button>
-            <button type="button" onclick="openAvansApp()">Avans</button>
-            <button type="button" onclick="openIcraApp()">İcra Takip</button>
-        </div>
-        <span style="font-weight: 700; color: #0284c7;">🏖️ Personel İzin Takip & Dilekçe Modülü</span>
-    </div>
-
-    <div class="app-layout">
-        <aside id="iSidebar">
-            <div class="sidebar-header">
-                <h2>İzin Menüsü</h2>
-                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            </div>
-            <ul class="nav-links">
-                <li><button class="nav-btn active" id="btnNavForm" onclick="switchIzinTab('i-tab-form', this)"><span>📅</span><span class="nav-text">İzin Kullandır</span></button></li>
-                <li><button class="nav-btn" id="btnNavBakiye" onclick="switchIzinTab('i-tab-bakiye', this)"><span>🏖️</span><span class="nav-text">İzin Bakiyeleri</span></button></li>
-            </ul>
-        </aside>
-
-        <main>
-            <div class="module-subnav" aria-label="İzin işlemleri menüsü">
-                <button type="button" class="active" onclick="switchIzinTab('i-tab-form', this)">İzin Kullandır</button>
-                <button type="button" onclick="switchIzinTab('i-tab-bakiye', this)">İzin Bakiyeleri</button>
-            </div>
-            <div id="i-tab-dashboard" class="tab-content">
-                <div class="dashboard-grid">
-                    <div class="stat-card" style="border-left-color: #0284c7;"><span class="stat-title">Bugün İzinli</span><span class="stat-value" id="statBugunIzinli">0</span></div>
-                    <div class="stat-card" style="border-left-color: #10b981;"><span class="stat-title">Yıllık İzin</span><span class="stat-value" id="statYillik">0</span></div>
-                    <div class="stat-card" style="border-left-color: #8b5cf6;"><span class="stat-title">Ücretli İzin</span><span class="stat-value" id="statUcretli">0</span></div>
-                    <div class="stat-card" style="border-left-color: #ef4444;"><span class="stat-title">Sağlık/Rapor</span><span class="stat-value" id="statSaglik">0</span></div>
-                    <div class="stat-card" style="border-left-color: #f59e0b;"><span class="stat-title">Ücretsiz İzin</span><span class="stat-value" id="statUcretsiz">0</span></div>
-                    <div class="stat-card" style="border-left-color: #8b5cf6;"><span class="stat-title">Doğum İzni</span><span class="stat-value" id="statDogum">0</span></div>
-                    <div class="stat-card" style="border-left-color: #8b5cf6;"><span class="stat-title">Evlenme İzni</span><span class="stat-value" id="statEvlenme">0</span></div>
-                    <div class="stat-card" style="border-left-color: #8b5cf6;"><span class="stat-title">Ölüm İzni</span><span class="stat-value" id="statOlum">0</span></div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Son Kullanılan İzin Hareketleri (En Yeni Üstte)</h2>
-                        <span class="badge badge-count" id="badgeIzinSayisi">0 İzin</span>
-                    </div>
-                    <div class="table-wrapper">
-                        <table id="dashIzinTablo">
-                            <thead>
-                                <tr><th>#</th><th>Personel</th><th>Şube</th><th>İzin Türü</th><th>Dönem</th><th>Tarih Aralığı</th><th>Süre</th></tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="i-tab-form" class="tab-content active">
-                <div class="grid-horizontal">
-                    <div class="card">
-                        <h2>İzin Tanımlama Formu</h2>
-                        <form id="izinForm">
-                            <input type="hidden" id="iEditId" value="">
-                            <div class="form-group">
-                                <label>Personel Seçin (Aktifler)</label>
-                                <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;"><input type="text" id="izinPersonelSecimKutusu" list="izinPersonelDatalist" autocomplete="off" required placeholder="Ad, T.C. veya şube yazın" oninput="izinPersonelAramaliSecimYap(false)" onchange="izinPersonelAramaliSecimYap(true)" onfocus="this.select()"><button type="button" class="btn-modern btn-detail-modern" title="Başka personel seç" aria-label="Başka personel seç" onclick="izinPersonelSeciminiTemizle()" style="padding:9px 11px;">↻</button></div>
-                                <datalist id="izinPersonelDatalist"></datalist>
-                                <select id="izinPersonelSelect" onchange="personelSecildi(this.value)" style="display:none;">
-                                    <option value="">-- Personel Seçiniz --</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>İzin Türü</label>
-                                <select id="izinTur" required onchange="izinTuruDegisti(); bitisTarihiKisitiniGuncelle();">
-                                    <option value="Yıllık İzin">Yıllık İzin</option>
-                                    <option value="Ücretli İzin">Ücretli İzin</option>
-                                    <option value="Sağlık / Rapor">Sağlık / Rapor</option>
-                                    <option value="Ücretsiz İzin" selected>Ücretsiz İzin</option>
-                                    <option value="Mazeretsiz İzin">Mazeretsiz İzin</option>
-                                    <option value="Doğum İzni">Doğum İzni (Max 5 Gün)</option>
-                                    <option value="Evlenme İzni">Evlenme İzni (Max 3 Gün)</option>
-                                    <option value="Ölüm İzni">Ölüm İzni (Max 3 Gün)</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="donemGroup" style="display:none;">
-                                <label>Hakediş Dönemi Seçin</label>
-                                <select id="izinDonem" onchange="bitisTarihiKisitiniGuncelle()">
-                                    <option value="">-- Önce Personel Seçiniz --</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="izinSebepGroup">
-                                <label>İzin Sebebi</label>
-                                <textarea id="izinSebep" rows="2" data-case-preserve="true">Özel sebeplerden dolayı</textarea>
-                            </div>
-                            <div class="form-group" id="raporBilgiGroup" style="display:none;">
-                                <label>Rapor Bilgisi <small style="color:#64748b;">(rapor no, sağlık kuruluşu veya açıklama)</small></label>
-                                <textarea id="raporBilgisi" rows="2" placeholder="Örn. Rapor No: 12345 · Devlet Hastanesi"></textarea>
-                            </div>
-                            <div class="form-group" id="mazeretsizSahitGroup" style="display:none;">
-                                <label>Tutanağa Şahit Olan Çalışanlar <small style="color:#b91c1c;">(aynı şubeden 3 kişi)</small></label>
-                                <select id="mazeretsizSahit1" onchange="mazeretsizSahitDegisti(this)" style="margin-bottom:6px;"><option value="">1. şahit seçin</option></select>
-                                <select id="mazeretsizSahit2" onchange="mazeretsizSahitDegisti(this)" style="margin-bottom:6px;"><option value="">2. şahit seçin</option></select>
-                                <select id="mazeretsizSahit3" onchange="mazeretsizSahitDegisti(this)"><option value="">3. şahit seçin</option></select>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Başlangıç Tarihi</label><input type="date" id="izinBaslangic" required onchange="baslangicTarihiDegisti()"></div>
-                                <div class="form-group"><label>Bitiş Tarihi</label><input type="date" id="izinBitis" required onchange="hesaplaIzinTarihleri()"></div>
-                            </div>
-                            <div id="calcInfo" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; color:#166534; padding:8px; border-radius:6px; font-size:0.8rem; margin-bottom:10px; font-weight:600;"></div>
-                            <div class="form-group" id="iseBaslamaGroup"><label>İşe Başlama Tarihi</label><input type="date" id="iseBaslama" required></div>
-                            <button type="submit" id="btnIzinSubmit" class="btn-submit">İzin Kaydet & Dilekçe Yazdır</button>
-                            <button type="button" id="btnIzinCancel" class="btn-cancel" style="display:none;" onclick="izinFormReset()">İptal</button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <div id="personelOzetCard" class="card" style="display:none; background:#f0f9ff; border-color:#bae6fd;">
-                            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px;">
-                                <h3 id="ozetAd" style="color:#0369a1; font-size:0.92rem; margin:0;">📊 Personel İzin Durumu Özeti</h3>
-                                <div id="izinOzetAksiyonlari" style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px;">
-                                    <button type="button" class="btn-whatsapp" onclick="sendWhatsAppOzet()" style="width:auto; margin:0; padding:7px 10px;">💬 WhatsApp</button>
-                                    <button type="button" class="btn-export btn-excel" onclick="exportIzinOzetExcel()">📊 Excel</button>
-                                    <button type="button" class="btn-export btn-pdf" onclick="exportIzinOzetPdf()">📄 PDF</button>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 12px;">
-                                <div class="ozet-section-title">🗓️ Aktif & Kalan Yıllık İzin Hakediş Dönemleri:</div>
-                                <div class="table-wrapper" style="max-height: 160px; margin-top: 6px;">
-                                    <table id="ozetHakedisTablo">
-                                        <thead>
-                                            <tr>
-                                                <th>Dönem</th>
-                                                <th>Toplam Hak</th>
-                                                <th>Kullanılan</th>
-                                                <th>Kalan İzin</th>
-                                                <th>Durum Rozeti</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div id="genelToplamKalanDiv" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px;"><div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 10px;color:#1e3a8a;"><small style="display:block;color:#64748b;">Toplam Hak</small><strong id="genelToplamHakDeger">0 Gün</strong></div><div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px 10px;color:#9a3412;"><small style="display:block;color:#64748b;">Kullanılan Yıllık İzin</small><strong id="genelToplamKullanilanDeger">0 Gün</strong></div><div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:9px 10px;color:#047857;"><small style="display:block;color:#64748b;">Toplam Kalan</small><strong id="genelToplamKalanDeger">0 Gün</strong></div></div><div style="margin-bottom: 10px;">
-                                <div class="ozet-section-title">📊 Kullandığı İzin Toplamları (Tüm Türler):</div>
-                                <div id="ozetKullanilanBadges" class="ozet-badges"></div>
-                            </div>
-
-                        </div>
-
-                        <div id="izinMTopluCard" class="card" style="display:none;border-color:#fdba74;background:linear-gradient(135deg,#fff7ed,#ffffff);">
-                            <div class="card-header" style="align-items:flex-start;gap:12px;">
-                                <div><h2 style="margin:0;">Gelmediği Günlerden Toplu İzin</h2><small style="display:block;margin-top:5px;color:#64748b;line-height:1.45;">Puantajda <strong>M</strong> görünen günleri seçip farklı izin türlerine topluca dönüştürün.</small></div>
-                                <span id="izinMTopluSayac" class="badge badge-count">0 gün</span>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Ay</label><input id="izinMTopluAy" type="month" onchange="izinMTopluGunleriYukle()"></div>
-                                <div class="form-group" style="display:flex;align-items:flex-end;"><button type="button" class="btn-modern btn-detail-modern" style="width:100%;justify-content:center;" onclick="izinMTopluGunleriYukle(true)">↻ M Günlerini Getir</button></div>
-                            </div>
-                            <div id="izinMTopluBilgi" style="padding:9px 10px;border:1px dashed #fdba74;border-radius:8px;color:#9a3412;background:#fff7ed;font-size:.75rem;">Önce personel ve ay seçin.</div>
-                            <div id="izinMTopluGunler" class="izin-m-toplu-gunler"></div>
-                            <div id="izinMTopluAtama" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid #fed7aa;">
-                                <div class="form-row">
-                                    <div class="form-group"><label>Seçilen Günlerin İzin Türü</label><select id="izinMTopluTur" onchange="izinMTopluTurDegisti()"><option value="Ücretsiz İzin">Ücretsiz İzin</option><option value="Yıllık İzin">Yıllık İzin</option><option value="Ücretli İzin">Ücretli İzin</option><option value="Doğum İzni">Doğum İzni</option><option value="Evlenme İzni">Evlenme İzni</option><option value="Ölüm İzni">Ölüm İzni</option></select></div>
-                                    <div class="form-group" id="izinMTopluDonemGroup" style="display:none;"><label>Hakediş Dönemi</label><select id="izinMTopluDonem"><option value="">-- Dönem Seçin --</option></select></div>
-                                </div>
-                                <button type="button" class="btn-modern btn-edit-modern" style="width:100%;justify-content:center;" onclick="izinMTopluSecilenleriAta()">Seçili Günleri Bu İzin Türüne Ata</button>
-                                <div id="izinMTopluAtananlar" class="izin-m-toplu-liste"></div>
-                                <div style="display:flex;gap:8px;margin-top:12px;">
-                                    <button type="button" class="btn-cancel" style="margin:0;" onclick="izinMTopluTemizle()">Temizle</button>
-                                    <button type="button" id="izinMTopluKaydetBtn" class="btn-submit" style="margin:0;" onclick="izinMTopluKaydetVeYazdir()">Toplu Kaydet ve Dilekçeleri Hazırla</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <h2 id="seciliPersonelGecmisBaslik">Seçili Personelin İzin Geçmişi</h2>
-                            <div id="izinPersonelNotMenu" style="margin:0 0 10px;border:1px solid #c4b5fd;border-radius:9px;background:#faf9ff;">
-                                <div style="padding:9px 11px;color:#6d28d9;font-size:.8rem;font-weight:850;">📝 İzinlerle İlgili Ek Notlar</div>
-                                <div style="padding:0 10px 10px;">
-                                    <textarea id="izinPersonelNotu" rows="3" placeholder="Bu personelin izinleriyle ilgili kalıcı not yazın..." style="width:100%;resize:vertical;"></textarea>
-                                    <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:6px;">
-                                        <button id="izinPersonelNotKaydetBtn" type="button" class="btn-modern btn-edit-modern" onclick="izinPersonelNotunuKaydet()">Notu Kaydet</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table-wrapper">
-                                <table id="izinTabloGecmis">
-                                    <thead><tr><th>#</th><th>Tür</th><th>Dönem</th><th>Tarih Aralığı</th><th>Süre</th><th>Rapor / Açıklama</th><th style="width: 150px;">İşlemler</th></tr></thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="i-tab-bakiye" class="tab-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🏖️ Aktif Yıllık İzin Bakiye Raporu</h2>
-                        <div style="display:flex; gap:8px;">
-                            <button class="btn-export btn-pdf" onclick="exportBakiyeToPDF()">📄 PDF İndir</button>
-                            <button class="btn-export btn-excel" onclick="exportBakiyeToExcel()">📊 Excel İndir</button>
-                        </div>
-                    </div>
-
-                    <div class="filter-bar">
-                        <input type="text" id="fBakiyeArama" placeholder="🔍 İsim veya T.C. Ara..." oninput="renderBakiyeTable()">
-                        <select id="fBakiyeSube" onchange="renderBakiyeTable()"><option value="">Tüm Şubeler</option></select>
-                        <select id="fBakiyeDonem" onchange="renderBakiyeTable()"><option value="">Tüm Hakediş Dönemleri</option></select>
-                    </div>
-
-                    <div class="table-wrapper" id="bakiyePrintArea">
-                        <div id="pdfHeaderTitle" style="display:none; text-align:center; margin-bottom:20px;">
-                            <h2 style="font-size:18px; font-weight:bold; color:#0f172a; text-transform:uppercase;">KANAL MERMER KALAN YILLIK İZİNLER</h2>
-                            <p style="font-size:12px; color:#64748b; margin-top:4px;">Rapor Tarihi: <span id="pdfRaporTarihi"></span></p>
-                        </div>
-
-                        <table id="bakiyeTablo">
-                            <thead>
-                                <tr><th>#</th><th>T.C. No</th><th>Personel Adı Soyadı</th><th>Şube</th><th>Dönem Detayları</th><th style="text-align:right;">Toplam Kalan</th></tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-</div>
+<div id="izinTakipApp" data-fd-module-placeholder="izin" style="display:none"></div>
 
 <!-- 5. PRİM & PUANTAJ TAKİP MODÜLÜ -->
 <div id="puantajApp" data-fd-shared-placeholder="payroll" style="display:none"></div>
@@ -1307,22 +1074,7 @@
 </div>
 
 <!-- İZİN EXCEL TOPLU AKTARIM ÖNİZLEME -->
-<div id="modalIzinTopluAktar" class="modal-overlay">
-    <div class="modal-card" style="max-width:1120px;">
-        <div class="modal-header"><h3>📤 İzin Excel Toplu Aktarım</h3><button class="modal-close" onclick="izinTopluAktarModaliniKapat()">✕</button></div>
-        <div class="modal-body">
-            <div id="izinTopluAktarOzet" style="margin-bottom:14px;"></div>
-            <div class="table-wrapper" style="max-height:430px;"><table>
-                <thead><tr><th>Excel Satırı</th><th>T.C. No</th><th>Personel</th><th>İzin Türü</th><th>Tarih Aralığı</th><th>Gün</th><th>Durum</th></tr></thead>
-                <tbody id="izinTopluAktarBody"></tbody>
-            </table></div>
-            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
-                <button type="button" class="btn-cancel" style="margin:0;" onclick="izinTopluAktarModaliniKapat()">İptal</button>
-                <button type="button" class="btn-submit" id="btnIzinTopluAktarOnay" style="width:auto;margin:0;" onclick="izinTopluAktarimiKaydet()">Geçerli Kayıtları Kaydet</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div id="modalIzinTopluAktar" data-fd-module-placeholder="izin" style="display:none"></div>
 <!-- PERSONEL DIŞA AKTARMA MODALI -->
 <div id="modalPersonelExport" class="modal-overlay">
     <div class="modal-card" style="max-width:520px;">
@@ -1364,91 +1116,55 @@
     </div>
 </div>
 
-<div id="dilekceRaporu">
-    <div class="dilekce-baslik" id="dilBaslik">İZİN İSTEK FORMU</div>
-    <table class="dilekce-kimlik">
-        <tbody>
-            <tr><th>ADI SOYADI</th><td id="dilAd">..</td></tr>
-            <tr><th>T.C. KİMLİK NO</th><td id="dilTcNo">..</td></tr>
-            <tr><th>SGK NO</th><td id="dilSgkNo">..</td></tr>
-            <tr><th>İŞE GİRİŞ TARİHİ</th><td id="dilGirisTarihi">..</td></tr>
-            <tr><th>GÖREVİ</th><td id="dilUnvan">..</td></tr>
-            <tr><th>GÖREV YERİ ADRESİ</th><td id="dilSubeAdresi">..</td></tr>
-        </tbody>
-    </table>
-    <p class="dilekce-icerik" id="dilIzinMetni">..</p>
-    <p class="dilekce-saygi">Gereğini arz ederim.</p>
-    <p class="dilekce-saygi">Saygılarımla,</p>
-    <p class="dilekce-personel-ad" id="dilPersonelImzaAdi">..</p>
-    <p class="dilekce-onay">Yukarıda belirtilen tarihlerde <span id="dilOnayTur">..</span> kullanması uygundur.</p>
-    <p class="dilekce-onay-imza">İmza</p>
-    <table class="dilekce-imza-tablosu">
-        <tbody>
-            <tr><th>İzne Çıkış Tarihi</th><td id="dilCikisTarihi">..</td><td>İmza</td></tr>
-            <tr><th>İzin Bitiş Tarihi</th><td id="dilIzinBitisTarihi">..</td><td>İmza</td></tr>
-            <tr><th>İşe Başlama Tarihi</th><td id="dilIseBaslama">..</td><td>İmza</td></tr>
-        </tbody>
-    </table>
-</div>
+<div id="dilekceRaporu" data-fd-module-placeholder="izin" style="display:none"></div>
 
-<div id="izinTopluDilekceRaporu" style="display:none;background:#fff;color:#000;font-family:Arial,sans-serif;font-size:10pt;line-height:1.45;"></div>
+<div id="izinTopluDilekceRaporu" data-fd-module-placeholder="izin" style="display:none"></div>
 
-<div id="mazeretsizTutanakRaporu" style="display:none; width:210mm; min-height:297mm; margin:0 auto; padding:22mm 20mm; background:#fff; color:#000; font-family:Arial,sans-serif; font-size:10.5pt; line-height:1.65; box-sizing:border-box;">
-    <div style="text-align:center; font-size:14pt; font-weight:700; letter-spacing:.4pt; margin-bottom:25mm;">TUTANAK</div>
-    <p id="tutMetin" style="margin:0; text-align:justify; text-indent:12mm;">-</p>
-    <p style="margin:15mm 0 6mm; font-weight:700;">Şahit Çalışanlar</p>
-    <div id="tutSahitler" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10mm; text-align:center;">-</div>
-    <div style="margin-top:16mm; width:70mm; margin-left:auto; text-align:center; line-height:1.55;">
-        <strong>İŞVEREN / İŞYERİ YETKİLİSİ</strong><div style="margin-top:7mm; border-top:1px solid #111; padding-top:2mm; font-size:9pt;">Kaşe / İmza</div>
-    </div>
-</div>
+<div id="mazeretsizTutanakRaporu" data-fd-module-placeholder="izin" style="display:none"></div>
 
-<div id="modalDilekceOnizleme" class="modal-overlay" style="z-index:100000;">
-    <div class="modal-card" style="width:min(96vw, 980px); max-width:980px; max-height:92vh; display:flex; flex-direction:column;">
-        <div class="modal-header"><h3 id="dilekceOnizlemeBaslik">Belge Önizleme</h3><button class="modal-close" type="button" onclick="dilekceOnizlemeKapat()">✕</button></div>
-        <div id="dilekceOnizlemeIcerik" style="overflow:auto; padding:24px; background:#e2e8f0; flex:1;"></div>
-        <div style="display:flex; justify-content:flex-end; gap:10px; padding:14px 20px; border-top:1px solid #e2e8f0;"><button type="button" class="btn-cancel" style="width:auto; margin:0; padding:10px 16px;" onclick="dilekceOnizlemeKapat()">Kapat</button><button type="button" class="btn-submit" style="width:auto; padding:10px 16px;" onclick="dilekceOnizlemeYazdir()">🖨️ Yazdır</button></div>
-    </div>
-</div>
+<div id="modalDilekceOnizleme" data-fd-module-placeholder="izin" style="display:none"></div>
 
-<script id="kullaniciYetkilendirmeModulu" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/permissions.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/user-accounts.js"></script>
-<script id="fdUserEntrypoints" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/user-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/export-compat.js"></script>
-<script id="fdModuleEntrypoints" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/module-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/session.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/data-access.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/utilities.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/rental-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/rental-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/policy-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/policy-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/vehicle-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/vehicle-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/asset-people-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/asset-people-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/settings-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/settings-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/company-branches.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/company-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/waybill-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/waybill-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/extra-payment-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/extra-payment-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/kkd-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/advance-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/advance-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/financial-save-safety.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/enforcement-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/enforcement-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/payroll-workspace.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/bonus-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/payroll-matrix.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/bonus-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/03-legacy-3.js"></script>
+<script id="kullaniciYetkilendirmeModulu" src="./releases/fd-modular-20261020-s23-257dad9c048e/core/permissions.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/user-accounts.js"></script>
+<script id="fdUserEntrypoints" src="./releases/fd-modular-20261020-s23-257dad9c048e/core/user-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/export-compat.js"></script>
+<script id="fdModuleEntrypoints" src="./releases/fd-modular-20261020-s23-257dad9c048e/core/module-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/session.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/data-access.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/utilities.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/rental-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/rental-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/policy-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/policy-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/vehicle-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/vehicle-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/asset-people-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/asset-people-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/settings-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/settings-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/company-branches.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/company-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/waybill-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/waybill-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/extra-payment-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/extra-payment-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/kkd-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/advance-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/advance-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/financial-save-safety.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/enforcement-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/enforcement-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/payroll-workspace.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/bonus-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/payroll-matrix.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/bonus-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/leave-dashboard.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/leave-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/leave-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/03-legacy-3.js"></script>
 
 <!-- TAPU TAKİP MODÜLÜ BAŞLANGIÇ -->
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/13.css">
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/13.css">
 
 <div id="tapuTakipApp" data-fd-module-placeholder="tapu" style="display:none"></div>
 
@@ -1457,94 +1173,94 @@
 <div id="modalTapuDetay" data-fd-module-placeholder="tapu" style="display:none"></div>
 <div id="modalTapuOnizleme" data-fd-module-placeholder="tapu" style="display:none"></div>
 
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/title-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/title-entrypoints.js"></script>
-<link rel="stylesheet" id="tapuCksStili" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/14-tapuCksStili.css">
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/title-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/title-entrypoints.js"></script>
+<link rel="stylesheet" id="tapuCksStili" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/14-tapuCksStili.css">
 <div id="modalTapuCksGenel" data-fd-module-placeholder="cks" style="display:none"></div>
 <div id="modalTapuCksKayit" data-fd-module-placeholder="cks" style="display:none"></div>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/cks-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/title-cks-history.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/cks-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/cks-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/title-cks-history.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/cks-entrypoints.js"></script>
 
 <!-- TAPU TAKİP MODÜLÜ BİTİŞ -->
 
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/document-data.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/document-entrypoints.js"></script>
-<script id="evrakTakipScripti" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/06-evrakTakipScripti.js"></script>
-<script id="cksTamSayfaScripti" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/07-cksTamSayfaScripti.js"></script>
-<script id="cksV128Duzeltme" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/08-cksV128Duzeltme.js"></script>
-<script id="cksKonumSadelestirme" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/09-cksKonumSadelestirme.js"></script>
-<script id="cksYillikBelgeScripti" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/10-cksYillikBelgeScripti.js"></script>
-<script id="cksKisiBelgesiV130" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/11-cksKisiBelgesiV130.js"></script>
-<link rel="stylesheet" id="fdTopluDuzeltmelerV132Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/15-fdTopluDuzeltmelerV132Stil.css">
-<script id="fdTopluDuzeltmelerV132" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/12-fdTopluDuzeltmelerV132.js"></script>
-<link rel="stylesheet" id="fdCksPdfAktarimV134Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/16-fdCksPdfAktarimV134Stil.css">
-<script id="fdCksPdfAktarimV134" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/13-fdCksPdfAktarimV134.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/document-data.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/document-entrypoints.js"></script>
+<script id="evrakTakipScripti" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/06-evrakTakipScripti.js"></script>
+<script id="cksTamSayfaScripti" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/07-cksTamSayfaScripti.js"></script>
+<script id="cksV128Duzeltme" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/08-cksV128Duzeltme.js"></script>
+<script id="cksKonumSadelestirme" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/09-cksKonumSadelestirme.js"></script>
+<script id="cksYillikBelgeScripti" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/10-cksYillikBelgeScripti.js"></script>
+<script id="cksKisiBelgesiV130" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/11-cksKisiBelgesiV130.js"></script>
+<link rel="stylesheet" id="fdTopluDuzeltmelerV132Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/15-fdTopluDuzeltmelerV132Stil.css">
+<script id="fdTopluDuzeltmelerV132" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/12-fdTopluDuzeltmelerV132.js"></script>
+<link rel="stylesheet" id="fdCksPdfAktarimV134Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/16-fdCksPdfAktarimV134Stil.css">
+<script id="fdCksPdfAktarimV134" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/13-fdCksPdfAktarimV134.js"></script>
 
-<script id="fdCksFormSecimV138" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/14-fdCksFormSecimV138.js"></script>
+<script id="fdCksFormSecimV138" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/14-fdCksFormSecimV138.js"></script>
 
-<link rel="stylesheet" id="fdCksKontrolSigdirV141" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/17-fdCksKontrolSigdirV141.css">
+<link rel="stylesheet" id="fdCksKontrolSigdirV141" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/17-fdCksKontrolSigdirV141.css">
 
-<link rel="stylesheet" id="fdCksYilRenkleriV142Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/18-fdCksYilRenkleriV142Stil.css">
-<script id="fdCksYilRenkleriV142" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/15-fdCksYilRenkleriV142.js"></script>
+<link rel="stylesheet" id="fdCksYilRenkleriV142Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/18-fdCksYilRenkleriV142Stil.css">
+<script id="fdCksYilRenkleriV142" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/15-fdCksYilRenkleriV142.js"></script>
 
-<link rel="stylesheet" id="fdCksCokluDuzenleV143Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/19-fdCksCokluDuzenleV143Stil.css">
-<script id="fdCksCokluDuzenleV143" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/16-fdCksCokluDuzenleV143.js"></script>
+<link rel="stylesheet" id="fdCksCokluDuzenleV143Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/19-fdCksCokluDuzenleV143Stil.css">
+<script id="fdCksCokluDuzenleV143" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/16-fdCksCokluDuzenleV143.js"></script>
 
-<link rel="stylesheet" id="fdV144KatmanVeAbonelikStil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/20-fdV144KatmanVeAbonelikStil.css">
-<script id="fdV144KatmanOturumAbonelik" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/17-fdV144KatmanOturumAbonelik.js"></script>
+<link rel="stylesheet" id="fdV144KatmanVeAbonelikStil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/20-fdV144KatmanVeAbonelikStil.css">
+<script id="fdV144KatmanOturumAbonelik" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/17-fdV144KatmanOturumAbonelik.js"></script>
 
-<link rel="stylesheet" id="fdCksDuzenlemeGuvenligiV145Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css">
-<script id="fdCksDuzenlemeGuvenligiV145" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/18-fdCksDuzenlemeGuvenligiV145.js"></script>
+<link rel="stylesheet" id="fdCksDuzenlemeGuvenligiV145Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/21-fdCksDuzenlemeGuvenligiV145Stil.css">
+<script id="fdCksDuzenlemeGuvenligiV145" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/18-fdCksDuzenlemeGuvenligiV145.js"></script>
 
-<script id="fdCksDuzenlemeModalKurV145" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/19-fdCksDuzenlemeModalKurV145.js"></script>
+<script id="fdCksDuzenlemeModalKurV145" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/19-fdCksDuzenlemeModalKurV145.js"></script>
 
-<script id="fdTapuCksEslemeV146" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/title-cks-matching.js"></script>
+<script id="fdTapuCksEslemeV146" src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/title-cks-matching.js"></script>
 
-<link rel="stylesheet" id="fdCksTumTarlalarV147Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/22-fdCksTumTarlalarV147Stil.css">
-<script id="fdCksTumTarlalarV147" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/21-fdCksTumTarlalarV147.js"></script>
+<link rel="stylesheet" id="fdCksTumTarlalarV147Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/22-fdCksTumTarlalarV147Stil.css">
+<script id="fdCksTumTarlalarV147" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/21-fdCksTumTarlalarV147.js"></script>
 
-<script id="fdCksYetimPdfKayitlariV148" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/22-fdCksYetimPdfKayitlariV148.js"></script>
-<link rel="stylesheet" id="fdPdfVeFiltreV149Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/23-fdPdfVeFiltreV149Stil.css">
-<script id="fdPdfVeFiltreV149" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/23-fdPdfVeFiltreV149.js"></script>
+<script id="fdCksYetimPdfKayitlariV148" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/22-fdCksYetimPdfKayitlariV148.js"></script>
+<link rel="stylesheet" id="fdPdfVeFiltreV149Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/23-fdPdfVeFiltreV149Stil.css">
+<script id="fdPdfVeFiltreV149" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/23-fdPdfVeFiltreV149.js"></script>
 
-<script id="fdHizliBelgeVardiyaFiltreV150" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/24-fdHizliBelgeVardiyaFiltreV150.js"></script>
-<script id="fdElKitabiKiraPdfV151" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/25-fdElKitabiKiraPdfV151.js"></script>
-<script id="fdKiraSozlesmeDogrudanV152" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/26-fdKiraSozlesmeDogrudanV152.js"></script>
-<script id="fdKiraSozlesmeButonBagV153" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/27-fdKiraSozlesmeButonBagV153.js"></script>
-<script id="fdKiraPdfKesintisizV155" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/28-fdKiraPdfKesintisizV155.js"></script>
-<link rel="stylesheet" id="fdBordroBelgeleriV184Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/24-fdBordroBelgeleriV184Stil.css">
-<script id="fdBordroBelgeleriV184" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/29-fdBordroBelgeleriV184.js"></script>
+<script id="fdHizliBelgeVardiyaFiltreV150" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/24-fdHizliBelgeVardiyaFiltreV150.js"></script>
+<script id="fdElKitabiKiraPdfV151" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/25-fdElKitabiKiraPdfV151.js"></script>
+<script id="fdKiraSozlesmeDogrudanV152" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/26-fdKiraSozlesmeDogrudanV152.js"></script>
+<script id="fdKiraSozlesmeButonBagV153" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/27-fdKiraSozlesmeButonBagV153.js"></script>
+<script id="fdKiraPdfKesintisizV155" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/28-fdKiraPdfKesintisizV155.js"></script>
+<link rel="stylesheet" id="fdBordroBelgeleriV184Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/24-fdBordroBelgeleriV184Stil.css">
+<script id="fdBordroBelgeleriV184" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/29-fdBordroBelgeleriV184.js"></script>
 
-<script id="fdBildirimSistemi" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/30-fdBildirimSistemi.js"></script>
+<script id="fdBildirimSistemi" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/30-fdBildirimSistemi.js"></script>
 
-<script id="fdKvkkAydinlatmaSistemi" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/31-fdKvkkAydinlatmaSistemi.js"></script>
+<script id="fdKvkkAydinlatmaSistemi" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/31-fdKvkkAydinlatmaSistemi.js"></script>
 
-<link rel="stylesheet" id="fdxWorkCenterStyles" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/work-center-common.css">
+<link rel="stylesheet" id="fdxWorkCenterStyles" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/work-center-common.css">
 
 <div id="workCenterApp" data-fd-module-placeholder="workcenter" style="display:none"></div>
 <div id="fdxMyRequestsModal" data-fd-module-placeholder="workcenter" style="display:none"></div>
 <div id="fdxReviewModal" data-fd-module-placeholder="workcenter" style="display:none"></div>
 <div id="fdxAuditDetailModal" data-fd-module-placeholder="workcenter" style="display:none"></div>
-<script id="fdxWorkCenterFreshV1" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/workcenter-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/work-center-services.js"></script>
+<script id="fdxWorkCenterFreshV1" src="./releases/fd-modular-20261020-s23-257dad9c048e/core/workcenter-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/work-center-services.js"></script>
 
-<link rel="stylesheet" id="fdOperasyonGenisletmeV149Stil" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/company-tools-home.css">
+<link rel="stylesheet" id="fdOperasyonGenisletmeV149Stil" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/company-tools-home.css">
 <div id="fdOrtakModal" data-fd-module-placeholder="companytools" style="display:none"></div>
 <div id="fdTakvimKayitModal" data-fd-module-placeholder="companytools" style="display:none"></div>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/company-tools-entrypoints.js"></script>
-<script id="fdOperasyonGenisletmeV149" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/company-tools-home.js"></script>
-<link rel="stylesheet" id="fdVarlikKisileriV150Style" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/27-fdVarlikKisileriV150Style.css">
-<link rel="stylesheet" id="fdVarlikKisileriV151Style" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/28-fdVarlikKisileriV151Style.css">
-<link rel="stylesheet" id="fdVarlikKisileriV152Style" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/29-fdVarlikKisileriV152Style.css">
-<script id="fdVarlikKisileriV150" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/asset-people-registration.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/company-tools-entrypoints.js"></script>
+<script id="fdOperasyonGenisletmeV149" src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/company-tools-home.js"></script>
+<link rel="stylesheet" id="fdVarlikKisileriV150Style" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/27-fdVarlikKisileriV150Style.css">
+<link rel="stylesheet" id="fdVarlikKisileriV151Style" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/28-fdVarlikKisileriV151Style.css">
+<link rel="stylesheet" id="fdVarlikKisileriV152Style" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/29-fdVarlikKisileriV152Style.css">
+<script id="fdVarlikKisileriV150" src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/asset-people-registration.js"></script>
 
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/price-entrypoints.js"></script>
-
-
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/price-entrypoints.js"></script>
 
 
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/order-entrypoints.js"></script>
+
+
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/order-entrypoints.js"></script>
 <div id="cksTakipApp" data-fd-module-placeholder="cks" style="display:none"></div>
 <div id="modalCksYilBelge" data-fd-module-placeholder="cks" style="display:none"></div>
 <div id="fdCksPdfKontrolModal" data-fd-module-placeholder="cks" style="display:none"></div>
@@ -1568,44 +1284,44 @@
 <div id="fdSiparisTeslimatModal" data-fd-module-placeholder="siparistakip" style="display:none"></div>
 <div id="isgApp" data-fd-module-placeholder="isg" style="display:none"></div>
 </body>
-<link rel="stylesheet" id="magicpassDurumSutunuKesinHiza" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/34-magicpassDurumSutunuKesinHiza.css">
-<link rel="stylesheet" id="fdKiraTasarimV214Style" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/35-fdKiraTasarimV214Style.css">
-<script id="fdKiraTasarimV214" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/38-fdKiraTasarimV214.js"></script>
-<link rel="stylesheet" id="fdPersonelTasarimV217Style" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/36-fdPersonelTasarimV217Style.css">
-<script id="fdPersonelTasarimV217" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/39-fdPersonelTasarimV217.js"></script>
-<link rel="stylesheet" id="fdPersonelOkunurlukV220" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/37-fdPersonelOkunurlukV220.css">
-<link rel="stylesheet" id="fdAttendanceBalanceDisplayV268" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/38-fdAttendanceBalanceDisplayV268.css">
-<script id="fdHesapDonemKorumaV220" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/40-fdHesapDonemKorumaV220.js"></script>
-<link rel="stylesheet" id="fdTopluZamDonemStilV249" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/39-fdTopluZamDonemStilV249.css">
-<script id="fdTopluZamDonemV249" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/41-fdTopluZamDonemV249.js"></script>
+<link rel="stylesheet" id="magicpassDurumSutunuKesinHiza" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/34-magicpassDurumSutunuKesinHiza.css">
+<link rel="stylesheet" id="fdKiraTasarimV214Style" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/35-fdKiraTasarimV214Style.css">
+<script id="fdKiraTasarimV214" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/38-fdKiraTasarimV214.js"></script>
+<link rel="stylesheet" id="fdPersonelTasarimV217Style" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/36-fdPersonelTasarimV217Style.css">
+<script id="fdPersonelTasarimV217" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/39-fdPersonelTasarimV217.js"></script>
+<link rel="stylesheet" id="fdPersonelOkunurlukV220" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/37-fdPersonelOkunurlukV220.css">
+<link rel="stylesheet" id="fdAttendanceBalanceDisplayV268" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/38-fdAttendanceBalanceDisplayV268.css">
+<script id="fdHesapDonemKorumaV220" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/40-fdHesapDonemKorumaV220.js"></script>
+<link rel="stylesheet" id="fdTopluZamDonemStilV249" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/39-fdTopluZamDonemStilV249.css">
+<script id="fdTopluZamDonemV249" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/41-fdTopluZamDonemV249.js"></script>
 
 
-<link rel="stylesheet" id="fdAyarTasarimV225" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/41-fdAyarTasarimV225.css">
-<script id="fdAyarKullanimV225" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/43-fdAyarKullanimV225.js"></script>
-<link rel="stylesheet" id="fdTapuTasarimV226" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/42-fdTapuTasarimV226.css">
-<script id="fdTapuKullanimV226" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/44-fdTapuKullanimV226.js"></script>
-<link rel="stylesheet" id="fdUnifiedOutputStyleV227" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/styles/43-fdUnifiedOutputStyleV227.css">
-<script id="fdUnifiedOutputCoreV227" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/45-fdUnifiedOutputCoreV227.js"></script>
-<script id="fdUnifiedOutputUiV227" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/46-fdUnifiedOutputUiV227.js"></script>
+<link rel="stylesheet" id="fdAyarTasarimV225" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/41-fdAyarTasarimV225.css">
+<script id="fdAyarKullanimV225" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/43-fdAyarKullanimV225.js"></script>
+<link rel="stylesheet" id="fdTapuTasarimV226" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/42-fdTapuTasarimV226.css">
+<script id="fdTapuKullanimV226" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/44-fdTapuKullanimV226.js"></script>
+<link rel="stylesheet" id="fdUnifiedOutputStyleV227" href="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/styles/43-fdUnifiedOutputStyleV227.css">
+<script id="fdUnifiedOutputCoreV227" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/45-fdUnifiedOutputCoreV227.js"></script>
+<script id="fdUnifiedOutputUiV227" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/46-fdUnifiedOutputUiV227.js"></script>
 
 
 
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/isg-entrypoints.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/isg-session-integration.js"></script>
-<script id="fdAttendanceRenderPerformance" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/50-fdAttendanceRenderPerformance.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/isg-entrypoints.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/isg-session-integration.js"></script>
+<script id="fdAttendanceRenderPerformance" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/50-fdAttendanceRenderPerformance.js"></script>
 
-<script id="fdPriceWhatsappSettingsV233" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/51-fdPriceWhatsappSettingsV233.js"></script>
-<script id="fdPersonelWhatsappTercihleriScript" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/52-fdPersonelWhatsappTercihleriScript.js"></script>
-<script id="fdPersonnelTemplateCatalogV264" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/53-fdPersonnelTemplateCatalogV264.js"></script>
-<script id="fdWhatsappFullTemplatePreviewV262" src="./releases/fd-modular-20261020-s22-c412ae3c59f2/legacy/54-fdWhatsappFullTemplatePreviewV262.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/core/module-integration.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/advance-postponement.js"></script>
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/weekly-roster-safety.css">
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/weekly-roster-safety.js"></script>
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/weekly-roster-fast.js"></script>
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/personnel-fast.css">
-<script src="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/personnel-fast.js"></script>
-<link rel="stylesheet" href="./releases/fd-modular-20261020-s22-c412ae3c59f2/shared/attendance-queue-ui.css">
+<script id="fdPriceWhatsappSettingsV233" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/51-fdPriceWhatsappSettingsV233.js"></script>
+<script id="fdPersonelWhatsappTercihleriScript" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/52-fdPersonelWhatsappTercihleriScript.js"></script>
+<script id="fdPersonnelTemplateCatalogV264" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/53-fdPersonnelTemplateCatalogV264.js"></script>
+<script id="fdWhatsappFullTemplatePreviewV262" src="./releases/fd-modular-20261020-s23-257dad9c048e/legacy/54-fdWhatsappFullTemplatePreviewV262.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/core/module-integration.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/advance-postponement.js"></script>
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/weekly-roster-safety.css">
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/weekly-roster-safety.js"></script>
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/weekly-roster-fast.js"></script>
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/personnel-fast.css">
+<script src="./releases/fd-modular-20261020-s23-257dad9c048e/shared/personnel-fast.js"></script>
+<link rel="stylesheet" href="./releases/fd-modular-20261020-s23-257dad9c048e/shared/attendance-queue-ui.css">
 <script id="fdPwaKurulumScripti">
 (function(){
   let kurulumOlayi=null;
@@ -1624,14 +1340,14 @@
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(surumYenileniyor)return;
       surumYenileniyor=true;
-      const anahtar='fd-pwa-yenileme-v312';
+      const anahtar='fd-pwa-yenileme-v313';
       if(sessionStorage.getItem(anahtar))return;
       sessionStorage.setItem(anahtar,'1');
       window.location.reload();
     });
     window.addEventListener('load',async function(){
       try{
-        const kayit=await navigator.serviceWorker.register('./sw.js?v=312',{updateViaCache:'none'});
+        const kayit=await navigator.serviceWorker.register('./sw.js?v=313',{updateViaCache:'none'});
         await kayit.update();
       }catch(e){console.warn('Mobil kurulum hizmeti:',e)}
     });
