@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s22-2e43c8ac05e2",
+  "release": "fd-modular-20261020-s22-c412ae3c59f2",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "b9ba6ce94d16103a488178c31c28340d1c930eaea18de2336fd580bc1b486f98",
+      "sha256": "e48965378d2834b02ceba8b1864b956058bbe9a457b2078fc4b35df274afce35",
       "bytes": 35948
     },
     {
@@ -718,13 +718,13 @@
     },
     {
       "path": "modules/icra/manifest.json",
-      "sha256": "4133ea03150c6d7037c9a158468fad3813df6284eec132b238a1848b14186711",
+      "sha256": "a638a5d76d17b3bf2105eb702edd5bdb32b07c029853d8fc4ca5d714e3988339",
       "bytes": 2654
     },
     {
       "path": "modules/icra/module.js",
-      "sha256": "f7e20f408e39657dab43352d8020d262326e8c53d2cd16d0fffd17e2c579914f",
-      "bytes": 125893
+      "sha256": "1cdf49fbb49e06bbde06eb0619248e0d99495f1602622da85fc822e766405701",
+      "bytes": 127792
     },
     {
       "path": "modules/icra/style.css",
@@ -898,13 +898,13 @@
     },
     {
       "path": "modules/prim/manifest.json",
-      "sha256": "29774a0c6741a86b528726c24d972347e48fb2f5f64feb7e9abce01789b921cc",
+      "sha256": "65435340fa134447ee3897ae7928b32e6a37686aa22ebfbb1b81b9db2fe15d5e",
       "bytes": 1050
     },
     {
       "path": "modules/prim/module.js",
-      "sha256": "89c48b35c107ed78a1d5a2dbda21a1e13b298a6df48132dab03cc56f420f1aac",
-      "bytes": 5597
+      "sha256": "03a5185b91c80dcff6e8a6223829efc4226b5895c3a487ed454ef3a443cacea9",
+      "bytes": 6014
     },
     {
       "path": "modules/prim/style.css",
@@ -1085,6 +1085,11 @@
       "path": "shared/extra-payment-data.js",
       "sha256": "38448a883efdaf24a27c131d9aa0e5297315b735ec267cbd34b2be4f180a1fa8",
       "bytes": 3228
+    },
+    {
+      "path": "shared/financial-save-safety.js",
+      "sha256": "7d0c18d7824fd2a1df1314bc775b5c9d90a6b13695eea76c687397d67e007db5",
+      "bytes": 6816
     },
     {
       "path": "shared/isg-session-integration.js",
