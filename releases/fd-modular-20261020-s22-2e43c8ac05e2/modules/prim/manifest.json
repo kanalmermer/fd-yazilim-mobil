@@ -1,0 +1,46 @@
+{
+  "name": "Prim Takibi",
+  "roots": [
+    "modalPrimHakki",
+    "puanPrimFiltreWrap",
+    "puanPrimTutarWrap"
+  ],
+  "entrypoints": [
+    "openPrimApp",
+    "primSabitTutariniKaydet",
+    "openPrimHakkiDuzenleme",
+    "closePrimHakkiModal",
+    "manuelPrimHakkiniKaydet"
+  ],
+  "writeOperations": [
+    "primSabitTutariniKaydet",
+    "openPrimHakkiDuzenleme",
+    "manuelPrimHakkiniKaydet"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/prim/view.html",
+      "sha256": "f4a55101980d6c6d9d5ae940f8ae68bd4972318479d116e4f51362d5649a8758",
+      "bytes": 2405,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/prim/style.css",
+      "sha256": "399ae6972faa25784d121e0c40d90d9565dd977ad76c7f8b64b51b33571abff1",
+      "bytes": 103,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/prim/module.js",
+      "sha256": "89c48b35c107ed78a1d5a2dbda21a1e13b298a6df48132dab03cc56f420f1aac",
+      "bytes": 5597,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

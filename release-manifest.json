@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s21-3451c15e9088",
+  "release": "fd-modular-20261020-s22-2e43c8ac05e2",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -12,9 +12,14 @@
       "bytes": 2854
     },
     {
+      "path": "core/bonus-entrypoints.js",
+      "sha256": "fc68595e9292a755e132c9480d55647398af11b6e358af8326e86341bc8501b8",
+      "bytes": 1532
+    },
+    {
       "path": "core/catalog.js",
-      "sha256": "59ad8b836260720df80434cb8be8ef53efcc77527a0bf7831f151dc9f51e0f96",
-      "bytes": 35156
+      "sha256": "b9ba6ce94d16103a488178c31c28340d1c930eaea18de2336fd580bc1b486f98",
+      "bytes": 35948
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -68,8 +73,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "a01e2023acb52425e1d954098625ed5c451d884bde2f17077c7ab096819a9941",
-      "bytes": 3178
+      "sha256": "994203bc5993d60c21599520d2817d37f88713402e7f227b8c24accb812c3d88",
+      "bytes": 3199
     },
     {
       "path": "core/module-loader.js",
@@ -138,8 +143,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "499712d9f29362c56be0fbb935019d6c9f0226dd395d5df99367d466dee4cf39",
-      "bytes": 891129
+      "sha256": "b0cb6c1dcf28fb21eea30f4e82e93ab205fe74d48eb242ed1ce26b26ea48edf7",
+      "bytes": 861719
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -892,6 +897,26 @@
       "bytes": 6487
     },
     {
+      "path": "modules/prim/manifest.json",
+      "sha256": "29774a0c6741a86b528726c24d972347e48fb2f5f64feb7e9abce01789b921cc",
+      "bytes": 1050
+    },
+    {
+      "path": "modules/prim/module.js",
+      "sha256": "89c48b35c107ed78a1d5a2dbda21a1e13b298a6df48132dab03cc56f420f1aac",
+      "bytes": 5597
+    },
+    {
+      "path": "modules/prim/style.css",
+      "sha256": "399ae6972faa25784d121e0c40d90d9565dd977ad76c7f8b64b51b33571abff1",
+      "bytes": 103
+    },
+    {
+      "path": "modules/prim/view.html",
+      "sha256": "f4a55101980d6c6d9d5ae940f8ae68bd4972318479d116e4f51362d5649a8758",
+      "bytes": 2405
+    },
+    {
       "path": "modules/siparistakip/manifest.json",
       "sha256": "f05640369e34f8b433a0dcb62d16c980b465aa4c0a4425fc2a3727a492d7b202",
       "bytes": 2319
@@ -1017,6 +1042,11 @@
       "bytes": 1377
     },
     {
+      "path": "shared/bonus-data.js",
+      "sha256": "52ad1a2effa9eddae782bc6605dd22e70c82da1583716aeeb46b133664f833ac",
+      "bytes": 6650
+    },
+    {
       "path": "shared/cks-data.js",
       "sha256": "8cfd127afbaf09605dfdfad36096ca005c9627a4bac8e3aa2e6b1d8db2ff3393",
       "bytes": 119314
@@ -1060,6 +1090,16 @@
       "path": "shared/isg-session-integration.js",
       "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
       "bytes": 21743
+    },
+    {
+      "path": "shared/payroll-matrix.js",
+      "sha256": "4c500d59db6b66e6f8ac6427226a7e744010b6fcaccc4433c02e162659a74f60",
+      "bytes": 21557
+    },
+    {
+      "path": "shared/payroll-workspace.js",
+      "sha256": "b40f3a72dfba46ed03d094933284861869b5d37261bd13a2b7aaac94f6c88915",
+      "bytes": 8879
     },
     {
       "path": "shared/personnel-fast.css",
