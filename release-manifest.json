@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s25-cc15c90dee47",
+  "release": "fd-modular-20261020-s25-3b45c915cd54",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "8c866fe7ec3195adaafc537ff1e823f50fa4291f9eb0f2a9a139f13b15ef1fa1",
+      "sha256": "15fe9f6c3b367bb67abb58dee5e0961fd6d407e2d2cf6d973dfeac54982bf25e",
       "bytes": 42114
     },
     {
@@ -653,23 +653,23 @@
     },
     {
       "path": "modules/bildirim/manifest.json",
-      "sha256": "9514612a438e516b41814388783c43d0af0e2e1150a23134798941c75570dac0",
+      "sha256": "453ba17bad08f0e53ec64e3fd0e6367a28854c0164aad907ef088eea7a27075f",
       "bytes": 2005
     },
     {
       "path": "modules/bildirim/module.js",
-      "sha256": "c6e455286e81c165314fd61bf71dd179a27b9cfd6f9bd88c3571496065765006",
-      "bytes": 73405
+      "sha256": "b4c01c34e414e12ea341c2022a60e9718e15a84e2a21b5d83c9d0acb29bd1eae",
+      "bytes": 74782
     },
     {
       "path": "modules/bildirim/style.css",
-      "sha256": "2c6e7f3404a84fc273cc39dd95bf4b4914feedf695a4e91f4d4bdac21a493e1d",
-      "bytes": 44930
+      "sha256": "17edfe4dfc0e805e618fb34557939c2ea71e4bedf8aab383e2c7b486ef7f1d9d",
+      "bytes": 45310
     },
     {
       "path": "modules/bildirim/view.html",
-      "sha256": "dd719b3ebe943607b0df9666033d3de955f27f2121dd436667ab903ad43e749a",
-      "bytes": 8231
+      "sha256": "31a1f04cd108c06609b4c3ae462a9549568b8e3c00582695a26fd1a8a58d554b",
+      "bytes": 8159
     },
     {
       "path": "modules/cks/manifest.json",
