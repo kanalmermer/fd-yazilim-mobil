@@ -1,0 +1,45 @@
+{
+  "name": "Kullanıcı ve Yetki Yönetimi",
+  "roots": [
+    "modalAdmin"
+  ],
+  "entrypoints": [
+    "openAdminModal",
+    "renderAdminUsers",
+    "kullaniciModulunuBaslat"
+  ],
+  "writeOperations": [
+    "adminKullaniciFormunuKaydet",
+    "kullaniciRolunuKaydet",
+    "kullaniciSifresiniYenile",
+    "deleteUser",
+    "kullaniciSunucuIstegi",
+    "kullaniciPanelIsleminiYurut"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/kullanici/view.html",
+      "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
+      "bytes": 2307,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/kullanici/style.css",
+      "sha256": "a775fdd7258adda886a2814526f49b69b45887403c6138a1cf8385bdc6f3ae25",
+      "bytes": 1415,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/kullanici/module.js",
+      "sha256": "f9e3af2dc0e6363333716b5d74f47ab79546fc9a28c1974c35ffcbdc5aa4b58f",
+      "bytes": 14590,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
