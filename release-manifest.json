@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261019-s19-1c6bdbe2a1db",
+  "release": "fd-modular-20261020-s19-0aaa73bf44c5",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "8c39d911a9e751b663aa3aaedca9d6bebb8c955db65350395c9ce5ff7aeabfb6",
+      "sha256": "1e1036d2e32ba852240af276289b6de9400c046b24b5cb24d4937e7ab46fd1dd",
       "bytes": 31698
     },
     {
@@ -128,8 +128,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "3923c0d5de5e490b513c827078843b88c058442d7b462073c43c9fdf4ee23ba3",
-      "bytes": 1046261
+      "sha256": "5e1d1e77a4a2124d2dbccc3197311632a468b55b984e0bee47265b46b4d212d3",
+      "bytes": 1046808
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -950,6 +950,16 @@
       "path": "modules/workcenter/view.html",
       "sha256": "7f5afbeb21789410dabb025e5058674a510f8e8d1bd3e68eaa47b4d6a979296a",
       "bytes": 8717
+    },
+    {
+      "path": "shared/advance-postponement.css",
+      "sha256": "dc25850100ba1924459a23fb7b4e2fb361f3615ea7094029a65800437beb295c",
+      "bytes": 2580
+    },
+    {
+      "path": "shared/advance-postponement.js",
+      "sha256": "76cee52c0ba2c6d18e198957f2d7487c0a2a5de514812658b6c57c513fdcec51",
+      "bytes": 11755
     },
     {
       "path": "shared/asset-people-data.js",
