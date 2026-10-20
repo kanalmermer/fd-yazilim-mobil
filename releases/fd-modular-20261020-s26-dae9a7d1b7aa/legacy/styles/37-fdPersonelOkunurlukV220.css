@@ -1,0 +1,13 @@
+
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button:hover{background:#dceef8!important;color:#164e63!important;border-color:#bad8e8!important;box-shadow:none!important;transform:none!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active:hover{background:#e5f3f8!important;color:#155e75!important}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{font-size:14px!important;line-height:1.4;padding:11px 10px}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th{font-size:12px!important;padding:12px 10px;color:#466078}
+#personelApp td .badge{font-size:12px;padding:4px 7px}#personelApp td .btn-modern{font-size:12px;padding:7px 9px}
+#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:13px}
+#magicpassAylikTablo thead th:nth-child(n),#magicpassGunlukTablo thead th:nth-child(n){position:sticky!important;top:0!important;z-index:12!important;background:#eef3f8!important;color:#334155!important}
+#magicpassAylikTablo thead .magicpass-tarih-baslik{left:30px!important;z-index:13!important}
+#magicpassAylikTablo tbody td{top:auto!important}
+@media(max-width:700px){#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:14px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{padding:6px 7px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td::before{font-size:11px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(4){font-size:16px!important}}
+@media(max-width:760px){#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:68dvh!important;overflow:auto!important}}
+
