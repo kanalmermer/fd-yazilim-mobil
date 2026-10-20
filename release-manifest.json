@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-74042d2c154d",
+  "release": "fd-modular-20261020-s19-236c7c4c52fe",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "91d0efa18e57de3940b6ad1fdace7541e52c591ad8efd62e8d852aeabdf25820",
+      "sha256": "fb00c052e413d46430436e62b6499625dd61fbf392a3ca1e262fa3bce467f1a1",
       "bytes": 31698
     },
     {
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "8dd08fcfcedb8f5449fea44edd52dee125156b3ebd39ddc6a7fe828ccb80cfb5",
-      "bytes": 40117
+      "sha256": "fb92af321f89a47dbcb4337fc3b8ab49532523b38a2bf1c6f3d6163c3f22aea0",
+      "bytes": 40532
     },
     {
       "path": "core/document-entrypoints.js",
@@ -128,8 +128,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "f5ea0795874e03bcae2821ead651758059d6e18ae6d1e23572817afa9b2e0b9b",
-      "bytes": 1046423
+      "sha256": "2fc9c30e87e456dac7deee49c01e8b35ae4a4e7fefa922280490a6e378fd24b6",
+      "bytes": 1046628
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1065,6 +1065,11 @@
       "path": "shared/waybill-data.js",
       "sha256": "4ce9127a94883835324788177a5fafb554db03befaa597f66bd20afb8097df40",
       "bytes": 599
+    },
+    {
+      "path": "shared/weekly-roster-fast.js",
+      "sha256": "03dd147c0cca9e73817b021d4a38074f2ceb94bee4531c28eff9d287b671e642",
+      "bytes": 4905
     },
     {
       "path": "shared/weekly-roster-safety.css",
