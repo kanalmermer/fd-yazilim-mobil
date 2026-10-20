@@ -1,0 +1,109 @@
+{
+  "name": "İcra Takip",
+  "roots": [
+    "icraApp",
+    "modalIcraGecmisi",
+    "modalIcraDetay"
+  ],
+  "entrypoints": [
+    "icraPdfDurumMesaji",
+    "icraPdfMetniniOku",
+    "icraPdfEtiketDegeri",
+    "icraPdfDosyaNoBul",
+    "icraPdfParaBul",
+    "icraPdfHesapAdiBul",
+    "icraPdfDaireVeTarihBul",
+    "icraPdfAlanlariniBul",
+    "icraPdfPersoneliniSec",
+    "icraPdfBilgileriniCikar",
+    "icraBugunAnahtari",
+    "icraDairesiYeriniBul",
+    "icraDairesiBasligi",
+    "icraDilekceDonemiYaz",
+    "icraDilekcePara",
+    "icraDilekceDosyaTarihi",
+    "icraDilekceSatirlariniOlustur",
+    "icraDilekceTuruBul",
+    "icraDilekceSablonBaytlari",
+    "icraDocxKirmiziDoldur",
+    "icraDocxHucreDoldur",
+    "icraDilekceCokluTabloyuDoldur",
+    "icraResmiDocxXml",
+    "icraResmiDocxRun",
+    "icraResmiDocxParagraf",
+    "icraResmiDocxBaslikTablosu",
+    "icraDilekceKisiAdiYaz",
+    "icraResmiDocxHucre",
+    "icraResmiDocxImza",
+    "icraResmiDocxTablosu",
+    "icraResmiDilekceDocxOlustur",
+    "icraDilekceBlobuOlustur",
+    "icraDilekceDosyaAdi",
+    "icraDilekceAc",
+    "icraPersonelListesiniDoldur",
+    "icraSekmeDegistir",
+    "icraYeniKayitAc",
+    "icraYeniKayitKapat",
+    "icraPdfAlanBilgisi",
+    "icraPdfDurumunuGoster",
+    "icraPdfSilmekIcinIsaretle",
+    "icraPdfDosyasiSecildi",
+    "icraFormReset",
+    "icraDuzenle",
+    "openIcraApp",
+    "icraKaydet",
+    "icraTekKaydiKaydet",
+    "icraKaydetIslemi",
+    "renderIcraListesi",
+    "icraGecmisKayitlari",
+    "icraGecmisiniAc",
+    "icraGecmisiniKapat",
+    "icraGecmisExcelIndir",
+    "icraDetayAc",
+    "icraDetayKapat",
+    "renderIcraKesintiDetayi",
+    "icraKesintiEkle",
+    "icraKesintiSil",
+    "icraSil",
+    "icraListePdfAl",
+    "icraGecmisPdfIndir"
+  ],
+  "writeOperations": [
+    "icraYeniKayitAc",
+    "icraDuzenle",
+    "icraKaydet",
+    "icraKaydetIslemi",
+    "icraTekKaydiKaydet",
+    "icraKesintiEkle",
+    "icraKesintiSil",
+    "icraSil",
+    "icraPdfSilmekIcinIsaretle",
+    "icraPdfDosyasiSecildi"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/icra/view.html",
+      "sha256": "ba304ee3d8882d7a7833c4813ae646bec0fabea192549ed99d47b2356c9fa323",
+      "bytes": 9132,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/icra/style.css",
+      "sha256": "4726691411bf32d90c5e6a3951ab3d6d6d93672e9fbbedfcbca1ec10543b9189",
+      "bytes": 96,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/icra/module.js",
+      "sha256": "f7e20f408e39657dab43352d8020d262326e8c53d2cd16d0fffd17e2c579914f",
+      "bytes": 125893,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

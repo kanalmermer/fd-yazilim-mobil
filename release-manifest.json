@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s20-60d7c4130ab6",
+  "release": "fd-modular-20261020-s21-3451c15e9088",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -13,8 +13,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "18afecfa21a4b2846c86046180de014a32bc7595709dc72e38e8499bfd1754fd",
-      "bytes": 33075
+      "sha256": "59ad8b836260720df80434cb8be8ef53efcc77527a0bf7831f151dc9f51e0f96",
+      "bytes": 35156
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -42,6 +42,11 @@
       "bytes": 6548
     },
     {
+      "path": "core/enforcement-entrypoints.js",
+      "sha256": "2ed8c2d07033a3dad13ef3109b9605d0eda6925f779fa27593973338d8ddd093",
+      "bytes": 8292
+    },
+    {
       "path": "core/extra-payment-entrypoints.js",
       "sha256": "e50e540977c4d242ad6a4c1de912afeca23431aa75c4183146270868cf6976b0",
       "bytes": 3175
@@ -63,8 +68,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d39f8bebd7f125e26ded327d29d3942700ceb088aa348f9defb3f9d995f0710f",
-      "bytes": 3157
+      "sha256": "a01e2023acb52425e1d954098625ed5c451d884bde2f17077c7ab096819a9941",
+      "bytes": 3178
     },
     {
       "path": "core/module-loader.js",
@@ -133,8 +138,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "0a9c28fc91081277085fa428ca60a4006a05cd9c7393c96e77256a09337f12f7",
-      "bytes": 1002114
+      "sha256": "499712d9f29362c56be0fbb935019d6c9f0226dd395d5df99367d466dee4cf39",
+      "bytes": 891129
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -148,8 +153,8 @@
     },
     {
       "path": "legacy/06-evrakTakipScripti.js",
-      "sha256": "ca4dec3645ebf4a9b7890a3df5125cb92cae9d74e1ada63dc01e98e201213afa",
-      "bytes": 11865
+      "sha256": "e9283eb473b7f9a6a8d6836c9f0e25d3286f201a696c337a99363ce93b3ffa04",
+      "bytes": 11760
     },
     {
       "path": "legacy/07-cksTamSayfaScripti.js",
@@ -178,8 +183,8 @@
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
-      "sha256": "00a1417027b187b0f141bf2d9a4f2e23c7dde44e4a283effeb3259d5d72aec7a",
-      "bytes": 19045
+      "sha256": "a2f8639035b3e5d5b5d503f81898525ffafe79cc0d0a5c582c07bafb269585d7",
+      "bytes": 18640
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
@@ -707,6 +712,26 @@
       "bytes": 7716
     },
     {
+      "path": "modules/icra/manifest.json",
+      "sha256": "4133ea03150c6d7037c9a158468fad3813df6284eec132b238a1848b14186711",
+      "bytes": 2654
+    },
+    {
+      "path": "modules/icra/module.js",
+      "sha256": "f7e20f408e39657dab43352d8020d262326e8c53d2cd16d0fffd17e2c579914f",
+      "bytes": 125893
+    },
+    {
+      "path": "modules/icra/style.css",
+      "sha256": "4726691411bf32d90c5e6a3951ab3d6d6d93672e9fbbedfcbca1ec10543b9189",
+      "bytes": 96
+    },
+    {
+      "path": "modules/icra/view.html",
+      "sha256": "ba304ee3d8882d7a7833c4813ae646bec0fabea192549ed99d47b2356c9fa323",
+      "bytes": 9132
+    },
+    {
       "path": "modules/ihracat/manifest.json",
       "sha256": "5d323b58117a5fe5b87ecc22627414ae0d269ba7f32791659e274362ed78a0e0",
       "bytes": 1031
@@ -1015,6 +1040,11 @@
       "path": "shared/document-data.js",
       "sha256": "0fe96fd4dfb7e26cb968812bc1b9d043577ee31bf3da733355679a348992d930",
       "bytes": 4019
+    },
+    {
+      "path": "shared/enforcement-data.js",
+      "sha256": "c816402ec4fc65655cb971fe7f5bed444f1c4794dfa58130fd0e7eb05220618a",
+      "bytes": 2286
     },
     {
       "path": "shared/export-compat.js",

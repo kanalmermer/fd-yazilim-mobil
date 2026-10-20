@@ -1,0 +1,110 @@
+<div id="icraApp" style="display:none;">
+    <div class="app-header-bar">
+        <div class="workspace-nav" aria-label="Personel işlemleri menüsü">
+            <button type="button" onclick="openPersonelDashboard()">Dashboard</button>
+            <button type="button" onclick="openPersonelApp()">Personel Kayıtları</button>
+            <button type="button" onclick="openIzinTakipApp()">İzin Takibi</button>
+            <button type="button" onclick="openPuantajApp()">Puantaj</button>
+            <button type="button" onclick="openPrimApp()">Prim Takibi</button>
+            <button type="button" onclick="openAvansApp()">Avans</button>
+            <button type="button" class="active" onclick="openIcraApp()">İcra Takip</button>
+        </div>
+    </div>
+    <div class="app-layout"><main style="width:100%; padding:22px;">
+        <div class="module-subnav" style="max-width:1120px; margin:0 auto 18px;">
+            <button type="button" id="btnIcraAktif" class="active" onclick="icraSekmeDegistir('aktif', this)">⚖️ Aktif İcralar</button>
+            <button type="button" id="btnIcraBiten" onclick="icraSekmeDegistir('biten', this)">🗃️ Biten İcralar</button>
+            <button type="button" id="btnIcraYeni" class="new-personnel-btn" onclick="icraYeniKayitAc()">➕ Yeni İcra Kesintisi</button>
+        </div>
+        <div id="icraKayitCard" class="modal-overlay">
+            <div class="modal-card" style="max-width:850px;">
+                <div class="modal-header"><h3 id="icraKayitBaslik">⚖️ Yeni İcra Kesintisi</h3><button type="button" class="modal-close" onclick="icraYeniKayitKapat()">✕</button></div>
+                <div class="modal-body">
+                <form id="icraForm" onsubmit="icraKaydet(event)">
+                <input type="hidden" id="icraEditId">
+                <input type="hidden" id="icraPdfSil" value="0">
+                <input type="hidden" id="icraBitisPdfSil" value="0">
+                <div class="form-row">
+                    <div class="form-group"><label>Personel</label><select id="icraPersonel" required onchange="this.dataset.seciliPersonelId=this.value"></select></div>
+                    <div class="form-group"><label>İcra Dosya Numarası</label><input id="icraDosyaNo" required placeholder="Örn. 2026/12345"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>İcra Dairesi</label><input id="icraDairesi" required placeholder="PDF'den otomatik okunur"><small>İcra yazısının üst bölümünden okunur; gerekirse düzeltebilirsiniz.</small></div>
+                    <div class="form-group"><label>İcra Yazısı Tarihi</label><input id="icraYaziTarihi" type="date" required><small>PDF'nin sağ üstündeki yazı tarihinden otomatik alınır.</small></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Alacaklı / Kurum</label><input id="icraAlacakli" required></div>
+                    <div class="form-group"><label>Kesintinin Başlayacağı Ay</label><input id="icraBaslangicAy" type="month" required style="cursor:pointer;"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Toplam Borç (TL)</label><input id="icraToplamBorc" type="text" inputmode="numeric" required placeholder="0,00" oninput="paraGirisiFormatla(this)" onfocus="paraGirisiOndaliklariniKaldir(this)" onblur="paraGirisiIkiOndalikFormatla(this)"></div>
+                    <div class="form-group">
+                        <label>İcra Yazısı (PDF)</label>
+                        <input id="icraPdf" type="file" accept="application/pdf,.pdf" onchange="icraPdfDosyasiSecildi('ana')">
+                        <div id="icraPdfMevcut" style="margin-top:7px; color:#64748b; font-size:.76rem;">En fazla 10 MB</div>
+                        <div id="icraPdfOkumaDurumu" aria-live="polite" style="display:none; margin-top:7px; padding:8px 9px; border-radius:8px; font-size:.76rem;"></div>
+                    </div>
+                </div>
+                <div class="form-row" id="icraBitisPdfGroup" style="display:none;">
+                    <div class="form-group" style="width:100%;">
+                        <label>İcra Bitiş / Borcu Yoktur Yazısı (PDF)</label>
+                        <input id="icraBitisPdf" type="file" accept="application/pdf,.pdf" onchange="icraPdfDosyasiSecildi('bitis')">
+                        <div id="icraBitisPdfMevcut" style="margin-top:7px; color:#64748b; font-size:.76rem;">Biten icra kaydını düzenlerken resmi yazıyı ekleyebilirsiniz. En fazla 10 MB.</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>İcra Dairesi Hesap Adı</label><input id="icraHesapAdi" required placeholder="Hesap sahibi / icra dairesi"></div>
+                    <div class="form-group"><label>IBAN</label><input id="icraIban" required maxlength="32" placeholder="TR00 0000 0000 0000 0000 0000 00" oninput="ibanGirisiFormatla(this)"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Açıklama</label><input id="icraAciklama" placeholder="İsteğe bağlı"></div>
+                </div>
+                    <button class="btn-submit" id="btnIcraKaydet" type="submit">💾 İcra Kaydını Kaydet</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="max-width:1120px; margin:0 auto;">
+            <div class="card-header"><h2 id="icraListeBaslik">⚖️ Aktif İcralar</h2><div class="action-btns"><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('icraListeBody','excel',document.getElementById('icraListeBaslik').textContent,'ICRA_LISTESI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="icraListePdfAl()">📄 PDF</button></div></div>
+            <div class="filter-bar" style="margin:0 0 12px;"><input id="icraPersonelFiltre" type="search" placeholder="Personel adı, T.C. veya dosya numarası ara..." oninput="renderIcraListesi()"></div>
+            <div class="table-wrapper">
+                <table><thead><tr><th>Dosya No</th><th>Personel</th><th>Başlangıç Ayı</th><th>Toplam Borç</th><th>Kesilen</th><th>Kalan</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="icraListeBody"></tbody></table>
+            </div>
+        </div>
+    </main></div>
+</div>
+<div id="modalIcraGecmisi" class="modal-overlay">
+    <div class="modal-card" style="max-width:1050px;">
+        <div class="modal-header"><h3 id="icraGecmisBaslik">İcra Geçmişi</h3><button class="modal-close" onclick="icraGecmisiniKapat()">✕</button></div>
+        <div class="modal-body">
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+                <button class="btn-export btn-excel" onclick="icraGecmisExcelIndir()">📊 Excel</button>
+                <button class="btn-export btn-pdf" onclick="icraGecmisPdfIndir()">📄 PDF</button>
+            </div>
+            <div id="icraGecmisRaporu">
+                <h3 id="icraGecmisRaporBaslik" style="text-align:center;margin:0 0 14px;"></h3>
+                <div class="table-wrapper"><table id="icraGecmisTablosu"><thead><tr><th>Dosya No</th><th>Başlangıç Ayı</th><th>Alacaklı</th><th>Toplam Borç</th><th>Kesilen</th><th>Kalan</th><th>Durum</th></tr></thead><tbody></tbody><tfoot></tfoot></table></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalIcraDetay" class="modal-overlay">
+    <div class="modal-card" style="max-width:850px;">
+        <div class="modal-header"><h3 id="icraDetayBaslik">İcra Kesinti Detayı</h3><button class="modal-close" onclick="icraDetayKapat()">✕</button></div>
+        <div class="modal-body">
+            <input type="hidden" id="icraDetayId">
+            <div id="icraDetayBanka" style="margin-bottom:15px; padding:12px; border-radius:10px; background:#f8fafc; border:1px solid #e2e8f0;"></div>
+            <form onsubmit="icraKesintiEkle(event)">
+                <div class="form-row">
+                    <div class="form-group"><label>Kesinti Ayı</label><input id="icraKesintiAy" type="month" required style="cursor:pointer;"></div>
+                    <div class="form-group"><label>Kesilen Tutar (TL)</label><input id="icraKesintiTutar" type="text" inputmode="decimal" required placeholder="0,00" oninput="paraGirisiFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)"></div>
+                </div>
+                <button class="btn-submit" type="submit">Kesintiyi Ekle</button>
+            </form>
+            <div class="table-wrapper" style="margin-top:18px;">
+                <table><thead><tr><th>Ay</th><th>Kesilen Tutar</th><th>İşlem</th></tr></thead><tbody id="icraKesintiDetayBody"></tbody></table>
+            </div>
+            <div id="icraDetayOzet" style="margin-top:15px; padding:12px; border-radius:10px; background:#eff6ff; font-weight:800;"></div>
+        </div>
+    </div>
+</div>
