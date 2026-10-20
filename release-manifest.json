@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261020-s19-be12dd8e6815",
+  "release": "fd-modular-20261020-s19-74042d2c154d",
   "assets": [
     {
       "path": "core/asset-people-entrypoints.js",
@@ -8,7 +8,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ff02612159911b0a221ef83ce6c294d18df74a108f8624caead647b860020595",
+      "sha256": "91d0efa18e57de3940b6ad1fdace7541e52c591ad8efd62e8d852aeabdf25820",
       "bytes": 31698
     },
     {
@@ -1068,8 +1068,8 @@
     },
     {
       "path": "shared/weekly-roster-safety.css",
-      "sha256": "710352257d71b65128970ecac08f2b221201e1e731f38d9da2c54a43911e9ea7",
-      "bytes": 696
+      "sha256": "52a539bdf18270db69ed8d4908e280fb29fdd311d1e540d64ca58af336770cbd",
+      "bytes": 736
     },
     {
       "path": "shared/weekly-roster-safety.js",
