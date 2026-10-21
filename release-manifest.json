@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261021-s26-e4705e974a9d",
+  "release": "fd-modular-20261021-s26-89a0fc4ed67f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "af5bc69031e7fa1226eb42e4bba4c7c08eaeae961945d0908662906c646983f3",
+      "sha256": "617a92567f82447113302b0a6494939bbdfdbf6838a90f64beb37b0d61cf6143",
       "bytes": 43199
     },
     {
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "d5ea534e7c2320584fdc53d90b7d6daea315003f04364b171af3e1793ba9ce89",
-      "bytes": 735956
+      "sha256": "5e46e6a1441a681d20392812153f42fc6436f97bb8e429fbd5d3d9da3fdb8484",
+      "bytes": 737027
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -633,13 +633,13 @@
     },
     {
       "path": "modules/ayarlar/manifest.json",
-      "sha256": "b105e401f156299f95e911b5be358dbc610d5214024ccc39ed4fcbfbfd9651d0",
+      "sha256": "319d9e33867928245c7a8fa724b8d2c28b4a7ac157829d9c67474183d6d8f320",
       "bytes": 3404
     },
     {
       "path": "modules/ayarlar/module.js",
-      "sha256": "5ee47bfac284256464715b6a08a70bf4b1eddd341a23750011f199692e614f20",
-      "bytes": 117209
+      "sha256": "26510b0a086d1f1d413aecb72a6278dff44e5e63c569197985fb0a8ec585e83f",
+      "bytes": 119018
     },
     {
       "path": "modules/ayarlar/style.css",
@@ -648,8 +648,8 @@
     },
     {
       "path": "modules/ayarlar/view.html",
-      "sha256": "3389fbd6cacc124cc4d2311b51e0d2c42b4ad4020dce944cbe1ee54a68b2784a",
-      "bytes": 24739
+      "sha256": "eccb723a3b6c01b9863a3166cd149cdaf9f2ff7861676858b9e27c1c042efc84",
+      "bytes": 25734
     },
     {
       "path": "modules/bildirim/manifest.json",
@@ -673,13 +673,13 @@
     },
     {
       "path": "modules/bordro/manifest.json",
-      "sha256": "7d0ef1808b6e3f796ac9954bebf05fabd8ae8130a99ad35aeb90d99376092a48",
+      "sha256": "67841c7348b8212376297d70766507adec45d0319a350e002b4e3e980548baee",
       "bytes": 1381
     },
     {
       "path": "modules/bordro/module.js",
-      "sha256": "0afb5e5e862ecc3498feb50aab20f1adac107399658cfdc2f161e1c976829b4b",
-      "bytes": 61471
+      "sha256": "9709e87518343488a975be61ca997a29c2bc6af4c4028f434846173d4168a608",
+      "bytes": 61164
     },
     {
       "path": "modules/bordro/style.css",
@@ -1203,8 +1203,13 @@
     },
     {
       "path": "shared/payroll-matrix.js",
-      "sha256": "4c500d59db6b66e6f8ac6427226a7e744010b6fcaccc4433c02e162659a74f60",
-      "bytes": 21557
+      "sha256": "e41c8140490df8496efa788544804d2e39562356ad2e80c85348c7af6e8c480b",
+      "bytes": 21061
+    },
+    {
+      "path": "shared/payroll-overtime.js",
+      "sha256": "41de7b8d8cf18be94777ea47c76a16b62916baeaf3dad8ed092db41d269a42ce",
+      "bytes": 7876
     },
     {
       "path": "shared/payroll-workspace.js",
