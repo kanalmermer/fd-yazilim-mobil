@@ -1,0 +1,88 @@
+
+.fd-wa-message-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.push-history-detail .fd-wa-message-text{font-size:14px;color:#334155}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{background:#e8eef4;border:1px solid #e0e7ef;border-radius:10px;box-shadow:none;padding:5px;gap:5px;flex-wrap:wrap!important;overflow:visible}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{font-size:13px!important;font-weight:600;padding:10px 12px!important;border-radius:7px;box-shadow:none;color:#51677b;flex:0 0 auto;transform:none!important;line-height:20px;min-height:42px;transition:background .15s,color .15s}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active{background:#fff!important;color:#155e75!important;box-shadow:0 2px 5px #0f172a0a}
+#personelApp,#personelDashboardApp{background:#f3f6fa;color:#334155}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:12px 22px!important;background:#fff;border-bottom:1px solid #dfe7ef;box-shadow:none;justify-content:flex-start;gap:0;flex-wrap:nowrap;min-width:0}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{width:100%;max-width:1596px;margin:0 auto!important;justify-content:center;min-width:0;box-sizing:border-box}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>:not(.workspace-nav){display:none!important}
+#personelApp .app-layout>main,#personelDashboardApp>main{width:100%;max-width:1640px!important;padding:18px 22px 30px!important;margin:0 auto}
+.fd-personel-intro{margin:0 0 15px}.fd-personel-intro h2{font-size:19px;font-weight:650;margin:0;color:#20374e}.fd-personel-intro p{margin:5px 0 0;font-size:12px;color:#7c8a9c}
+#personelApp .module-subnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap!important;padding:0;margin:0 0 16px;background:transparent;border:0;box-shadow:none}
+#personelApp .module-subnav>button{padding:8px 12px;border-radius:7px;font-size:11px;font-weight:500;box-shadow:none;min-height:34px}
+#personelApp .module-subnav>button.active{background:#155e75!important;border-color:#155e75;color:#fff;box-shadow:none}
+#personelApp .personel-export-actions{margin-left:auto;gap:7px!important;flex-wrap:wrap!important}
+#personelApp .btn-export{padding:8px 11px;font-size:11px;border-radius:7px;min-height:34px;box-shadow:none}
+#personelApp .personel-summary{margin:0 0 16px}
+#personelApp .personel-summary-title{font-size:10px;color:#7b8b9e;font-weight:600;letter-spacing:.5px;margin:0 0 9px}
+#personelApp .personel-summary-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+#personelApp .personel-summary-card{border:1px solid #dde5ee;border-top:3px solid #99b6c7;border-radius:10px;padding:12px 15px;background:#fff;box-shadow:none}
+#personelApp .personel-summary-card span{font-size:10px;font-weight:500;letter-spacing:.2px;color:#758599}
+#personelApp .personel-summary-card strong{font-size:21px;font-weight:650;color:#20374e;margin-top:5px}
+.fd-personel-branches{margin-top:12px;border:1px solid #dde5ee;border-radius:10px;overflow:hidden;background:#fff}
+.fd-personel-branches>h3{padding:12px 15px;font-size:13px;color:#46647a;font-weight:600;margin:0 0 12px;border-bottom:1px solid #edf1f6;background:#f8fafc}
+#personelApp .branch-summary-list{padding:0 12px 12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+#personelApp .branch-summary-card{padding:11px;border:1px solid #e6ecf3;border-radius:8px;background:#f9fbfe}
+#personelApp .branch-summary-card h4{font-size:13px;font-weight:600;margin:0 0 10px;color:#476079}
+#personelApp .branch-summary-metrics b{font-size:17px;font-weight:600;color:#155e75}#personelApp .branch-summary-metrics span{font-size:11px;color:#64748b}
+#personelApp .branch-summary-gender{display:block;margin:2px 0 5px;font-size:10px;font-weight:400;line-height:1.35;white-space:nowrap;color:#64748b}
+#personelApp .card{border:1px solid #dce5ee;border-radius:12px;box-shadow:0 3px 14px #0f172a04;background:#fff;padding:0!important;overflow:hidden}
+#personelApp .card-header{padding:15px 17px;border-bottom:1px solid #e5ebf2;background:#fff;gap:10px}
+#personelApp .card-header h2{font-size:14px;font-weight:650;color:#20374e;margin:0}
+#personelApp .badge-count{background:#eef5fa;color:#52758c;font-weight:500;font-size:10px;padding:5px 9px;border-radius:6px}
+#personelApp .filter-bar{display:grid;grid-template-columns:minmax(200px,1.6fr) repeat(5,minmax(130px,1fr));gap:8px;padding:13px 17px;background:#fafcfe;border-bottom:1px solid #e5ebf2;margin:0}
+#personelApp .filter-bar input,#personelApp .filter-bar select{width:100%;min-width:0;height:35px;min-height:35px;padding:7px 10px;border:1px solid #d5e0ea;border-radius:7px;font-size:11px;background:#fff;color:#51677b}
+#personelApp .table-wrapper{margin:0;border:0;border-radius:0;max-width:100%;overflow:auto;overscroll-behavior:contain}
+#personelApp #tabloAktifPersonel,#personelApp #tabloAyrilanPersonel{width:100%;table-layout:fixed;min-width:0;font-size:12px;border-collapse:collapse}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th{padding:11px 10px;background:#f0f5fa;color:#60758a;font-size:10px;font-weight:650;letter-spacing:0;white-space:normal;text-align:left;vertical-align:middle;border-bottom:1px solid #d9e4ef}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{padding:10px;border-bottom:1px solid #edf1f6;white-space:normal;overflow-wrap:anywhere;vertical-align:middle;color:#334155;font-size:12px}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tr:nth-child(even){background:#fbfcfe}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tr:hover{background:#f1f8fc}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(1){width:4%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(2){width:5%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(3){width:11%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(4){width:20%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(5){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(6){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(7){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(8){width:10%}#personelApp #tabloAktifPersonel th:last-child{width:14%}#personelApp #tabloAyrilanPersonel th:last-child{width:14%}
+#personelApp .user-img-thumb{width:30px;height:30px;border-radius:8px;object-fit:cover}
+#personelApp .tc-link{color:inherit;font:inherit;cursor:pointer;text-decoration:none;font-weight:400}#personelApp .tc-link:hover{text-decoration:underline}
+#personelApp td .badge{font-size:10px;padding:4px 6px;font-weight:500;border-radius:5px;white-space:normal}
+#personelApp td .action-btns{display:flex;gap:5px;flex-wrap:wrap!important;min-width:0}
+#personelApp td .btn-modern{padding:6px 8px;border-radius:6px;font-size:10px;box-shadow:none;white-space:nowrap;min-width:0}
+#personelDashboardApp .dashboard-layout{gap:14px;margin-top:14px!important}
+#personelDashboardApp .dashboard-panel{border:1px solid #dce5ee;border-radius:11px;box-shadow:none;background:#fff;overflow:hidden}
+#personelDashboardApp .dashboard-panel-head{padding:14px 16px;border-bottom:1px solid #e5ebf2;background:#fff}
+#personelDashboardApp .dashboard-panel-head h3{font-size:13px;font-weight:650;color:#20374e;margin:0}
+#personelDashboardApp .dashboard-panel-head span{font-size:10px;color:#7c8b9e}
+#personelDashboardApp .dashboard-list{padding:0 15px}#personelDashboardApp .dashboard-list-item{padding:11px 0;border-color:#edf1f6}#personelDashboardApp .dashboard-person strong{font-size:12px;font-weight:500;color:#334155}#personelDashboardApp .dashboard-person small{font-size:10px;color:#7a899c}#personelDashboardApp .dashboard-tag{font-size:10px;font-weight:500;border-radius:6px;padding:5px 7px}#personelDashboardApp .dashboard-empty{font-size:11px;padding:25px 12px;color:#8a97a9}
+:is(#modalPersonel,#modalPersonelDetay)>.modal-card{width:min(1120px,calc(100vw - 32px))!important;max-width:1120px!important;max-height:calc(100dvh - 32px)!important;border-radius:13px;box-shadow:0 16px 48px #0f172a25}
+:is(#modalPersonel,#modalPersonelDetay) .modal-header{padding:17px 20px;background:#fff;color:#20374e;border-bottom:1px solid #e2e8f0}
+:is(#modalPersonel,#modalPersonelDetay) .modal-header h3{font-size:17px;font-weight:650;color:inherit}
+:is(#modalPersonel,#modalPersonelDetay) .modal-close{color:#64748b}
+:is(#modalPersonel,#modalPersonelDetay) .modal-body{padding:16px 20px;overflow:auto;overscroll-behavior:contain;background:#fafcfe;min-height:0}
+#modalPersonel .profile-section,#modalPersonelDetay .profile-section{border-radius:10px;border:1px solid #dce5ee;background:#fff;margin:12px 0;box-shadow:none}
+#modalPersonel .profile-section summary,#modalPersonelDetay .profile-section summary{font-size:12px;font-weight:600;color:#46647a;padding:13px 15px;background:#f3f7fa}
+#modalPersonel .profile-section summary,#modalPersonel .profile-section-heading{font-size:15px;line-height:1.45;color:#334e68}
+#modalPersonel .profile-layout{gap:12px;padding:15px}
+#modalPersonel .form-group label{font-size:13px;font-weight:500;color:#52677b;line-height:1.5}
+#modalPersonel .form-group input,#modalPersonel .form-group select,#modalPersonel .form-group textarea{border:1px solid #d5e0ea;border-radius:7px;font-size:14px;padding:9px 11px;min-height:40px;line-height:1.45}
+#modalPersonel .form-group :is(small,.help-text){font-size:12px;line-height:1.5}
+#modalPersonel .form-group input:is([type=checkbox],[type=radio]){min-height:18px;width:18px;height:18px;padding:0}
+#modalPersonelDetay .detay-tab-header{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border:1px solid #e0e7ef;border-radius:9px;background:#e8eef4;margin-bottom:14px}
+#modalPersonelDetay .detay-tab-btn{padding:8px 10px;border:0;border-radius:6px;background:transparent;color:#64748b;font-size:11px;font-weight:500;box-shadow:none}
+#modalPersonelDetay .detay-tab-btn.active{background:#fff;color:#155e75;box-shadow:0 2px 5px #0f172a0a}
+@media(max-width:1150px){#personelApp .filter-bar{grid-template-columns:minmax(200px,1.5fr) repeat(2,minmax(150px,1fr))}}
+@media(max-width:700px){
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{width:100%;overflow:auto!important;flex-wrap:nowrap!important;padding:5px;scrollbar-width:thin}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{padding:9px 11px!important;font-size:13px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:10px 12px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{margin:0!important;order:0;justify-content:flex-start}
+#personelApp .app-layout>main,#personelDashboardApp>main{padding:12px!important}
+#personelApp .module-subnav>button{flex:1 1 110px!important;min-width:0!important;white-space:normal}
+#personelApp .personel-export-actions{width:100%;margin:3px 0 0;justify-content:flex-start!important}#personelApp .personel-export-actions button{flex:1;min-width:0}
+#personelApp .personel-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}#personelApp .personel-summary-card{padding:10px}#personelApp .personel-summary-card strong{font-size:18px}
+#personelApp .filter-bar{display:grid!important;grid-template-columns:1fr 1fr!important;padding:12px;gap:7px}#personelApp .filter-bar input{grid-column:1/-1}#personelApp .filter-bar input,#personelApp .filter-bar select{width:100%!important;min-width:0!important;font-size:12px;min-height:38px}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel),#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tbody{display:block;width:100%;min-width:0!important}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) thead{display:none}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:10px;border-bottom:1px solid #dce5ee}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{display:block;border:0;padding:5px 7px;min-width:0;order:1}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td::before{display:block;content:attr(data-fd-label);font-size:9px;color:#8090a3;margin-bottom:3px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(-n+2){display:none}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(4){grid-column:1/-1;order:0;font-size:14px;font-weight:500}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:last-child{grid-column:1/-1;order:2}
+#personelDashboardApp .dashboard-layout{grid-template-columns:1fr!important}
+:is(#modalPersonel,#modalPersonelDetay)>.modal-card{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;margin:0!important}
+:is(#modalPersonel,#modalPersonelDetay) .modal-body{padding:12px!important}#modalPersonel .profile-layout{padding:12px}#modalPersonel .form-group input,#modalPersonel .form-group select,#modalPersonel .form-group textarea{font-size:16px}
+#modalPersonelDetay .detay-tab-header{flex-wrap:wrap}#modalPersonelDetay .detay-tab-btn{flex:1 1 130px;min-width:0}
+}
+

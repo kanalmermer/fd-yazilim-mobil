@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261021-s26-89a0fc4ed67f",
+  "release": "fd-modular-20261021-s26-036b70cf3aa0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "617a92567f82447113302b0a6494939bbdfdbf6838a90f64beb37b0d61cf6143",
+      "sha256": "7b541c2611998a5b3e452f3495a6fd5f388fe63ec37900ef9963804419aee2c6",
       "bytes": 43199
     },
     {
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "5e46e6a1441a681d20392812153f42fc6436f97bb8e429fbd5d3d9da3fdb8484",
-      "bytes": 737027
+      "sha256": "c228919272a3f12b6ab8482e726d9e718a49a5235efbbfccf22b379bba70a156",
+      "bytes": 737183
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -633,13 +633,13 @@
     },
     {
       "path": "modules/ayarlar/manifest.json",
-      "sha256": "319d9e33867928245c7a8fa724b8d2c28b4a7ac157829d9c67474183d6d8f320",
+      "sha256": "2ca99efbadc1faf47dd07e7ae45566a634720c3f7b6fd539c3a206916b5413d9",
       "bytes": 3404
     },
     {
       "path": "modules/ayarlar/module.js",
-      "sha256": "26510b0a086d1f1d413aecb72a6278dff44e5e63c569197985fb0a8ec585e83f",
-      "bytes": 119018
+      "sha256": "c21f942c801c512f03d3e8c1beafa301fb10f4b78fa65e30cc6b2d54532255b0",
+      "bytes": 118682
     },
     {
       "path": "modules/ayarlar/style.css",
@@ -648,8 +648,8 @@
     },
     {
       "path": "modules/ayarlar/view.html",
-      "sha256": "eccb723a3b6c01b9863a3166cd149cdaf9f2ff7861676858b9e27c1c042efc84",
-      "bytes": 25734
+      "sha256": "feef041130ce34d7ea7bbaca8301ff13f281507ae6b21b349be3134547662f2d",
+      "bytes": 25683
     },
     {
       "path": "modules/bildirim/manifest.json",
@@ -1208,8 +1208,8 @@
     },
     {
       "path": "shared/payroll-overtime.js",
-      "sha256": "41de7b8d8cf18be94777ea47c76a16b62916baeaf3dad8ed092db41d269a42ce",
-      "bytes": 7876
+      "sha256": "ae230663290212c03db76698b3dab3931ac0bcc15c592293f4ae927312bee812",
+      "bytes": 7432
     },
     {
       "path": "shared/payroll-workspace.js",
