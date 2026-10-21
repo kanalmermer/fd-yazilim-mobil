@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261021-s26-c78640afaf8e",
+  "release": "fd-modular-20261021-s26-dd6f072bbedb",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "14605088d7be0ca958e9aed3a990db5bfd30ab47b6b5e3b59b19589a060599d8",
+      "sha256": "4c09b440d9b33124a3b748093159ca26c5ffe71afaf19c8fdb761c6484645818",
       "bytes": 43199
     },
     {
@@ -38,8 +38,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "5d7862a48a3abe5bdbdec335a9f52a0a2d94e5ea3e989975b79f115de1cd90ae",
-      "bytes": 40653
+      "sha256": "2e1d95f06ef5e6c96091ac8182ed05ca3f931c7b43c6b361727b243a20a7bc7f",
+      "bytes": 42832
     },
     {
       "path": "core/document-entrypoints.js",
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "6c92a9f6354ae4bbe8e6022b4e7523861dc2a653f36e39e90576bb166c8f250a",
-      "bytes": 738324
+      "sha256": "42bb9fcebe26681372886326d17cd3d2ad3ab2c67662fa9a0efe25ac830b41f0",
+      "bytes": 738463
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1132,6 +1132,16 @@
       "bytes": 3545
     },
     {
+      "path": "shared/attendance-fast.css",
+      "sha256": "c4a5d596c3f32ce7f5e53a79eb00c59e77958a23cbe0b959601060f1e4ff01cc",
+      "bytes": 883
+    },
+    {
+      "path": "shared/attendance-fast.js",
+      "sha256": "294a1caccf95a6b0f6db6f9d393b944d64cde7e10eda47c0fb2202dede5cda45",
+      "bytes": 16894
+    },
+    {
       "path": "shared/attendance-queue-ui.css",
       "sha256": "1f7745d6442237c147ee2a4f81df8ecdfca5309995768be2f8daedc0fd2fe974",
       "bytes": 563
@@ -1308,8 +1318,8 @@
     },
     {
       "path": "shared/weekly-roster-fast.js",
-      "sha256": "03dd147c0cca9e73817b021d4a38074f2ceb94bee4531c28eff9d287b671e642",
-      "bytes": 4905
+      "sha256": "6faf7200d1ab4193c50dd02cbe69f90ea237768117b429c8d3b45a4a16e8ed37",
+      "bytes": 4923
     },
     {
       "path": "shared/weekly-roster-safety.css",
