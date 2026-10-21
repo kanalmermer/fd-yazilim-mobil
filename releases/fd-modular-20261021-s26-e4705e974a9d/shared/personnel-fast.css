@@ -1,0 +1,4 @@
+.fd-personnel-load{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 12px;padding:12px 14px;border:1px solid #cbdde9;border-radius:10px;background:#f4f9fc;color:#24516e;font-size:.88rem;line-height:1.5;overflow-wrap:anywhere}
+.fd-personnel-load[hidden]{display:none}
+.fd-personnel-load button{padding:7px 12px;border:1px solid #b7d4e7;border-radius:8px;background:#fff;color:#075985;cursor:pointer;font:inherit}
+.fd-personnel-detail-loading .detay-tab-header,.fd-personnel-detail-loading .detay-tab-content{display:none!important}
