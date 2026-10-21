@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261021-s26-2d4e72f5f632",
+  "release": "fd-modular-20261021-s26-c78640afaf8e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "0ed2ea1f71d33318d86b4713068371d47032be3e90387bcd703f0fff35002108",
+      "sha256": "14605088d7be0ca958e9aed3a990db5bfd30ab47b6b5e3b59b19589a060599d8",
       "bytes": 43199
     },
     {
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "eb69c5897d0176307e1526f272a02b7a6751eeadd3936ed5da689455c1179228",
-      "bytes": 737735
+      "sha256": "6c92a9f6354ae4bbe8e6022b4e7523861dc2a653f36e39e90576bb166c8f250a",
+      "bytes": 738324
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -363,8 +363,8 @@
     },
     {
       "path": "legacy/46-fdUnifiedOutputUiV227.js",
-      "sha256": "dcf4402b5693a2d05ca9bf4e9c2a94d4422450dff6da14eb19924e1d0fe7559e",
-      "bytes": 31397
+      "sha256": "ce0a16bde08f6588ade4a884c2da3ce02680c8723d3d970472708308ff271a23",
+      "bytes": 31520
     },
     {
       "path": "legacy/50-fdAttendanceRenderPerformance.js",
@@ -1137,23 +1137,28 @@
       "bytes": 563
     },
     {
+      "path": "shared/attendance-report-layout.js",
+      "sha256": "a56af250128a653106979bdb942bf28348b236fa0d65c205989e962e7d460793",
+      "bytes": 14364
+    },
+    {
       "path": "shared/attendance-summary-data.js",
       "sha256": "b5c260476815fddc98bd29b138d78ee78f027d64b075aa9f3dc6172158e55aaf",
       "bytes": 19459
     },
     {
       "path": "shared/attendance-summary-output.js",
-      "sha256": "72b616c9afd487bfb65656ce6a76e9f0118022aeb5d1de368fad98dfc83e8fe3",
-      "bytes": 8274
+      "sha256": "28a024a0b9104e6b3caaf85bfde3802a7f96ac9bb36cd270faa8a9b148934e8d",
+      "bytes": 7674
     },
     {
       "path": "shared/attendance-summary-ui.js",
-      "sha256": "d4dbec2defdc7e23118fc1bf0582b905f962734971460854281b61872f5044b5",
-      "bytes": 2393
+      "sha256": "0b7760e942feb6cf25c49d45c99755d9b436de2cbc65e895878827761c5592f1",
+      "bytes": 2369
     },
     {
       "path": "shared/attendance-summary.css",
-      "sha256": "5e29744285b67d4274760067042bf381439eb7f6254b62d00f685cf788af69e0",
+      "sha256": "647ab900d0116fb2e312f18e48fb4aab2cff29509f0c4347392547cdd7d5e949",
       "bytes": 2627
     },
     {
