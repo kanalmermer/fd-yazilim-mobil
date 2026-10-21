@@ -1,0 +1,7 @@
+/* Desktop attendance panels share the sidebar's grid-row height; mobile keeps
+   its original stacked/scrolling rules. No attendance calculation changes. */
+@media(min-width:901px){
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-layout{align-items:stretch}
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-panel{height:auto;min-height:0;align-self:stretch}
+    body:not(.personel-session) #magicpass-tab-liste .magicpass-rapor-panel>.magicpass-aylik-table-wrap{flex:1 1 0;min-height:0;max-height:none;overflow:auto}
+}
