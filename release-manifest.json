@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s27-647c8deaf8a0",
+  "release": "fd-modular-20261022-s28-271be57a72c8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "37ae8833765ebfb3a4f0a5cd6433a0f46dd8f48911d9e7c95da11fa964ded593",
-      "bytes": 43855
+      "sha256": "5a68e8c3d63ba700644e54a1ec85abd3a1f328ed6c0bbf1ac72ecccd4d79d5bc",
+      "bytes": 44748
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -83,8 +83,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d81e88f2c410964f61d64721f6d3459e0811da0d399a0544eb54d21ec2b04543",
-      "bytes": 3550
+      "sha256": "7fd256d48898d38a478417cf0b38ee0c22894b7d843385b176b0689f5aa006d7",
+      "bytes": 3686
     },
     {
       "path": "core/module-loader.js",
@@ -127,6 +127,11 @@
       "bytes": 8857
     },
     {
+      "path": "core/shift-definition-entrypoints.js",
+      "sha256": "8b1cdbdd7eabbd5cedc5ee14b1babac3332db5609df1762f5dcb7f1830e8cfe3",
+      "bytes": 1438
+    },
+    {
       "path": "core/title-entrypoints.js",
       "sha256": "6f662ac736b7bd64431efcf72f11208faecb74a169a34039048f695aaa379921",
       "bytes": 3776
@@ -163,8 +168,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "0cbb528c37134758457a8f197235a0efbdf4e85c8bc789660a8b4621da771dec",
-      "bytes": 701375
+      "sha256": "11a502de5dab98c24ea2f2f8c8374bd9f8ca65c20b90b47a217916bd7f6ea401",
+      "bytes": 694056
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -398,8 +403,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "42e5836ee09df356d263bc57879c9bb7e91396dacf53343003ff3456ed1af408",
-      "bytes": 95539
+      "sha256": "43a6ee7c8b7564d9fd1bfacddd1954f6c9baf29a33df121ca2e8b0cf4eb2cb40",
+      "bytes": 93070
     },
     {
       "path": "legacy/styles/01.css",
@@ -1095,6 +1100,26 @@
       "path": "modules/vardiya/view.html",
       "sha256": "b5ff2604d683f25daec494fc00ad0060ff2af4fcc1edfb9905e7676066ad18f6",
       "bytes": 2437
+    },
+    {
+      "path": "modules/vardiyatanim/manifest.json",
+      "sha256": "fd10f213ec715f32b51de7bc499591895f0d37f57960fd83e73a6e00f0e8d923",
+      "bytes": 1143
+    },
+    {
+      "path": "modules/vardiyatanim/module.js",
+      "sha256": "59b984bf93b4dd3f35547f97e3582136bd4f2a0bca43facfa69c209adc917b2c",
+      "bytes": 10178
+    },
+    {
+      "path": "modules/vardiyatanim/style.css",
+      "sha256": "d08692990f307259001ae98b298a5dd8012d74921ab47e15b344c9be5f4e870d",
+      "bytes": 1671
+    },
+    {
+      "path": "modules/vardiyatanim/view.html",
+      "sha256": "bdec413d0c694141622993778c973dc7d8e221b66b9262181311ecb8ef557cc3",
+      "bytes": 2960
     },
     {
       "path": "modules/varlikkisileri/manifest.json",
