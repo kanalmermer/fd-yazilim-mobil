@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s26-719f265fea80",
+  "release": "fd-modular-20261022-s26-befb65263152",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "f25614c5089bc7e24c16335c6a598ae0b1e31e9b4c86f1a7ed31d4308be9bca8",
+      "sha256": "10163f6f82510d3db6f2c7b3c5ca9a5c4cfcfd69858569ba445381839a7f955e",
       "bytes": 43199
     },
     {
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "c8cb91ca17812e6af92ffd66cfdbee4f9903bb7ff328e2288880edb32d576982",
-      "bytes": 738004
+      "sha256": "b636831957a8d208deb45291a105e9736cb5f8606392fb03e6748193c91c165b",
+      "bytes": 738134
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1275,6 +1275,16 @@
       "path": "shared/personnel-fast.js",
       "sha256": "67782c13498937bb67e6f069599b25f5e1c022cddf516249ebb5bfecbc1323b7",
       "bytes": 5502
+    },
+    {
+      "path": "shared/personnel-photo.css",
+      "sha256": "7b8e9d23efc2086ed69dff3e77089945b5ed4c442411f43a7197ee8fac7755fb",
+      "bytes": 2775
+    },
+    {
+      "path": "shared/personnel-photo.js",
+      "sha256": "6cba28fc9b31de95d2468ad197353d6535aa004b4344940854bf04003b178209",
+      "bytes": 5642
     },
     {
       "path": "shared/policy-badges.css",
