@@ -1,0 +1,30 @@
+/* List pages grow in document flow. Horizontal table navigation is retained. */
+:is(#personelApp,#puantajApp,#avansApp,#aracTakipApp,#tapuTakipApp,#kiraTakipApp,#policeTakipApp) .app-layout,
+:is(#personelApp,#puantajApp,#avansApp,#aracTakipApp,#tapuTakipApp,#kiraTakipApp,#policeTakipApp) .app-layout>main,
+#magicpassApp>.app-layout>main{height:auto!important;max-height:none!important;min-width:0;overflow:visible!important}
+:is(#personelApp,#puantajApp,#avansApp,#aracTakipApp,#kiraTakipApp,#policeTakipApp) .table-wrapper,
+#tapuTakipApp .tapu-table-wrap,#magicpass-tab-gunluk .table-wrapper,
+#modalAdmin .table-wrapper{height:auto!important;max-height:none!important;min-height:0!important;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior:auto}
+#magicpass-tab-gunluk .magicpass-gunluk-kart{height:auto!important;max-height:none!important}
+/* A dialog still owns ONE scroll area; its table no longer owns another. */
+#modalAdmin .modal-body{min-height:0;overscroll-behavior:contain}
+/* These links were inheriting generic/global button styles when Kira was cold. */
+#aracTakipApp #aracCezaBody .kira-link{display:inline-flex!important;align-items:center;max-width:100%;padding:6px 9px!important;border:1px solid #c7dce8!important;border-radius:7px!important;background:#edf6fa!important;color:#155e75!important;font:inherit!important;font-weight:600!important;line-height:1.4!important;cursor:pointer!important;text-decoration:none!important;white-space:normal!important;text-align:left!important}
+#aracTakipApp #aracCezaBody .kira-link:hover{background:#dff0f7!important;border-color:#8db9ce!important}
+#aracTakipApp #aracCezaBody .kira-link:focus-visible{outline:2px solid #0284c7!important;outline-offset:2px}
+.fd-list-pages{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 14px;border-top:1px solid #dce5ee;background:#f8fafc;color:#52647a;font-size:12px}
+.fd-list-pages[hidden]{display:none!important}
+.fd-list-page-controls{display:flex;align-items:center;gap:9px}
+.fd-list-pages button{padding:7px 11px;border:1px solid #cbd9e4;border-radius:7px;background:#fff;color:#24546b;font:inherit;font-weight:600;cursor:pointer}
+.fd-list-pages button:disabled{opacity:.4;cursor:default}
+.fd-list-pages button:focus-visible{outline:2px solid #0284c7;outline-offset:2px}
+.fd-user-search{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+.fd-user-search label{font-size:13px;font-weight:600;color:#334155}
+.fd-user-search input{flex:1;min-width:180px;max-width:480px;padding:9px 12px;border:1px solid #cbd9e4;border-radius:8px;font-size:13px;text-transform:none!important;background:#fff}
+tr[data-fd-page-row][hidden]{display:none!important}
+.fd-page-loading{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.85);backdrop-filter:blur(6px);padding:24px;outline:none;box-sizing:border-box;color:#fff;text-align:center}
+.fd-page-loading-card{width:min(380px,100%);display:flex;align-items:center;flex-direction:column;gap:12px}
+.fd-page-loading-card .big-spinner{margin:0 auto 18px}
+.fd-page-loading-card h3{margin:0;font-size:1.3rem;font-weight:700;color:#fff}
+@media(max-width:600px){.fd-list-pages{padding:10px}.fd-list-page-controls{gap:6px}.fd-list-pages button{padding:8px}.fd-user-search{align-items:stretch}.fd-user-search input{width:100%;max-width:none}}
+@media print{.fd-list-pages,.fd-user-search,.fd-page-loading{display:none!important}tr[data-fd-page-row][hidden]:not([data-fd-search-hidden="true"]){display:table-row!important}}
