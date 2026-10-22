@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s26-befb65263152",
+  "release": "fd-modular-20261022-s26-b3c6aae087e6",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "10163f6f82510d3db6f2c7b3c5ca9a5c4cfcfd69858569ba445381839a7f955e",
+      "sha256": "64401fa2ca20b6bd680e6dae088f1abafccf9e033ebc4a0c128cc89da15ce73c",
       "bytes": 43199
     },
     {
@@ -38,8 +38,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "2e1d95f06ef5e6c96091ac8182ed05ca3f931c7b43c6b361727b243a20a7bc7f",
-      "bytes": 42832
+      "sha256": "8f82b3b9afe3b1923b40c0eabe22e30f5b0ae5544fc81408ccdf14fadc2f4445",
+      "bytes": 42975
     },
     {
       "path": "core/document-entrypoints.js",
@@ -258,8 +258,8 @@
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
-      "sha256": "8a19b04a47a865c7e6abe28ec361b107f6f3011d9eea75165eb5876a98d45fb1",
-      "bytes": 19372
+      "sha256": "5a9d3fab0f180f688353e78a9b3cf4a3db06729af2c337ad731c29f53d585f1c",
+      "bytes": 19400
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
@@ -593,13 +593,13 @@
     },
     {
       "path": "modules/arac/manifest.json",
-      "sha256": "bfff0b0079528c8a145492bbeec3bf47c6252278099e3586ab51e85fb281e879",
+      "sha256": "447a34ea54231994eb51cac88ff20c90e52736e157cefe6ff0d0785b617c8966",
       "bytes": 5776
     },
     {
       "path": "modules/arac/module.js",
-      "sha256": "545f6aa0e2cb889a45989091e79629523a1155e5722ecfd75ef61a522f584d2a",
-      "bytes": 220588
+      "sha256": "74292d47d6a9e723908d533d055cf8ebd2283f929e70de575bdf15f580efd862",
+      "bytes": 221400
     },
     {
       "path": "modules/arac/style.css",
@@ -1238,8 +1238,8 @@
     },
     {
       "path": "shared/list-pagination.js",
-      "sha256": "0099dc0a024198882aa2ff3366d9f9f6e27653ceae40f6edec203908f8f65ac9",
-      "bytes": 7832
+      "sha256": "a6854d77af02ce026a6febc95a68720e9992b2eee85f0ecd94a3f90bcbe5a4c1",
+      "bytes": 7892
     },
     {
       "path": "shared/page-layout.css",
@@ -1335,6 +1335,11 @@
       "path": "shared/vehicle-data.js",
       "sha256": "66f2eea61c07c415765e60d3f2ddadfd36803da96d9cbd2219d29db699146285",
       "bytes": 11199
+    },
+    {
+      "path": "shared/vehicle-pages.js",
+      "sha256": "3765e2084f6b97821c87ac55ca863150219fb7ba9d2fd8097d9c67cda0ff83de",
+      "bytes": 15566
     },
     {
       "path": "shared/waybill-data.js",
