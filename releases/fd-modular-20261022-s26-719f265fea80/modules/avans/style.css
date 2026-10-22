@@ -1,0 +1,50 @@
+
+                .avans-kayit-filtreleri{display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(155px,.8fr) minmax(160px,.9fr) minmax(140px,.8fr) auto;gap:9px;align-items:end;margin:0 0 13px;padding:12px;border:1px solid #dbe5ef;border-radius:12px;background:#f8fafc}.avans-kayit-filtreleri label{display:block;margin:0 0 5px;color:#475569;font-size:.68rem;font-weight:850}.avans-kayit-filtreleri input,.avans-kayit-filtreleri select{width:100%;min-height:39px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}.avans-kayit-filtre-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 2px 11px;color:#64748b;font-size:.72rem;font-weight:750}@media(max-width:980px){.avans-kayit-filtreleri{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.avans-kayit-filtreleri{grid-template-columns:1fr 1fr}.avans-kayit-filtreleri .avans-filtre-arama{grid-column:1/-1}.avans-kayit-filtreleri button{width:100%}}
+            
+
+
+                #avansGelecekCard .avans-gelecek-baslik{display:grid;grid-template-columns:minmax(230px,1fr) auto;align-items:center;gap:14px;flex-wrap:nowrap!important}
+                #avansGelecekCard .avans-gelecek-aksiyonlar{width:auto;max-width:none;display:flex;align-items:end;justify-content:flex-end;flex-wrap:wrap!important;gap:12px}
+                #avansGelecekCard .avans-ay-araligi,#avansGelecekCard .avans-plan-ciktilari{display:flex;gap:7px;align-items:end}
+                #avansGelecekCard .avans-ay-araligi label{display:grid;gap:4px;margin:0;color:#475569;font-size:12px;font-weight:600}
+                #avansGelecekCard .avans-ay-araligi input{width:160px;min-height:44px;margin:0;padding:7px 10px;box-sizing:border-box}
+                #avansGelecekCard .avans-plan-ciktilari button{flex:0 0 auto;min-height:44px;margin:0;white-space:nowrap}
+                #avansGelecekCard .avans-goruntu-btn{min-width:112px;background:#0284c7!important;color:#fff!important;justify-content:center}
+                @media(max-width:980px){#avansGelecekCard .avans-gelecek-baslik{grid-template-columns:1fr}#avansGelecekCard .avans-gelecek-aksiyonlar{width:100%;justify-content:flex-start}}
+                @media(max-width:480px){#avansGelecekCard .avans-ay-araligi{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#avansGelecekCard .avans-ay-araligi input{width:100%;min-width:0}#avansGelecekCard .avans-plan-ciktilari{width:100%;flex-wrap:wrap}}
+                #avansGelecekCard .avans-matris{min-width:760px;border-collapse:separate;border-spacing:0}
+                #avansGelecekCard .avans-matris th,#avansGelecekCard .avans-matris td{padding:10px 12px;text-align:right;border-bottom:1px solid #dbe4ec;border-right:1px solid #e2e8f0;white-space:nowrap}
+                #avansGelecekCard .avans-matris thead th{background:#0f766e;color:#fff;text-align:center;font-size:12px;letter-spacing:.02em;position:sticky;top:0;z-index:2}
+                #avansGelecekCard .avans-matris th:first-child,#avansGelecekCard .avans-matris td:first-child{text-align:left;position:sticky;left:0;z-index:1;background:#fff;min-width:190px}
+                #avansGelecekCard .avans-matris thead th:first-child{background:#0f766e;z-index:3}
+                #avansGelecekCard .avans-matris tbody td,#avansGelecekCard .avans-matris tbody td :is(strong,small,span){font-weight:400!important}
+                #avansGelecekCard .avans-matris tbody tr:hover td{background:#ecfdf5;font-weight:800!important}
+                #avansGelecekCard .avans-matris tbody tr:hover td :is(strong,small,span){font-weight:800!important}
+                #avansGelecekCard .avans-matris tbody tr:hover td:first-child{background:#d1fae5}
+                #avansGelecekCard .avans-matris .avans-ay-tutar{color:#9a3412;font-weight:800}
+                #avansGelecekCard .avans-matris .avans-satir-toplam{background:#f0fdf4;color:#166534;font-weight:900}
+                #avansGelecekCard .avans-matris tfoot th{background:#d1fae5;color:#14532d;font-weight:900;border-top:2px solid #10b981}
+                #avansGelecekCard .avans-matris tfoot th:first-child{position:sticky;left:0;z-index:1;background:#a7f3d0;text-align:left}
+            
+
+#avansGelecekBody td[data-avans-personel]{cursor:context-menu}
+#avansGelecekBody td[data-avans-personel]:focus-visible{outline:2px solid #0284c7;outline-offset:-3px}
+.fd-avans-ertele-menu{position:fixed;z-index:250000;background:#fff;border:1px solid #dbe4ec;border-radius:10px;padding:5px;box-shadow:0 12px 36px #0f172a24;max-width:calc(100vw - 16px)}
+.fd-avans-ertele-menu button{display:block;border:0;background:transparent;color:#0f172a;padding:11px 15px;border-radius:6px;font:inherit;cursor:pointer;text-align:left}
+.fd-avans-ertele-menu button:hover,.fd-avans-ertele-menu button:focus{background:#eff6ff}
+.fd-avans-ertele-overlay{position:fixed;inset:0;z-index:250001;background:#0f172a77;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overflow:auto}
+.fd-avans-ertele-card{width:100%;max-width:530px;max-height:calc(100dvh - 32px);overflow:auto;background:white;border:1px solid #dbe4ec;border-radius:14px;box-shadow:0 20px 70px #0f172a33;color:#1e293b;font-size:14px;line-height:1.5}
+.fd-avans-ertele-card header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid #e2e8f0}
+.fd-avans-ertele-card h2{font-size:17px;margin:0}
+.fd-avans-ertele-card form{padding:0 20px 20px}
+.fd-avans-ertele-card label{display:grid;gap:6px;margin:16px 0 5px;font-weight:600}
+.fd-avans-ertele-card :is(input,select){width:100%;min-width:0;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a}
+.fd-avans-ertele-card button{font:inherit;cursor:pointer;border:1px solid #cbd5e1;border-radius:8px;padding:9px 13px;background:#fff;color:#334155}
+.fd-avans-ertele-card header button{font-size:23px;padding:0 8px;border:0}
+.fd-avans-ertele-card footer{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:18px}
+.fd-avans-ertele-card .fd-avans-ertele-save{background:#047857;border-color:#047857;color:white}
+.fd-avans-ertele-card .fd-avans-ertele-preview{padding:11px;background:#eff6ff;color:#1e40af;border-radius:8px}
+.fd-avans-ertele-card .fd-avans-ertele-note,.fd-avans-ertele-card small{font-size:12px;color:#64748b}
+.fd-avans-ertele-card [data-error]{color:#b91c1c;background:#fff1f2;padding:10px;border-radius:8px;overflow-wrap:anywhere}
+.fd-avans-ertele-card :disabled{opacity:.6;cursor:wait}
+@media(max-width:480px){.fd-avans-ertele-overlay{padding:10px}.fd-avans-ertele-card{max-height:calc(100dvh - 20px)}.fd-avans-ertele-card header{padding:14px}.fd-avans-ertele-card form{padding:0 14px 14px}}

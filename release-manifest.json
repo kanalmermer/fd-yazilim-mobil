@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s26-4b10f397eb75",
+  "release": "fd-modular-20261022-s26-719f265fea80",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "f2771ff883611a404395389ecfcb327febf7682f952839f6534f0d0f0774ba1d",
+      "sha256": "f25614c5089bc7e24c16335c6a598ae0b1e31e9b4c86f1a7ed31d4308be9bca8",
       "bytes": 43199
     },
     {
@@ -653,13 +653,13 @@
     },
     {
       "path": "modules/bildirim/manifest.json",
-      "sha256": "453ba17bad08f0e53ec64e3fd0e6367a28854c0164aad907ef088eea7a27075f",
+      "sha256": "fcba6ec336000dbfb024a4b04da72ffd23343615d9e54373eba01d044058bccd",
       "bytes": 2005
     },
     {
       "path": "modules/bildirim/module.js",
-      "sha256": "b4c01c34e414e12ea341c2022a60e9718e15a84e2a21b5d83c9d0acb29bd1eae",
-      "bytes": 74782
+      "sha256": "f4cac18b40597440aff2321892d7cefbb0fa6f2878d7f1e7c36caaa10a31a13f",
+      "bytes": 75538
     },
     {
       "path": "modules/bildirim/style.css",
@@ -693,7 +693,7 @@
     },
     {
       "path": "modules/cks/manifest.json",
-      "sha256": "f469b93ad0537cccbaa06715def5480470953577486be50826495f2a1412609b",
+      "sha256": "453bd94e58fe45214f225798239444d5b68c9e9dc493b6626fc6061df14ba537",
       "bytes": 2144
     },
     {
@@ -708,8 +708,8 @@
     },
     {
       "path": "modules/cks/view.html",
-      "sha256": "e464ac543197ee19fd40f6e022b31ec7471e09e9431b98fa09677809357cc068",
-      "bytes": 8360
+      "sha256": "79f8aaec0f76384d44e55457b98ca5c990a82273e209cdff3f7f6a41afabaa54",
+      "bytes": 8397
     },
     {
       "path": "modules/companytools/manifest.json",
@@ -1033,13 +1033,13 @@
     },
     {
       "path": "modules/tapu/manifest.json",
-      "sha256": "7cf78becc05ac889b21030c3ff0e79f75cfbc2dcd3bd9df803f788a22e014ce2",
+      "sha256": "5f5a4a11b17f0a524a49ae24fa3317cbc6d3e47552ad422acc8f65ab28a1f3d6",
       "bytes": 1542
     },
     {
       "path": "modules/tapu/module.js",
-      "sha256": "ae001908cafb1ee3df4f49f37e66dbdfda02a7b2be12c4456f5245d1625cec88",
-      "bytes": 33962
+      "sha256": "a433ae5f57f7cb5abb6775319ff4f7f52865d765298a5a69ff6c77ea99e47ef0",
+      "bytes": 33961
     },
     {
       "path": "modules/tapu/style.css",
@@ -1048,8 +1048,8 @@
     },
     {
       "path": "modules/tapu/view.html",
-      "sha256": "01af7cd93f8e2e7711e634f9f784850f51917517e4575285c671a04e156d82f0",
-      "bytes": 7440
+      "sha256": "64248520379177420c94c36409293c0d2252ec745be1d2af11d3b1f9d0d160b1",
+      "bytes": 7438
     },
     {
       "path": "modules/vardiya/manifest.json",
@@ -1073,13 +1073,13 @@
     },
     {
       "path": "modules/varlikkisileri/manifest.json",
-      "sha256": "b20c474962786bb491c400562d9aeb3a1e5bcded3a7956b75d4045d84810684d",
+      "sha256": "83b30e1c8694032ef895e24905ca08cd8ace5c5d4b1e9bb871b899edbf556124",
       "bytes": 1449
     },
     {
       "path": "modules/varlikkisileri/module.js",
-      "sha256": "4ada990fd0b3fdbf78660a92512420b006b62b42839d0a9112723b65dca8916a",
-      "bytes": 39873
+      "sha256": "007efffdc6da395fd65526682cdb9e4c4930650eccb66b2fa95e44ecf6bb7373",
+      "bytes": 39876
     },
     {
       "path": "modules/varlikkisileri/style.css",
@@ -1088,18 +1088,18 @@
     },
     {
       "path": "modules/varlikkisileri/view.html",
-      "sha256": "a22a5148d52716c149b43c82d2b7bb923d5963c4fc16ecfcc93058f888517c2d",
-      "bytes": 5741
+      "sha256": "07dce844aa323c72080a21f0055629b9ca1232754874e706615e0123181396ff",
+      "bytes": 5760
     },
     {
       "path": "modules/workcenter/manifest.json",
-      "sha256": "966cb460ef51dbc714fed3c3594a66eaf1cb3562729bcaea829cbdba7947f479",
+      "sha256": "64f413ccf3471d6e442efe7bf004758b466f97827cd2508026482f7e815ac4ab",
       "bytes": 1769
     },
     {
       "path": "modules/workcenter/module.js",
-      "sha256": "523ae7bd4767b89bc882361ff17e19fa7e499fbd95c49211f92530bd337888c9",
-      "bytes": 67509
+      "sha256": "179020774fbc9b6114551247e5804569a05a3b01e09a68d7a61b6769a602e18a",
+      "bytes": 68756
     },
     {
       "path": "modules/workcenter/style.css",
@@ -1238,13 +1238,13 @@
     },
     {
       "path": "shared/list-pagination.js",
-      "sha256": "b87d7df2f80f3a3b8d92c320779526fccd482324d361e8a0eb2d1d49a48073d6",
-      "bytes": 5611
+      "sha256": "0099dc0a024198882aa2ff3366d9f9f6e27653ceae40f6edec203908f8f65ac9",
+      "bytes": 7832
     },
     {
       "path": "shared/page-layout.css",
-      "sha256": "5745c469863d68e66714125f3ae3850a1d88e7effdf0d76c405903af533a3d63",
-      "bytes": 3609
+      "sha256": "793fe04a05efaa30da151a44179e8dd8d0262fa80f9079c48868cc84a28a7dce",
+      "bytes": 4476
     },
     {
       "path": "shared/page-loading.js",
