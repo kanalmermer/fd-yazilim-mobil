@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261021-s26-25b030580e53",
+  "release": "fd-modular-20261022-s26-d94bc20ddeaf",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -18,7 +18,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "82ef8488ea0d830649228155fc512810633daadb3bd9fd166e265dd2d4da25d2",
+      "sha256": "ee55ade0e49de468a857122ecdb41c1d3fd24f499290882b33a175b4c9ee695b",
       "bytes": 43199
     },
     {
@@ -158,8 +158,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "42bb9fcebe26681372886326d17cd3d2ad3ab2c67662fa9a0efe25ac830b41f0",
-      "bytes": 738463
+      "sha256": "c8cb91ca17812e6af92ffd66cfdbee4f9903bb7ff328e2288880edb32d576982",
+      "bytes": 738004
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -893,7 +893,7 @@
     },
     {
       "path": "modules/kira/manifest.json",
-      "sha256": "d16b06f3a8424ebf2ed5854bd417ec0e3db0fb174848741f7fc9dc787a4fc5b8",
+      "sha256": "73fbfc3ce4f167e890c3433427fdc9c53a8ac9164c9b92f7a8f3cde3266928f2",
       "bytes": 4145
     },
     {
@@ -903,8 +903,8 @@
     },
     {
       "path": "modules/kira/style.css",
-      "sha256": "9257a91b0f5394f1e048247becb28a71277a79c9d07779d1a7e7b0b62a8afafd",
-      "bytes": 30635
+      "sha256": "13ea3045bbf7a52ad466f4400a6fe0a83ae2fcbff10b8851f966820aac11a892",
+      "bytes": 31138
     },
     {
       "path": "modules/kira/view.html",
@@ -1143,8 +1143,8 @@
     },
     {
       "path": "shared/attendance-queue-ui.css",
-      "sha256": "1f7745d6442237c147ee2a4f81df8ecdfca5309995768be2f8daedc0fd2fe974",
-      "bytes": 563
+      "sha256": "e5ba88a536c26f8ec1ff02ba1c1197a5426bb99d187b2a1c5e6870730dfde659",
+      "bytes": 971
     },
     {
       "path": "shared/attendance-report-layout.js",
