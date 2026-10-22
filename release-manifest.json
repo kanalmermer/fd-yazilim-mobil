@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s28-271be57a72c8",
+  "release": "fd-modular-20261022-s29-10803f4adbbf",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "5a68e8c3d63ba700644e54a1ec85abd3a1f328ed6c0bbf1ac72ecccd4d79d5bc",
-      "bytes": 44748
+      "sha256": "9a88ce95d3a224d085ac087ee8012c44e50b5bea6f14c7dc43ae5cf1c5026e59",
+      "bytes": 45889
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -40,6 +40,11 @@
       "path": "core/company-tools-entrypoints.js",
       "sha256": "3857055e7b1a8a373930377b842b633fcac2517627568afdf91610eb608e48d3",
       "bytes": 1905
+    },
+    {
+      "path": "core/daily-report-entrypoints.js",
+      "sha256": "15e30b6352ef179e562be5ac80a5fefaf295d20d902019695a98a858f4a2d748",
+      "bytes": 2578
     },
     {
       "path": "core/data-access.js",
@@ -83,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "7fd256d48898d38a478417cf0b38ee0c22894b7d843385b176b0689f5aa006d7",
-      "bytes": 3686
+      "sha256": "689e885067bfc286c00d8c4f7c7d3b495950177dcd0e5a270c8545798d452ec9",
+      "bytes": 3817
     },
     {
       "path": "core/module-loader.js",
@@ -168,8 +173,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "11a502de5dab98c24ea2f2f8c8374bd9f8ca65c20b90b47a217916bd7f6ea401",
-      "bytes": 694056
+      "sha256": "cd4e256c441a3f1601902284f68ed66343c52db5b5251d8fee760dcb45d4fa08",
+      "bytes": 677514
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -403,8 +408,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "43a6ee7c8b7564d9fd1bfacddd1954f6c9baf29a33df121ca2e8b0cf4eb2cb40",
-      "bytes": 93070
+      "sha256": "8aa9573fd703de51439a86d62953036d94edd22f83bdb6928be364d4a6e6ee12",
+      "bytes": 87648
     },
     {
       "path": "legacy/styles/01.css",
@@ -800,6 +805,26 @@
       "path": "modules/evrak/view.html",
       "sha256": "a27718b71f9eba06a1b527e72153172ede3581a8527afc2157c75980de950197",
       "bytes": 7716
+    },
+    {
+      "path": "modules/gunlukrapor/manifest.json",
+      "sha256": "f9324cc0461c81e2c645a3c72c0e46f17f0e762156f4bde89ff0f4c28ba5ced9",
+      "bytes": 1424
+    },
+    {
+      "path": "modules/gunlukrapor/module.js",
+      "sha256": "ba43b7459569f111acc842e4be243c8fe855d2f3c8b351eeb2086476fd484c1a",
+      "bytes": 22016
+    },
+    {
+      "path": "modules/gunlukrapor/style.css",
+      "sha256": "a92d25dd07bfbd7922f67e7c9b4dac730189cc8a8ff1edf3b1924921ccd722c9",
+      "bytes": 5463
+    },
+    {
+      "path": "modules/gunlukrapor/view.html",
+      "sha256": "2a5b001f36e61a037c6111d30a4c6f121654a306c83d95a2e82d1cde72c6cef1",
+      "bytes": 2680
     },
     {
       "path": "modules/icra/manifest.json",
