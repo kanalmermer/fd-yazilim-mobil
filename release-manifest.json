@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s26-b3c6aae087e6",
+  "release": "fd-modular-20261022-s27-647c8deaf8a0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -12,14 +12,19 @@
       "bytes": 2854
     },
     {
+      "path": "core/assistant-entrypoints.js",
+      "sha256": "f0e0deb5ef45fa4535a9db97b9ac60c0f2a5357af377152051f4ba2454d838b8",
+      "bytes": 1834
+    },
+    {
       "path": "core/bonus-entrypoints.js",
       "sha256": "fc68595e9292a755e132c9480d55647398af11b6e358af8326e86341bc8501b8",
       "bytes": 1532
     },
     {
       "path": "core/catalog.js",
-      "sha256": "64401fa2ca20b6bd680e6dae088f1abafccf9e033ebc4a0c128cc89da15ce73c",
-      "bytes": 43199
+      "sha256": "37ae8833765ebfb3a4f0a5cd6433a0f46dd8f48911d9e7c95da11fa964ded593",
+      "bytes": 43855
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -78,8 +83,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "5efc3c04258a0a2dc54f9798b96f52be82a08959b63330820978e8cedb5783a7",
-      "bytes": 3496
+      "sha256": "d81e88f2c410964f61d64721f6d3459e0811da0d399a0544eb54d21ec2b04543",
+      "bytes": 3550
     },
     {
       "path": "core/module-loader.js",
@@ -158,8 +163,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "b636831957a8d208deb45291a105e9736cb5f8606392fb03e6748193c91c165b",
-      "bytes": 738134
+      "sha256": "0cbb528c37134758457a8f197235a0efbdf4e85c8bc789660a8b4621da771dec",
+      "bytes": 701375
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -610,6 +615,26 @@
       "path": "modules/arac/view.html",
       "sha256": "085ce249702d72fcb5d39fa9d5ca6e523406243616a20b7da156ecb7e4118e72",
       "bytes": 41989
+    },
+    {
+      "path": "modules/asistan/manifest.json",
+      "sha256": "b5e42929ec00c53b4e090050d18a33b975137d62d92b7a96a7984d17193dd156",
+      "bytes": 883
+    },
+    {
+      "path": "modules/asistan/module.js",
+      "sha256": "87d21e9d50c0fee3d700ddc4011119a9e4f14848f2ad10db1edc602bff8ac898",
+      "bytes": 33288
+    },
+    {
+      "path": "modules/asistan/style.css",
+      "sha256": "dab1e3d52991403ed0cec0f44bee998907fb4ceb71fd858aaecc8d97dc1ce408",
+      "bytes": 2186
+    },
+    {
+      "path": "modules/asistan/view.html",
+      "sha256": "7a4feb0decb8c827f64b9628ae81b650b8cccf01d451bf447471200ad221dba5",
+      "bytes": 830
     },
     {
       "path": "modules/avans/manifest.json",
@@ -1130,6 +1155,11 @@
       "path": "shared/asset-people-registration.js",
       "sha256": "722d8b1dd96f8e0cc97b4831a66917d394a2ede3854d33907b7c696b7e3f7aef",
       "bytes": 3545
+    },
+    {
+      "path": "shared/assistant-launcher.css",
+      "sha256": "2e1483b37c43624a5c7bc18eeffdb503fec1845dc4002b6de0165dc65f1861e3",
+      "bytes": 598
     },
     {
       "path": "shared/attendance-fast.css",
