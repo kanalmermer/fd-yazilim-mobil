@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s29-9097142f08a3",
+  "release": "fd-modular-20261023-s29-831643da19f5",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "b5aca39d8ea86df6d4297259f939fe4adf92711798580833c605a4ade45ba2e5",
+      "sha256": "7e0f0921a127bc9573ca4fd741d02b3170ef99eb7ee05ebe52141dd8e8290f7f",
       "bytes": 45889
     },
     {
@@ -378,8 +378,8 @@
     },
     {
       "path": "legacy/46-fdUnifiedOutputUiV227.js",
-      "sha256": "ce0a16bde08f6588ade4a884c2da3ce02680c8723d3d970472708308ff271a23",
-      "bytes": 31520
+      "sha256": "4d8e560055d61e57ecd5f46e771bb03f4953c613db229fe280061138a6566c58",
+      "bytes": 31764
     },
     {
       "path": "legacy/50-fdAttendanceRenderPerformance.js",
@@ -1228,8 +1228,8 @@
     },
     {
       "path": "shared/attendance-report-layout.js",
-      "sha256": "a56af250128a653106979bdb942bf28348b236fa0d65c205989e962e7d460793",
-      "bytes": 14364
+      "sha256": "8793db9790874537e5257a4de304857189aef56e19efb84e86d550b4ffdfb1f9",
+      "bytes": 23598
     },
     {
       "path": "shared/attendance-summary-data.js",
