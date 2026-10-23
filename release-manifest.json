@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261022-s29-10803f4adbbf",
+  "release": "fd-modular-20261023-s29-ab2932eb2470",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "9a88ce95d3a224d085ac087ee8012c44e50b5bea6f14c7dc43ae5cf1c5026e59",
+      "sha256": "31245cf72d4ebade80fd63863e4ebdc599b2ede2584c331ca61f61f36066bbb6",
       "bytes": 45889
     },
     {
@@ -1223,8 +1223,8 @@
     },
     {
       "path": "shared/attendance-queue-ui.css",
-      "sha256": "47bf99e28d271a91146060ca4e6de4d9f684d46cf7165dad5002b3b0f17e8744",
-      "bytes": 2243
+      "sha256": "580193275dc3ec21b5bdda7d5a91a8dd0c7ff2e3bec7cffbde6b5079d575142e",
+      "bytes": 2576
     },
     {
       "path": "shared/attendance-report-layout.js",
