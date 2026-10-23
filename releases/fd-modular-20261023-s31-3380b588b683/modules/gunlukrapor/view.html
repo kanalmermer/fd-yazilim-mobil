@@ -1,0 +1,13 @@
+<div id="fdGunlukRaporKart" class="card magicpass-gunluk-kart">
+                <div class="card-header" style="gap:12px;align-items:flex-end;flex-wrap:wrap;">
+                    <div><h2>📅 Günlük Personel Giriş–Çıkış Raporu</h2><p style="margin:5px 0 0;color:#64748b;">Seçilen gündeki gelen, gelmeyen, geç kalan, erken çıkan ve fazla mesai yapan personeller.</p></div>
+                    <div class="magicpass-gunluk-toolbar">
+                        <div class="form-group"><label>Tarih</label><div class="magicpass-gunluk-tarih-nav"><button type="button" title="Önceki gün" aria-label="Önceki gün" onclick="magicpassGunlukTarihDegistir(-1)">‹</button><input id="magicpassGunlukTarih" type="date" onchange="magicpassGunlukRaporuCiz()"><button type="button" title="Sonraki gün" aria-label="Sonraki gün" onclick="magicpassGunlukTarihDegistir(1)">›</button></div></div>
+                        <div class="form-group"><label>Şube</label><select id="magicpassGunlukSube" onchange="magicpassGunlukSubeHatirla();magicpassGunlukRaporuCiz()"><option value="">Tüm Şubeler</option></select></div>
+                        <div class="form-group"><label>Durum</label><select id="magicpassGunlukDurum" onchange="magicpassGunlukRaporuCiz()"><option value="">Tüm Personeller</option><option value="gelen">Gelenler</option><option value="gelmeyen">Gelmeyenler</option><option value="mesai">Fazla Mesai Yapanlar</option><option value="gec">Geç Kalanlar</option><option value="erken">Erken Çıkanlar</option><option value="izinli">İzinliler</option><option value="eksik">Eksik Basışlar</option><option value="kayitsiz">Kayıt Bulunmayanlar</option></select></div>
+                        <button type="button" class="fd-gunluk-btn fd-gunluk-excel" onclick="magicpassGunlukExcelAl()"><span aria-hidden="true">📊</span> Excel</button><button type="button" class="fd-gunluk-btn fd-gunluk-pdf" onclick="magicpassGunlukPdfAl()"><span aria-hidden="true">📄</span> PDF</button><button type="button" class="fd-gunluk-btn fd-gunluk-kopyala" onclick="magicpassGunlukDetayKopyala()"><span aria-hidden="true">📋</span> Detayı Kopyala</button>
+                    </div>
+                </div>
+                <div id="magicpassGunlukOzet" class="magicpass-ozet magicpass-gunluk-ozet"></div>
+                <div id="magicpassGunlukRaporAlani" class="table-wrapper"><table id="magicpassGunlukTablo"><thead><tr><th>#</th><th>Personel</th><th>Şube</th><th>Görev</th><th>Vardiya</th><th>Giriş</th><th>Çıkış</th><th>Geç</th><th>Erken</th><th>Fazla Mesai</th><th>Toplam Çalışma</th><th>Durum</th></tr></thead><tbody></tbody></table></div>
+            </div>

@@ -1,0 +1,18 @@
+(function(root){'use strict';
+root.fdGunlukRaporAc=function(){const section=document.getElementById('magicpass-tab-gunluk'),app=document.getElementById('magicpassApp');if(!section?.classList.contains('active')||!app||getComputedStyle(app).display==='none')return;return FDModules.embedded('gunlukrapor',[],this)};
+root.magicpassGunlukSubeHafizaAnahtari=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukSubeHafizaAnahtari',Array.from(arguments),this)};
+root.magicpassGunlukSubeHatirla=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukSubeHatirla',Array.from(arguments),this)};
+root.magicpassGunlukTarihDegistir=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukTarihDegistir',Array.from(arguments),this)};
+root.magicpassGunlukOzetFiltresiSec=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukOzetFiltresiSec',Array.from(arguments),this)};
+root.magicpassGunlukDurumSinifi=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukDurumSinifi',Array.from(arguments),this)};
+root.magicpassGunlukKopyaSaat=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukKopyaSaat',Array.from(arguments),this)};
+root.magicpassGunlukKopyaBasHarf=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukKopyaBasHarf',Array.from(arguments),this)};
+root.magicpassCanvasPngBlobHazirla=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassCanvasPngBlobHazirla',Array.from(arguments),this)};
+root.magicpassGunlukPrimRaporTablosunuDuzenle=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukPrimRaporTablosunuDuzenle',Array.from(arguments),this)};
+root.magicpassGunlukPrimCanvasHazirla=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukPrimCanvasHazirla',Array.from(arguments),this)};
+root.magicpassGunlukBirlesikCanvas=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukBirlesikCanvas',Array.from(arguments),this)};
+root.magicpassGunlukDetayKopyala=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukDetayKopyala',Array.from(arguments),this)};
+root.magicpassGunlukRaporDosyaAdi=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukRaporDosyaAdi',Array.from(arguments),this)};
+root.magicpassGunlukExcelAl=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukExcelAl',Array.from(arguments),this)};
+root.magicpassGunlukPdfAl=function(){return FDModules.callIfLoaded('gunlukrapor','magicpassGunlukPdfAl',Array.from(arguments),this)};
+})(window);
