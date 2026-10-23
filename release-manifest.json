@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s31-3380b588b683",
+  "release": "fd-modular-20261023-s32-2db6f7805a27",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "cb494c21c847a9094124e7314d2a22bbf83856d91e23e8c17986a5f5b348d00d",
-      "bytes": 47477
+      "sha256": "95e27ca13840c811ed0813fe8385e54e3486cea10efc5f69872d9074c4bd7797",
+      "bytes": 48224
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "b0bd0836ebb7682c1bc80f7c0fbb74273c491bcef68458b0d27bf02f3912f707",
-      "bytes": 4092
+      "sha256": "4bb7ead2a1fae58dc017eb774e5742e0dc1ab798e11bddbeefaf70f45ca8f886",
+      "bytes": 4147
     },
     {
       "path": "core/module-loader.js",
@@ -110,6 +110,11 @@
       "path": "core/personnel-document-entrypoints.js",
       "sha256": "e5d5fb890e39d36fade6f17545b01e195af6506db039f481b3c161ddc276a9aa",
       "bytes": 2042
+    },
+    {
+      "path": "core/personnel-import-entrypoints.js",
+      "sha256": "c5e01f98bc1ca7ff31bf85b1df1e82701905baee22349a4fd68485a829f33375",
+      "bytes": 1043
     },
     {
       "path": "core/policy-entrypoints.js",
@@ -178,8 +183,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "d31584649083a7150e49e0d0ad5086c960fc7bb079557127b3945fcf177eede1",
-      "bytes": 660357
+      "sha256": "201299efddc3aff98afcbca6cbb71986ff8d58d8f2e642a34e20d6a9386f653c",
+      "bytes": 643509
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1010,6 +1015,26 @@
       "path": "modules/kullanici/view.html",
       "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
       "bytes": 2307
+    },
+    {
+      "path": "modules/personelaktar/manifest.json",
+      "sha256": "13f7a731d0d396e24e84d617a6db59a4978775971ec5828e6af0746962bb9982",
+      "bytes": 963
+    },
+    {
+      "path": "modules/personelaktar/module.js",
+      "sha256": "7fe656f2f5118eee81c6f6f8650446a8b0e854cca49613897aa87c12531ab6f7",
+      "bytes": 21285
+    },
+    {
+      "path": "modules/personelaktar/style.css",
+      "sha256": "f06e1e02fe06afae4372314ab8cf7ff05d5a601bf76732a8ab2cfd2bd5321f38",
+      "bytes": 90
+    },
+    {
+      "path": "modules/personelaktar/view.html",
+      "sha256": "4edd7eb1f1fc5d6de799daeffcf7fa9cb428d55e157405b7fd452ea525af1a82",
+      "bytes": 1256
     },
     {
       "path": "modules/personelbelge/manifest.json",
