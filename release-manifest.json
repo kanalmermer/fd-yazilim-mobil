@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s29-831643da19f5",
+  "release": "fd-modular-20261023-s29-f42eb34ff5a6",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7e0f0921a127bc9573ca4fd741d02b3170ef99eb7ee05ebe52141dd8e8290f7f",
+      "sha256": "ab9d931d469f76b59a77ea29ad6418889f77f61e51b6a0310f325823291be8b5",
       "bytes": 45889
     },
     {
@@ -308,8 +308,8 @@
     },
     {
       "path": "legacy/30-fdBildirimSistemi.js",
-      "sha256": "f75bde10bf8b2ec4f24ea49941da1e41ef7b574ebdd204f4110aa21fbe1fb0e3",
-      "bytes": 17914
+      "sha256": "ace94b13ab798169ee4a6b3a6fa8fa0bb4b56037996c64b1774f807c9958a331",
+      "bytes": 20302
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
