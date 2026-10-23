@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s29-f42eb34ff5a6",
+  "release": "fd-modular-20261023-s30-1f764dfc1126",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ab9d931d469f76b59a77ea29ad6418889f77f61e51b6a0310f325823291be8b5",
-      "bytes": 45889
+      "sha256": "143bdb61bf431c813a1b8120d7a2351923791988479278357c015b541b9ab8f2",
+      "bytes": 46578
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "689e885067bfc286c00d8c4f7c7d3b495950177dcd0e5a270c8545798d452ec9",
-      "bytes": 3817
+      "sha256": "6d3d9245e635143fd3484d33c79d650a82c0e95a8cba6e49629247788fa93934",
+      "bytes": 3953
     },
     {
       "path": "core/module-loader.js",
@@ -173,8 +173,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "6c614ed230e246e80e302af9d71d54af53a0e04040e6c9368e2df60dfd088f94",
-      "bytes": 677611
+      "sha256": "d902c515d3becf137245e250c0a01faeb2262c3f51e2a4f51d2f05503cdcc646",
+      "bytes": 671607
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -563,8 +563,8 @@
     },
     {
       "path": "legacy/styles/36-fdPersonelTasarimV217Style.css",
-      "sha256": "06aa4534db2a5b04d268c3ae79b8d4f06bacf5b1ff18437212ee4e90f5d0153e",
-      "bytes": 14169
+      "sha256": "f5b0801c1007d57bf7433606670e6132045ad1fa5394593ab0aebeb43e3cb161",
+      "bytes": 13104
     },
     {
       "path": "legacy/styles/37-fdPersonelOkunurlukV220.css",
@@ -1005,6 +1005,26 @@
       "path": "modules/kullanici/view.html",
       "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
       "bytes": 2307
+    },
+    {
+      "path": "modules/personelozet/manifest.json",
+      "sha256": "b5ae84ac051cd3d16e0d2fcdae0d8518c4f68b981aa3a4e603fd765e73c245cb",
+      "bytes": 896
+    },
+    {
+      "path": "modules/personelozet/module.js",
+      "sha256": "b1553a94d0beae3f97c276ecdef2e33ef10bf18aa8c8bad5cd3c74daa530b697",
+      "bytes": 7264
+    },
+    {
+      "path": "modules/personelozet/style.css",
+      "sha256": "4e8d3d53c7eb80b148bc4c8ab22f3620d14c9431b4f63cf6065cc8d709c76e61",
+      "bytes": 1098
+    },
+    {
+      "path": "modules/personelozet/view.html",
+      "sha256": "0b7aa97a4a4c2a6e9652a67c06b3c541f08817325f89cd91bb933d23e9469f7d",
+      "bytes": 1619
     },
     {
       "path": "modules/police/manifest.json",
