@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s29-ab2932eb2470",
+  "release": "fd-modular-20261023-s29-9097142f08a3",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "31245cf72d4ebade80fd63863e4ebdc599b2ede2584c331ca61f61f36066bbb6",
+      "sha256": "b5aca39d8ea86df6d4297259f939fe4adf92711798580833c605a4ade45ba2e5",
       "bytes": 45889
     },
     {
@@ -173,8 +173,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "cd4e256c441a3f1601902284f68ed66343c52db5b5251d8fee760dcb45d4fa08",
-      "bytes": 677514
+      "sha256": "6c614ed230e246e80e302af9d71d54af53a0e04040e6c9368e2df60dfd088f94",
+      "bytes": 677611
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1218,8 +1218,8 @@
     },
     {
       "path": "shared/attendance-fast.js",
-      "sha256": "12a737efe36f8bcb47bb1c8580c4afa8db846cd1f17686c896cf008cecb874ae",
-      "bytes": 22219
+      "sha256": "4a92781389bf92fb25ec32ca969df059a2a11907655721f545385347ebacb92a",
+      "bytes": 22079
     },
     {
       "path": "shared/attendance-queue-ui.css",
@@ -1358,13 +1358,13 @@
     },
     {
       "path": "shared/personnel-photo.css",
-      "sha256": "7b8e9d23efc2086ed69dff3e77089945b5ed4c442411f43a7197ee8fac7755fb",
-      "bytes": 2775
+      "sha256": "413a76450ab8d25dd480a5fd442ef4550a4b9a4aab03f07eefc32bd642a0f51f",
+      "bytes": 3445
     },
     {
       "path": "shared/personnel-photo.js",
-      "sha256": "6cba28fc9b31de95d2468ad197353d6535aa004b4344940854bf04003b178209",
-      "bytes": 5642
+      "sha256": "febb303786121a47ae8dee71c40736e4fdaa7c77055098b1271b7ff663cfd454",
+      "bytes": 8178
     },
     {
       "path": "shared/policy-badges.css",
