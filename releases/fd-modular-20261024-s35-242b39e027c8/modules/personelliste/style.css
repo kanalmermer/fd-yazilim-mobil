@@ -1,0 +1,61 @@
+/* fd-personnel-style-slot:00.css */
+
+        #personelApp .module-subnav button:nth-child(1) { border-color: #86efac; background: #f0fdf4; color: #15803d; }
+        #personelApp .module-subnav button:nth-child(1)::before { content: '🟢'; font-size: .65rem; }
+        #personelApp .module-subnav button:nth-child(2) { border-color: #fecaca; background: #fff1f2; color: #be123c; }
+        #personelApp .module-subnav button:nth-child(2)::before { content: '🔴'; font-size: .65rem; }
+        #personelApp .module-subnav .new-personnel-btn::before { content: '➕'; }
+        #personelApp .module-subnav button.active { background: linear-gradient(135deg, #0284c7, #2563eb); }
+        .personel-summary { margin-bottom: 16px; }
+        .personel-summary-title { margin: 0 0 10px; color: #334155; font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+        .personel-summary-grid { display: grid; grid-template-columns: repeat(5, minmax(100px, 1fr)); gap: 10px; }
+        .personel-summary-card { padding: 12px; border: 1px solid #dce8f1; border-radius: 10px; background: #fff; }
+        .personel-summary-card span { display: block; color: #64748b; font-size: .68rem; font-weight: 750; text-transform: uppercase; }
+        .personel-summary-card strong { display: block; margin-top: 5px; color: #0f172a; font-size: 1.2rem; }
+        .branch-summary-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+        .branch-summary-card { padding: 14px; border: 1px solid #dce8f1; border-radius: 11px; background: #fff; }
+        .branch-summary-card h4 { margin-bottom: 10px; color: #0f172a; font-size: .83rem; }
+        .branch-summary-metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .branch-summary-metrics span { color: #64748b; font-size: .64rem; text-align: center; }
+        .branch-summary-metrics b { display: block; margin-bottom: 2px; color: #334155; font-size: .88rem; }
+        .personel-session #personelApp .app-layout > main { display:none !important; }
+        @media (max-width: 760px) { .personel-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+        #personelApp .app-layout > main { width:100%; max-width:1320px; margin:0 auto; }
+        #personelApp .app-header-bar { padding-left: max(20px, calc((100% - 1280px) / 2)); padding-right: max(20px, calc((100% - 1280px) / 2)); }
+        #tabloAktifPersonel { min-width: 1160px; }
+/* fd-personnel-style-slot:36-fdPersonelTasarimV217Style.css */
+
+.fd-personel-intro{margin:0 0 15px}.fd-personel-intro h2{font-size:19px;font-weight:650;margin:0;color:#20374e}.fd-personel-intro p{margin:5px 0 0;font-size:12px;color:#7c8a9c}#personelApp .module-subnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap!important;padding:0;margin:0 0 16px;background:transparent;border:0;box-shadow:none}#personelApp .module-subnav>button{padding:8px 12px;border-radius:7px;font-size:11px;font-weight:500;box-shadow:none;min-height:34px}#personelApp .module-subnav>button.active{background:#155e75!important;border-color:#155e75;color:#fff;box-shadow:none}#personelApp .personel-export-actions{margin-left:auto;gap:7px!important;flex-wrap:wrap!important}#personelApp .btn-export{padding:8px 11px;font-size:11px;border-radius:7px;min-height:34px;box-shadow:none}#personelApp .personel-summary{margin:0 0 16px}#personelApp .personel-summary-title{font-size:10px;color:#7b8b9e;font-weight:600;letter-spacing:.5px;margin:0 0 9px}#personelApp .personel-summary-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}#personelApp .personel-summary-card{border:1px solid #dde5ee;border-top:3px solid #99b6c7;border-radius:10px;padding:12px 15px;background:#fff;box-shadow:none}#personelApp .personel-summary-card span{font-size:10px;font-weight:500;letter-spacing:.2px;color:#758599}#personelApp .personel-summary-card strong{font-size:21px;font-weight:650;color:#20374e;margin-top:5px}.fd-personel-branches{margin-top:12px;border:1px solid #dde5ee;border-radius:10px;overflow:hidden;background:#fff}.fd-personel-branches>h3{padding:12px 15px;font-size:13px;color:#46647a;font-weight:600;margin:0 0 12px;border-bottom:1px solid #edf1f6;background:#f8fafc}#personelApp .branch-summary-list{padding:0 12px 12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}#personelApp .branch-summary-card{padding:11px;border:1px solid #e6ecf3;border-radius:8px;background:#f9fbfe}#personelApp .branch-summary-card h4{font-size:13px;font-weight:600;margin:0 0 10px;color:#476079}#personelApp .branch-summary-metrics b{font-size:17px;font-weight:600;color:#155e75}#personelApp .branch-summary-metrics span{font-size:11px;color:#64748b}#personelApp .branch-summary-gender{display:block;margin:2px 0 5px;font-size:10px;font-weight:400;line-height:1.35;white-space:nowrap;color:#64748b}#personelApp .card{border:1px solid #dce5ee;border-radius:12px;box-shadow:0 3px 14px #0f172a04;background:#fff;padding:0!important;overflow:hidden}#personelApp .card-header{padding:15px 17px;border-bottom:1px solid #e5ebf2;background:#fff;gap:10px}#personelApp .card-header h2{font-size:14px;font-weight:650;color:#20374e;margin:0}#personelApp .badge-count{background:#eef5fa;color:#52758c;font-weight:500;font-size:10px;padding:5px 9px;border-radius:6px}#personelApp .filter-bar{display:grid;grid-template-columns:minmax(200px,1.6fr) repeat(5,minmax(130px,1fr));gap:8px;padding:13px 17px;background:#fafcfe;border-bottom:1px solid #e5ebf2;margin:0}#personelApp .filter-bar input,#personelApp .filter-bar select{width:100%;min-width:0;height:35px;min-height:35px;padding:7px 10px;border:1px solid #d5e0ea;border-radius:7px;font-size:11px;background:#fff;color:#51677b}#personelApp .table-wrapper{margin:0;border:0;border-radius:0;max-width:100%;overflow:auto;overscroll-behavior:contain}#personelApp #tabloAktifPersonel,#personelApp #tabloAyrilanPersonel{width:100%;table-layout:fixed;min-width:0;font-size:12px;border-collapse:collapse}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th{padding:11px 10px;background:#f0f5fa;color:#60758a;font-size:10px;font-weight:650;letter-spacing:0;white-space:normal;text-align:left;vertical-align:middle;border-bottom:1px solid #d9e4ef}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{padding:10px;border-bottom:1px solid #edf1f6;white-space:normal;overflow-wrap:anywhere;vertical-align:middle;color:#334155;font-size:12px}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tr:nth-child(even){background:#fbfcfe}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tr:hover{background:#f1f8fc}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(1){width:4%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(2){width:5%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(3){width:11%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(4){width:20%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(5){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(6){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(7){width:12%}#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th:nth-child(8){width:10%}#personelApp #tabloAktifPersonel th:last-child{width:14%}#personelApp #tabloAyrilanPersonel th:last-child{width:14%}#personelApp .user-img-thumb{width:30px;height:30px;border-radius:8px;object-fit:cover}#personelApp .tc-link{color:inherit;font:inherit;cursor:pointer;text-decoration:none;font-weight:400}#personelApp .tc-link:hover{text-decoration:underline}#personelApp td .badge{font-size:10px;padding:4px 6px;font-weight:500;border-radius:5px;white-space:normal}#personelApp td .action-btns{display:flex;gap:5px;flex-wrap:wrap!important;min-width:0}#personelApp td .btn-modern{padding:6px 8px;border-radius:6px;font-size:10px;box-shadow:none;white-space:nowrap;min-width:0}@media(max-width:1150px){#personelApp .filter-bar{grid-template-columns:minmax(200px,1.5fr) repeat(2,minmax(150px,1fr))}}@media(max-width:700px){
+#personelApp .module-subnav>button{flex:1 1 110px!important;min-width:0!important;white-space:normal}
+}@media(max-width:700px){
+#personelApp .personel-export-actions{width:100%;margin:3px 0 0;justify-content:flex-start!important}
+}@media(max-width:700px){#personelApp .personel-export-actions button{flex:1;min-width:0}
+}@media(max-width:700px){
+#personelApp .personel-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+}@media(max-width:700px){#personelApp .personel-summary-card{padding:10px}
+}@media(max-width:700px){#personelApp .personel-summary-card strong{font-size:18px}
+}@media(max-width:700px){
+#personelApp .filter-bar{display:grid!important;grid-template-columns:1fr 1fr!important;padding:12px;gap:7px}
+}@media(max-width:700px){#personelApp .filter-bar input{grid-column:1/-1}
+}@media(max-width:700px){#personelApp .filter-bar input,#personelApp .filter-bar select{width:100%!important;min-width:0!important;font-size:12px;min-height:38px}
+}@media(max-width:700px){
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel),#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tbody{display:block;width:100%;min-width:0!important}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) thead{display:none}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:10px;border-bottom:1px solid #dce5ee}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{display:block;border:0;padding:5px 7px;min-width:0;order:1}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td::before{display:block;content:attr(data-fd-label);font-size:9px;color:#8090a3;margin-bottom:3px}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(-n+2){display:none}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(4){grid-column:1/-1;order:0;font-size:14px;font-weight:500}
+}@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:last-child{grid-column:1/-1;order:2}
+}
+/* fd-personnel-style-slot:37-fdPersonelOkunurlukV220.css */
+
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{font-size:14px!important;line-height:1.4;padding:11px 10px}
+#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) th{font-size:12px!important;padding:12px 10px;color:#466078}
+#personelApp td .badge{font-size:12px;padding:4px 7px}
+#personelApp td .btn-modern{font-size:12px;padding:7px 9px}
+#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:13px}
+@media(max-width:700px){#personelApp .filter-bar input,#personelApp .filter-bar select{font-size:14px}}
+@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td{padding:6px 7px}}
+@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td::before{font-size:11px}}
+@media(max-width:700px){#personelApp :is(#tabloAktifPersonel,#tabloAyrilanPersonel) td:nth-child(4){font-size:16px!important}}

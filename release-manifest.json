@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261024-s34-121543394e9f",
+  "release": "fd-modular-20261024-s35-242b39e027c8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "a26f1731927e0ac92bf4c72206643b762cab4d68345afd57a918c9fc23447f37",
-      "bytes": 49765
+      "sha256": "d68ed02abaa9b097335ad307411fa274ba2242c4cbe23ea72f67fbe9b1d3fb7c",
+      "bytes": 50505
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "6e8b369c35e0d9554c624e4db722e1e737440c83f5ffae440ff3c7ec5cfc71ef",
-      "bytes": 4339
+      "sha256": "eaeb3c8404304569839a6198834c9a18e07f82ccf4096ee45942923d3560ab69",
+      "bytes": 4518
     },
     {
       "path": "core/module-loader.js",
@@ -125,6 +125,11 @@
       "path": "core/personnel-import-entrypoints.js",
       "sha256": "c5e01f98bc1ca7ff31bf85b1df1e82701905baee22349a4fd68485a829f33375",
       "bytes": 1043
+    },
+    {
+      "path": "core/personnel-list-entrypoints.js",
+      "sha256": "285fa666a6c8d3f60c25fb2cc4229fdd661123beafb2fad54f1bace3acb300b9",
+      "bytes": 215
     },
     {
       "path": "core/policy-entrypoints.js",
@@ -193,8 +198,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "91fdc1e991308935c9962f4261d63033afb72adb1a879abc87920a749e5d4430",
-      "bytes": 619836
+      "sha256": "f08ca82d1d2a91468ea4ab4f7189f78b39013fecf757a2dd1403c3629cc4c784",
+      "bytes": 610608
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -238,8 +243,8 @@
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
-      "sha256": "a2f8639035b3e5d5b5d503f81898525ffafe79cc0d0a5c582c07bafb269585d7",
-      "bytes": 18640
+      "sha256": "3c9f087bcb7f1a8c24e5003c21b0419e14e726769ebe3b021b72554fb120d388",
+      "bytes": 18707
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
@@ -363,8 +368,8 @@
     },
     {
       "path": "legacy/39-fdPersonelTasarimV217.js",
-      "sha256": "e1ef66956c72e64995d223dff85dd999628977b02b4e185f05ebb76a6f501823",
-      "bytes": 3409
+      "sha256": "851c2557f65fe8e3d33d8fa85090cba50a85bc9f60ff919ff66680b32c2877a3",
+      "bytes": 1860
     },
     {
       "path": "legacy/40-fdHesapDonemKorumaV220.js",
@@ -428,8 +433,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "f842e17e022374a6d77d29d3116cd94f48c001be45762764e1284989a030fe11",
-      "bytes": 83771
+      "sha256": "7b3fd4b2b647b2122e64b5b0618cece13e1e5e08dd19885fc344bdefafea4a6e",
+      "bytes": 81301
     },
     {
       "path": "legacy/styles/01.css",
@@ -583,13 +588,13 @@
     },
     {
       "path": "legacy/styles/36-fdPersonelTasarimV217Style.css",
-      "sha256": "3c8764770422789ca9e465b797586cfc2e4821e86e70b594a940207d02980684",
-      "bytes": 12552
+      "sha256": "0976c33eb2b48671e7efd08de5a6dc5789f8d01d888bbb7b85b95003fcc77d21",
+      "bytes": 5152
     },
     {
       "path": "legacy/styles/37-fdPersonelOkunurlukV220.css",
-      "sha256": "ce975de4cf50793831a93e77b2bb3b6d896ef548da91b4d29ca007ed1cd5d02a",
-      "bytes": 1815
+      "sha256": "ff5ae8d353bcfbc7e8d3c383d951e13380088f1f751bfc307a761cac95bfcdbb",
+      "bytes": 1008
     },
     {
       "path": "legacy/styles/38-fdAttendanceBalanceDisplayV268.css",
@@ -1105,6 +1110,26 @@
       "path": "modules/personeldetay/view.html",
       "sha256": "c4d2d9161e3c3fede60f3a0144f585ed1d3b6b2b8693709a0454d17333c3b72a",
       "bytes": 2953
+    },
+    {
+      "path": "modules/personelliste/manifest.json",
+      "sha256": "93aeaabfa9206dee9ee6cd52a3b21f70892331c8eaebf4929e49a02b5021b47e",
+      "bytes": 966
+    },
+    {
+      "path": "modules/personelliste/module.js",
+      "sha256": "02ef6f2c27554ce76b0158e8df5c0ed6a22e3854bd35a42e3cb9ae2b2b127304",
+      "bytes": 13833
+    },
+    {
+      "path": "modules/personelliste/style.css",
+      "sha256": "540a6376ed91b4d153ff11a71e3358ebb9b20f0ddd0a839423a0c9e1f4566602",
+      "bytes": 11289
+    },
+    {
+      "path": "modules/personelliste/view.html",
+      "sha256": "1172651159773f866e708a429d6c993c4ad595cf951913a9abcbc77608217fe3",
+      "bytes": 7448
     },
     {
       "path": "modules/personelozet/manifest.json",
