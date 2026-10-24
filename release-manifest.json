@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261023-s32-2db6f7805a27",
+  "release": "fd-modular-20261024-s33-52b34d7b40e4",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "95e27ca13840c811ed0813fe8385e54e3486cea10efc5f69872d9074c4bd7797",
-      "bytes": 48224
+      "sha256": "99bc491d27e7f31af5f4d9143b7e02e468d1034241dc8917f513e827a5d16c42",
+      "bytes": 48906
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "4bb7ead2a1fae58dc017eb774e5742e0dc1ab798e11bddbeefaf70f45ca8f886",
-      "bytes": 4147
+      "sha256": "d3992e8764b22d3ad513008bab3c8e89a7304c067f72415e8be0036ff602afcc",
+      "bytes": 4262
     },
     {
       "path": "core/module-loader.js",
@@ -105,6 +105,11 @@
       "path": "core/permissions.js",
       "sha256": "44fd2427c3a5eec8ff80b48efcb91ef0400ce3cac40661a6feca2007b82e0fc9",
       "bytes": 4986
+    },
+    {
+      "path": "core/personnel-detail-entrypoints.js",
+      "sha256": "958773b606d8ded21d05fb5c58204b5137ae3776934367b24c6fe8015eb13513",
+      "bytes": 674
     },
     {
       "path": "core/personnel-document-entrypoints.js",
@@ -183,8 +188,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "201299efddc3aff98afcbca6cbb71986ff8d58d8f2e642a34e20d6a9386f653c",
-      "bytes": 643509
+      "sha256": "62bb006ab01341b9544999dea5bbbd4d1acf959bc47a5e30c61f5539850ea0e8",
+      "bytes": 624805
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -323,8 +328,8 @@
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
-      "sha256": "bf4df76abddc7b4681eae8e95b1f4be96404779c9657ec3356ab6fe12ab34ebc",
-      "bytes": 6726
+      "sha256": "65a3cb0ccc960ea4ae34e61b174d192c34a6ae341c6e214b474ed7c93aa14018",
+      "bytes": 6930
     },
     {
       "path": "legacy/34-fdVarlikKisileriV150.js",
@@ -418,8 +423,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "27fafe73a7e55bf01a31c4287aadeedfc4a9a92cd5f986f1e3379a8a56eaaca2",
-      "bytes": 84746
+      "sha256": "4469764a9fa25ff0a53e0db16f679e45a14eb33fa97f24620d5b694eec25bb33",
+      "bytes": 83861
     },
     {
       "path": "legacy/styles/01.css",
@@ -458,8 +463,8 @@
     },
     {
       "path": "legacy/styles/09.css",
-      "sha256": "44f41169cf9e6c1acd0087ed907e142cf6ea90f13d31f4f61c0e8214b07fae01",
-      "bytes": 284
+      "sha256": "91597b4ced2fb8d1b8104a4222beea333136ca17345f1ca6433baa2d7e265e77",
+      "bytes": 168
     },
     {
       "path": "legacy/styles/10.css",
@@ -573,8 +578,8 @@
     },
     {
       "path": "legacy/styles/36-fdPersonelTasarimV217Style.css",
-      "sha256": "f5b0801c1007d57bf7433606670e6132045ad1fa5394593ab0aebeb43e3cb161",
-      "bytes": 13104
+      "sha256": "3c8764770422789ca9e465b797586cfc2e4821e86e70b594a940207d02980684",
+      "bytes": 12552
     },
     {
       "path": "legacy/styles/37-fdPersonelOkunurlukV220.css",
@@ -1057,6 +1062,26 @@
       "bytes": 2083
     },
     {
+      "path": "modules/personeldetay/manifest.json",
+      "sha256": "0bf5eb071475345229cae0a10b8f0df2f4e605a5af40ec5ed16d31cc1cd0f81e",
+      "bytes": 893
+    },
+    {
+      "path": "modules/personeldetay/module.js",
+      "sha256": "b82951b332884f46c2907262e659bfc4a9918d8d9f38c50f292f63af5969e407",
+      "bytes": 21101
+    },
+    {
+      "path": "modules/personeldetay/style.css",
+      "sha256": "f163f3f02b4e48d4315bdca01fcfa342a02a86c8f294136cd719a770879f8fa1",
+      "bytes": 1810
+    },
+    {
+      "path": "modules/personeldetay/view.html",
+      "sha256": "c4d2d9161e3c3fede60f3a0144f585ed1d3b6b2b8693709a0454d17333c3b72a",
+      "bytes": 2953
+    },
+    {
       "path": "modules/personelozet/manifest.json",
       "sha256": "b5ae84ac051cd3d16e0d2fcdae0d8518c4f68b981aa3a4e603fd765e73c245cb",
       "bytes": 896
@@ -1423,8 +1448,8 @@
     },
     {
       "path": "shared/personnel-fast.js",
-      "sha256": "67782c13498937bb67e6f069599b25f5e1c022cddf516249ebb5bfecbc1323b7",
-      "bytes": 5502
+      "sha256": "f43716409f8e8c1fdd33bf1fc2738a3a9dcae04b3706e35651da2fddba1c0ca7",
+      "bytes": 5705
     },
     {
       "path": "shared/personnel-photo.css",
