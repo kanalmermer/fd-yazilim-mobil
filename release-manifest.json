@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261024-s33-52b34d7b40e4",
+  "release": "fd-modular-20261024-s34-121543394e9f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,8 +23,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "99bc491d27e7f31af5f4d9143b7e02e468d1034241dc8917f513e827a5d16c42",
-      "bytes": 48906
+      "sha256": "a26f1731927e0ac92bf4c72206643b762cab4d68345afd57a918c9fc23447f37",
+      "bytes": 49765
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +88,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d3992e8764b22d3ad513008bab3c8e89a7304c067f72415e8be0036ff602afcc",
-      "bytes": 4262
+      "sha256": "6e8b369c35e0d9554c624e4db722e1e737440c83f5ffae440ff3c7ec5cfc71ef",
+      "bytes": 4339
     },
     {
       "path": "core/module-loader.js",
@@ -115,6 +115,11 @@
       "path": "core/personnel-document-entrypoints.js",
       "sha256": "e5d5fb890e39d36fade6f17545b01e195af6506db039f481b3c161ddc276a9aa",
       "bytes": 2042
+    },
+    {
+      "path": "core/personnel-export-entrypoints.js",
+      "sha256": "842589c9e9f6a0fc95a6507ecc306ded18aee06e2cb14fba3ee0105103f02a5f",
+      "bytes": 728
     },
     {
       "path": "core/personnel-import-entrypoints.js",
@@ -188,8 +193,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "62bb006ab01341b9544999dea5bbbd4d1acf959bc47a5e30c61f5539850ea0e8",
-      "bytes": 624805
+      "sha256": "91fdc1e991308935c9962f4261d63033afb72adb1a879abc87920a749e5d4430",
+      "bytes": 619836
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -423,8 +428,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "4469764a9fa25ff0a53e0db16f679e45a14eb33fa97f24620d5b694eec25bb33",
-      "bytes": 83861
+      "sha256": "f842e17e022374a6d77d29d3116cd94f48c001be45762764e1284989a030fe11",
+      "bytes": 83771
     },
     {
       "path": "legacy/styles/01.css",
@@ -1060,6 +1065,26 @@
       "path": "modules/personelbelge/view.html",
       "sha256": "88c54c010bf550688d165386b2b410d45e960269240e20010d124d9d415037a9",
       "bytes": 2083
+    },
+    {
+      "path": "modules/personelcikti/manifest.json",
+      "sha256": "3c3f381a7df1222818e7c40c7c248fb1fa64c74950d6bf067776111c571944ba",
+      "bytes": 1095
+    },
+    {
+      "path": "modules/personelcikti/module.js",
+      "sha256": "bd771a3658a682d6a7672960aafc6a11c5a0cc60b7a7f658a6a0c9cec075c613",
+      "bytes": 8275
+    },
+    {
+      "path": "modules/personelcikti/style.css",
+      "sha256": "fc68e9afb165d18f721bf7ddd14f51051907ee292cdb758c68acc98b6f4618b8",
+      "bytes": 91
+    },
+    {
+      "path": "modules/personelcikti/view.html",
+      "sha256": "79a91c742b81fbc47bb5b4ea39a285cb84ef9226b4990d08651f7721a7d17d69",
+      "bytes": 1338
     },
     {
       "path": "modules/personeldetay/manifest.json",
