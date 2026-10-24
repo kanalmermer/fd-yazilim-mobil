@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261024-s35-242b39e027c8",
+  "release": "fd-modular-20261024-s35-725f5f6e3d00",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d68ed02abaa9b097335ad307411fa274ba2242c4cbe23ea72f67fbe9b1d3fb7c",
+      "sha256": "6ec75171f15c64f12ab48c92988c1db1bf02fdea2498f0041778198838968fd5",
       "bytes": 50505
     },
     {
@@ -673,23 +673,23 @@
     },
     {
       "path": "modules/avans/manifest.json",
-      "sha256": "44764134bb3c8193103fb429553ae4730757a04d410d377a4f1b9fc3fed9b79f",
+      "sha256": "5d93ff9c30d048bb49de17455de832942e1d83b195d5cbf85870a4138df92222",
       "bytes": 1769
     },
     {
       "path": "modules/avans/module.js",
-      "sha256": "15cf80360b13530a9cb1924afea93d4d4b23862f004629d945c1df9c68746b0b",
-      "bytes": 54013
+      "sha256": "14c8848c60e153a4668d340a9d465eddc83cd4c8bf164bfbc9615a30d638f4ad",
+      "bytes": 54856
     },
     {
       "path": "modules/avans/style.css",
-      "sha256": "38753f5002a19e0828b08585e17f1fa19f0b3841e3dee672fac9edb148468e08",
-      "bytes": 6813
+      "sha256": "218cece0a2f99ea95e50b2413d3e425c169367f8fe5e731e8cd7607de5efdb51",
+      "bytes": 7204
     },
     {
       "path": "modules/avans/view.html",
-      "sha256": "f1a708808bb370c44502cc61b24f3e2ca4ea352a874df55f2b6acfd089267e5b",
-      "bytes": 10131
+      "sha256": "1ff21cc8c0d5b6630bb7df140acf80946d06063b8935ffcc8e2d0f91798125e0",
+      "bytes": 10464
     },
     {
       "path": "modules/ayarlar/manifest.json",
@@ -853,13 +853,13 @@
     },
     {
       "path": "modules/icra/manifest.json",
-      "sha256": "a638a5d76d17b3bf2105eb702edd5bdb32b07c029853d8fc4ca5d714e3988339",
+      "sha256": "e9cb400099b0c6ff1c905936dbe8ca0c10409e2aec72298af76a8ba47e750f73",
       "bytes": 2654
     },
     {
       "path": "modules/icra/module.js",
-      "sha256": "1cdf49fbb49e06bbde06eb0619248e0d99495f1602622da85fc822e766405701",
-      "bytes": 127792
+      "sha256": "568c4a034318cdb6b7c10d6e24357e3e02d9c310aa9e26c141972510779ad036",
+      "bytes": 128674
     },
     {
       "path": "modules/icra/style.css",
@@ -868,8 +868,8 @@
     },
     {
       "path": "modules/icra/view.html",
-      "sha256": "ba304ee3d8882d7a7833c4813ae646bec0fabea192549ed99d47b2356c9fa323",
-      "bytes": 9132
+      "sha256": "5f7a0b95733c2fa5e982333523dc873c33eb8314572d2eda24fd38ca8e791ea5",
+      "bytes": 9149
     },
     {
       "path": "modules/ihracat/manifest.json",

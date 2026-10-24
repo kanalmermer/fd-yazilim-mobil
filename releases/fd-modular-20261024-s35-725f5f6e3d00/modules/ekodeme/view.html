@@ -1,0 +1,34 @@
+<div id="ekOdemeApp" style="display:none;">
+    <div class="app-header-bar"><div class="workspace-nav" aria-label="Personel işlemleri menüsü"></div></div>
+    <div class="app-layout"><main style="width:100%; padding:22px; max-width:1164px; margin:0 auto;">
+        <div class="card">
+            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                <h2>💳 Aylık Ek Ödeme Çizelgesi</h2>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label style="margin:0; font-weight:700;">Ay Seç:</label>
+                    <input type="month" id="ekOdemeAySec" onchange="ekOdemeAyiDegistir()" style="width:150px; cursor:pointer;">
+                    <button class="btn-export" style="background:#0284c7;color:#fff;" onclick="ekOdemeGoruntuAl()">📸 Görüntü Al</button>
+                    <button class="btn-export btn-pdf" onclick="ekOdemePdfIndir()">📄 PDF</button>
+                    <button class="btn-export btn-excel" onclick="ekOdemeExcelIndir()">📊 Excel</button>
+                </div>
+            </div>
+            <p style="margin:-2px 0 14px; color:#64748b;">Girdiğiniz ödeme tutarı sınırlandırılmaz. Aylık hakedişler bu bakiyeden sırayla düşer; artan bakiye sonraki aya, eksik kalan tutar borç olarak devreder.</p>
+            <div class="table-wrapper" id="ekOdemeCizelgeAlani"><h3 id="ekOdemeGoruntuBaslik" style="margin:4px 8px 14px; color:#0f172a; font-size:1rem;"></h3><table id="ekOdemeTablosu"><thead><tr><th>Personel</th><th>Ek Ödeme Türü</th><th>Aylık Tutar</th><th>Önceki Bakiye</th><th>Bu Ay Girilen</th><th>Yeni Ödeme Gir</th><th>Kalan Borç / Devreden Kredi</th></tr></thead><tbody></tbody></table></div>
+        </div>
+    </main></div>
+</div>
+<div id="modalEkOdemeHareketleri" class="modal-overlay">
+    <div class="modal-card" style="max-width:900px;">
+        <div class="modal-header"><h3 id="ekOdemeHareketBaslik">Ek Ödeme Hareketleri</h3><button class="modal-close" onclick="ekOdemeHareketleriniKapat()">✕</button></div>
+        <div class="modal-body">
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+                <button class="btn-export btn-excel" onclick="ekOdemeHareketExcelIndir()">📊 Excel</button>
+                <button class="btn-export btn-pdf" onclick="ekOdemeHareketPdfIndir()">📄 PDF</button>
+            </div>
+            <div id="ekOdemeHareketRaporu">
+                <h3 id="ekOdemeHareketRaporBaslik" style="text-align:center;margin:0 0 14px;"></h3>
+                <div class="table-wrapper"><table id="ekOdemeHareketTablosu"><thead><tr><th>Ödeme Tarihi</th><th>Dönem</th><th>Ödeme Türü</th><th>Ödenen Tutar</th><th>İşlem</th></tr></thead><tbody></tbody><tfoot></tfoot></table></div>
+            </div>
+        </div>
+    </div>
+</div>
