@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261026-s35-ed8fad22984e",
+  "release": "fd-modular-20261026-s36-ef15e3e53283",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -22,9 +22,14 @@
       "bytes": 1532
     },
     {
+      "path": "core/bulk-hours-entrypoints.js",
+      "sha256": "b0f953009c403228764c3e5c75b0e29090aba0c3ce3585870a2082b177e86037",
+      "bytes": 187
+    },
+    {
       "path": "core/catalog.js",
-      "sha256": "c823cab412334ca0ad617acd63d463741345a2ee2a486761423b7ca8bebf4e40",
-      "bytes": 50505
+      "sha256": "f5e1f349c38182831d3a59d4e053b7f5637f8fd1089f29fbef63bb1aef24277d",
+      "bytes": 51410
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -88,8 +93,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "eaeb3c8404304569839a6198834c9a18e07f82ccf4096ee45942923d3560ab69",
-      "bytes": 4518
+      "sha256": "0c8a20e05ef9751d262a3762dd8bf1e3285340b9cf00275434b77d4f713314a0",
+      "bytes": 4665
     },
     {
       "path": "core/module-loader.js",
@@ -198,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "08540b17399fb2e6cdaf5bb20a64fbfb9633fa3cb8374538e59dfbec6a4c4262",
-      "bytes": 611015
+      "sha256": "d2e62316f0b989a1237bd454ee81d212196e4f8658e4ec100bbf47b86fe0e96f",
+      "bytes": 601924
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -433,8 +438,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "7b3fd4b2b647b2122e64b5b0618cece13e1e5e08dd19885fc344bdefafea4a6e",
-      "bytes": 81301
+      "sha256": "3ff77e0f14135aab6ab52b9d077d31568aeba75e9647b020d19c039aa3786dcd",
+      "bytes": 79281
     },
     {
       "path": "legacy/styles/01.css",
@@ -1250,6 +1255,26 @@
       "path": "modules/tapu/view.html",
       "sha256": "64248520379177420c94c36409293c0d2252ec745be1d2af11d3b1f9d0d160b1",
       "bytes": 7438
+    },
+    {
+      "path": "modules/toplusaat/manifest.json",
+      "sha256": "70fd0dd4e8d0d73985c532dfbb70ea169758cfbe6ffc4ad18c34f2a1628bc295",
+      "bytes": 1153
+    },
+    {
+      "path": "modules/toplusaat/module.js",
+      "sha256": "0fa2a3cc4eb670b850f894fbc260931c1587c568f8467fb05c1dcfde66fa8f87",
+      "bytes": 13979
+    },
+    {
+      "path": "modules/toplusaat/style.css",
+      "sha256": "3842e4dd95396d326b850d681122bbf051d6c5ba14806a85a7ac62ea90c6f3c5",
+      "bytes": 2051
+    },
+    {
+      "path": "modules/toplusaat/view.html",
+      "sha256": "a38ba4c3f41b84154decb5c584880f59f6d3eeee1ca947109527c6c45f6b090f",
+      "bytes": 3149
     },
     {
       "path": "modules/vardiya/manifest.json",
