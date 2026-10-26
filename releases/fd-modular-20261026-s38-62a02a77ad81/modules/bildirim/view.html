@@ -1,0 +1,57 @@
+<main id="whatsappMesajApp" class="app-screen fd-wa-workspace" style="display:none;" aria-labelledby="fdWhatsappCalismaBasligi">
+    <div id="modalBildirimGonder" class="fd-wa-workspace-shell">
+        <div class="fd-wa-workspace-head"><div><span class="fd-wa-workspace-eyebrow">İletişim</span><h2 id="fdWhatsappCalismaBasligi">WhatsApp Mesajları</h2><p>Konuşmaları takip edin, mesaj hazırlayın ve gönderim kuyruğunu yönetin.</p></div><button type="button" class="fd-wa-workspace-back" onclick="fdUygulamaSekmesineGec('home')">← Ana Ekran</button></div>
+        <div class="fd-wa-workspace-card">
+        <div class="fd-wa-main-tabs" role="tablist" aria-label="WhatsApp mesaj bölümleri">
+            <button type="button" id="fdWhatsappSekmeGelen" role="tab" aria-controls="fdWhatsappGelenPanel" aria-selected="false" onclick="fdWhatsappSekmeAc('inbox')">Mesajlar <span id="fdWhatsappGelenRozeti" class="fd-wa-unread-badge">0</span></button>
+            <button type="button" id="fdWhatsappSekmeGonder" role="tab" aria-controls="fdWhatsappGonderPanel" aria-selected="false" onclick="fdWhatsappSekmeAc('send')">Mesaj Yaz</button>
+            <button type="button" id="fdWhatsappSekmeKuyruk" role="tab" aria-controls="fdWhatsappKuyrukPanel" aria-selected="false" onclick="fdWhatsappSekmeAc('queue')">Gönderim Kuyruğu <span id="fdWhatsappKuyrukRozeti" class="fd-wa-unread-badge">0</span></button>
+        </div>
+        <section id="fdWhatsappGelenPanel" class="fd-wa-workspace-panel" role="tabpanel" aria-labelledby="fdWhatsappSekmeGelen" style="display:none;">
+            <div class="fd-wa-inbox-toolbar"><input id="fdWhatsappGelenAra" type="search" placeholder="Personel, telefon veya mesaj ara..." oninput="fdWhatsappGelenKutusuCiz()"><button type="button" class="btn-modern btn-detail-modern" onclick="fdWhatsappGelenKutusuYukle(true)">↻ Yenile</button></div>
+            <p class="fd-wa-inbox-note">Gelen ve gönderilen WhatsApp mesajları aynı konuşmada tarih sırasıyla gösterilir.</p>
+            <div class="fd-wa-inbox-layout">
+                <div id="fdWhatsappKonusmalar" class="fd-wa-conversations"><div class="fd-wa-empty"><div><span>💬</span>Konuşmalar yükleniyor...</div></div></div>
+                <div id="fdWhatsappSohbet" class="fd-wa-chat"><div class="fd-wa-empty"><div><span>👈</span>Görüntülemek için soldan bir konuşma seçin.</div></div></div>
+            </div>
+        </section>
+        <section id="fdWhatsappKuyrukPanel" class="fd-wa-workspace-panel" role="tabpanel" aria-labelledby="fdWhatsappSekmeKuyruk" style="display:none;">
+            <div class="fd-wa-inbox-toolbar"><div style="flex:1"><strong>Bekleyen WhatsApp mesajları</strong><small style="display:block;margin-top:4px;color:#64748b">İzin, vardiya, ücret pusulası ve planlı mesajlar.</small></div><button type="button" class="btn-modern btn-detail-modern" onclick="fdWhatsappKuyrukYukle(true)">↻ Yenile</button></div>
+            <div class="fd-wa-queue-controls">
+                <span id="fdWhatsappKuyrukDurumu" role="status">Kuyruk durumu alınıyor...</span>
+                <button type="button" id="fdWhatsappKuyrukDurdur" onclick="fdWhatsappKuyrukDuraklat(true)" disabled>⏸ Tümünü Durdur</button>
+                <button type="button" id="fdWhatsappKuyrukDevam" onclick="fdWhatsappKuyrukDuraklat(false)" disabled>▶ Devam Ettir</button>
+                <label><input type="checkbox" id="fdWhatsappKuyrukTumunuSec" onchange="fdWhatsappKuyrukTumunuSec(this.checked)"> Tüm sayfalardaki bekleyenleri seç</label>
+                <button type="button" id="fdWhatsappKuyrukSecilenleriSil" class="danger" onclick="fdWhatsappKuyrukSecilenleriSil()" disabled>Seçilenleri Sil</button>
+            </div>
+            <div id="fdWhatsappKuyrukListesi" class="fd-wa-queue-list"><div class="fd-wa-empty"><div><span>⏳</span>Gönderim kuyruğu yükleniyor...</div></div></div>
+        </section>
+        <form id="fdWhatsappGonderPanel" class="fd-wa-workspace-panel" role="tabpanel" aria-labelledby="fdWhatsappSekmeGonder" onsubmit="fdBildirimGonder(event)" style="display:none;">
+            <div class="fd-wa-send-layout">
+                <aside class="fd-wa-send-card fd-wa-target-card">
+                    <div class="fd-wa-send-section-head"><span aria-hidden="true">👥</span><div><h4>Alıcılar</h4><small>WhatsApp numarası bulunan personeller.</small></div></div>
+                    <span id="fdBildirimSecimRozeti" hidden>Tümü</span>
+                    <div class="fd-wa-target-filters">
+                        <div class="form-group"><label>Şube</label><select id="fdBildirimSube" onchange="fdBildirimPersonelleriniDoldur()"><option value="">Tüm Şubeler</option></select></div>
+                        <div class="form-group"><label>Personel ara</label><input id="fdBildirimPersonelAra" type="search" placeholder="Ad veya görev yazın..." oninput="fdBildirimPersonelleriniDoldur()" data-case-preserve="true"></div>
+                    </div>
+                    <div class="push-personel-tools"><button type="button" onclick="fdBildirimTumPersonelleriSec(true)">✓ Görünenleri seç</button><button type="button" onclick="fdBildirimTumPersonelleriSec(false)">Seçimi temizle</button></div>
+                    <div id="fdBildirimPersonelListesi" class="push-personel-list fd-wa-target-list"><div class="push-personel-empty">Personeller yükleniyor...</div></div>
+                    <div class="push-compose-status"><span>Uygun WhatsApp alıcısı</span><strong id="fdBildirimCihazSayisi">Kontrol ediliyor...</strong></div>
+                </aside>
+                <section class="fd-wa-send-card fd-wa-compose-card">
+                    <div class="fd-wa-send-section-head"><span>✍️</span><div><h4>Mesajı hazırlayın</h4><small>Hemen gönderin veya ileri bir zamana planlayın.</small></div></div>
+                    <div class="fd-notification-mode" role="tablist" aria-label="Bildirim gönderim türü"><button type="button" id="fdBildirimModuAnlik" class="active" onclick="fdBildirimModuDegisti('instant')">⚡ Şimdi Gönder</button><button type="button" id="fdBildirimModuPlanli" onclick="fdBildirimModuDegisti('scheduled')">🕘 Planlı Gönder</button></div>
+                    <input id="fdBildirimPlanId" type="hidden" value="">
+                    <div id="fdBildirimPlanAyarlari" class="fd-notification-schedule" style="display:none;"><div class="form-group"><label>Gönderim zamanı</label><input id="fdBildirimPlanZamani" type="datetime-local"></div><small>Mesaj seçtiğiniz gün ve saatte otomatik gönderilir.</small></div>
+                    <div class="form-group"><label>Başlık <small>(isteğe bağlı · yalnız uygulamadaki kayıt adı, WhatsApp mesajına eklenmez)</small></label><input id="fdBildirimBaslik" maxlength="80" value="" data-case-preserve="true" placeholder="Örn. Vardiya Bilgilendirmesi" oninput="fdWhatsappMesajOnizle()"></div>
+                    <div class="form-group fd-wa-message-field"><label><span>Mesaj</span><small id="fdBildirimKarakterSayisi">0 / 500</small></label><textarea id="fdBildirimMesaj" rows="6" maxlength="500" data-case-preserve="true" placeholder="Göndermek istediğiniz mesajı yazın..." oninput="fdWhatsappMesajOnizle()" required></textarea></div>
+                    <div class="fd-wa-preview"><div class="fd-wa-preview-label"><span>WhatsApp’a gidecek metin</span><small id="fdWhatsappOnizlemeHedefi">WhatsApp mesajı</small></div><small id="fdWhatsappOnizlemeAlicisi"></small><div class="fd-wa-preview-phone"><div class="fd-wa-preview-bubble"><p id="fdWhatsappOnizlemeMesaj"></p></div></div></div>
+                    <div id="fdBildirimHedefOzeti" class="push-compose-note">Mesaj, bu şirketteki aktif personelin kayıtlı WhatsApp numarasına gider.</div>
+                    <div class="fd-wa-send-actions"><button type="button" class="fd-wa-clear-btn" onclick="fdWhatsappMesajFormunuTemizle()">Temizle</button><button id="fdBildirimGonderBtn" class="btn-submit" type="submit">💬 WhatsApp'tan Gönder</button></div>
+                </section>
+            </div>
+        </form>
+        </div>
+    </div>
+</main>

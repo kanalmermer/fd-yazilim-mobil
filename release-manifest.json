@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261026-s37-a7d9c2fdfedc",
+  "release": "fd-modular-20261026-s38-62a02a77ad81",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "c7c96c4b97560d7a8fdc723137b0601da6fbb175dba445af8d46824ff351af44",
-      "bytes": 52107
+      "sha256": "4089b86586e9733e678e8b3cad1638e2eb65a27d84f11b92ec17583458ab1cfc",
+      "bytes": 52778
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,8 +93,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "a70d743131f7e2cd06a847fe7ba26d0c1f2e7a25e99aef47c9b2a3a54954a127",
-      "bytes": 4895
+      "sha256": "448843fd88511d955ab87e1ceefdd9be5fdf31efc24f96a5115c08e7f2499474",
+      "bytes": 5101
     },
     {
       "path": "core/module-loader.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "e19c6f88ff31b86fd68d2640fcefef277fb5f96755c792dd5fc0c895d215f382",
-      "bytes": 599230
+      "sha256": "ce14e1eef56a0bbe774030a3e86f3a59ab9ad0a6f9574ca9dfb18b9f60010f71",
+      "bytes": 600863
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -438,8 +438,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "3ff77e0f14135aab6ab52b9d077d31568aeba75e9647b020d19c039aa3786dcd",
-      "bytes": 79281
+      "sha256": "380ca2fa1d45440ce90d86ca8b45f6ec3528078b27229d8d44e7d35fd9338b88",
+      "bytes": 78976
     },
     {
       "path": "legacy/styles/01.css",
@@ -755,6 +755,26 @@
       "path": "modules/bordro/view.html",
       "sha256": "d82a4fb3d65a89ce8c5d61c4ffdebe7b64ee4fbf18768ca3476c85ac4b39cd29",
       "bytes": 3288
+    },
+    {
+      "path": "modules/cikisuyari/manifest.json",
+      "sha256": "2ea4e3d9f6bcca8e78441d6083b7c9ab9eb7907e9438a933994f4540058023e5",
+      "bytes": 888
+    },
+    {
+      "path": "modules/cikisuyari/module.js",
+      "sha256": "4287b651a84c5caa920950f9c2981e850d702d3b8065670bce9e837caad65753",
+      "bytes": 3203
+    },
+    {
+      "path": "modules/cikisuyari/style.css",
+      "sha256": "e97feb75bd5274f93e057656d8a34248816cbf872e9472d848ebd4123ec62a78",
+      "bytes": 306
+    },
+    {
+      "path": "modules/cikisuyari/view.html",
+      "sha256": "fae98953cc4b68149e32044a0f46b3f57765f59ecb70a514cde5ea4b16637930",
+      "bytes": 1046
     },
     {
       "path": "modules/cks/manifest.json",
@@ -1493,8 +1513,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "419dd97c4fa21f8f98e9d3da278eaa4bc2168e8db7ef761d2f8d2714ad41fcd4",
-      "bytes": 21830
+      "sha256": "8c88445aff12b6ed92dc8583e64b47d984c85d666eb4440e1af2324484f25efb",
+      "bytes": 21901
     },
     {
       "path": "shared/leave-dashboard.js",
