@@ -1,0 +1,15 @@
+
+#magicpassAylikTablo{min-width:1100px}
+#magicpassAylikTablo th:nth-child(9),#magicpassAylikTablo td:nth-child(9){width:86px}
+#magicpassAylikTablo th:nth-child(10),#magicpassAylikTablo td:nth-child(10){width:94px}
+#magicpassAylikTablo th:nth-child(11),#magicpassAylikTablo td:nth-child(11){width:145px;overflow:hidden;text-overflow:ellipsis}
+#magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:84px}
+#magicpassGunlukTablo{min-width:1250px}
+:is(#magicpassOzet,#detayGirisCikisOzeti){overflow-x:auto}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-sade-ozet{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:1fr;gap:4px;min-width:760px}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri{display:contents}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]{display:flex;flex-direction:column;gap:2px;padding:4px 6px;border:1px solid #dae4ee;border-radius:6px;background:#f7f9fc;min-width:0}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>span{font-size:11px;line-height:1.35;color:#617187;font-weight:500;white-space:normal}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik]>strong{margin-top:auto;font-size:15px;line-height:1.25;color:#183449;font-weight:650;font-variant-numeric:tabular-nums}
+:is(#magicpassOzet,#detayGirisCikisOzeti) .magicpass-ozet-satiri>[data-magicpass-metrik="net"]{background:#eef8f5;border-color:#a9ccc5}
+

@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261026-s36-ef15e3e53283",
+  "release": "fd-modular-20261026-s37-a7d9c2fdfedc",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "f5e1f349c38182831d3a59d4e053b7f5637f8fd1089f29fbef63bb1aef24277d",
-      "bytes": 51410
+      "sha256": "c7c96c4b97560d7a8fdc723137b0601da6fbb175dba445af8d46824ff351af44",
+      "bytes": 52107
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,8 +93,8 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "0c8a20e05ef9751d262a3762dd8bf1e3285340b9cf00275434b77d4f713314a0",
-      "bytes": 4665
+      "sha256": "a70d743131f7e2cd06a847fe7ba26d0c1f2e7a25e99aef47c9b2a3a54954a127",
+      "bytes": 4895
     },
     {
       "path": "core/module-loader.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "d2e62316f0b989a1237bd454ee81d212196e4f8658e4ec100bbf47b86fe0e96f",
-      "bytes": 601924
+      "sha256": "e19c6f88ff31b86fd68d2640fcefef277fb5f96755c792dd5fc0c895d215f382",
+      "bytes": 599230
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1197,6 +1197,26 @@
       "bytes": 2405
     },
     {
+      "path": "modules/saatkarsilastirma/manifest.json",
+      "sha256": "3fb5acfaf60d2822204554506d693634f1faf6dd9467b0844b022a53a430ed8b",
+      "bytes": 891
+    },
+    {
+      "path": "modules/saatkarsilastirma/module.js",
+      "sha256": "2d6293c83338fcdb4262b706575a4e4dec149dbcd9656bc06879cf08849975e8",
+      "bytes": 5917
+    },
+    {
+      "path": "modules/saatkarsilastirma/style.css",
+      "sha256": "391d178715a7051008c2c9f8d014f4c0bc53eaeac3f868cfb9e0b2504d6547c8",
+      "bytes": 64
+    },
+    {
+      "path": "modules/saatkarsilastirma/view.html",
+      "sha256": "193bb7db0cfddd0cb1e1e85dc28c61d251ce1ee110838aebcab51a3f49714588",
+      "bytes": 81
+    },
+    {
       "path": "modules/siparistakip/manifest.json",
       "sha256": "f05640369e34f8b433a0dcb62d16c980b465aa4c0a4425fc2a3727a492d7b202",
       "bytes": 2319
@@ -1473,8 +1493,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "5d2664840e10bf51438c46ac67d7ae0cdace829883b432e4ce6faec851e06e2a",
-      "bytes": 21787
+      "sha256": "419dd97c4fa21f8f98e9d3da278eaa4bc2168e8db7ef761d2f8d2714ad41fcd4",
+      "bytes": 21830
     },
     {
       "path": "shared/leave-dashboard.js",
