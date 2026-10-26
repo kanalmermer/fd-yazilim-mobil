@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261024-s35-725f5f6e3d00",
+  "release": "fd-modular-20261026-s35-ed8fad22984e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "6ec75171f15c64f12ab48c92988c1db1bf02fdea2498f0041778198838968fd5",
+      "sha256": "c823cab412334ca0ad617acd63d463741345a2ee2a486761423b7ca8bebf4e40",
       "bytes": 50505
     },
     {
@@ -198,8 +198,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "f08ca82d1d2a91468ea4ab4f7189f78b39013fecf757a2dd1403c3629cc4c784",
-      "bytes": 610608
+      "sha256": "08540b17399fb2e6cdaf5bb20a64fbfb9633fa3cb8374538e59dfbec6a4c4262",
+      "bytes": 611015
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1448,8 +1448,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "6be75bed73e23a07595a7f3557b968ca156f02d682356cd9b718cae7ded4e379",
-      "bytes": 21743
+      "sha256": "5d2664840e10bf51438c46ac67d7ae0cdace829883b432e4ce6faec851e06e2a",
+      "bytes": 21787
     },
     {
       "path": "shared/leave-dashboard.js",
@@ -1573,8 +1573,8 @@
     },
     {
       "path": "shared/weekly-roster-fast.js",
-      "sha256": "6faf7200d1ab4193c50dd02cbe69f90ea237768117b429c8d3b45a4a16e8ed37",
-      "bytes": 4923
+      "sha256": "2ee3cffccdb32541a1ecba7c3fdf5c2ef403add63c5e4d276e4e8d6bdb509fd5",
+      "bytes": 5630
     },
     {
       "path": "shared/weekly-roster-safety.css",
