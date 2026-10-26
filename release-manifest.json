@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261026-s39-95f4a12f0a63",
+  "release": "fd-modular-20261026-s40-3911a144a2ae",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "045a43d27c4aceb59d67cbdcc28632ac2fabcca2828dfd3e82fd5b4fa109bba9",
-      "bytes": 53493
+      "sha256": "3bb3c6852da2e14f85724cdeced4fd2249d8c685771fe808061c879550a1329e",
+      "bytes": 54180
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "a13dbf6c164b9dd6f90e2dbc934a78947f613416beed6df0ee2219b284e8d6e0",
-      "bytes": 5284
+      "sha256": "81ebe0584090da5d0709a95c0da151cb80ba117ee580b64fe51639f88f2f6376",
+      "bytes": 5517
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "7fba820c81aedde95083f0f1697eea5737c154d7164790a78a08dfc8d4748971",
-      "bytes": 12793
+      "sha256": "b2da9bad658cbe0156a2240b12434b45b9da01aee46819c3a377ccac51844219",
+      "bytes": 12912
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "99d330ef04af6476ad770d3358319b458e1d1629d2c60ea89e2db8ffaa04b5d7",
-      "bytes": 602375
+      "sha256": "0e464260f455af192c754456cae0c16d4cd83c4d8fb8a762bba7ef7487e79729",
+      "bytes": 598724
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -855,6 +855,26 @@
       "path": "modules/evrak/view.html",
       "sha256": "a27718b71f9eba06a1b527e72153172ede3581a8527afc2157c75980de950197",
       "bytes": 7716
+    },
+    {
+      "path": "modules/gunlukhatirlatma/manifest.json",
+      "sha256": "c3e52892363cfa52445724071e2cbf90cdf974e29441cec4df7922afa38c24f3",
+      "bytes": 890
+    },
+    {
+      "path": "modules/gunlukhatirlatma/module.js",
+      "sha256": "bd346b6383ff2891e4b3a752589284f8c89678262baa2233428036b0c28d0118",
+      "bytes": 7786
+    },
+    {
+      "path": "modules/gunlukhatirlatma/style.css",
+      "sha256": "1d3b06b8eb9fe82d06c0e6d651c3f825b68ab90cf01e56fd63fffe9ea6881132",
+      "bytes": 73
+    },
+    {
+      "path": "modules/gunlukhatirlatma/view.html",
+      "sha256": "4676ce541f6a899d960e1f7df4c933b9548f62988ffd7d08f99cd55faeda8833",
+      "bytes": 708
     },
     {
       "path": "modules/gunlukrapor/manifest.json",
@@ -1533,8 +1553,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "2b17922a86db67326d17154bacf582f20844741b46a75b68ae6a5c6522ed003b",
-      "bytes": 21982
+      "sha256": "238b4d1cd82cb2017d8092961e6db147dbe2de073debb835213fab76a603da6d",
+      "bytes": 22065
     },
     {
       "path": "shared/leave-dashboard.js",
