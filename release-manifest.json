@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261026-s40-3911a144a2ae",
+  "release": "fd-modular-20261027-s41-bb531e257a98",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "3bb3c6852da2e14f85724cdeced4fd2249d8c685771fe808061c879550a1329e",
-      "bytes": 54180
+      "sha256": "89b74ce4618e4fab76c40ed4f3f661c209f88774ee1b7879b3ed97e034716b13",
+      "bytes": 54801
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "81ebe0584090da5d0709a95c0da151cb80ba117ee580b64fe51639f88f2f6376",
-      "bytes": 5517
+      "sha256": "58b052b7083c40249b0d659b5df563df5f1009890c2d360ade4d38b2d1a7945b",
+      "bytes": 5609
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "b2da9bad658cbe0156a2240b12434b45b9da01aee46819c3a377ccac51844219",
-      "bytes": 12912
+      "sha256": "efed04f2ddb5423b4512e3d70bea650b925b73f6b2b64452f13f3261617d209a",
+      "bytes": 13059
     },
     {
       "path": "core/order-entrypoints.js",
@@ -1097,6 +1097,26 @@
       "bytes": 2307
     },
     {
+      "path": "modules/pdfonizleme/manifest.json",
+      "sha256": "d4d415261892a279cdcc4b4232b7f4a1f4d520ca92e3c696452a252a56e0c43d",
+      "bytes": 829
+    },
+    {
+      "path": "modules/pdfonizleme/module.js",
+      "sha256": "15f5c94fc2ed5d3661e0a72677148aef68b82335c57bd6119783d52518c6d7ab",
+      "bytes": 3330
+    },
+    {
+      "path": "modules/pdfonizleme/style.css",
+      "sha256": "0af9e64bfd488939346daaabdc480d06b5d99b0a62a8d6e73bc196f72a706aa2",
+      "bytes": 75
+    },
+    {
+      "path": "modules/pdfonizleme/view.html",
+      "sha256": "21c16335cc09fed0da0203d15460a4c1b19add34e64033245ef2a8238cb8479d",
+      "bytes": 424
+    },
+    {
       "path": "modules/personelaktar/manifest.json",
       "sha256": "13f7a731d0d396e24e84d617a6db59a4978775971ec5828e6af0746962bb9982",
       "bytes": 963
@@ -1533,8 +1553,8 @@
     },
     {
       "path": "shared/enforcement-data.js",
-      "sha256": "c816402ec4fc65655cb971fe7f5bed444f1c4794dfa58130fd0e7eb05220618a",
-      "bytes": 2286
+      "sha256": "d3e8f0bfaded54d21f1177a00a441b1ddc4cb54a7828f10131fe50310530e80b",
+      "bytes": 3034
     },
     {
       "path": "shared/export-compat.js",
@@ -1553,8 +1573,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "238b4d1cd82cb2017d8092961e6db147dbe2de073debb835213fab76a603da6d",
-      "bytes": 22065
+      "sha256": "df7b076918645f05151ace921527c35199294d8b3b16a4f5d6ae10d71ab53397",
+      "bytes": 22138
     },
     {
       "path": "shared/leave-dashboard.js",
