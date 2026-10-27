@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261027-s41-c6896c60fd82",
+  "release": "fd-modular-20261027-s42-f25129fa8580",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "3de253eaea00b786edb959181b9d5e7494f8e50ad99d8b00b3a1b900339a403c",
-      "bytes": 54801
+      "sha256": "f6c9f12dd8ef04c5706353fdd7c157ea5793b3469a1e8db885991a0ac74cf482",
+      "bytes": 55623
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "58b052b7083c40249b0d659b5df563df5f1009890c2d360ade4d38b2d1a7945b",
-      "bytes": 5609
+      "sha256": "bafc9640f93c47aeeae8bbeba883252fe7640a067fa7c7921880054a59e6f07c",
+      "bytes": 5782
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "efed04f2ddb5423b4512e3d70bea650b925b73f6b2b64452f13f3261617d209a",
-      "bytes": 13059
+      "sha256": "23a3cadc281ffd5dc676cacc20228578fda54415b60acef02dbe7c0c2b2a35bb",
+      "bytes": 13285
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "0e464260f455af192c754456cae0c16d4cd83c4d8fb8a762bba7ef7487e79729",
-      "bytes": 598724
+      "sha256": "ab2aa20d52015a264a9eb1388b1665f04b398720ccca11b0fe4493045b20a193",
+      "bytes": 574440
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -423,8 +423,8 @@
     },
     {
       "path": "legacy/52-fdPersonelWhatsappTercihleriScript.js",
-      "sha256": "058040ff7d0ed8b23b5c25171ac9d78cae25d908be5260e0c29a87ec03d11cd2",
-      "bytes": 13227
+      "sha256": "fabbb6d186ec06ea9f6633a336b1379699f0ee80f363bea1de03e9f8eb5436d0",
+      "bytes": 13244
     },
     {
       "path": "legacy/53-fdPersonnelTemplateCatalogV264.js",
@@ -1197,6 +1197,26 @@
       "bytes": 2953
     },
     {
+      "path": "modules/personelform/manifest.json",
+      "sha256": "70a637635f176993d41cad142a83d0bd3af64359d80458bc21ee06bba264149d",
+      "bytes": 1067
+    },
+    {
+      "path": "modules/personelform/module.js",
+      "sha256": "80308ba07c327be2a4598a4cb6d738aa2e95d021d1e420b1472794f5d6a45142",
+      "bytes": 31285
+    },
+    {
+      "path": "modules/personelform/style.css",
+      "sha256": "8019bcf00a88807cbef20d4956c4e145abb7a20c8808172fa4c1e82bae2ef69d",
+      "bytes": 89
+    },
+    {
+      "path": "modules/personelform/view.html",
+      "sha256": "d719ef5087f41c06311eda40ff7ca31e156ced5ecfd85fe32b4de0b0b537ad22",
+      "bytes": 11622
+    },
+    {
       "path": "modules/personelliste/manifest.json",
       "sha256": "af8e984b779b23baa5aea10e7146c65be0d549065a589c7273b89235d3aba884",
       "bytes": 966
@@ -1573,8 +1593,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "df7b076918645f05151ace921527c35199294d8b3b16a4f5d6ae10d71ab53397",
-      "bytes": 22138
+      "sha256": "0253b4db16b0a68e94852d334cc4eca38b7a62a5ad365f15263111fa91b67d3b",
+      "bytes": 22213
     },
     {
       "path": "shared/leave-dashboard.js",
@@ -1633,8 +1653,8 @@
     },
     {
       "path": "shared/personnel-photo.js",
-      "sha256": "febb303786121a47ae8dee71c40736e4fdaa7c77055098b1271b7ff663cfd454",
-      "bytes": 8178
+      "sha256": "6fe4805b789a70aa297d25a0d607cdc331e04d27d3b6e838d1d21ee57349c796",
+      "bytes": 8228
     },
     {
       "path": "shared/policy-badges.css",

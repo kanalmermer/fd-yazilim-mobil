@@ -1,0 +1,118 @@
+{
+  "name": "İzin Takibi",
+  "roots": [
+    "izinTakipApp",
+    "modalIzinTopluAktar",
+    "dilekceRaporu",
+    "izinTopluDilekceRaporu",
+    "mazeretsizTutanakRaporu",
+    "modalDilekceOnizleme"
+  ],
+  "entrypoints": [
+    "izinAyarEtiketleriniGuncelle",
+    "fdIzinArayuzunuYenile",
+    "openIzinTakipApp",
+    "switchIzinTab",
+    "personelSelectDoldur",
+    "izinPersonelAramaliSecimYap",
+    "izinTuruDegisti",
+    "mazeretsizSahitleriDoldur",
+    "mazeretsizSahitDegisti",
+    "mazeretsizSahitleriGetir",
+    "personelSecildi",
+    "donemSeciminiGuncelle",
+    "personelOzetKutusunuGuncelle",
+    "sendWhatsAppOzet",
+    "izinOzetDosyaAdi",
+    "seciliPersonelIzinCiktiVerisi",
+    "exportIzinOzetExcel",
+    "exportIzinOzetPdf",
+    "izinPersonelNotunuFormaYukle",
+    "izinPersonelNotunuKaydet",
+    "tekPersonelGecmisiniCiz",
+    "izinDuzenle",
+    "izinFormReset",
+    "dilekceTekrarBas",
+    "baslangicTarihiDegisti",
+    "bitisTarihiKisitiniGuncelle",
+    "hesaplaIzinTarihleri",
+    "izindeCakisinaIzinVarMi",
+    "izinMTopluPersonelDegisti",
+    "izinMTopluPuantajKodu",
+    "izinMTopluGunleriYukle",
+    "izinMTopluGunSec",
+    "izinMTopluTurDegisti",
+    "izinMTopluDonemleriDoldur",
+    "izinMTopluSecilenleriAta",
+    "izinMTopluGrupListesi",
+    "izinMTopluAtamayiSil",
+    "izinMTopluCiz",
+    "izinMTopluTemizle",
+    "izinMTopluAraliklaraBol",
+    "izinMTopluKayitlariHazirla",
+    "izinMTopluKayitSonrasiSifirla",
+    "izinMTopluKaydetVeYazdir",
+    "izinExcelSablonuIndir",
+    "izinExcelDosyasiSec",
+    "izinTopluTurunuCoz",
+    "izinTopluNetGunHesapla",
+    "izinTopluIseBaslamaHesapla",
+    "izinTopluKayitlarCakisiyorMu",
+    "izinExcelDosyasiniOku",
+    "izinTopluAktarOnizlemesiniGoster",
+    "izinTopluAktarModaliniKapat",
+    "izinKayitlariniSupabaseDogrula",
+    "izinKayitlariniYuklenenListedeDogrula",
+    "izinKurtarmaUyarisiGoster",
+    "izinTopluAktarimiKaydet",
+    "renderBakiyeTable",
+    "exportBakiyeToExcel",
+    "izinDilekceRaporunuDoldur",
+    "dilekceHazirla",
+    "izinMTopluDilekceleriAc",
+    "mazeretsizTutanakHazirla",
+    "dilekceOnizlemeAc",
+    "dilekceOnizlemeKapat",
+    "dilekceOnizlemeYazdir",
+    "yazdirmaGorunumunuAc",
+    "izinTekKaydiSil",
+    "izinSil",
+    "izinPersonelSeciminiTemizle",
+    "exportBakiyeToPDF"
+  ],
+  "writeOperations": [
+    "izinPersonelNotunuKaydet",
+    "izinDuzenle",
+    "izinMTopluKaydetVeYazdir",
+    "izinTopluAktarimiKaydet",
+    "izinKurtarmaUyarisiGoster",
+    "izinTekKaydiSil",
+    "izinSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/izin/view.html",
+      "sha256": "5bf3c29620dfb2aae89e5bfda6a5c127e51bfaa708add9a6551ea4918f7b54bd",
+      "bytes": 22482,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/izin/style.css",
+      "sha256": "085860f701019074f7d0243bdf7ca183b9a456507d6631c8a85bc73df0397a44",
+      "bytes": 6281,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/izin/module.js",
+      "sha256": "8dded5db05ba6174fcbb04ee1df9b3c3535f8bb6caa22393bf11b3d817414cda",
+      "bytes": 107711,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
