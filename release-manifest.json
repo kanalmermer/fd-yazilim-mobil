@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261027-s42-f25129fa8580",
+  "release": "fd-modular-20261027-s43-3a53d1abe0c0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "f6c9f12dd8ef04c5706353fdd7c157ea5793b3469a1e8db885991a0ac74cf482",
-      "bytes": 55623
+      "sha256": "7db2a3b2bd27a45fe32f8586ffe71e18815df224a3f53765c36e19c7af2425eb",
+      "bytes": 56377
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "bafc9640f93c47aeeae8bbeba883252fe7640a067fa7c7921880054a59e6f07c",
-      "bytes": 5782
+      "sha256": "02d2b5c84b58d111066e07140896bf8cedee00235834fdbcdc990cd307e15263",
+      "bytes": 5946
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "23a3cadc281ffd5dc676cacc20228578fda54415b60acef02dbe7c0c2b2a35bb",
-      "bytes": 13285
+      "sha256": "674aac915cb2e18fa0ff22a60274d499890d4844c366d13a6e10ac43fcbcf661",
+      "bytes": 13424
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "ab2aa20d52015a264a9eb1388b1665f04b398720ccca11b0fe4493045b20a193",
-      "bytes": 574440
+      "sha256": "ddce6db4d9f279f140cdfb170236c62c79806b508dcf251f100e2b9fc4a4a224",
+      "bytes": 573473
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1377,6 +1377,26 @@
       "bytes": 7438
     },
     {
+      "path": "modules/topluplan/manifest.json",
+      "sha256": "298e81b1eaaad9aa25686f49ae09ea97294a99306ca6cf775fc5ae7d83c9d72e",
+      "bytes": 979
+    },
+    {
+      "path": "modules/topluplan/module.js",
+      "sha256": "4169d103b5b2171e6d845c26b261c5b3476534780420b1ce0bd0bb4a1b82df85",
+      "bytes": 5400
+    },
+    {
+      "path": "modules/topluplan/style.css",
+      "sha256": "df0e1b3c07d3055ae346d904e98182a28faeadd76daa6f9e61ee4656c26ba05d",
+      "bytes": 75
+    },
+    {
+      "path": "modules/topluplan/view.html",
+      "sha256": "44655e7d4cc1da3ad6fb609880ca19b4069edf56f896d2171c156f060bdc2b7b",
+      "bytes": 2755
+    },
+    {
       "path": "modules/toplusaat/manifest.json",
       "sha256": "70fd0dd4e8d0d73985c532dfbb70ea169758cfbe6ffc4ad18c34f2a1628bc295",
       "bytes": 1153
@@ -1593,8 +1613,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "0253b4db16b0a68e94852d334cc4eca38b7a62a5ad365f15263111fa91b67d3b",
-      "bytes": 22213
+      "sha256": "7cea79e0459cb81a57bcfd4d4dbd43ff16dd823680f930019f6843c0d6b52965",
+      "bytes": 22282
     },
     {
       "path": "shared/leave-dashboard.js",
