@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261027-s43-3a53d1abe0c0",
+  "release": "fd-modular-20261027-s44-79a3678945fe",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7db2a3b2bd27a45fe32f8586ffe71e18815df224a3f53765c36e19c7af2425eb",
-      "bytes": 56377
+      "sha256": "78dd14d559fb0c745836bba6dec475857e2a2da2fab4a14f4db8d7ee2e87750b",
+      "bytes": 57066
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "02d2b5c84b58d111066e07140896bf8cedee00235834fdbcdc990cd307e15263",
-      "bytes": 5946
+      "sha256": "f355186c2f81d9a686020319870a8390707df91a7ff45c46050ceb253f1a5bd3",
+      "bytes": 6037
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "674aac915cb2e18fa0ff22a60274d499890d4844c366d13a6e10ac43fcbcf661",
-      "bytes": 13424
+      "sha256": "6850ad767fd83dc2ecd10238be415af39bb2e49bea353c21100869286ddd5dd0",
+      "bytes": 13668
     },
     {
       "path": "core/order-entrypoints.js",
@@ -338,8 +338,8 @@
     },
     {
       "path": "legacy/30-fdBildirimSistemi.js",
-      "sha256": "ace94b13ab798169ee4a6b3a6fa8fa0bb4b56037996c64b1774f807c9958a331",
-      "bytes": 20302
+      "sha256": "8f0f7f1c6e55a8f68f0c36896fd5334fd6ccd29da8d3463c34771f3ebd5bbae7",
+      "bytes": 22199
     },
     {
       "path": "legacy/31-fdKvkkAydinlatmaSistemi.js",
@@ -735,6 +735,26 @@
       "path": "modules/bildirim/view.html",
       "sha256": "31a1f04cd108c06609b4c3ae462a9549568b8e3c00582695a26fd1a8a58d554b",
       "bytes": 8159
+    },
+    {
+      "path": "modules/bildirimizni/manifest.json",
+      "sha256": "53c1808eb6c3e49df0faaf4a60e8711087c42857b4d0b7bb5104632b31d2202f",
+      "bytes": 901
+    },
+    {
+      "path": "modules/bildirimizni/module.js",
+      "sha256": "7e921463d3e929801c4f88f0f2f9147db880796c5ac300fb7dbd60afd78fd56f",
+      "bytes": 1812
+    },
+    {
+      "path": "modules/bildirimizni/style.css",
+      "sha256": "222626339204df8d441c04ba3f63e0ffd86268181366ddbe45051bd97cc353ce",
+      "bytes": 68
+    },
+    {
+      "path": "modules/bildirimizni/view.html",
+      "sha256": "61a1243f640948b5abe320ddc4b960fd75e62ab57088dfe8fce78dd5df9a2363",
+      "bytes": 944
     },
     {
       "path": "modules/bordro/manifest.json",
@@ -1613,8 +1633,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "7cea79e0459cb81a57bcfd4d4dbd43ff16dd823680f930019f6843c0d6b52965",
-      "bytes": 22282
+      "sha256": "3eb974c12e289ba5a1466069e05861fb42ae679aaf21dc725e9003ad61b31387",
+      "bytes": 22332
     },
     {
       "path": "shared/leave-dashboard.js",
