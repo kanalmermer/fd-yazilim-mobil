@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261028-s47-eb404b368b8b",
+  "release": "fd-modular-20261028-s47-a6d76aabbe3f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d3ae35e968002be9debde5aed0ea393ae0137a870e4176e851de86cb286e87b5",
+      "sha256": "19f3dbdc520237a5eb2474ea8dbc4940bb4b1bf53936b77669cce0d8a54d1ab0",
       "bytes": 58898
     },
     {
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "d5b3981e625a95b9c80147516507864e9dd4c43684c2e4e0b10d0785daf1720d",
-      "bytes": 567788
+      "sha256": "a1f06d2e0f39d1d10b66633cb2d5df242bbd17493ef2ce69ef97cc247eda6451",
+      "bytes": 567770
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1610,6 +1610,16 @@
       "path": "shared/attendance-fast.js",
       "sha256": "4a92781389bf92fb25ec32ca969df059a2a11907655721f545385347ebacb92a",
       "bytes": 22079
+    },
+    {
+      "path": "shared/attendance-holiday-shift-label.css",
+      "sha256": "6db67523e05a7804d17b8b368e9aefc36de867ca0c8403cdf69984ec7ab3d30d",
+      "bytes": 202
+    },
+    {
+      "path": "shared/attendance-holiday-shift-label.js",
+      "sha256": "cb3cc26ca8556d0a49eae8091b0a28a63f7cfa7cd544fcfce101251159244c7d",
+      "bytes": 828
     },
     {
       "path": "shared/attendance-queue-ui.css",
