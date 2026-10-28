@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261028-s45-b9062946644b",
+  "release": "fd-modular-20261028-s46-64a499c76c84",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "2d77cd91bdb4dd2c07c5cfc515f5506586203dde11ac8e29cb0fe972fd0919dd",
-      "bytes": 57725
+      "sha256": "ee0eb7cfa149b873ed2855cc97f000e0861f78543e1b2a6becc50291c6aba7b6",
+      "bytes": 58311
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "cf8c23ce03ea0a02bc74d604861204ecf3a8db70bb5241f56ce4a93124d6d4ff",
-      "bytes": 6216
+      "sha256": "273de00e8efbaac75e6c3d22addb9cdc44bc7e4b2a72a264f5d1e552de12aea1",
+      "bytes": 6403
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "63201521a12572d0dd2d37c5116b602f624cec0a9fd64bbeb623202b7bd50b15",
-      "bytes": 13886
+      "sha256": "1431b3a4fe71d9b89d79c13d0c277013ccf8be9e727e2b147971bb2d43b0f173",
+      "bytes": 14167
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "7c4ef84b8adf9b05d2b39b1181b27ef516d282523c59fd74521b3f556ba834c5",
-      "bytes": 574240
+      "sha256": "d5b3981e625a95b9c80147516507864e9dd4c43684c2e4e0b10d0785daf1720d",
+      "bytes": 567788
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1517,6 +1517,26 @@
       "bytes": 5760
     },
     {
+      "path": "modules/wordbelge/manifest.json",
+      "sha256": "89becb677147a624a88d0a1fc3f8363684ee17e0e415929abc15024945327c97",
+      "bytes": 775
+    },
+    {
+      "path": "modules/wordbelge/module.js",
+      "sha256": "058d03344244290c0775c46663d2fbcd65673f597ddfb1c60b31345413a1b392",
+      "bytes": 10038
+    },
+    {
+      "path": "modules/wordbelge/style.css",
+      "sha256": "3e36cf255fc246bf0e908120e645cebd92b86898600871cbb30658d8add85380",
+      "bytes": 69
+    },
+    {
+      "path": "modules/wordbelge/view.html",
+      "sha256": "0685635a8d34a6f91bfc73b312c08ee3908e5ce5aab54a71d5ad12c9ff4c6d8e",
+      "bytes": 76
+    },
+    {
       "path": "modules/workcenter/manifest.json",
       "sha256": "64f413ccf3471d6e442efe7bf004758b466f97827cd2508026482f7e815ac4ab",
       "bytes": 1769
@@ -1653,8 +1673,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "32ffbbef72d0ade9c1c9dac439daf07ae10ea0b89629de85a720bddfa77b530c",
-      "bytes": 22384
+      "sha256": "84618940f4a8d93916e592206f5641ee8c9f1d5721057a29f572a207434cd296",
+      "bytes": 22431
     },
     {
       "path": "shared/leave-dashboard.js",
