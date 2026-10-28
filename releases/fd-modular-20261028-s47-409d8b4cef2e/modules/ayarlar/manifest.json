@@ -1,0 +1,113 @@
+{
+  "name": "Ayarlar",
+  "roots": [
+    "ayarlarApp"
+  ],
+  "entrypoints": [
+    "ayarlarBolumAc",
+    "siparisAyarBirimSeciminiYenile",
+    "whatsappVardiyaSubeSeciminiCiz",
+    "whatsappVardiyaSubeSecilenleriniOku",
+    "ozelAyarPanelleriniKur",
+    "ozelAyarFormlariniDoldur",
+    "ayarlarModulListesiniFiltrele",
+    "ayarlarModulAktifDurumunuGuncelle",
+    "ayarlarArayuzunuDuzenle",
+    "irsaliyeAyarBirimDegerleri",
+    "irsaliyeAyarVarsayilanSecenegiGuncelle",
+    "irsaliyeAyarBirimSatiriEkle",
+    "irsaliyeAyarBirimListesiniDoldur",
+    "irsaliyeAyarBirimiEkle",
+    "aracAyarTurDegerleri",
+    "aracAyarTurSatiriEkle",
+    "aracAyarTurListesiniDoldur",
+    "aracAyarTuruEkle",
+    "aracTurleriniAyricaKaydet",
+    "alanAdiTescilAyarlariniFormdanOku",
+    "alanAdiTescilBelgesiniOnizle",
+    "alanAdiTescilAyariniKaydet",
+    "ayarlarFormunuDoldur",
+    "yedeklemeAyarGorunumunuGuncelle",
+    "yedeklemeFormDegerleriniOku",
+    "yedeklemeAyariniOrtakKaydet",
+    "yedeklemeAyariniSunucudanDogrula",
+    "yedeklemeAyarlariniKaydet",
+    "yedeklemeDurumunuGoster",
+    "yedeklemeHemenIste",
+    "openAyarlarApp",
+    "uygulamaAyarlariniKaydet",
+    "whatsappSablonBildirimAyarlariniDoldur",
+    "whatsappSablonBildirimAyarlariniOku",
+    "magicpassGunlukRaporAyarlariniDoldur",
+    "otomatikBildirimSablonDegerleriniOku",
+    "otomatikBildirimMetinleriniKaydet",
+    "magicpassRaporAyarlariniKaydet",
+    "policeAyarArayuzunuKur",
+    "policeAyarTurSatiri",
+    "policeAyarFormunuDoldur",
+    "policeAyarTuruEkle",
+    "policeAyarlariniKaydet",
+    "policeAyarVarlikSatiri",
+    "policeAyarVarliklariniDoldur",
+    "policeAyarVarlikEkle",
+    "anaMenuAyarTaslaginiFormdanOku",
+    "ayarlarKullaniciIstisnasiEkle",
+    "ayarlarKullaniciIstisnaYetkisiniGuncelle",
+    "ayarlarKullaniciIstisnasiSil",
+    "ayarlarModulListesiniCiz",
+    "ayarlarAnaMenuPaneliniYenile",
+    "ayarlarModulSirasiniDegistir",
+    "anaMenuAyarlariniFormdanOku",
+    "fdPuantajRenkAyarlariniKur",
+    "fdPuantajRenkleriniKaydet",
+    "fdTakvimAyarlariniKur",
+    "fdTakvimAyarlariniKaydet",
+    "kvkkAyarlariniYukle",
+    "kvkkMetniniYayinla",
+    "fdAyarKayitTamamlandi"
+  ],
+  "writeOperations": [
+    "ayarlarKullaniciIstisnasiEkle",
+    "ayarlarKullaniciIstisnaYetkisiniGuncelle",
+    "ayarlarKullaniciIstisnasiSil",
+    "ayarlarModulSirasiniDegistir",
+    "uygulamaAyarlariniKaydet",
+    "aracTurleriniAyricaKaydet",
+    "alanAdiTescilAyariniKaydet",
+    "yedeklemeAyariniOrtakKaydet",
+    "yedeklemeAyarlariniKaydet",
+    "yedeklemeHemenIste",
+    "otomatikBildirimMetinleriniKaydet",
+    "magicpassRaporAyarlariniKaydet",
+    "policeAyarlariniKaydet",
+    "fdPuantajRenkleriniKaydet",
+    "fdTakvimAyarlariniKaydet",
+    "kvkkMetniniYayinla"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/ayarlar/view.html",
+      "sha256": "feef041130ce34d7ea7bbaca8301ff13f281507ae6b21b349be3134547662f2d",
+      "bytes": 25683,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/ayarlar/style.css",
+      "sha256": "e6e3e80d10ffb30e3f3088807d9259a997952885fc198be00bcde45f3032f9ee",
+      "bytes": 22404,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/ayarlar/module.js",
+      "sha256": "c21f942c801c512f03d3e8c1beafa301fb10f4b78fa65e30cc6b2d54532255b0",
+      "bytes": 118682,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
