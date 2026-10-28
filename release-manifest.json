@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261028-s47-a6d76aabbe3f",
+  "release": "fd-modular-20261028-s47-0174237b7168",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "19f3dbdc520237a5eb2474ea8dbc4940bb4b1bf53936b77669cce0d8a54d1ab0",
+      "sha256": "d2130c22441db1bcb038cb610ac3666a5d6c21fbce31a9a19028d1809f45cc17",
       "bytes": 58898
     },
     {
@@ -1732,9 +1732,14 @@
       "bytes": 5081
     },
     {
+      "path": "shared/payroll-holiday-color.css",
+      "sha256": "ca82a52d2de25fe215cce2d98cd99b28f10fd1669557b209b779692b12d2a3c3",
+      "bytes": 526
+    },
+    {
       "path": "shared/payroll-matrix.js",
-      "sha256": "e41c8140490df8496efa788544804d2e39562356ad2e80c85348c7af6e8c480b",
-      "bytes": 21061
+      "sha256": "a31a2845bc98f5b267ee75306f168306146d696ec238fff9bfd7cc6dd22c92c5",
+      "bytes": 21681
     },
     {
       "path": "shared/payroll-overtime.js",

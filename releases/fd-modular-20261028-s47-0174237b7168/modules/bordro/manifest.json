@@ -1,0 +1,54 @@
+{
+  "name": "Bordro Belgeleri ve Ücret Pusulaları",
+  "roots": [
+    "bordroBelgeleriPanel",
+    "bordroBelgeleriModal",
+    "bordroBelgeOnizleme",
+    "bordroMaasKarsilastirmaModal"
+  ],
+  "entrypoints": [
+    "bordroMaasKarsilastirmayiAc",
+    "bordroBelgeleriYuklemeAc",
+    "bordroBelgeleriniTopluKaydet",
+    "bordroBelgesiGoruntule",
+    "bordroPersonelPusulasiGoruntule",
+    "bordroBelgeOnizlemeKapat",
+    "bordroBelgesiIndir",
+    "bordroPersonelPusulasiIndir",
+    "bordroOnizlenenBelgeIndir",
+    "bordroBelgesiSil",
+    "bordroBelgeleriAyiDegisti",
+    "fdBordroBelgeleriniYenile"
+  ],
+  "writeOperations": [
+    "bordroBelgeleriYuklemeAc",
+    "bordroBelgeleriniTopluKaydet",
+    "bordroBelgesiSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/bordro/view.html",
+      "sha256": "d82a4fb3d65a89ce8c5d61c4ffdebe7b64ee4fbf18768ca3476c85ac4b39cd29",
+      "bytes": 3288,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/bordro/style.css",
+      "sha256": "fb5d2156427a022cdbfecdb21e5de3a158da82ad8c4d6d8336974e1c4f294bdd",
+      "bytes": 6464,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/bordro/module.js",
+      "sha256": "9709e87518343488a975be61ca997a29c2bc6af4c4028f434846173d4168a608",
+      "bytes": 61164,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

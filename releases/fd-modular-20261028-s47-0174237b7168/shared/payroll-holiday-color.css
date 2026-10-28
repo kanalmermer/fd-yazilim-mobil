@@ -1,0 +1,4 @@
+#puantajTablosu :is(th.p-gun-baslik,td.p-gun-hucresi)[data-fd-holiday="half"]{background:#fef3c7!important;color:#92400e!important}
+#puantajTablosu :is(th.p-gun-baslik,td.p-gun-hucresi)[data-fd-holiday="full"]{background:#e0f2fe!important;color:#075985!important}
+#puantajTablosu td.p-gun-hucresi[data-fd-holiday] :is(.p-x,.p-rt,.p-yt,.p-rc){background:inherit!important;color:inherit!important}
+#puantajTablosu :is(th.p-gun-baslik,td.p-gun-hucresi)[data-fd-holiday]{print-color-adjust:exact;-webkit-print-color-adjust:exact}
