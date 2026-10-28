@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261027-s44-79a3678945fe",
+  "release": "fd-modular-20261028-s45-a5a56d7e3a7c",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "78dd14d559fb0c745836bba6dec475857e2a2da2fab4a14f4db8d7ee2e87750b",
-      "bytes": 57066
+      "sha256": "4a1890ddf50f450566968ec9fc0c3c95563cbdedef25ac19de9f6f2d3f7ed010",
+      "bytes": 57725
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "f355186c2f81d9a686020319870a8390707df91a7ff45c46050ceb253f1a5bd3",
-      "bytes": 6037
+      "sha256": "cf8c23ce03ea0a02bc74d604861204ecf3a8db70bb5241f56ce4a93124d6d4ff",
+      "bytes": 6216
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "6850ad767fd83dc2ecd10238be415af39bb2e49bea353c21100869286ddd5dd0",
-      "bytes": 13668
+      "sha256": "63201521a12572d0dd2d37c5116b602f624cec0a9fd64bbeb623202b7bd50b15",
+      "bytes": 13886
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "ddce6db4d9f279f140cdfb170236c62c79806b508dcf251f100e2b9fc4a4a224",
-      "bytes": 573473
+      "sha256": "7c4ef84b8adf9b05d2b39b1181b27ef516d282523c59fd74521b3f556ba834c5",
+      "bytes": 574240
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1117,6 +1117,26 @@
       "bytes": 2307
     },
     {
+      "path": "modules/manuelduzeltme/manifest.json",
+      "sha256": "06c66fab03c3e52d4ca2902af54614c07ef3299a6b064fbaec9c2ea2823397a8",
+      "bytes": 859
+    },
+    {
+      "path": "modules/manuelduzeltme/module.js",
+      "sha256": "df4ad726595698b8141b7272cc8d2c46db18f8e8270ce18adef34055c9bed9bf",
+      "bytes": 3582
+    },
+    {
+      "path": "modules/manuelduzeltme/style.css",
+      "sha256": "221e5e8c8e304be4eb9fb80759bd25c2c3710c3bc848045d1f05b614b6a9a33a",
+      "bytes": 72
+    },
+    {
+      "path": "modules/manuelduzeltme/view.html",
+      "sha256": "5a6135d03790263f05b38d07aed032ca097f5939eea1f62f649d25a73641973a",
+      "bytes": 1777
+    },
+    {
       "path": "modules/pdfonizleme/manifest.json",
       "sha256": "d4d415261892a279cdcc4b4232b7f4a1f4d520ca92e3c696452a252a56e0c43d",
       "bytes": 829
@@ -1633,8 +1653,8 @@
     },
     {
       "path": "shared/isg-session-integration.js",
-      "sha256": "3eb974c12e289ba5a1466069e05861fb42ae679aaf21dc725e9003ad61b31387",
-      "bytes": 22332
+      "sha256": "32ffbbef72d0ade9c1c9dac439daf07ae10ea0b89629de85a720bddfa77b530c",
+      "bytes": 22384
     },
     {
       "path": "shared/leave-dashboard.js",

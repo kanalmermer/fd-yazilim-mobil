@@ -1,0 +1,43 @@
+{
+  "name": "Toplu Personel Belgeleri",
+  "roots": [
+    "modalYillikPersonelBelge"
+  ],
+  "entrypoints": [
+    "yillikPersonelBelgePaneliniAc",
+    "yillikPersonelBelgePaneliniKapat",
+    "yillikBelgeTumSubeleriSec",
+    "yillikBelgeSubeSeciminiGuncelle",
+    "yillikPersonelBelgeleriniTopluHazirla",
+    "yillikPersonelBelgeleriniTopluYazdir",
+    "fdYillikBelgeTopluDurumunuTemizle",
+    "fdYillikBelgeTopluModuAktifMi"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personelbelge/view.html",
+      "sha256": "88c54c010bf550688d165386b2b410d45e960269240e20010d124d9d415037a9",
+      "bytes": 2083,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelbelge/style.css",
+      "sha256": "203e931f2b17b1bd79a9761bcca8c4c8ae6f4259e393753d641762c1392e4b65",
+      "bytes": 2973,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelbelge/module.js",
+      "sha256": "4517684bdfee8928d40827ef95c41795fc04cbd0aebe8e35f198e45126bf999c",
+      "bytes": 19016,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
