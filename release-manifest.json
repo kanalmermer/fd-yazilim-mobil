@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261028-s47-7187dbe7d3e6",
+  "release": "fd-modular-20261029-s47-025b30fa6a0d",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "9464b252566d9c7894ec75155ab65dd63ace9c9be2298c05fa77b2ecfbd8df8b",
+      "sha256": "8af47d56fd2bba892f6311f29fd6f06f077d8d6dd553fd33aed1b6b86a02a595",
       "bytes": 58898
     },
     {
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "a1f06d2e0f39d1d10b66633cb2d5df242bbd17493ef2ce69ef97cc247eda6451",
-      "bytes": 567770
+      "sha256": "269cbfdbf2c8d52d9c86c7d28ad247c391fdd07f5960bf14bd4089fe259abddb",
+      "bytes": 568030
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1613,13 +1613,13 @@
     },
     {
       "path": "shared/attendance-holiday-shift-label.css",
-      "sha256": "6db67523e05a7804d17b8b368e9aefc36de867ca0c8403cdf69984ec7ab3d30d",
-      "bytes": 202
+      "sha256": "cdee6f5baf8cd94dd2b692002bf46b7e961f322abbeb447e247143baf1f2cc11",
+      "bytes": 375
     },
     {
       "path": "shared/attendance-holiday-shift-label.js",
-      "sha256": "cb3cc26ca8556d0a49eae8091b0a28a63f7cfa7cd544fcfce101251159244c7d",
-      "bytes": 828
+      "sha256": "e961ba74806e0d2e502650dad77127ced155e8c79caa7795b358dbc9d174f20c",
+      "bytes": 6327
     },
     {
       "path": "shared/attendance-queue-ui.css",
@@ -1633,8 +1633,8 @@
     },
     {
       "path": "shared/attendance-summary-data.js",
-      "sha256": "b5c260476815fddc98bd29b138d78ee78f027d64b075aa9f3dc6172158e55aaf",
-      "bytes": 19459
+      "sha256": "a7b1894a2dd363ed5f5736df476001060a6e4954d314cb8cd8545e9da328dd1f",
+      "bytes": 20175
     },
     {
       "path": "shared/attendance-summary-output.js",
