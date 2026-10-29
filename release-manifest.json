@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-212c17d84b9e",
+  "release": "fd-modular-20261029-s47-ed71d7b76854",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "c99d79583be9417d37d5dfba213adf475f2a50ec3bc738748a7d0c6d4cfa7cf0",
+      "sha256": "8d6301d17c1566a7d4721c5a276594f79e91f4aab0aad5273c1685cbe5078cf5",
       "bytes": 58898
     },
     {
@@ -758,13 +758,13 @@
     },
     {
       "path": "modules/bordro/manifest.json",
-      "sha256": "67841c7348b8212376297d70766507adec45d0319a350e002b4e3e980548baee",
+      "sha256": "68cf6b926b985faaef508a4178100b31294a12f2361f9402a021f2aa2fc7ed0b",
       "bytes": 1381
     },
     {
       "path": "modules/bordro/module.js",
-      "sha256": "9709e87518343488a975be61ca997a29c2bc6af4c4028f434846173d4168a608",
-      "bytes": 61164
+      "sha256": "a70a779972d0c5d309c4374ea3dc3808ad686aff8efeff627577163f6e1ff4ec",
+      "bytes": 61432
     },
     {
       "path": "modules/bordro/style.css",
@@ -1653,8 +1653,8 @@
     },
     {
       "path": "shared/bonus-data.js",
-      "sha256": "52ad1a2effa9eddae782bc6605dd22e70c82da1583716aeeb46b133664f833ac",
-      "bytes": 6650
+      "sha256": "76064e8203242cd549bae1d6cea1d465f4dbf9464af9839b980a3815dc194dd4",
+      "bytes": 7904
     },
     {
       "path": "shared/cks-data.js",
@@ -1738,8 +1738,8 @@
     },
     {
       "path": "shared/payroll-matrix.js",
-      "sha256": "a31a2845bc98f5b267ee75306f168306146d696ec238fff9bfd7cc6dd22c92c5",
-      "bytes": 21681
+      "sha256": "e394547bc63e30276d9c87134a07b00673e2e6e891a3d47333576cfcc27c05d0",
+      "bytes": 22278
     },
     {
       "path": "shared/payroll-overtime.js",

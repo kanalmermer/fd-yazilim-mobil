@@ -1,0 +1,11 @@
+<div id="modalPersonelExport" class="modal-overlay">
+    <div class="modal-card" style="max-width:520px;">
+        <div class="modal-header"><h3>Dışa Aktarılacak Alanlar</h3><button class="modal-close" onclick="closePersonelExportModal()">✕</button></div>
+        <div class="modal-body">
+            <p style="color:#64748b; margin-bottom:10px; font-size:.82rem;">İstediğiniz alanları seçin. Seçilen alanların tamamı çıktıya eklenir.</p>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;"><button type="button" class="btn-modern btn-detail-modern" onclick="personelExportAlanlariniDegistir(true)">Tümünü Seç</button><button type="button" class="btn-modern" style="background:#e2e8f0;color:#334155;" onclick="personelExportAlanlariniDegistir(false)">Seçimi Temizle</button><strong id="personelExportSecimSayisi" style="margin-left:auto;color:#0369a1;">1 alan seçildi</strong></div>
+            <div id="personelExportFields" class="profile-layout"></div>
+            <div style="display:flex; gap:10px; margin-top:18px;"><button type="button" class="btn-cancel" style="margin-top:0;" onclick="closePersonelExportModal()">İptal</button><button type="button" class="btn-submit" id="btnConfirmPersonelExport">Dışa Aktar</button></div>
+        </div>
+    </div>
+</div>

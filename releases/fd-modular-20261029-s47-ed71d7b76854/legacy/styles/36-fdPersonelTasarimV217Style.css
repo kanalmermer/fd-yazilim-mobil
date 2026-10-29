@@ -1,0 +1,34 @@
+
+.fd-wa-message-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.push-history-detail .fd-wa-message-text{font-size:14px;color:#334155}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{background:#e8eef4;border:1px solid #e0e7ef;border-radius:10px;box-shadow:none;padding:5px;gap:5px;flex-wrap:wrap!important;overflow:visible}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{font-size:13px!important;font-weight:600;padding:10px 12px!important;border-radius:7px;box-shadow:none;color:#51677b;flex:0 0 auto;transform:none!important;line-height:20px;min-height:42px;transition:background .15s,color .15s}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active{background:#fff!important;color:#155e75!important;box-shadow:0 2px 5px #0f172a0a}
+#personelApp,#personelDashboardApp{background:#f3f6fa;color:#334155}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:12px 22px!important;background:#fff;border-bottom:1px solid #dfe7ef;box-shadow:none;justify-content:flex-start;gap:0;flex-wrap:nowrap;min-width:0}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{width:100%;max-width:1596px;margin:0 auto!important;justify-content:center;min-width:0;box-sizing:border-box}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>:not(.workspace-nav){display:none!important}
+#personelApp .app-layout>main,#personelDashboardApp>main{width:100%;max-width:1640px!important;padding:18px 22px 30px!important;margin:0 auto}
+:is(#modalPersonel,#modalPersonelDetay)>.modal-card{width:min(1120px,calc(100vw - 32px))!important;max-width:1120px!important;max-height:calc(100dvh - 32px)!important;border-radius:13px;box-shadow:0 16px 48px #0f172a25}
+:is(#modalPersonel,#modalPersonelDetay) .modal-header{padding:17px 20px;background:#fff;color:#20374e;border-bottom:1px solid #e2e8f0}
+:is(#modalPersonel,#modalPersonelDetay) .modal-header h3{font-size:17px;font-weight:650;color:inherit}
+:is(#modalPersonel,#modalPersonelDetay) .modal-close{color:#64748b}
+:is(#modalPersonel,#modalPersonelDetay) .modal-body{padding:16px 20px;overflow:auto;overscroll-behavior:contain;background:#fafcfe;min-height:0}
+#modalPersonel .profile-section,#modalPersonelDetay .profile-section{border-radius:10px;border:1px solid #dce5ee;background:#fff;margin:12px 0;box-shadow:none}
+#modalPersonel .profile-section summary,#modalPersonelDetay .profile-section summary{font-size:12px;font-weight:600;color:#46647a;padding:13px 15px;background:#f3f7fa}
+#modalPersonel .profile-section summary,#modalPersonel .profile-section-heading{font-size:15px;line-height:1.45;color:#334e68}
+#modalPersonel .profile-layout{gap:12px;padding:15px}
+#modalPersonel .form-group label{font-size:13px;font-weight:500;color:#52677b;line-height:1.5}
+#modalPersonel .form-group input,#modalPersonel .form-group select,#modalPersonel .form-group textarea{border:1px solid #d5e0ea;border-radius:7px;font-size:14px;padding:9px 11px;min-height:40px;line-height:1.45}
+#modalPersonel .form-group :is(small,.help-text){font-size:12px;line-height:1.5}
+#modalPersonel .form-group input:is([type=checkbox],[type=radio]){min-height:18px;width:18px;height:18px;padding:0}
+@media(max-width:700px){
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav{width:100%;overflow:auto!important;flex-wrap:nowrap!important;padding:5px;scrollbar-width:thin}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button{padding:9px 11px!important;font-size:13px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar{padding:10px 12px!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp)>.app-header-bar>.workspace-nav{margin:0!important;order:0;justify-content:flex-start}
+#personelApp .app-layout>main,#personelDashboardApp>main{padding:12px!important}
+:is(#modalPersonel,#modalPersonelDetay)>.modal-card{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;margin:0!important}
+:is(#modalPersonel,#modalPersonelDetay) .modal-body{padding:12px!important}#modalPersonel .profile-layout{padding:12px}#modalPersonel .form-group input,#modalPersonel .form-group select,#modalPersonel .form-group textarea{font-size:16px}
+}
+
