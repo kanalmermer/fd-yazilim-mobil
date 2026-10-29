@@ -1,0 +1,37 @@
+{
+  "name": "Günlük Hatırlatmalar",
+  "roots": [
+    "modalGunlukHatirlatmalar"
+  ],
+  "entrypoints": [
+    "gunlukHatirlatmalariGoster",
+    "gunlukHatirlatmalariKapat"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/gunlukhatirlatma/view.html",
+      "sha256": "4676ce541f6a899d960e1f7df4c933b9548f62988ffd7d08f99cd55faeda8833",
+      "bytes": 708,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/gunlukhatirlatma/style.css",
+      "sha256": "1d3b06b8eb9fe82d06c0e6d651c3f825b68ab90cf01e56fd63fffe9ea6881132",
+      "bytes": 73,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/gunlukhatirlatma/module.js",
+      "sha256": "bd346b6383ff2891e4b3a752589284f8c89678262baa2233428036b0c28d0118",
+      "bytes": 7786,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
