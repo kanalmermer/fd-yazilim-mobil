@@ -1,0 +1,98 @@
+<div id="avansApp" style="display:none;">
+    <div class="app-header-bar">
+        <div class="workspace-nav" aria-label="Personel işlemleri menüsü">
+            <button type="button" onclick="openPersonelDashboard()">Dashboard</button>
+            <button type="button" onclick="openPersonelApp()">Personel Kayıtları</button>
+            <button type="button" onclick="openIzinTakipApp()">İzin Takibi</button>
+            <button type="button" onclick="openPuantajApp()">Puantaj</button>
+            <button type="button" onclick="openPrimApp()">Prim Takibi</button>
+            <button type="button" class="active" onclick="openAvansApp()">Avans</button>
+            <button type="button" onclick="openIcraApp()">İcra Takip</button>
+        </div>
+    </div>
+    <div class="app-layout"><main style="width:100%; padding:22px;">
+        <div class="module-subnav" style="max-width:1120px; margin:0 auto 18px;">
+            <button type="button" id="btnAvansYeniSekme" onclick="avansYeniKayitAc()">➕ Yeni Avans</button>
+            <button type="button" id="btnAvansKayitlarSekme" class="active" onclick="avansSekmeDegistir('kayitlar', this)">📋 Kaydedilen Avanslar</button>
+            <button type="button" id="btnAvansAylikSekme" onclick="avansSekmeDegistir('aylik', this)">📅 Aylık Kesinti Listesi</button>
+            <button type="button" id="btnAvansGelecekSekme" onclick="avansSekmeDegistir('gelecek', this)">📆 Kesinti Planı</button>
+        </div>
+        <div id="avansKayitCard" class="card" style="max-width:1120px; margin:0 auto 18px;">
+            <div class="card-header"><h2>💳 Personel Avans Kaydı</h2></div>
+            <form id="avansForm" onsubmit="avansKaydet(event)">
+                <input type="hidden" id="avansEditId">
+                <input type="hidden" id="avansPersonelId">
+                <div class="form-group">
+                    <label>Personel Ara ve Seç</label>
+                    <input id="avansPersonelAra" list="avansPersonelListesi" autocomplete="off" required placeholder="Ad soyad veya şube yazarak arayın" onchange="avansPersonelSecimKontrol()">
+                    <datalist id="avansPersonelListesi"></datalist>
+                    <small id="avansSeciliPersonel" style="display:block; margin-top:7px; color:#0f766e; font-weight:700;"></small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Avans Yatırma Tarihi</label><input id="avansYatirmaTarihi" type="date" required style="cursor:pointer;"></div>
+                    <div class="form-group"><label>Toplam Avans Tutarı (TL)</label><input id="avansTutar" type="text" inputmode="numeric" required placeholder="Örn. 10.000" oninput="paraGirisiFormatla(this); avansPlanOnizle()"></div>
+                </div>
+                <div class="form-group"><label>Kesintiye Başlama Ayı</label><input id="avansBaslangicAy" type="month" required style="width:100%;"></div>
+                <div class="form-group"><label>Avans Açıklaması</label><input id="avansAciklama" placeholder="Örn. Temmuz 1. avans, yol avansı"></div>
+                <div class="form-group"><label>Kaç ayda kesilsin?</label><input id="avansTaksitSayisi" type="hidden" value="1"><div id="avansTaksitButonlari" style="display:flex; flex-wrap:wrap; gap:6px;"></div></div>
+                <div id="avansPlanOnizleme" style="display:none; background:#eff6ff; color:#1e3a8a; border:1px solid #bfdbfe; border-radius:10px; padding:12px; margin:-2px 0 16px; font-weight:700;"></div>
+                <div style="display:flex; gap:8px;"><button class="btn-submit" id="btnAvansKaydet" type="submit">💾 Avansı Kaydet</button><button class="btn-modern btn-del-modern" id="btnAvansVazgec" type="button" onclick="avansDuzenleVazgec()" style="display:none;">Vazgeç</button></div>
+            </form>
+        </div>
+        <div id="avansKayitlarCard" class="card" style="max-width:1120px; margin:0 auto 18px;">
+            <div class="card-header">
+                <h2>Kaydedilen Avanslar</h2>
+                <div class="action-btns"><button type="button" class="btn-modern btn-detail-modern" id="avansListeYenileBtn" onclick="avansListeyiYenile()">↻ Yenile</button><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKayitListesiBody','excel','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKayitListesiBody','pdf','KAYDEDİLEN AVANSLAR','KAYDEDILEN_AVANSLAR')">📄 PDF</button></div>
+            </div>
+            
+            <div class="avans-kayit-filtreleri">
+                <div class="avans-filtre-arama"><label>Personel veya avans ara</label><input id="avansKayitArama" type="search" placeholder="Ad, avans no veya açıklama" oninput="renderAvansKayitListesi()"></div>
+                <div><label>Kayıt ayı</label><input id="avansKayitAyFiltre" type="month" onchange="renderAvansKayitListesi()"></div>
+                <div><label>Şube</label><select id="avansKayitSubeFiltre" onchange="renderAvansKayitListesi()"><option value="">Tüm şubeler</option></select></div>
+                <div><label>Durum</label><select id="avansKayitDurumFiltre" onchange="renderAvansKayitListesi()"><option value="">Tüm durumlar</option><option value="Aktif">Aktif</option><option value="Kapandı">Kapandı</option><option value="Tamamlandı">Tamamlandı</option></select></div>
+                <button type="button" class="btn-modern" onclick="avansKayitFiltreleriniTemizle()">↺ Temizle</button>
+            </div>
+            <div class="avans-kayit-filtre-alt"><span id="avansKayitFiltreOzeti">0 kayıt</span><span>Excel ve PDF, filtrelenmiş listeyi aktarır.</span></div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Avans</th><th>Personel</th><th>Şube</th><th>Yatırma Tarihi</th><th>Kesinti Başlangıcı</th><th>Taksit</th><th>Toplam Avans</th><th>Durum</th><th>İşlem</th></tr></thead>
+                    <tbody id="avansKayitListesiBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="avansAylikCard" class="card" style="max-width:1120px; margin:0 auto;">
+            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                <h2>📅 Aylık Avans Kesinti Listesi</h2>
+                <div class="action-btns"><input id="avansListeAy" type="month" onchange="renderAvansKesintiListesi()" style="padding:7px 10px; cursor:pointer;"><button type="button" class="btn-export btn-excel" onclick="aracTabloDisariAktar('avansKesintiBody','excel','AYLIK AVANS KESİNTİ LİSTESİ','AYLIK_AVANS_KESINTI_LISTESI')">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="aracTabloDisariAktar('avansKesintiBody','pdf','AYLIK AVANS KESİNTİ LİSTESİ','AYLIK_AVANS_KESINTI_LISTESI')">📄 PDF</button></div>
+            </div>
+            <div class="table-wrapper">
+                <table><thead><tr><th>Avans</th><th>Personel</th><th>Yatırma Tarihi</th><th>Bu Ay Kesinti</th><th>Taksit Durumu</th><th>Toplam Avans</th><th>Kalan Tutar</th></tr></thead><tbody id="avansKesintiBody"></tbody></table>
+            </div>
+            <small style="display:block;margin-top:10px;color:#64748b;line-height:1.5">Bu listede yalnızca seçilen ayın kesintileri gösterilir. Önceki ayların avans kayıtları için “Kaydedilen Avanslar”, aylar arası karşılaştırma için “Kesinti Planı” bölümünü kullanın.</small>
+        </div>
+        <div id="avansGelecekCard" class="card" style="max-width:1120px; margin:0 auto; display:none;">
+            <div class="card-header avans-gelecek-baslik">
+                <div><h2 style="margin:0;">📆 Avans Kesinti Planı</h2><small id="avansGelecekOzet" role="status" aria-live="polite" style="color:#64748b;font-weight:700;"></small></div>
+                <div class="action-btns avans-gelecek-aksiyonlar"><div class="avans-ay-araligi"><label for="avansGelecekBaslangicAy">Başlangıç ayı<input id="avansGelecekBaslangicAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label><label for="avansGelecekBitisAy">Bitiş ayı<input id="avansGelecekBitisAy" type="month" required onchange="renderAvansGelecekKesintileri()"></label></div><div class="avans-plan-ciktilari"><button type="button" class="btn-export avans-goruntu-btn" onclick="avansGelecekGoruntuAl(this)">Görüntü Al</button><button type="button" class="btn-export btn-excel" onclick="avansGelecekExcelAl()">📊 Excel</button><button type="button" class="btn-export btn-pdf" onclick="avansGelecekPdfAl()">📄 PDF</button></div></div>
+            </div>
+            <div class="avans-plan-arama"><label for="avansGelecekArama">İsim veya şube ara</label><input id="avansGelecekArama" type="search" placeholder="Personel adı veya şube adı yazın…" aria-controls="avansGelecekBody" autocomplete="off" oninput="renderAvansGelecekKesintileri()"></div>
+            <p id="avansGelecekDonemHatasi" role="status" aria-live="polite" style="display:none;color:#b91c1c;margin:0 0 12px;"></p>
+            <div class="table-wrapper"><table class="avans-matris"><thead id="avansGelecekHead"></thead><tbody id="avansGelecekBody"></tbody><tfoot id="avansGelecekToplam"></tfoot></table></div>
+        </div>
+    </main></div>
+</div>
+<div id="modalAvansGecmisi" class="modal-overlay">
+    <div class="modal-card" style="max-width:950px;">
+        <div class="modal-header"><h3 id="avansGecmisBaslik">Avans Geçmişi</h3><button class="modal-close" onclick="avansGecmisiniKapat()">✕</button></div>
+        <div class="modal-body">
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+                <button class="btn-export btn-excel" onclick="avansGecmisExcelIndir()">📊 Excel</button>
+                <button class="btn-export btn-pdf" onclick="avansGecmisPdfIndir()">📄 PDF</button>
+            </div>
+            <div id="avansGecmisRaporu">
+                <h3 id="avansGecmisRaporBaslik" style="text-align:center;margin:0 0 14px;"></h3>
+                <div class="table-wrapper"><table id="avansGecmisTablosu"><thead><tr><th>Avans No</th><th>Yatırma Tarihi</th><th>Kesinti Başlangıcı</th><th>Tutar</th><th>Taksit</th><th>Durum</th><th>Açıklama</th></tr></thead><tbody></tbody><tfoot></tfoot></table></div>
+            </div>
+        </div>
+    </div>
+</div>
