@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-ed71d7b76854",
+  "release": "fd-modular-20261029-s47-ab74ee372483",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "8d6301d17c1566a7d4721c5a276594f79e91f4aab0aad5273c1685cbe5078cf5",
+      "sha256": "2ee363131318ab284980c954817a524792e3645ada44bbc0da33cf46f36393bc",
       "bytes": 58898
     },
     {
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "7a4db181b42f2101ee72fe280dd4e49a48b052b8e66562b8276abc053b8975f9",
-      "bytes": 571604
+      "sha256": "9b92840bad1ca73841c7daa73b638bff537498e4727b4a85ba123729dae43aa0",
+      "bytes": 571797
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -758,13 +758,13 @@
     },
     {
       "path": "modules/bordro/manifest.json",
-      "sha256": "68cf6b926b985faaef508a4178100b31294a12f2361f9402a021f2aa2fc7ed0b",
+      "sha256": "a4d664801f85d1cce4164d0cfd7e0a3dcf43da376faafc68a1588a2d041bd9c7",
       "bytes": 1381
     },
     {
       "path": "modules/bordro/module.js",
-      "sha256": "a70a779972d0c5d309c4374ea3dc3808ad686aff8efeff627577163f6e1ff4ec",
-      "bytes": 61432
+      "sha256": "ef9a6e102235438bbdf646b276bca1e4b43e3b16020c481f4245b88d1523e909",
+      "bytes": 61513
     },
     {
       "path": "modules/bordro/style.css",
@@ -1038,13 +1038,13 @@
     },
     {
       "path": "modules/izin/manifest.json",
-      "sha256": "4733a30165b3b043957aca6e6dfc02356dce6417fcc9d5734fb6438efbf12f3c",
+      "sha256": "792b142e1f8190f419e10e457730a3e8dab30e9799676e144603265e622c0102",
       "bytes": 3154
     },
     {
       "path": "modules/izin/module.js",
-      "sha256": "8dded5db05ba6174fcbb04ee1df9b3c3535f8bb6caa22393bf11b3d817414cda",
-      "bytes": 107711
+      "sha256": "59baf0b988c0ea28ba7b49cc7d69a9ebf4ed4bbbe818f70c7c584d5c4054155d",
+      "bytes": 107832
     },
     {
       "path": "modules/izin/style.css",
@@ -1633,8 +1633,8 @@
     },
     {
       "path": "shared/attendance-summary-data.js",
-      "sha256": "08b6c0cf1b639cb8cd4bc1bc9fa2e3ef86a244dec090fb48a975880a74da2e83",
-      "bytes": 21046
+      "sha256": "3e7d6e43e459106679c682925df69cc1fcb7b1b2d83ea141be60990810e4cba4",
+      "bytes": 21304
     },
     {
       "path": "shared/attendance-summary-output.js",
@@ -1653,8 +1653,8 @@
     },
     {
       "path": "shared/bonus-data.js",
-      "sha256": "76064e8203242cd549bae1d6cea1d465f4dbf9464af9839b980a3815dc194dd4",
-      "bytes": 7904
+      "sha256": "5476a358bfe7e4b888de3b482c74411196d8394cced73b8163ebe0599abbceaa",
+      "bytes": 7967
     },
     {
       "path": "shared/cks-data.js",
@@ -1738,8 +1738,8 @@
     },
     {
       "path": "shared/payroll-matrix.js",
-      "sha256": "e394547bc63e30276d9c87134a07b00673e2e6e891a3d47333576cfcc27c05d0",
-      "bytes": 22278
+      "sha256": "a28cd7e831f7c7ecbacdee08c1af8bc566cb05b2b94bb62f3fdfc9fb034f39b3",
+      "bytes": 22336
     },
     {
       "path": "shared/payroll-overtime.js",

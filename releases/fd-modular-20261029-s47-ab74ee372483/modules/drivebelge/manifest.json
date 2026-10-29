@@ -1,0 +1,32 @@
+{
+  "name": "Personel Drive Belge Önizleme",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/drivebelge/view.html",
+      "sha256": "98a76f36392f55ebd26813660e2ccfacbac8a8ec31287a4ff8c8b7ee7eee9bce",
+      "bytes": 77,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/drivebelge/style.css",
+      "sha256": "1579d091db971978fbbf5af8fbe353c5a9d3d5130b8d5db95307890fc1c857e4",
+      "bytes": 75,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/drivebelge/module.js",
+      "sha256": "1c46ca14c9173db5ffde49073e3ae0c1e3f934a0db5cd0138e6dccd05e50ae0f",
+      "bytes": 3488,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
