@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-aa206cde548d",
+  "release": "fd-modular-20261029-s47-212c17d84b9e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "f3b43efbdaf5df1dffd0d30113846128669e31a3bce7c6c8ec47addff58417fd",
+      "sha256": "c99d79583be9417d37d5dfba213adf475f2a50ec3bc738748a7d0c6d4cfa7cf0",
       "bytes": 58898
     },
     {
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "a3e7ee4a559e9769a1987a5f3ebf9952f46442c79ed8acb175bd9d69f34bd916",
-      "bytes": 571658
+      "sha256": "7a4db181b42f2101ee72fe280dd4e49a48b052b8e66562b8276abc053b8975f9",
+      "bytes": 571604
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -603,7 +603,7 @@
     },
     {
       "path": "legacy/styles/38-fdAttendanceBalanceDisplayV268.css",
-      "sha256": "3ddde8bb683d80d8682893d722e311edb574bcb8190b7789c86123654f605bbb",
+      "sha256": "21de1d8be38d1ad2feea1c5e67ce476ed76c0fb71fbda24f05850c43c5dbbfed",
       "bytes": 1523
     },
     {
@@ -1633,13 +1633,13 @@
     },
     {
       "path": "shared/attendance-summary-data.js",
-      "sha256": "aa3aa36ee51498dd4f17d347793c75bf64601dd47ad7cd4e67efb01d4e13fdab",
-      "bytes": 21042
+      "sha256": "08b6c0cf1b639cb8cd4bc1bc9fa2e3ef86a244dec090fb48a975880a74da2e83",
+      "bytes": 21046
     },
     {
       "path": "shared/attendance-summary-output.js",
-      "sha256": "17d291ef768d222d8fb7ff43c2aa5c0e9c395fc07d44365550435824195e1a50",
-      "bytes": 7711
+      "sha256": "298b9e0a3a12a989fe16183c728e7109d50fe94c4352c861a12b5eb503d02e02",
+      "bytes": 7719
     },
     {
       "path": "shared/attendance-summary-ui.js",
