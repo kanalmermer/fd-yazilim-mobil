@@ -1,0 +1,48 @@
+#policeTakipApp .police-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px;background:linear-gradient(135deg,#ecfeff,#f0fdf4);border-color:#99f6e4}
+#policeTakipApp .police-hero h2{margin:0;color:#115e59}
+#policeTakipApp .police-hero p{margin:5px 0 0;color:#475569}
+.police-ozet-grid{grid-template-columns:repeat(4,minmax(150px,1fr));margin-bottom:14px}
+.police-filtre{display:grid;grid-template-columns:minmax(260px,1fr) 150px 190px 155px auto}
+#policeTakipTablosu td:last-child .action-btns{display:flex;min-width:78px;gap:5px}
+#policeTakipTablosu td:last-child button{width:32px;height:32px;min-width:32px;min-height:32px;padding:0}
+@media(max-width:850px){.police-filtre{grid-template-columns:1fr 1fr}}
+@media(max-width:850px){.police-ozet-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.police-filtre{grid-template-columns:1fr}}
+@media(max-width:560px){.police-hero{align-items:stretch!important;flex-direction:column}}
+#modalPoliceKayit .police-varlik-secici{position:relative;min-width:0}
+#modalPoliceKayit .police-varlik-ac{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:9px 12px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;text-align:left;font:inherit;font-size:14px;cursor:pointer;box-shadow:0 1px 2px #0f172a04}
+#modalPoliceKayit .police-varlik-ac[aria-expanded="true"],#modalPoliceKayit .police-varlik-ac:focus-visible{outline:2px solid #7dd3fc;outline-offset:1px;border-color:#38bdf8}
+#modalPoliceKayit .police-varlik-ac[aria-invalid="true"]{border-color:#f87171}
+#modalPoliceKayit #policeHedefGorunen{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#modalPoliceKayit .police-varlik-ok{flex:none;color:#64748b;font-size:17px;transition:transform .15s}
+#modalPoliceKayit .police-varlik-ac[aria-expanded="true"] .police-varlik-ok{transform:rotate(180deg)}
+#modalPoliceKayit .police-varlik-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:25;display:flex;flex-direction:column;min-height:0;max-height:340px;border:1px solid #b6d0de;border-radius:11px;background:#fff;box-shadow:0 10px 25px #16354b20;overflow:hidden}
+#modalPoliceKayit .police-varlik-panel[hidden]{display:none!important}
+#modalPoliceKayit .police-varlik-panel.yukari{top:auto;bottom:calc(100% + 6px)}
+#modalPoliceKayit .police-varlik-arama{display:flex;align-items:center;gap:6px;padding:10px;border-bottom:1px solid #e2e8f0;background:#f8fafc;min-width:0;flex-shrink:0}
+#modalPoliceKayit .police-varlik-arama input{flex:1 1 auto;min-width:0;margin:0}
+#modalPoliceKayit #policeHedefArama::-webkit-search-cancel-button{-webkit-appearance:none}
+#modalPoliceKayit .police-varlik-arama button{flex:0 0 34px;width:34px;height:36px;padding:0;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;color:#475569;font-size:20px;cursor:pointer}
+#modalPoliceKayit .police-varlik-arama button:disabled{opacity:.4;cursor:default}
+#modalPoliceKayit #policeHedefId{position:absolute;left:0;top:0;width:1px;height:1px;min-height:0;padding:0;border:0;opacity:0;pointer-events:none}
+#modalPoliceKayit #policeHedefAramaOzeti{display:block;padding:7px 11px;margin:0;color:#64748b;font-size:11px;line-height:1.4;background:#fff;flex-shrink:0}
+#modalPoliceKayit #policeHedefListe{overflow:auto;overscroll-behavior:contain;min-height:0;flex:1;padding:0 5px 5px;scrollbar-width:thin}
+#modalPoliceKayit .police-varlik-sonuc{display:block;width:100%;border:0;border-radius:7px;background:transparent;padding:9px 10px;min-height:43px;text-align:left;color:#334155;cursor:pointer;font:inherit;overflow-wrap:anywhere}
+#modalPoliceKayit .police-varlik-sonuc:hover,#modalPoliceKayit .police-varlik-sonuc.klavye-aktif{background:#eaf5fa;color:#075985}
+#modalPoliceKayit .police-varlik-sonuc[aria-selected="true"]{box-shadow:inset 3px 0 #0d9488;background:#f0faf7}
+#modalPoliceKayit .police-varlik-sonuc strong{display:block;font-size:13px;font-weight:600;line-height:1.45}
+#modalPoliceKayit .police-varlik-sonuc small{display:block;font-size:11px;color:#64748b;margin-top:2px;line-height:1.4}
+#modalPoliceKayit .police-varlik-mevcut{padding:4px 10px;color:#64748b;font-size:10px}
+@media(min-width:851px){#policeOzetleri{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
+#policeTakipTablosu td:nth-child(2) .police-varlik-link{all:unset;display:inline;cursor:pointer;color:inherit;font:inherit;font-weight:inherit;text-decoration:none}
+#policeTakipTablosu td:nth-child(2) .police-varlik-link:hover{text-decoration:underline;text-decoration-color:#94a3b8;text-underline-offset:3px}
+#policeTakipTablosu td:nth-child(10),#policeTakipTablosu td:nth-child(11){text-align:center;vertical-align:middle}
+#policeTakipTablosu td:last-child .action-btns{justify-content:center;align-items:center}
+#policeTakipTablosu td:last-child button{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:34px!important;height:34px!important;padding:0!important;line-height:1!important}
+.police-gecmis-baslik{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.police-gecmis-baslik h3{margin:0}
+.police-gecmis-tablo td,.police-gecmis-tablo th{vertical-align:middle}
+.police-gecmis-tablo td:last-child{text-align:center}
+#policeTakipTablosu td:nth-child(3),#policeTakipTablosu td:nth-child(8),#policeTakipTablosu td:nth-child(9){vertical-align:middle}
+#policeTakipTablosu td:nth-child(9){text-align:center}
+#policeTakipTablosu td:nth-child(9) .action-btns{justify-content:center}
