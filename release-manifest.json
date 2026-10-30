@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-e2aced4209d6",
+  "release": "fd-modular-20261029-s47-acacc53f52e7",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "56515a76bbc4aba3d95b3b9d2e14caa5eb766715c8d760f0ae36b5cc4922fd36",
+      "sha256": "48106d0d8cfd911da91185b13ee50046a4e5f1e9b82c0909c05c51facc76fa5a",
       "bytes": 58898
     },
     {
@@ -818,23 +818,23 @@
     },
     {
       "path": "modules/companytools/manifest.json",
-      "sha256": "94a70698ec4c047246c10c2de34702aaac0bed8c94cd424e562ce99e10fbb68b",
+      "sha256": "09ee47f8135c35f17f01cd4032e354734adc6b1c2ae83e1cae3c9414556c0f95",
       "bytes": 1123
     },
     {
       "path": "modules/companytools/module.js",
-      "sha256": "2c255202d875a2ca86088884b55c4ab841d8a1ea1bfc0ecfbbfc52f7e3a22546",
-      "bytes": 23749
+      "sha256": "fbb3dac52a7a6ef3cdf64144a536b4f25951d38ec6502f799aed3ff5a6fc77f2",
+      "bytes": 31937
     },
     {
       "path": "modules/companytools/style.css",
-      "sha256": "384d4d6e178256b4b988a5c515bf3d11b21f8ea47c58dd68ba16b6a73abdd3dc",
-      "bytes": 2036
+      "sha256": "0b5891d22f0456f58def8efe65e4415fe0c23c8d0a76a6ceb5d3fc0948c371d6",
+      "bytes": 2734
     },
     {
       "path": "modules/companytools/view.html",
-      "sha256": "2054adcee6bff20dff639dbe0f517a9657a73fde7ccbe3a4ecfe02a5a3759bd8",
-      "bytes": 2130
+      "sha256": "a40c8478d786aed495ef1111a89e19101ea60b1222708b6318e27f1ed0d11c4a",
+      "bytes": 2818
     },
     {
       "path": "modules/drivebelge/manifest.json",
@@ -1728,8 +1728,8 @@
     },
     {
       "path": "shared/page-loading.js",
-      "sha256": "3792312d9210b6054b11dddc1661026487cfef0860a8c8138aa2723753d23034",
-      "bytes": 5081
+      "sha256": "f9e7887f617ee3a745c055404e7d8f6d9d84f956307c6ad10f544e003f9246a9",
+      "bytes": 5206
     },
     {
       "path": "shared/payroll-holiday-color.css",
