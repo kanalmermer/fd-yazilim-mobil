@@ -1,0 +1,35 @@
+{
+  "name": "Giriş–Çıkış Saat Karşılaştırması",
+  "roots": [],
+  "entrypoints": [
+    "magicpassManuelKarsilastirmaKapat",
+    "magicpassManuelKarsilastirmaAc"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/saatkarsilastirma/view.html",
+      "sha256": "193bb7db0cfddd0cb1e1e85dc28c61d251ce1ee110838aebcab51a3f49714588",
+      "bytes": 81,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/saatkarsilastirma/style.css",
+      "sha256": "391d178715a7051008c2c9f8d014f4c0bc53eaeac3f868cfb9e0b2504d6547c8",
+      "bytes": 64,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/saatkarsilastirma/module.js",
+      "sha256": "2d6293c83338fcdb4262b706575a4e4dec149dbcd9656bc06879cf08849975e8",
+      "bytes": 5917,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
