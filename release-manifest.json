@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-3cd72a41bdc8",
+  "release": "fd-modular-20261029-s47-0c79ffeb5cb4",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d5aea82c1c13e4f0e16d854dececfa671bb379338bd898d9705e369c3387dc10",
+      "sha256": "48a1279ef1fff1569af372b7943a358a6549fdbc6f3611778fd59a9b8e49e5be",
       "bytes": 58898
     },
     {
@@ -638,13 +638,13 @@
     },
     {
       "path": "modules/arac/manifest.json",
-      "sha256": "88a46763a89f0ac67fa66c2c78c026bd5464a35df102a52cbaa09724f429858e",
+      "sha256": "c37bce2ab87da0549bec7d733b7df3ad89becdac554c417eff685e0e759cf987",
       "bytes": 5776
     },
     {
       "path": "modules/arac/module.js",
-      "sha256": "8ad642c50a139b1734d14c1e83d6c1c88a5a02c18e779950a4ca97e02b48b427",
-      "bytes": 226636
+      "sha256": "e550a9541f99607b6ff1228e5b40f379eaaa0e87b26c2b51323419cdf7be923e",
+      "bytes": 227193
     },
     {
       "path": "modules/arac/style.css",
