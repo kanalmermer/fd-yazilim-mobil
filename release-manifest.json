@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-88434e57fe9d",
+  "release": "fd-modular-20261029-s47-4e245ba8d306",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "bb304492ee425b3d6b18f082a4cda3901af88b599cc98fee62b8e719798d7a2e",
+      "sha256": "15a2a39d3d27b17300e43ec5d78299819b969718aa84d0b8daa69eea1db0295e",
       "bytes": 58898
     },
     {
@@ -798,13 +798,13 @@
     },
     {
       "path": "modules/cks/manifest.json",
-      "sha256": "9c06f2448fbf52d2bbf36112eb72906516b07e07802f238c1239e654014a6fac",
+      "sha256": "a408b1fcc2c61b6749acce2e6f6820bdbb82f2141bc365e6b4c48240e27dbb01",
       "bytes": 2144
     },
     {
       "path": "modules/cks/module.js",
-      "sha256": "7cc3f77567caecff170f4bc0f28ddb55e18378f9a7c3196e01989e71971d7d56",
-      "bytes": 83619
+      "sha256": "881dd235fdc10756d4ab0d4715798aa97881f955100ebaef3578975df4c9e074",
+      "bytes": 84349
     },
     {
       "path": "modules/cks/style.css",
@@ -813,8 +813,8 @@
     },
     {
       "path": "modules/cks/view.html",
-      "sha256": "dc31c72c61a4a676f1459dce26e1163d002c9d82813467890c77db4db2a92b2a",
-      "bytes": 9037
+      "sha256": "f4c12c8eb9e1749b9c8da3decce1c3fc977a1fb7f3ed38e8311a596d20043e9d",
+      "bytes": 9084
     },
     {
       "path": "modules/companytools/manifest.json",
@@ -1793,8 +1793,8 @@
     },
     {
       "path": "shared/title-cks-history.js",
-      "sha256": "68fc016b3075f8d365ae5d5bb2208cec2d0351e634c4b3933832407d8a8737f8",
-      "bytes": 2480
+      "sha256": "cd25476e324489e09a0153d49e392fde2ad35333243f0e7d140a853546702aeb",
+      "bytes": 2628
     },
     {
       "path": "shared/title-cks-matching.js",
