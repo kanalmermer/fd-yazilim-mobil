@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-acacc53f52e7",
+  "release": "fd-modular-20261029-s47-3cd72a41bdc8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "48106d0d8cfd911da91185b13ee50046a4e5f1e9b82c0909c05c51facc76fa5a",
+      "sha256": "d5aea82c1c13e4f0e16d854dececfa671bb379338bd898d9705e369c3387dc10",
       "bytes": 58898
     },
     {
@@ -638,23 +638,23 @@
     },
     {
       "path": "modules/arac/manifest.json",
-      "sha256": "98572d54d25c7d13eae27d2184cc12e2eb78f368726c383600d4eb9445793fd6",
+      "sha256": "88a46763a89f0ac67fa66c2c78c026bd5464a35df102a52cbaa09724f429858e",
       "bytes": 5776
     },
     {
       "path": "modules/arac/module.js",
-      "sha256": "74292d47d6a9e723908d533d055cf8ebd2283f929e70de575bdf15f580efd862",
-      "bytes": 221400
+      "sha256": "8ad642c50a139b1734d14c1e83d6c1c88a5a02c18e779950a4ca97e02b48b427",
+      "bytes": 226636
     },
     {
       "path": "modules/arac/style.css",
-      "sha256": "9da2e9573d1f23b4d8b237aa1dc52a400d6bbab8df2fc4ac45dc41b5e6699ff2",
-      "bytes": 23674
+      "sha256": "dfecc308930ad110fde3717e5950131ce45db4fafdea53426c44a7687d94dd84",
+      "bytes": 24064
     },
     {
       "path": "modules/arac/view.html",
-      "sha256": "085ce249702d72fcb5d39fa9d5ca6e523406243616a20b7da156ecb7e4118e72",
-      "bytes": 41989
+      "sha256": "2d32b6df7633cfeaf77cd38a85ed59518d9659166f21fc1291b1d38bdaa08030",
+      "bytes": 42773
     },
     {
       "path": "modules/asistan/manifest.json",
