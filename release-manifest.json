@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s47-e879fb50e606",
+  "release": "fd-modular-20261031-s48-642dc1e1d1b8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "266e33acde9ef1bf46f5df73a66db64daf028b9d7c65e03de412e3af0fc6e84d",
-      "bytes": 58898
+      "sha256": "30bcc2ecb94c077e8a114cce0f6e13c78d6760a27ec843de96bc7f5fe9430510",
+      "bytes": 59497
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "96983b65073f0e2d3938da23230ed2237992eef33dec73fb9601fbc5534b2c49",
-      "bytes": 6480
+      "sha256": "fbf5cdb1996d58fe7476d665bc3495d71b04576d33dd24a4c8a65e35679b3469",
+      "bytes": 6556
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "a1a47050872496bd3bc9fc834f1988af15073292a76347a45f1c4667f6eba931",
-      "bytes": 14472
+      "sha256": "2345b46639a59e1e08ce18f4841982207e36f869d87399429a1a7e9642c53774",
+      "bytes": 14809
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "861b4f6b877f4806b2a1f4a054c2fae3af1c39b32521f16dfd53e9984f9eca1b",
-      "bytes": 572372
+      "sha256": "90e68801d8ced2bf4d32da93bc59b9ce2b41c470406d80634138e0cedb7cc079",
+      "bytes": 571932
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -715,6 +715,26 @@
       "path": "modules/ayarlar/view.html",
       "sha256": "cdb4562ecd887af770b0bf22b9010f083fa51d05ee48ec5885358a6bbd5a9906",
       "bytes": 25711
+    },
+    {
+      "path": "modules/belgehazirla/manifest.json",
+      "sha256": "13b2e4ab8351f2f7bbc04b51d495b233e60b0526f09b14b4e0d6a89e2daff5c9",
+      "bytes": 785
+    },
+    {
+      "path": "modules/belgehazirla/module.js",
+      "sha256": "67af651d6525c4a82dc00b9a33cb76e759318427cd633a9bccb366117f8a8ee2",
+      "bytes": 4035
+    },
+    {
+      "path": "modules/belgehazirla/style.css",
+      "sha256": "80b1b93391989e3cf6a08321d68c345d271741145aaede40574ab48c1f279e88",
+      "bytes": 69
+    },
+    {
+      "path": "modules/belgehazirla/view.html",
+      "sha256": "3fa1f34becde7a14dedf87e32d0121b2a3c6b591815f5024a19110ecbf84d255",
+      "bytes": 77
     },
     {
       "path": "modules/bildirim/manifest.json",

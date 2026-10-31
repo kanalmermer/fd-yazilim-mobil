@@ -1,0 +1,37 @@
+{
+  "name": "Personel Kayıt Sonrası Hatırlatma",
+  "roots": [
+    "modalPersonelKayitHatirlatma"
+  ],
+  "entrypoints": [
+    "personelKayitHatirlatmasiniGoster",
+    "personelKayitHatirlatmasiniKapat"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/kayithatirlatma/view.html",
+      "sha256": "8219d5e16608b0fa97d19e3f570ff93219fdd4495e744fd74cbbd380ecbcd810",
+      "bytes": 1404,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/kayithatirlatma/style.css",
+      "sha256": "4bc13c87bad6b7bd49f6fbc32951624de3b1168b4cf9db8e6b10acee8e732524",
+      "bytes": 75,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/kayithatirlatma/module.js",
+      "sha256": "787847de2acf18fabed6204acfabc238319f9d5f0a81a120d81a10086a23c0e8",
+      "bytes": 2049,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
