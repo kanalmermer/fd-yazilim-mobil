@@ -1,0 +1,120 @@
+#evrakKaydetBtn.evrak-yukleniyor{--evrak-ilerleme:0%;position:relative;overflow:hidden;background:linear-gradient(90deg,#059669 0,#10b981 var(--evrak-ilerleme),#cbd5e1 var(--evrak-ilerleme),#cbd5e1 100%)!important;color:#fff!important;text-shadow:0 1px 2px rgba(15,23,42,.75);box-shadow:inset 0 0 0 1px rgba(5,150,105,.22),0 7px 14px rgba(5,150,105,.18);transition:none!important}
+#evrakKaydetBtn.evrak-yukleniyor:hover{transform:none;filter:none}
+#evrakTakipApp{min-height:calc(100vh - 54px);background:#f4f7fb;color:#172033}
+.evrak-shell{max-width:1640px;margin:0 auto;padding:18px 22px 28px}
+.evrak-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:22px 24px;border-radius:18px;background:linear-gradient(120deg,#312e81,#4f46e5 55%,#7c3aed);color:#fff;box-shadow:0 16px 36px rgba(49,46,129,.18)}
+.evrak-hero h1{margin:0 0 5px;font-size:1.48rem}
+.evrak-hero p{margin:0;color:#e0e7ff;font-size:.9rem}
+.evrak-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.evrak-actions button{min-height:40px;border:0;border-radius:10px;padding:9px 14px;font-weight:800;cursor:pointer}
+.evrak-btn-primary{background:#fff;color:#3730a3}
+.evrak-btn-secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35)!important}
+.evrak-search-wrap{position:relative;margin:14px 0}
+.evrak-search-wrap>span{position:absolute;left:17px;top:50%;transform:translateY(-50%);font-size:1.15rem}
+#evrakArama{width:100%;height:52px;padding:0 48px;border:1px solid #dbe3f0;border-radius:14px;background:#fff;box-shadow:0 7px 20px rgba(15,23,42,.055);font-size:1rem;font-weight:650}
+#evrakArama:focus{outline:3px solid #c7d2fe;border-color:#6366f1}
+.evrak-search-clear{position:absolute;right:11px;top:9px;width:34px;height:34px;border:0;border-radius:9px;background:#eef2ff;color:#4338ca;cursor:pointer;font-weight:900}
+.evrak-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.evrak-stat{padding:12px 15px;border:1px solid #e1e7f0;border-radius:12px;background:#fff}
+.evrak-stat span{display:block;color:#64748b;font-size:.7rem;font-weight:800;letter-spacing:.045em}
+.evrak-stat strong{display:block;margin-top:3px;font-size:1.25rem}
+.evrak-layout{display:grid;grid-template-columns:410px minmax(0,1fr);gap:12px;align-items:start}
+.evrak-layout>aside{width:100%;min-width:0}
+.evrak-panel{border:1px solid #dde5ef;border-radius:15px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.045);overflow:hidden}
+.evrak-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 16px;border-bottom:1px solid #e8edf4}
+.evrak-panel-head h2{margin:0;font-size:1rem}
+.evrak-panel-head small{color:#64748b}
+.evrak-kategori-list{padding:9px;max-height:calc(100vh - 330px);overflow:auto}
+.evrak-kategori{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;padding:9px 10px;border:0;border-radius:11px;background:transparent;text-align:left;cursor:pointer;color:#253047}
+.evrak-kategori:hover{background:#f5f3ff}
+.evrak-kategori.active{background:#ede9fe;color:#3730a3;box-shadow:inset 3px 0 #6d28d9}
+.evrak-kategori-ikon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#f1f5f9;font-size:1.05rem}
+.evrak-kategori.active .evrak-kategori-ikon{background:#ddd6fe}
+.evrak-kategori strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.84rem}
+.evrak-kategori small{display:block;margin-top:2px;color:#64748b;font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evrak-kategori-count{min-width:25px;padding:3px 6px;border-radius:999px;background:#eef2f7;text-align:center;font-size:.7rem;font-weight:850}
+.evrak-table-wrap{overflow:auto;min-height:390px;max-height:calc(100vh - 330px)}
+.evrak-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.evrak-table th{position:sticky;top:0;z-index:2;padding:10px 12px;background:#f8fafc;color:#64748b;border-bottom:1px solid #dbe3ed;text-align:left;font-size:.68rem;letter-spacing:.025em}
+.evrak-table td{padding:11px 12px;border-bottom:1px solid #e8edf4;vertical-align:middle;font-size:.79rem}
+.evrak-table tr:hover td{background:#fafaff}
+.evrak-table th:nth-child(1){width:29%}
+.evrak-table th:nth-child(2){width:18%}
+.evrak-table th:nth-child(3){width:9%}
+.evrak-table th:nth-child(4){width:12%}
+.evrak-table th:nth-child(5){width:16%}
+.evrak-table th:nth-child(6){width:16%}
+.evrak-doc-name{display:flex;gap:9px;align-items:flex-start}
+.evrak-file-icon{display:grid;place-items:center;flex:0 0 34px;height:38px;border-radius:9px;background:#eef2ff;font-size:1rem}
+.evrak-doc-name strong{display:block;color:#28315a;font-size:.82rem}
+.evrak-doc-name small,.evrak-muted{display:block;margin-top:3px;color:#64748b;font-size:.68rem;overflow:hidden;text-overflow:ellipsis}
+.evrak-year{display:inline;color:#334155;font-weight:700}
+.evrak-expiry{display:inline-flex;padding:4px 7px;border-radius:7px;background:#ecfdf5;color:#047857;font-size:.68rem;font-weight:800}
+.evrak-expiry.soon{background:#fff7ed;color:#c2410c}
+.evrak-expiry.expired{background:#fef2f2;color:#b91c1c}
+.evrak-row-actions{display:flex;gap:5px;justify-content:flex-end}
+.evrak-icon-btn{display:grid;place-items:center;width:31px;height:31px;border:0;border-radius:8px;background:#eef2ff;color:#4338ca;cursor:pointer;font-size:.88rem}
+.evrak-icon-btn.view{background:#0284c7;color:#fff}
+.evrak-icon-btn.view:hover{background:#0369a1}
+.evrak-icon-btn.whatsapp{background:#16a34a;color:#fff}
+.evrak-icon-btn.whatsapp:hover{background:#15803d}
+.evrak-icon-btn.edit{background:#f59e0b;color:#fff}
+.evrak-icon-btn.edit:hover{background:#d97706}
+.evrak-icon-btn.delete{background:#ef4444;color:#fff}
+.evrak-icon-btn.delete:hover{background:#dc2626}
+.evrak-wa-list{display:grid;gap:8px;margin-bottom:16px}
+.evrak-wa-kisi{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid #dbe5ef;border-radius:10px;background:#f8fafc}
+.evrak-wa-kisi strong,.evrak-wa-kisi small{display:block}
+.evrak-wa-kisi small{margin-top:3px;color:#64748b}
+.evrak-wa-kisi-actions{display:flex;gap:4px}
+.evrak-wa-secim{width:100%;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #bbf7d0;border-radius:11px;background:#f0fdf4;color:#166534;cursor:pointer;text-align:left}
+.evrak-wa-secim:hover{background:#dcfce7}
+.evrak-wa-secim span{font-size:1.25rem}
+.evrak-wa-empty{padding:24px;text-align:center;color:#64748b;border:1px dashed #cbd5e1;border-radius:11px}
+.evrak-sepet-actions{display:flex;align-items:center;gap:6px}
+.evrak-sepet-btn{display:none;align-items:center;gap:6px;border:0;border-radius:9px;padding:7px 10px;background:#16a34a;color:#fff;font-size:.72rem;font-weight:850;cursor:pointer}
+.evrak-sepet-btn.download{background:#0284c7}
+.evrak-sepet-btn.clear{background:#e2e8f0;color:#475569;padding:7px 9px}
+.evrak-secim-hucre{text-align:center}
+.evrak-secim-kutu{width:16px;height:16px;accent-color:#16a34a;cursor:pointer}
+.evrak-table th:nth-child(1){width:42px;text-align:center}
+.evrak-table th:nth-child(2){width:27%}
+.evrak-table th:nth-child(3){width:17%}
+.evrak-table th:nth-child(4){width:8%}
+.evrak-table th:nth-child(5){width:12%}
+.evrak-table th:nth-child(6){width:15%}
+.evrak-table th:nth-child(7){width:21%}
+.evrak-empty{padding:54px 20px;text-align:center;color:#64748b}
+.evrak-empty span{display:block;font-size:2.3rem;margin-bottom:9px}
+.evrak-empty strong{display:block;color:#334155;margin-bottom:5px}
+.evrak-form-note{padding:10px 12px;border-radius:9px;background:#eef2ff;color:#4338ca;font-size:.75rem;line-height:1.45}
+.evrak-file-help{margin-top:6px;color:#64748b;font-size:.68rem}
+@media(max-width:900px){.evrak-hero{grid-template-columns:1fr}}
+@media(max-width:900px){.evrak-actions{justify-content:flex-start}}
+@media(max-width:900px){.evrak-layout{grid-template-columns:1fr}}
+@media(max-width:900px){.evrak-kategori-list{display:flex;max-height:none;overflow:auto}}
+@media(max-width:900px){.evrak-kategori{min-width:230px}}
+@media(max-width:900px){.evrak-table-wrap{max-height:none}}
+@media(max-width:900px){.evrak-stats{grid-template-columns:1fr}}
+#evrakTakipApp .evrak-table{min-width:960px;table-layout:fixed}
+#evrakTakipApp .evrak-table th:nth-child(1){width:42px}
+#evrakTakipApp .evrak-table th:nth-child(2){width:auto}
+#evrakTakipApp .evrak-table th:nth-child(3){width:24%}
+#evrakTakipApp .evrak-table th:nth-child(4){width:65px}
+#evrakTakipApp .evrak-table th:nth-child(5){width:114px}
+#evrakTakipApp .evrak-table th:nth-child(6){width:140px}
+#evrakTakipApp .evrak-table th:nth-child(7){width:200px}
+#evrakTakipApp .evrak-table td:nth-child(2),#evrakTakipApp .evrak-table td:nth-child(3){white-space:normal;overflow-wrap:anywhere;line-height:1.5}
+#evrakTakipApp .evrak-doc-name>span:last-child{min-width:0;flex:1}
+#evrakTakipApp .evrak-doc-name strong,#evrakTakipApp .evrak-doc-name small{white-space:normal;overflow-wrap:anywhere}
+#evrakTakipApp .evrak-table td:nth-child(4),#evrakTakipApp .evrak-table td:nth-child(5){white-space:nowrap}
+#evrakTakipApp .evrak-row-actions{flex-wrap:nowrap;gap:5px;justify-content:flex-end}
+#evrakTakipApp .evrak-icon-btn{display:inline-grid;place-items:center;flex:0 0 31px;width:31px;min-width:31px;height:31px;padding:0;font-size:.88rem;line-height:1;border-radius:8px}
+.evrak-preview-modal .modal-card{width:min(1120px,96vw);max-width:1120px;height:min(900px,94vh);display:flex;flex-direction:column}
+.evrak-preview-body{flex:1;min-height:0;background:#e2e8f0;padding:8px}
+#evrakOnizlemeFrame{display:block;width:100%;height:100%;min-height:62vh;border:0;border-radius:8px;background:#fff}
+.evrak-preview-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid #e2e8f0}
+.evrak-preview-actions button{width:auto;margin:0;min-height:38px}
+@media(max-width:760px){#evrakTakipApp .evrak-icon-btn span{display:none}}
+@media(max-width:760px){.evrak-preview-actions{flex-wrap:wrap}}
+@media(max-width:760px){.evrak-preview-actions button{flex:1}}

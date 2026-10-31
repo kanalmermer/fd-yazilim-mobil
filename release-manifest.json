@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s50-e96b6ca3ffbc",
+  "release": "fd-modular-20261031-s51-d758c3acebeb",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "4b6d82288b5ca64a3c91c50e9b10fd9c977472918e1dbb77e80be5557c8d922e",
-      "bytes": 60671
+      "sha256": "eb6e933ffd42dcd0a346482278ba0039f7be29ba86e2bd2e9d73c074d1643936",
+      "bytes": 61259
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "f13e51bb0656f86e1de85dceffec4fecea5a8bb96cd9a587263c8f56c6c69889",
-      "bytes": 6720
+      "sha256": "31324c9b39452258ebc4cedbd4ad6f4c7e4fa501da2980b1894286ebd725eb82",
+      "bytes": 6796
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "18576ae30a3bf211b83a314c52465cd512f0f65985badd9bfc21c963f8870edb",
-      "bytes": 15595
+      "sha256": "2442cd68864957029237bdddab8777fedad0b0a973c07dd007732d6f5d225e71",
+      "bytes": 15963
     },
     {
       "path": "core/order-entrypoints.js",
@@ -303,8 +303,8 @@
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
-      "sha256": "0598121968e20e94b1e63fd8c031d3368ac94e1b434e9ce08066e171f566b7c8",
-      "bytes": 19457
+      "sha256": "521b099263198cdbdeaa7b28850b4f36eef7a9bbfaa69e334484c9668fff9d9d",
+      "bytes": 14290
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
@@ -935,6 +935,26 @@
       "path": "modules/evrak/view.html",
       "sha256": "a27718b71f9eba06a1b527e72153172ede3581a8527afc2157c75980de950197",
       "bytes": 7716
+    },
+    {
+      "path": "modules/genelpdf/manifest.json",
+      "sha256": "6a83a852f0bc9c759b4b363d882fabf2edbe2b8716f4246e5342be8bf6ef29fb",
+      "bytes": 778
+    },
+    {
+      "path": "modules/genelpdf/module.js",
+      "sha256": "8564b97ce43c94c6350f0ed7ac291bbc896ce0fa5c4ee69b1c5c4e5ef4f74896",
+      "bytes": 10985
+    },
+    {
+      "path": "modules/genelpdf/style.css",
+      "sha256": "03198b7184cdefd84f8db361a248fbf9f8d6dad9ba5e94f8e3e06acdbc98d8ad",
+      "bytes": 73
+    },
+    {
+      "path": "modules/genelpdf/view.html",
+      "sha256": "1a755062be43850a802abc82f38eb149b8f7f7c319a8676e9a3d97e580926ca2",
+      "bytes": 72
     },
     {
       "path": "modules/gunlukhatirlatma/manifest.json",
