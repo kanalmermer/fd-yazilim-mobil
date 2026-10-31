@@ -1,0 +1,73 @@
+{
+  "name": "Avans Takip ve Kesinti Planı",
+  "roots": [
+    "avansApp",
+    "modalAvansGecmisi"
+  ],
+  "entrypoints": [
+    "avansListeyiYenile",
+    "avansSekmeDegistir",
+    "avansYeniKayitAc",
+    "avansDuzenleVazgec",
+    "openAvansApp",
+    "avansPersonelListesiniDoldur",
+    "avansPersonelSecimKontrol",
+    "avansTaksitAlaniniGuncelle",
+    "avansTaksitButonlariniOlustur",
+    "avansTaksitSec",
+    "avansPlanOnizle",
+    "siradakiAvansNo",
+    "avansKaydet",
+    "avansFormReset",
+    "avansDuzenle",
+    "avansSil",
+    "avansEtiketi",
+    "avansGecmisKayitlari",
+    "avansGecmisiniAc",
+    "avansGecmisiniKapat",
+    "avansGecmisExcelIndir",
+    "avansKayitSubeFiltreleriniDoldur",
+    "avansKayitFiltreleriniTemizle",
+    "avansKayitFiltreliListe",
+    "renderAvansKayitListesi",
+    "avansGelecekDonemi",
+    "renderAvansGelecekKesintileri",
+    "avansGelecekExcelAl",
+    "avansGelecekPdfAl",
+    "avansGelecekGoruntuAl",
+    "renderAvansKesintiListesi",
+    "avansGecmisPdfIndir"
+  ],
+  "writeOperations": [
+    "avansKaydet",
+    "avansSil",
+    "avansYeniKayitAc",
+    "avansDuzenle"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/avans/view.html",
+      "sha256": "1ff21cc8c0d5b6630bb7df140acf80946d06063b8935ffcc8e2d0f91798125e0",
+      "bytes": 10464,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/avans/style.css",
+      "sha256": "218cece0a2f99ea95e50b2413d3e425c169367f8fe5e731e8cd7607de5efdb51",
+      "bytes": 7204,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/avans/module.js",
+      "sha256": "14c8848c60e153a4668d340a9d465eddc83cd4c8bf164bfbc9615a30d638f4ad",
+      "bytes": 54856,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

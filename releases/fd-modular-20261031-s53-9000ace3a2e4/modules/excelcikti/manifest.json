@@ -1,0 +1,32 @@
+{
+  "name": "Puantaj ve Liste Excel Hazırlama",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/excelcikti/view.html",
+      "sha256": "357b8aefe3a8816904d73c0ed2c724d623419c5e83ea231a3499ae11c77e7cb9",
+      "bytes": 82,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/excelcikti/style.css",
+      "sha256": "36dd881075f45dc9a4c1faa5470ac65e515d9879fc141daa8b1a809c7818b9fa",
+      "bytes": 70,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/excelcikti/module.js",
+      "sha256": "010ebbf4ecf1c25445c2fea2ecef827dd614156ee4d2f65a9749b52cd556c4a0",
+      "bytes": 2930,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s52-e843531e37cc",
+  "release": "fd-modular-20261031-s53-9000ace3a2e4",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "2c3dcfe363a1990e1b8f65affedbd51771cbaeaa830348a9dbe73208fd078513",
-      "bytes": 61866
+      "sha256": "164621f8c85fcd141836f266d7a409e6cbcb4b52ccead849bb92683de32eb7cd",
+      "bytes": 62456
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "0a265f32250c0a0023b055013a35e56483b19095448934ea3b850fbf470b20d9",
-      "bytes": 6888
+      "sha256": "6612b03cc57248b7159c684e6a09a83f1aed829655608b8eb3c409ff74be5cb3",
+      "bytes": 6972
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "ec1239f9a95c41b6a8dad8058090f6eaad82ddc3b7bae97373b5875cd94c7955",
-      "bytes": 16421
+      "sha256": "bff88947cd0f027fac7418d89ef4f32d5c12aecc36b85bd535dea6b071b5c613",
+      "bytes": 16873
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "53a3a00c5f6f201ec749a012242af01678254df2b75829991be6f1e3bdb92c99",
-      "bytes": 568548
+      "sha256": "dc78580a28033894fbbde3dcb1f25e03a2599b9cc8b4aebfee3132535c6fb6a6",
+      "bytes": 571723
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -303,8 +303,8 @@
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
-      "sha256": "521b099263198cdbdeaa7b28850b4f36eef7a9bbfaa69e334484c9668fff9d9d",
-      "bytes": 14290
+      "sha256": "c0289e8142b2aa0e3f79348cd4d78ed76690191e3aabd2fbef662d07d88d8491",
+      "bytes": 14096
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
@@ -935,6 +935,26 @@
       "path": "modules/evrak/view.html",
       "sha256": "a27718b71f9eba06a1b527e72153172ede3581a8527afc2157c75980de950197",
       "bytes": 7716
+    },
+    {
+      "path": "modules/excelcikti/manifest.json",
+      "sha256": "e4a6084613d3c19268774d100da408e76fedb06d1fa05d32568b59981bf6e1e8",
+      "bytes": 778
+    },
+    {
+      "path": "modules/excelcikti/module.js",
+      "sha256": "010ebbf4ecf1c25445c2fea2ecef827dd614156ee4d2f65a9749b52cd556c4a0",
+      "bytes": 2930
+    },
+    {
+      "path": "modules/excelcikti/style.css",
+      "sha256": "36dd881075f45dc9a4c1faa5470ac65e515d9879fc141daa8b1a809c7818b9fa",
+      "bytes": 70
+    },
+    {
+      "path": "modules/excelcikti/view.html",
+      "sha256": "357b8aefe3a8816904d73c0ed2c724d623419c5e83ea231a3499ae11c77e7cb9",
+      "bytes": 82
     },
     {
       "path": "modules/genelpdf/manifest.json",
