@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s54-11ac2bab73e8",
+  "release": "fd-modular-20261031-s54-3625e5e7526c",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "152c748b88e6983364535e9784be8ddc51f7e36c105b3860e02ec7fd916adfd7",
+      "sha256": "e7c4983566e46b556b365e02605dd1664832c6038074bab08dbe43dd1f1d84bc",
       "bytes": 63063
     },
     {
@@ -778,13 +778,13 @@
     },
     {
       "path": "modules/bildirim/manifest.json",
-      "sha256": "fcba6ec336000dbfb024a4b04da72ffd23343615d9e54373eba01d044058bccd",
+      "sha256": "6dfcb153a8705f2d52d7c149b448408720744b7d800022bc532461d3b3dbad27",
       "bytes": 2005
     },
     {
       "path": "modules/bildirim/module.js",
-      "sha256": "f4cac18b40597440aff2321892d7cefbb0fa6f2878d7f1e7c36caaa10a31a13f",
-      "bytes": 75538
+      "sha256": "c32d303125be1d7cd3c2e37e9b76d59a6d46e50224396b4df9d390418c5238ad",
+      "bytes": 75536
     },
     {
       "path": "modules/bildirim/style.css",
@@ -1598,13 +1598,13 @@
     },
     {
       "path": "modules/vardiya/manifest.json",
-      "sha256": "c33fd0d76c0c1d3aa015d3884f25871d5c52de6dc78c66ad10277ddff1c719c4",
+      "sha256": "96cd0e871d005df74e57beda261bf1b5ce2a2f9cc8b51c032e4f3fb29c5f17c2",
       "bytes": 2514
     },
     {
       "path": "modules/vardiya/module.js",
-      "sha256": "6e4d29dfa1af0290be23669438abd184b313c56b92f8a380e4c317137a362e27",
-      "bytes": 56408
+      "sha256": "19f9be851288f4ccc06eb81d8dbe733bed2a313452c0df227dcbd4459b674c19",
+      "bytes": 58454
     },
     {
       "path": "modules/vardiya/style.css",
