@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s53-9000ace3a2e4",
+  "release": "fd-modular-20261031-s54-11ac2bab73e8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "164621f8c85fcd141836f266d7a409e6cbcb4b52ccead849bb92683de32eb7cd",
-      "bytes": 62456
+      "sha256": "152c748b88e6983364535e9784be8ddc51f7e36c105b3860e02ec7fd916adfd7",
+      "bytes": 63063
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "6612b03cc57248b7159c684e6a09a83f1aed829655608b8eb3c409ff74be5cb3",
-      "bytes": 6972
+      "sha256": "d10cc23e27f951921e04a5c3af848053edffd5990b0fd6aa266ed185c6d87e25",
+      "bytes": 7056
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "bff88947cd0f027fac7418d89ef4f32d5c12aecc36b85bd535dea6b071b5c613",
-      "bytes": 16873
+      "sha256": "17def39892387e085fe9bf78a114dfc2132ab85b2f781117e30342db7019e7a2",
+      "bytes": 17351
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "dc78580a28033894fbbde3dcb1f25e03a2599b9cc8b4aebfee3132535c6fb6a6",
-      "bytes": 571723
+      "sha256": "e14844ff8fee7dc989e176241f4fcc52179c2a0c3e01cacdffe6954467987c77",
+      "bytes": 573892
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -715,6 +715,26 @@
       "path": "modules/ayarlar/view.html",
       "sha256": "cdb4562ecd887af770b0bf22b9010f083fa51d05ee48ec5885358a6bbd5a9906",
       "bytes": 25711
+    },
+    {
+      "path": "modules/aylikrapor/manifest.json",
+      "sha256": "737bc7242e22a52cf22dcdcb1179b77f18b7030ea0f8a71711fa17e375d8cd7a",
+      "bytes": 795
+    },
+    {
+      "path": "modules/aylikrapor/module.js",
+      "sha256": "8545be540df23a81e9ad5e6ee75f57a5ea20960eb5e42ba0dece216f12283a89",
+      "bytes": 16183
+    },
+    {
+      "path": "modules/aylikrapor/style.css",
+      "sha256": "7893b9e0d98bc53ba257914209fc47ef19b4d8fc05d2e05835cda2e730a01012",
+      "bytes": 97
+    },
+    {
+      "path": "modules/aylikrapor/view.html",
+      "sha256": "d6623505b7352358ccc4fbd0c5d81e4818ca843eb49f77976d849c00e92d19c3",
+      "bytes": 90
     },
     {
       "path": "modules/belgehazirla/manifest.json",
@@ -1748,8 +1768,8 @@
     },
     {
       "path": "shared/attendance-report-layout.js",
-      "sha256": "8793db9790874537e5257a4de304857189aef56e19efb84e86d550b4ffdfb1f9",
-      "bytes": 23598
+      "sha256": "caa30834c8a86991d5d98d58355758c14454138646a119308d7ee81ea58704f9",
+      "bytes": 13990
     },
     {
       "path": "shared/attendance-summary-data.js",

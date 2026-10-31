@@ -1,0 +1,32 @@
+{
+  "name": "Tablo Görüntü ve Puantaj Çıktıları",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/tablogoruntu/view.html",
+      "sha256": "6727738d861b2d76c842be8f4aa32b620c2eaf5f55b6f7711b68b025dabc437e",
+      "bytes": 73,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/tablogoruntu/style.css",
+      "sha256": "59453bbd2b16c305cae9ea275eedee810c13beeaffb6fc9aa194c054ad4360f7",
+      "bytes": 78,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/tablogoruntu/module.js",
+      "sha256": "e3cdada4f9eadf50ac57b2347f4a7fd06466a67fc166ebfb2999ab06c8d152e4",
+      "bytes": 11928,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
