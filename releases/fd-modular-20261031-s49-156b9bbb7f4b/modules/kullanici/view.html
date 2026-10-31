@@ -1,0 +1,32 @@
+<div id="modalAdmin" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>🔐 Kullanıcı ve Yetki Yönetimi</h3>
+            <button class="modal-close" onclick="closeAdminModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="kullanici-panel-araclari"><p id="kullaniciPanelYetkiBilgisi" role="status"></p><button type="button" class="btn-modern" onclick="kullaniciListesiniYenile()">Listeyi Yenile</button><button id="kullaniciModulYetkileriBtn" type="button" class="btn-modern" onclick="kullaniciModulYetkileriniAc()">Modül Yetkileri</button></div>
+            <div class="card" style="background: #f8fafc;">
+                <h4>Yeni Giriş Kullanıcısı Tanımla</h4>
+                <form id="adminAddUserForm" style="margin-top: 10px;">
+                    <div class="form-row">
+                        <div class="form-group"><label>Kullanıcı Adı</label><input type="text" id="aUser" data-case-preserve="true" style="text-transform:none;" required></div>
+                        <div class="form-group"><label>Şifre</label><input type="password" id="aPass" minlength="6" autocomplete="new-password" data-case-preserve="true" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Hesap Türü</label><select id="aRol"><option value="Yonetici">Kullanıcı</option><option value="Personel">Personel</option><option value="Admin">Admin</option></select></div>
+                        <div class="form-group"><label>İlişkili T.C. No</label><input type="text" id="aTcNo" placeholder="İsteğe bağlı"></div>
+                    </div>
+                    <button type="submit" class="btn-portal" style="margin-top:0;">Kullanıcıyı Kaydet</button>
+                </form>
+            </div>
+            <h4>Sistemdeki Kayıtlı Kullanıcılar</h4>
+            <div class="table-wrapper">
+                <table id="adminUserTable">
+                    <thead><tr><th>#</th><th>Kullanıcı Adı</th><th>Hesap Türü</th><th>Bağlı TC</th><th>Geçici Şifre / Yeni Şifre</th><th>İşlem</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

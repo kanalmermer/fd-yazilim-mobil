@@ -1,0 +1,15 @@
+
+#personelDashboardApp .dashboard-layout{gap:14px;margin-top:14px!important}
+#personelDashboardApp .dashboard-panel{border:1px solid #dce5ee;border-radius:11px;box-shadow:none;background:#fff;overflow:hidden}
+#personelDashboardApp .dashboard-panel-head{padding:14px 16px;border-bottom:1px solid #e5ebf2;background:#fff}
+#personelDashboardApp .dashboard-panel-head h3{font-size:13px;font-weight:650;color:#20374e;margin:0}
+#personelDashboardApp .dashboard-panel-head span{font-size:10px;color:#7c8b9e}
+#personelDashboardApp .dashboard-list{padding:0 15px}
+#personelDashboardApp .dashboard-list-item{padding:11px 0;border-color:#edf1f6}
+#personelDashboardApp .dashboard-person strong{font-size:12px;font-weight:500;color:#334155}
+#personelDashboardApp .dashboard-person small{font-size:10px;color:#7a899c}
+#personelDashboardApp .dashboard-tag{font-size:10px;font-weight:500;border-radius:6px;padding:5px 7px}
+#personelDashboardApp .dashboard-empty{font-size:11px;padding:25px 12px;color:#8a97a9}
+@media(max-width:700px){
+#personelDashboardApp .dashboard-layout{grid-template-columns:1fr!important}
+}

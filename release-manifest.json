@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s48-642dc1e1d1b8",
+  "release": "fd-modular-20261031-s49-156b9bbb7f4b",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "30bcc2ecb94c077e8a114cce0f6e13c78d6760a27ec843de96bc7f5fe9430510",
-      "bytes": 59497
+      "sha256": "1919a7390ba886e6eddbde047d51cdb96c89411795ad2a5c8b4c864e39b7aa79",
+      "bytes": 60093
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "fbf5cdb1996d58fe7476d665bc3495d71b04576d33dd24a4c8a65e35679b3469",
-      "bytes": 6556
+      "sha256": "0ac9d2c7bcdf61a047b6c164240fee8574b2da062cf5c043c1401bda36e8e074",
+      "bytes": 6641
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "2345b46639a59e1e08ce18f4841982207e36f869d87399429a1a7e9642c53774",
-      "bytes": 14809
+      "sha256": "0ae08eaa86c65bebfd8231c1211eeeb9b88067515b4e0e02f953d65dda12b5c4",
+      "bytes": 15230
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "90e68801d8ced2bf4d32da93bc59b9ce2b41c470406d80634138e0cedb7cc079",
-      "bytes": 571932
+      "sha256": "a20e863f4f79eb2d09796f5b0fd62e02197a89aae2aeb94933d0a581d6cda711",
+      "bytes": 572700
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1575,6 +1575,26 @@
       "path": "modules/wordbelge/view.html",
       "sha256": "0685635a8d34a6f91bfc73b312c08ee3908e5ce5aab54a71d5ad12c9ff4c6d8e",
       "bytes": 76
+    },
+    {
+      "path": "modules/wordonizleme/manifest.json",
+      "sha256": "9a534b981fc5e19341ca890a341d9e1fe6aa9208827d88ee2eb8c1c1636479fc",
+      "bytes": 782
+    },
+    {
+      "path": "modules/wordonizleme/module.js",
+      "sha256": "489072c684452ef3cc1ea3c52c168a1b8f463295a3c81b057e54ce8fc48df126",
+      "bytes": 3602
+    },
+    {
+      "path": "modules/wordonizleme/style.css",
+      "sha256": "b37a047bb1e8ad88709682581899c1ae20f93df03eb6bc89700bf5c1ddf91182",
+      "bytes": 70
+    },
+    {
+      "path": "modules/wordonizleme/view.html",
+      "sha256": "458d1b783d02ee19a9cce30e09857f94eca49b3d5aa7777a865b54e8e74b7ff1",
+      "bytes": 77
     },
     {
       "path": "modules/workcenter/manifest.json",
