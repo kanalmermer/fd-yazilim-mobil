@@ -1,0 +1,14 @@
+<div id="modalYillikPersonelBelge" class="modal-overlay">
+    <div class="modal-card" style="width:min(820px,96vw);max-width:820px;max-height:92vh;">
+        <div class="modal-header"><div><h3>📄 Yıllık Personel Onay Belgeleri</h3><small id="yillikBelgeTarihAraligi" style="color:#64748b;"></small></div><button class="modal-close" onclick="yillikPersonelBelgePaneliniKapat()">✕</button></div>
+        <div class="modal-body" style="overflow:auto;">
+            <div id="yillikBelgeDurumOzeti" class="yillik-belge-ozet"></div>
+            <div class="yillik-belge-secim-grid">
+                <section class="yillik-belge-secim-kutu"><h4>Şubeler</h4><label style="font-weight:800;"><input type="checkbox" id="yillikBelgeTumSubeler" checked onchange="yillikBelgeTumSubeleriSec(this.checked)"> Tüm şubeleri seç</label><div id="yillikBelgeSubeSecimleri"></div></section>
+                <section class="yillik-belge-secim-kutu"><h4>Belgeler</h4><label><input type="checkbox" name="yillikBelgeTuru" value="fazlaMesaiOnayi" checked> <span><strong>Fazla Mesai Onay Belgesi</strong><small>Seçili yılın tamamı için hazırlanır.</small></span></label><label><input type="checkbox" name="yillikBelgeTuru" value="vardiyaliCalismaOnayi" checked> <span><strong>Vardiyalı Çalışma Onay Belgesi</strong><small>Seçili yılın tamamı için hazırlanır.</small></span></label></section>
+            </div>
+            <div id="yillikBelgeHataOzeti" style="display:none;margin-top:12px;padding:11px;border-radius:9px;background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 14px;border-top:1px solid #dbe5ef;background:#f8fafc;flex-wrap:wrap;"><button type="button" class="btn-cancel" style="width:auto;margin:0;" onclick="yillikPersonelBelgePaneliniKapat()">Bugün Sonra Hatırlat</button><button type="button" class="btn-submit" style="width:auto;margin:0;" onclick="yillikPersonelBelgeleriniTopluHazirla()">📄 Seçilenleri Toplu Hazırla</button></div>
+    </div>
+</div>

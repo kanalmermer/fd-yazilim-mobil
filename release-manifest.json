@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s51-d758c3acebeb",
+  "release": "fd-modular-20261031-s52-e843531e37cc",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "eb6e933ffd42dcd0a346482278ba0039f7be29ba86e2bd2e9d73c074d1643936",
-      "bytes": 61259
+      "sha256": "2c3dcfe363a1990e1b8f65affedbd51771cbaeaa830348a9dbe73208fd078513",
+      "bytes": 61866
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "31324c9b39452258ebc4cedbd4ad6f4c7e4fa501da2980b1894286ebd725eb82",
-      "bytes": 6796
+      "sha256": "0a265f32250c0a0023b055013a35e56483b19095448934ea3b850fbf470b20d9",
+      "bytes": 6888
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "2442cd68864957029237bdddab8777fedad0b0a973c07dd007732d6f5d225e71",
-      "bytes": 15963
+      "sha256": "ec1239f9a95c41b6a8dad8058090f6eaad82ddc3b7bae97373b5875cd94c7955",
+      "bytes": 16421
     },
     {
       "path": "core/order-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "a20e863f4f79eb2d09796f5b0fd62e02197a89aae2aeb94933d0a581d6cda711",
-      "bytes": 572700
+      "sha256": "53a3a00c5f6f201ec749a012242af01678254df2b75829991be6f1e3bdb92c99",
+      "bytes": 568548
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1475,6 +1475,26 @@
       "path": "modules/sirket/view.html",
       "sha256": "f1bea589e3cb951702f5d5bb9e6d1f27f4a1450ba4f6bc1480cb368018a99454",
       "bytes": 8780
+    },
+    {
+      "path": "modules/tablogoruntu/manifest.json",
+      "sha256": "4ce9462962de74ed0285c4f77ca441501fcaecb44713fe0f6a908c41d65a0964",
+      "bytes": 793
+    },
+    {
+      "path": "modules/tablogoruntu/module.js",
+      "sha256": "e3cdada4f9eadf50ac57b2347f4a7fd06466a67fc166ebfb2999ab06c8d152e4",
+      "bytes": 11928
+    },
+    {
+      "path": "modules/tablogoruntu/style.css",
+      "sha256": "59453bbd2b16c305cae9ea275eedee810c13beeaffb6fc9aa194c054ad4360f7",
+      "bytes": 78
+    },
+    {
+      "path": "modules/tablogoruntu/view.html",
+      "sha256": "6727738d861b2d76c842be8f4aa32b620c2eaf5f55b6f7711b68b025dabc437e",
+      "bytes": 73
     },
     {
       "path": "modules/tapu/manifest.json",
