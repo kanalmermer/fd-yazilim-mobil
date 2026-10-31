@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261029-s47-59a2d289c674",
+  "release": "fd-modular-20261031-s47-e879fb50e606",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "b451d9e3ff65dd9536dc6e6210d9f726d398ba8e0b91fe94016132450dc9c809",
+      "sha256": "266e33acde9ef1bf46f5df73a66db64daf028b9d7c65e03de412e3af0fc6e84d",
       "bytes": 58898
     },
     {
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "4466a1da23ab8b10de3ed04f9c39a50c5e0828452da786f1292d732e4c042611",
-      "bytes": 571795
+      "sha256": "861b4f6b877f4806b2a1f4a054c2fae3af1c39b32521f16dfd53e9984f9eca1b",
+      "bytes": 572372
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
