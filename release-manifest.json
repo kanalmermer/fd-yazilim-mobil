@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s49-156b9bbb7f4b",
+  "release": "fd-modular-20261031-s50-e96b6ca3ffbc",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "1919a7390ba886e6eddbde047d51cdb96c89411795ad2a5c8b4c864e39b7aa79",
-      "bytes": 60093
+      "sha256": "4b6d82288b5ca64a3c91c50e9b10fd9c977472918e1dbb77e80be5557c8d922e",
+      "bytes": 60671
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "0ac9d2c7bcdf61a047b6c164240fee8574b2da062cf5c043c1401bda36e8e074",
-      "bytes": 6641
+      "sha256": "f13e51bb0656f86e1de85dceffec4fecea5a8bb96cd9a587263c8f56c6c69889",
+      "bytes": 6720
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "0ae08eaa86c65bebfd8231c1211eeeb9b88067515b4e0e02f953d65dda12b5c4",
-      "bytes": 15230
+      "sha256": "18576ae30a3bf211b83a314c52465cd512f0f65985badd9bfc21c963f8870edb",
+      "bytes": 15595
     },
     {
       "path": "core/order-entrypoints.js",
@@ -303,8 +303,8 @@
     },
     {
       "path": "legacy/23-fdPdfVeFiltreV149.js",
-      "sha256": "5a9d3fab0f180f688353e78a9b3cf4a3db06729af2c337ad731c29f53d585f1c",
-      "bytes": 19400
+      "sha256": "0598121968e20e94b1e63fd8c031d3368ac94e1b434e9ce08066e171f566b7c8",
+      "bytes": 19457
     },
     {
       "path": "legacy/24-fdHizliBelgeVardiyaFiltreV150.js",
@@ -735,6 +735,26 @@
       "path": "modules/belgehazirla/view.html",
       "sha256": "3fa1f34becde7a14dedf87e32d0121b2a3c6b591815f5024a19110ecbf84d255",
       "bytes": 77
+    },
+    {
+      "path": "modules/belgepdf/manifest.json",
+      "sha256": "c47ffc0912be1b02485560e2142a93cbd3d37d018073ffcbbafd2309ebac16fc",
+      "bytes": 768
+    },
+    {
+      "path": "modules/belgepdf/module.js",
+      "sha256": "a0b18919ef0d4061190d181bc00dc25e814b5b93ed9e21329d6097ef82c44001",
+      "bytes": 5603
+    },
+    {
+      "path": "modules/belgepdf/style.css",
+      "sha256": "3c07cad154c55194e2bd02b2a68cc81d19581a8131bbf01a12ce8c589a148644",
+      "bytes": 72
+    },
+    {
+      "path": "modules/belgepdf/view.html",
+      "sha256": "38c9ac368ce6b07cfb6690c4f124fce4aae523679a8b57bd8b810bbd25932d0b",
+      "bytes": 76
     },
     {
       "path": "modules/bildirim/manifest.json",
