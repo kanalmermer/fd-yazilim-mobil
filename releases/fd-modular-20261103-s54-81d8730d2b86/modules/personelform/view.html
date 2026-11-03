@@ -1,0 +1,116 @@
+<div id="modalPersonel" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 id="modalPersonelBaslik">Yeni Personel Kaydı</h3>
+            <button class="modal-close" onclick="closePersonelModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <form id="personelForm">
+                <input type="hidden" id="pEditOriginalId" value="">
+                <div class="form-group">
+                    <label>T.C. Kimlik No (ID)</label>
+                    <input type="text" id="pTcNo" maxlength="11" minlength="11" pattern="\d{11}" required placeholder="11 Haneli T.C. No">
+                </div>                <div class="form-group">
+                    <label>Cihaz Personel No <small style="color:#64748b;">(MagicPass)</small></label>
+                    <input type="text" id="pCihazPersonelNo" inputmode="numeric" placeholder="Cihazdaki personel numarası">
+                </div>
+                <div class="form-group">
+                    <label>Adı Soyadı</label>
+                    <input type="text" id="pAd" required placeholder="Ahmet Yılmaz">
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Şube / Şantiye</label><select id="pSube" required><option value="">Önce şube seçin</option></select></div>
+                    <div class="form-group"><label>Görevi</label><input type="text" id="pGorev" required placeholder="Mimar"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Telefon Numarası</label><input type="text" id="pTelefon" placeholder="0532 123 45 67"></div>
+                    <div class="form-group">
+                        <label>Kan Grubu</label>
+                        <select id="pKanGrubu">
+                            <option value="">Seçiniz</option>
+                            <option value="A Rh+">A Rh+</option>
+                            <option value="A Rh-">A Rh-</option>
+                            <option value="B Rh+">B Rh+</option>
+                            <option value="B Rh-">B Rh-</option>
+                            <option value="AB Rh+">AB Rh+</option>
+                            <option value="AB Rh-">AB Rh-</option>
+                            <option value="0 Rh+">0 Rh+</option>
+                            <option value="0 Rh-">0 Rh-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Cinsiyet</label><select id="pCinsiyet"><option value="">Belirtilmedi</option><option value="Kadın">Kadın</option><option value="Erkek">Erkek</option></select></div>
+                    <div class="form-group"><label>Engelli Durumu</label><select id="pEngelli"><option value="Hayır">Hayır</option><option value="Evet">Evet</option></select></div>
+                </div>
+                <div class="form-group"><label>Emeklilik Durumu</label><select id="pEmekli"><option value="Hayır">Hayır</option><option value="Evet">Evet</option></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label>İşe Giriş Tarihi</label><input type="date" id="pGirisTarihi" required></div>
+                    <div class="form-group"><label>Doğum Tarihi</label><input type="date" id="pDogumTarihi" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Kimlik Seri No</label><input type="text" id="pKimlikSeri" placeholder="A12B34567"></div>
+                    <div class="form-group"><label>Aldığı Belgeler</label><input type="text" id="pBelgeler" placeholder="Ehliyet (SRC4, Psikoteknik)"></div>
+                </div>
+                <div class="form-group"><label>Personel Fotoğrafı</label><input type="file" id="pFotoDosya" accept="image/jpeg,image/png,image/webp" onchange="personelFotografSeciminiGoster(this)"><small id="pFotoDurum" style="display:block;margin-top:6px;color:#64748b;">JPG, PNG veya WEBP dosyası seçebilirsiniz.</small></div>
+                <div class="form-group"><label>Açıklamalar</label><textarea id="pAciklama" rows="2" placeholder="Ekstra notlar..."></textarea></div>
+                <div class="form-group"><label>Adres</label><textarea id="pAdres" rows="2"></textarea></div>
+                <details class="profile-section">
+                    <summary>İletişim ve Aile Bilgileri</summary>
+                    <div>
+                        <div class="form-row"><div class="form-group"><label>Kurumsal Telefon</label><input type="text" id="pKurumsalTelefon"></div><div class="form-group"><label>E-posta</label><input type="email" id="pEposta"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Acil Durum Kişisi</label><input type="text" id="pAcilDurumAd"></div><div class="form-group"><label>Yakınlık Derecesi</label><input type="text" id="pAcilDurumYakinlik" placeholder="Eş, anne, kardeş..."></div></div>
+                        <div class="form-row"><div class="form-group"><label>Acil Durum Telefonu</label><input type="text" id="pAcilDurumTelefon"></div><div class="form-group"><label>Medeni Durum</label><select id="pMedeniDurum"><option value="">Belirtilmedi</option><option>Bekar</option><option>Evli</option></select></div></div>
+                        <div class="form-group"><label>Çocuk Sayısı</label><input type="number" min="0" id="pCocukSayisi" value="0"></div>
+                    </div>
+                </details>
+                <details class="profile-section">
+                    <summary>Askerlik, Finansal ve Özlük Bilgileri</summary>
+                    <div>
+                        <div class="form-row"><div class="form-group"><label>Askerlik Durumu</label><select id="pAskerlikDurumu"><option value="">Belirtilmedi</option><option>Yapıldı</option><option>Muaf</option><option>Tecilli</option></select></div><div class="form-group"><label>Tecil Bitiş Tarihi</label><input type="date" id="pTecilBitis"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Banka Adı</label><input type="text" id="pBankaAdi"></div><div class="form-group"><label>IBAN</label><input type="text" id="pIban" maxlength="32"></div></div>
+                        <div class="form-row"><div class="form-group"><label>SGK Sicil No</label><input type="text" id="pSgkNo"></div><div class="form-group"><label>Emeklilik Türü</label><input type="text" id="pEmeklilikTuru" placeholder="SSK, Bağ-Kur..."></div></div>
+                        <div class="form-group"><label>Vergi Muafiyeti / İndirimi</label><input type="text" id="pVergiMuafiyet"></div>
+                    </div>
+                </details>
+                <details class="profile-section">
+                    <summary>Organizasyon, Eğitim ve Yetkinlikler</summary>
+                    <div>
+                        <div class="form-row"><div class="form-group"><label>Departman</label><input type="text" id="pDepartman"></div><div class="form-group"><label>Kadro</label><input type="text" id="pKadro"></div></div>
+                        <div class="form-group"><label>Bağlı Yönetici</label><input type="text" id="pYonetici"></div>
+                        <div class="form-row"><div class="form-group"><label>Eğitim Seviyesi</label><select id="pEgitimSeviyesi"><option value="">Belirtilmedi</option><option>İlkokul</option><option>Ortaokul</option><option>Lise</option><option>Ön Lisans</option><option>Lisans</option><option>Yüksek Lisans</option><option>Doktora</option></select></div><div class="form-group"><label>Okul / Bölüm</label><input type="text" id="pOkulBolum"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Sertifikalar</label><input type="text" id="pSertifikalar" placeholder="İSG, MYK, SRC..."></div><div class="form-group"><label>Sertifika Bitiş Tarihi</label><input type="date" id="pSertifikaBitis"></div></div>
+                        <div class="form-group"><label>Ehliyetler ve Yabancı Dil</label><input type="text" id="pEhliyetDil" placeholder="B sınıfı, SRC4 / İngilizce B1"></div>
+                    </div>
+                </details>
+                <details class="profile-section">
+                    <summary>Zimmet ve Kariyer Notları</summary>
+                    <div>
+                        <div class="form-group"><label>Zimmet Bilgisi</label><textarea id="pZimmetNotu" rows="2" placeholder="Araç, cihaz, seri no ve teslim tarihi..."></textarea></div>
+                        <div class="form-row"><div class="form-group"><label>Terfi / Unvan Geçmişi</label><textarea id="pTerfiGecmisi" rows="2"></textarea></div><div class="form-group"><label>Performans / Ödül Notları</label><textarea id="pPerformansNotu" rows="2"></textarea></div></div>
+                        <div class="form-row"><div class="form-group"><label>Son Sağlık Taraması Tarihi</label><input type="date" id="pSonSaglikTaramasi"></div><div class="form-group"><label>İş Yeri Hekimi</label><input type="text" id="pIsyeriHekimi"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Kronik Rahatsızlıklar</label><textarea id="pKronikRahatsizlik" rows="2"></textarea></div><div class="form-group"><label>Alerjiler</label><textarea id="pAlerjiler" rows="2"></textarea></div></div>
+                        <div class="form-group"><label>Sağlık / İş Güvenliği Notu</label><textarea id="pSaglikNotu" rows="2"></textarea></div>
+                    </div>
+                </details>
+                <div class="form-group"><label>Terhis Tarihi</label><input type="date" id="pTerhisTarihi"></div>
+                <div class="form-group"><label>Mezuniyet Yılı</label><input type="number" id="pMezuniyetYili" min="1900" step="1" inputmode="numeric" placeholder="Örn. 2018"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Ücret Tipi</label><select id="pUcretTipi"><option value="">Seçiniz</option><option value="Aylık">Aylık</option><option value="Günlük">Günlük</option></select></div>
+                    <div class="form-group"><label>Ücret Tutarı</label><input type="text" inputmode="numeric" id="pUcret" data-money oninput="paraGirisiFormatla(this)"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Ek Ödeme Türü</label><input type="text" id="pEkOdemeTuru" placeholder="Yakacak, yemek, harcırah..."></div>
+                    <div class="form-group"><label>Ek Ödeme Tutarı</label><input type="text" inputmode="numeric" id="pEkOdemeTutari" data-money oninput="paraGirisiFormatla(this)"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Yol Ücreti</label><input type="text" inputmode="numeric" id="pYolUcreti" data-money oninput="paraGirisiFormatla(this)"></div>
+                    <div class="form-group"><label>Prim Uygulanır mı?</label><select id="pPrimVar"><option value="Hayır">Hayır</option><option value="Evet">Evet</option></select></div>
+                </div>
+                <div class="form-group"><label>İşten Çıkış Tarihi (Ayrıldıysa doldurun)</label><input type="date" id="pCikisTarihi"></div>
+
+                <button type="submit" class="btn-submit" style="margin-top:10px;">Personel Kaydını Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>

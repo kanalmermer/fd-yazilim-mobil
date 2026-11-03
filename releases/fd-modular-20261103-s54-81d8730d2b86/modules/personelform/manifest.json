@@ -1,0 +1,45 @@
+{
+  "name": "Personel Kayıt/Düzenleme",
+  "roots": [
+    "modalPersonel"
+  ],
+  "entrypoints": [
+    "organizePersonnelForm",
+    "updateAskerlikTarihAlani",
+    "personelFotografSeciminiGoster",
+    "openPersonelModal",
+    "closePersonelModal",
+    "personelDuzenle"
+  ],
+  "writeOperations": [
+    "openPersonelModal",
+    "personelDuzenle",
+    "personelFotografSeciminiGoster"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/personelform/view.html",
+      "sha256": "d719ef5087f41c06311eda40ff7ca31e156ced5ecfd85fe32b4de0b0b537ad22",
+      "bytes": 11622,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelform/style.css",
+      "sha256": "8019bcf00a88807cbef20d4956c4e145abb7a20c8808172fa4c1e82bae2ef69d",
+      "bytes": 89,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelform/module.js",
+      "sha256": "80308ba07c327be2a4598a4cb6d738aa2e95d021d1e420b1472794f5d6a45142",
+      "bytes": 31285,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

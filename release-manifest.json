@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261031-s54-3625e5e7526c",
+  "release": "fd-modular-20261103-s54-81d8730d2b86",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "e7c4983566e46b556b365e02605dd1664832c6038074bab08dbe43dd1f1d84bc",
+      "sha256": "7adf8ac67ceb8342cc7f5ce02b3faa31a732f50b3b0258d18d749fa6473542f7",
       "bytes": 63063
     },
     {
@@ -818,13 +818,13 @@
     },
     {
       "path": "modules/bordro/manifest.json",
-      "sha256": "a4d664801f85d1cce4164d0cfd7e0a3dcf43da376faafc68a1588a2d041bd9c7",
+      "sha256": "5ea8b9b77c3a1c22c34871174291aafbe6f13ccc094e1ae02d09bcd719058e0c",
       "bytes": 1381
     },
     {
       "path": "modules/bordro/module.js",
-      "sha256": "ef9a6e102235438bbdf646b276bca1e4b43e3b16020c481f4245b88d1523e909",
-      "bytes": 61513
+      "sha256": "960483270439e4294bc459bf37f162cbae6e0c99065316ac63bae79cebb39939",
+      "bytes": 61691
     },
     {
       "path": "modules/bordro/style.css",
@@ -1758,8 +1758,8 @@
     },
     {
       "path": "shared/attendance-holiday-shift-label.js",
-      "sha256": "57e4405bbe9d0da091e39fc3724ba56198169ec2653e286acaf60e878b928c2c",
-      "bytes": 6615
+      "sha256": "6374a653ba0c3082ee60d8c429eff3c8f5661fb7f13b2014d3924592fa74b371",
+      "bytes": 7012
     },
     {
       "path": "shared/attendance-queue-ui.css",
@@ -1878,8 +1878,8 @@
     },
     {
       "path": "shared/payroll-matrix.js",
-      "sha256": "a28cd7e831f7c7ecbacdee08c1af8bc566cb05b2b94bb62f3fdfc9fb034f39b3",
-      "bytes": 22336
+      "sha256": "f294743c1f7306e7f5eb4d7d4cfd33ccb9eaaa5f8f92f61f79e3bbca077146b5",
+      "bytes": 22618
     },
     {
       "path": "shared/payroll-overtime.js",
