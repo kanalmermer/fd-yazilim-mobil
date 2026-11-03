@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261103-s54-81d8730d2b86",
+  "release": "fd-modular-20261103-s54-d0f298f6c47f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7adf8ac67ceb8342cc7f5ce02b3faa31a732f50b3b0258d18d749fa6473542f7",
-      "bytes": 63063
+      "sha256": "3dbc787cd70cf8aeebd77b046fa2c4765ad3b0622eed8703d365ef3c3e15763d",
+      "bytes": 63064
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -203,8 +203,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "e14844ff8fee7dc989e176241f4fcc52179c2a0c3e01cacdffe6954467987c77",
-      "bytes": 573892
+      "sha256": "6213b30f818f2923e811cb0d4b1e3866408f89f889a5c34e51c5a942ea907943",
+      "bytes": 573906
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1358,23 +1358,23 @@
     },
     {
       "path": "modules/personelform/manifest.json",
-      "sha256": "70a637635f176993d41cad142a83d0bd3af64359d80458bc21ee06bba264149d",
-      "bytes": 1067
+      "sha256": "ac5e3ef0d2b4bdafa2237528d4440dd64252f14e9159907de992049672543acf",
+      "bytes": 1068
     },
     {
       "path": "modules/personelform/module.js",
-      "sha256": "80308ba07c327be2a4598a4cb6d738aa2e95d021d1e420b1472794f5d6a45142",
-      "bytes": 31285
+      "sha256": "b6daae5170758e33dce36e3a2adc4941bc14ff9df5d41c530298295a3c57e640",
+      "bytes": 37719
     },
     {
       "path": "modules/personelform/style.css",
-      "sha256": "8019bcf00a88807cbef20d4956c4e145abb7a20c8808172fa4c1e82bae2ef69d",
-      "bytes": 89
+      "sha256": "f8c84ea5bd1d20f750ac2bab065ac841223b0c1e639c283410cf1d1c9fa7631d",
+      "bytes": 525
     },
     {
       "path": "modules/personelform/view.html",
-      "sha256": "d719ef5087f41c06311eda40ff7ca31e156ced5ecfd85fe32b4de0b0b537ad22",
-      "bytes": 11622
+      "sha256": "548e08fd679e1a4b8406a04d2b4539ddc44939eb411342dd6ba3750bf64f3df9",
+      "bytes": 13606
     },
     {
       "path": "modules/personelliste/manifest.json",
@@ -1803,8 +1803,8 @@
     },
     {
       "path": "shared/company-branches.js",
-      "sha256": "764748c6b5bdabccc2ec064b0484a204a4561f6b28c3f706238831ad4499b863",
-      "bytes": 2307
+      "sha256": "5b2ff7ac225b17cbd0cf8bcd57ca91c214852914184ee50fed630643b83efe18",
+      "bytes": 3081
     },
     {
       "path": "shared/company-tools-home.css",

@@ -1,0 +1,5 @@
+/* Existing shared personnel/profile/photo/summary styles remain eager and unchanged. */
+#modalPersonel #pNakilAlanlari[hidden], #modalPersonel #pNormalExit[hidden], #modalPersonel #pNakilGecmisi[hidden] { display:none; }
+#modalPersonel .personnel-transfer-note { color:#64748b; font-size:12px; line-height:1.6; margin:8px 0 14px; }
+#modalPersonel #pNakilGecmisListe { padding-left:20px; margin:8px 0 0; font-size:12px; line-height:1.7; overflow-wrap:anywhere; }
+#modalPersonel #pNakilGecmisListe li + li { margin-top:8px; }
