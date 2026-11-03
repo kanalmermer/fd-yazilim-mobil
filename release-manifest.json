@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261103-s54-1069e5caeefc",
+  "release": "fd-modular-20261103-s54-f503bd63e0c0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,7 +28,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "97cb0fd2c88f3004107a21e1d3987215e20b1c311960df91f23b210aa76c26ba",
+      "sha256": "e0ee218285ae451e123a865e02c818693a5ff919600f5d5fed696044b3f17a70",
       "bytes": 63064
     },
     {
@@ -1358,7 +1358,7 @@
     },
     {
       "path": "modules/personelform/manifest.json",
-      "sha256": "03a95b9d5624959d73f6d50753cbd794168788152f475a2f9aaa760c3e69b356",
+      "sha256": "84b1074a74b2a5ba8ccae3ee3ccb70b8ed26c42e7c061cdd205ba903b9315ba2",
       "bytes": 1068
     },
     {
@@ -1373,8 +1373,8 @@
     },
     {
       "path": "modules/personelform/view.html",
-      "sha256": "70a46c119df2a7095bb298c64ce88fa8946c98a3610278fd607cb84f58ad1bbd",
-      "bytes": 13844
+      "sha256": "7b96a08eda5499a6c901899a17053b2139e72747b01ce85398fc679d0094d980",
+      "bytes": 13812
     },
     {
       "path": "modules/personelliste/manifest.json",
