@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261104-s59-7482c1ff0cac",
+  "release": "fd-modular-20261104-s60-7dfee5193783",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -15,6 +15,11 @@
       "path": "core/assistant-entrypoints.js",
       "sha256": "f0e0deb5ef45fa4535a9db97b9ac60c0f2a5357af377152051f4ba2454d838b8",
       "bytes": 1834
+    },
+    {
+      "path": "core/attendance-assignment-entrypoints.js",
+      "sha256": "31abdbcc521682ad83b953799a3a4a05edc9e2402f9a47e800a2ec9ad475b539",
+      "bytes": 4250
     },
     {
       "path": "core/attendance-file-entrypoints.js",
@@ -38,8 +43,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "dfcc37a7763f27b90bd166b95a1d7e7478dffe8c296a211a5eceb00daf072e2b",
-      "bytes": 66158
+      "sha256": "0ace1d17cbb3bedd46ae92648574f6dab8df5070dd8263c7dd7fc069e6e38bf6",
+      "bytes": 66781
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -103,13 +108,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "fe28ffac415f935206ba127a1fa18c470998281783b49c52118a1a938788b25d",
-      "bytes": 7812
+      "sha256": "3ffbd4fec9534a59ed0bb72179dd8c476b7cf9527606d178da19e7ff72bd4de1",
+      "bytes": 7929
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "0abdf9230bdf0d9a45e80cdaee87817ec22fefffaf224509db3e4b75259c36b8",
-      "bytes": 18142
+      "sha256": "f6e0627bbefe97ea6763c377d69b8d338fe9b10ef266664d972b97c98a05b99c",
+      "bytes": 18280
     },
     {
       "path": "core/order-entrypoints.js",
@@ -228,8 +233,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "125bf50291d78cc08ee49dcede5104560d5df382bbca2cb80bbfe240519db4a7",
-      "bytes": 550450
+      "sha256": "2001d131d13bab1103b2783c6b98d80d22dee55ed14233dc38e78a0fbd4670ab",
+      "bytes": 543957
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1740,6 +1745,26 @@
       "path": "modules/vardiya/view.html",
       "sha256": "b5ff2604d683f25daec494fc00ad0060ff2af4fcc1edfb9905e7676066ad18f6",
       "bytes": 2437
+    },
+    {
+      "path": "modules/vardiyaatama/manifest.json",
+      "sha256": "c2207134f2a8f93670d5bc3522840102e2fe65eef6d4f68ce6fab52cf66118c3",
+      "bytes": 809
+    },
+    {
+      "path": "modules/vardiyaatama/module.js",
+      "sha256": "3972167446482c1215a633d4857eac940ffc739dd8d5bfff568a03e188b32f73",
+      "bytes": 9090
+    },
+    {
+      "path": "modules/vardiyaatama/style.css",
+      "sha256": "269a23a6fea8105649caddca1c5a90dd33ae60751ea59dc74ced1960cabfff08",
+      "bytes": 50
+    },
+    {
+      "path": "modules/vardiyaatama/view.html",
+      "sha256": "d5de1afb2f11871cb5836be51f7579226c3c89e18f037eb5273c3bdbdfd42b50",
+      "bytes": 106
     },
     {
       "path": "modules/vardiyatanim/manifest.json",
