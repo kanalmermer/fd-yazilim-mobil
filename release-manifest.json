@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261103-s54-f503bd63e0c0",
+  "release": "fd-modular-20261104-s55-3fdc73e56ed6",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "e0ee218285ae451e123a865e02c818693a5ff919600f5d5fed696044b3f17a70",
-      "bytes": 63064
+      "sha256": "6f8e87cff23172a1c7ef610dec9e08a52bc75088acb5b18cf65d15badf74483e",
+      "bytes": 63665
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,18 +93,23 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d10cc23e27f951921e04a5c3af848053edffd5990b0fd6aa266ed185c6d87e25",
-      "bytes": 7056
+      "sha256": "b4100f99b67fe33509070cf9f7968e7d34e0bfece459062ecfa980730c249181",
+      "bytes": 7239
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "17def39892387e085fe9bf78a114dfc2132ab85b2f781117e30342db7019e7a2",
-      "bytes": 17351
+      "sha256": "bc3cc366f822ef686720d6a4111b417cdbf3fad79109e2426ed26438f4e21d0e",
+      "bytes": 17585
     },
     {
       "path": "core/order-entrypoints.js",
       "sha256": "97b838f81f1f8d5e2ff6e5d4b0f874f305085f67d9211f99a9a0e96022e1c78f",
       "bytes": 6375
+    },
+    {
+      "path": "core/payroll-entrypoints.js",
+      "sha256": "295777c6742b94d286226d64300222efec6a71c146202d490cb8bae307eb2ee3",
+      "bytes": 1877
     },
     {
       "path": "core/permissions.js",
@@ -203,8 +208,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "6213b30f818f2923e811cb0d4b1e3866408f89f889a5c34e51c5a942ea907943",
-      "bytes": 573906
+      "sha256": "a43dd7c71d24190e2233bb2e64357278cc2356b2f055e9ab8a99fc2f7e344274",
+      "bytes": 570914
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -438,8 +443,8 @@
     },
     {
       "path": "legacy/styles/00.css",
-      "sha256": "c9dbc9f3b94823a9db8936169f4c6225bedcabf47575aec0d56f0fba96cc7873",
-      "bytes": 79635
+      "sha256": "81c7cc13b918463f661958da66a67b9bccef6f5161fcd19b1c71078cd37f35ad",
+      "bytes": 79130
     },
     {
       "path": "legacy/styles/01.css",
@@ -1455,6 +1460,26 @@
       "path": "modules/prim/view.html",
       "sha256": "f4a55101980d6c6d9d5ae940f8ae68bd4972318479d116e4f51362d5649a8758",
       "bytes": 2405
+    },
+    {
+      "path": "modules/puantaj/manifest.json",
+      "sha256": "6716a3f0c2d159dde7a8d76f480aeb186a304efec18646f116a53e4a86bb8c4a",
+      "bytes": 800
+    },
+    {
+      "path": "modules/puantaj/module.js",
+      "sha256": "73a3e923e8992c9a637ee748f7e966480e84f369643045442d6eaae442dd2720",
+      "bytes": 7345
+    },
+    {
+      "path": "modules/puantaj/style.css",
+      "sha256": "8a7d2e87ed939021c317dc13bc7637022991e27417a8b2fe096d5d1612932099",
+      "bytes": 505
+    },
+    {
+      "path": "modules/puantaj/view.html",
+      "sha256": "30163a4df1afd4c5285be94df4bd0a6e46a6c67d255547898f98397e449b7e7f",
+      "bytes": 1038
     },
     {
       "path": "modules/saatkarsilastirma/manifest.json",

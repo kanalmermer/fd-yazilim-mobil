@@ -1,0 +1,6 @@
+
+#fdTopluZamModal .fd-zam-donem{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin-bottom:10px;border:1px solid #cbdde6;border-radius:10px;background:#f5fafc}
+#fdTopluZamModal .fd-zam-donem label{font-size:13px;font-weight:600;color:#31576b}
+#fdTopluZamModal .fd-zam-donem input{width:185px;min-height:38px;padding:7px 10px;border:1px solid #b8cedb;border-radius:7px;background:#fff;font-size:14px}
+#fdTopluZamModal .fd-zam-donem small{font-size:12px;line-height:1.5;color:#64748b;flex:1;min-width:180px}
+
