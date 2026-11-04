@@ -1,0 +1,50 @@
+<div id="kkdApp" style="display:none;">
+    <div class="app-header-bar"><div class="workspace-nav" aria-label="Personel işlemleri menüsü"></div></div>
+    <div class="app-layout"><main style="width:100%; padding:22px; max-width:1240px; margin:0 auto;">
+        <div class="card" style="margin-bottom:14px;">
+            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+                <h2>🦺 KKD Takip</h2>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label style="margin:0; font-weight:700;">Ay:</label><input type="month" id="kkdAySec" onchange="kkdAyiDegistir()" style="width:150px; cursor:pointer;">
+                    <label style="margin:0; font-weight:700;">Şube:</label><select id="kkdSubeFiltre" onchange="kkdCizelgesiniHazirla()" style="width:180px;"><option value="">Tüm Şubeler</option></select>
+                    <button class="btn-export btn-excel" onclick="kkdExcelIndir()">📊 Excel</button>
+                    <button class="btn-export btn-pdf" onclick="kkdPdfIndir()">📄 PDF</button>
+                </div>
+            </div>
+            <p style="margin:-2px 0 0; color:#64748b;">Teslim edilen kişisel koruyucu donanımları tarihçesiyle takip edin. Aynı ürün daha önce verildiyse kayıt sırasında uyarı gösterilir.</p>
+        </div>
+        <div class="grid-horizontal" style="grid-template-columns:350px 1fr;">
+            <div class="card">
+                <h2>Yeni KKD Teslimi</h2>
+                <form onsubmit="kkdTeslimKaydet(event)">
+                    <div class="form-group"><label>Teslim Tarihi</label><input type="date" id="kkdTarih" required></div>
+                    <div class="form-group"><label>Personel Seçin (Aktifler)</label><select id="kkdPersonel" required onchange="kkdOncekiTeslimUyarisiGuncelle()"><option value="">-- Önce Personel Seçiniz --</option></select></div>
+                    <div class="form-group"><label>Verilen KKD'ler</label><div id="kkdKalemler"></div><button type="button" class="btn-modern btn-detail-modern" style="margin-top:8px;" onclick="kkdKalemEkle()">＋ Malzeme Ekle</button></div>
+                    <div class="form-group"><label>Not</label><input id="kkdNot" type="text" placeholder="İsteğe bağlı"></div>
+                    <div id="kkdOncekiUyari" style="display:none; margin:0 0 12px; padding:10px; border-radius:8px; background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; font-size:.82rem; font-weight:700;"></div>
+                    <button class="btn-submit" type="submit">🦺 Teslimi Kaydet</button>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header" style="flex-wrap:wrap;gap:8px;"><h2 id="kkdCizelgeBaslik">KKD Teslim Çizelgesi</h2><span id="kkdKayitSayisi" class="badge badge-count">0 Kayıt</span></div>
+                <div class="filter-bar" style="margin:0 0 12px;"><input id="kkdIsimFiltre" type="text" placeholder="🔍 Personel ara..." oninput="kkdCizelgesiniHazirla()"><input id="kkdTurFiltre" type="text" placeholder="KKD türü ara..." oninput="kkdCizelgesiniHazirla()"></div>
+                <div class="table-wrapper"><table id="kkdTablosu"><thead><tr><th>Tarih</th><th>Personel</th><th>KKD Türü</th><th>Adet</th><th>Not</th><th>Önceki Teslim</th><th>İşlem</th></tr></thead><tbody></tbody></table></div>
+            </div>
+        </div>
+    </main></div>
+</div>
+<div id="modalKkdGecmisi" class="modal-overlay">
+    <div class="modal-card" style="max-width:900px;">
+        <div class="modal-header"><h3 id="kkdGecmisBaslik">KKD Teslim Geçmişi</h3><button class="modal-close" onclick="kkdGecmisiniKapat()">✕</button></div>
+        <div class="modal-body">
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+                <button class="btn-export btn-excel" onclick="kkdGecmisExcelIndir()">📊 Excel</button>
+                <button class="btn-export btn-pdf" onclick="kkdGecmisPdfIndir()">📄 PDF</button>
+            </div>
+            <div id="kkdGecmisRaporu">
+                <h3 id="kkdGecmisRaporBaslik" style="text-align:center;margin:0 0 14px;"></h3>
+                <div class="table-wrapper"><table id="kkdGecmisTablosu"><thead><tr><th>Teslim Tarihi</th><th>KKD Türü</th><th>Adet</th><th>Not</th><th>Önceki Teslim</th></tr></thead><tbody></tbody><tfoot></tfoot></table></div>
+            </div>
+        </div>
+    </div>
+</div>

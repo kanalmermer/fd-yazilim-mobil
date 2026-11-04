@@ -1,0 +1,43 @@
+{
+  "name": "Personel Liste Dışa Aktarımı",
+  "roots": [
+    "modalPersonelExport"
+  ],
+  "entrypoints": [
+    "personelExportSecimOzetiniGuncelle",
+    "personelExportAlanSecimiDegisti",
+    "personelExportAlanlariniDegistir",
+    "openPersonelExportModal",
+    "closePersonelExportModal",
+    "exportSelectedPersonelFields",
+    "exportPersonelToPDF",
+    "exportPersonelToExcel"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personelcikti/view.html",
+      "sha256": "79a91c742b81fbc47bb5b4ea39a285cb84ef9226b4990d08651f7721a7d17d69",
+      "bytes": 1338,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelcikti/style.css",
+      "sha256": "fc68e9afb165d18f721bf7ddd14f51051907ee292cdb758c68acc98b6f4618b8",
+      "bytes": 91,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelcikti/module.js",
+      "sha256": "bd771a3658a682d6a7672960aafc6a11c5a0cc60b7a7f658a6a0c9cec075c613",
+      "bytes": 8275,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
