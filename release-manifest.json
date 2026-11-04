@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261104-s55-3fdc73e56ed6",
+  "release": "fd-modular-20261104-s56-a6bae2e58ab8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "6f8e87cff23172a1c7ef610dec9e08a52bc75088acb5b18cf65d15badf74483e",
-      "bytes": 63665
+      "sha256": "e4bac6903224dd6e443f5a6b7f01d70a4f4fc2a62c99bc973efde0bf1b0d5a21",
+      "bytes": 64330
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +93,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "b4100f99b67fe33509070cf9f7968e7d34e0bfece459062ecfa980730c249181",
-      "bytes": 7239
+      "sha256": "d1808aa16ca2c8a38316a0007aaca082d6af16a65d3fd0b5cbf26810a847e9aa",
+      "bytes": 7454
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "bc3cc366f822ef686720d6a4111b417cdbf3fad79109e2426ed26438f4e21d0e",
-      "bytes": 17585
+      "sha256": "cd205a550978dcd319c25087b5805b815436d1218c18b5ea1a7b5ca17d994ef9",
+      "bytes": 17744
     },
     {
       "path": "core/order-entrypoints.js",
@@ -155,6 +155,11 @@
       "path": "core/rental-entrypoints.js",
       "sha256": "65cd5d56bf4c591259321abd8d60735267d7599fa34ad089308bf8b6af715d8c",
       "bytes": 13407
+    },
+    {
+      "path": "core/salary-entrypoints.js",
+      "sha256": "5ebb804f53dd6403aead9000fbe2ee6572317b95338f1331b0ee16711e8c979d",
+      "bytes": 1642
     },
     {
       "path": "core/session.js",
@@ -253,8 +258,8 @@
     },
     {
       "path": "legacy/12-fdTopluDuzeltmelerV132.js",
-      "sha256": "3c9f087bcb7f1a8c24e5003c21b0419e14e726769ebe3b021b72554fb120d388",
-      "bytes": 18707
+      "sha256": "2d9f431b3832f058d56f4b3584bf92a4bf97dfbe9b9086aebcf904feb9060961",
+      "bytes": 11790
     },
     {
       "path": "legacy/13-fdCksPdfAktarimV134.js",
@@ -388,8 +393,8 @@
     },
     {
       "path": "legacy/41-fdTopluZamDonemV249.js",
-      "sha256": "078e234f774337e634c03ae0283a8c723388038613c21fc4c1e0036a71ffc27f",
-      "bytes": 7809
+      "sha256": "38acb0401dbda74a85960dad873ef92c8004f3d1745c2c33cd88e16e0d7c68ae",
+      "bytes": 115
     },
     {
       "path": "legacy/42-fdAracKullanimV222.js",
@@ -503,8 +508,8 @@
     },
     {
       "path": "legacy/styles/15-fdTopluDuzeltmelerV132Stil.css",
-      "sha256": "fbe4e21d987af57dc0014594c57d5054d5bfdc7100024cc65a1b3b971e1caca3",
-      "bytes": 3608
+      "sha256": "7c394563fc8c11b6cb7f324e165ebb45471e8fa819b9e870878188427a7eec78",
+      "bytes": 2525
     },
     {
       "path": "legacy/styles/16-fdCksPdfAktarimV134Stil.css",
@@ -613,8 +618,8 @@
     },
     {
       "path": "legacy/styles/39-fdTopluZamDonemStilV249.css",
-      "sha256": "958654af4423af79f868c25f72f10480bf7c01116a23298b7f8217f9d50f64ec",
-      "bytes": 536
+      "sha256": "9e69e88f41a25ffb61e68ee3e435369e3229c3e1e7c28c645a4ff006799d5fd1",
+      "bytes": 75
     },
     {
       "path": "legacy/styles/40-fdAracTasarimV222.css",
@@ -1620,6 +1625,26 @@
       "path": "modules/toplusaat/view.html",
       "sha256": "a38ba4c3f41b84154decb5c584880f59f6d3eeee1ca947109527c6c45f6b090f",
       "bytes": 3149
+    },
+    {
+      "path": "modules/ucretguncelleme/manifest.json",
+      "sha256": "55d3d71ed21d396bd9f0d159309ec6d0a98db12a429a65974d72a6dc1ecdf0f5",
+      "bytes": 861
+    },
+    {
+      "path": "modules/ucretguncelleme/module.js",
+      "sha256": "df852d2d280dc8eecb8096949e32933d7d94eb0f135dbaa0cae9ac4d292c14c5",
+      "bytes": 19617
+    },
+    {
+      "path": "modules/ucretguncelleme/style.css",
+      "sha256": "4cee428e7e8d5faa93dd21438c4d15852929bbb1097c59ff9be7cbd482fb0c0e",
+      "bytes": 1655
+    },
+    {
+      "path": "modules/ucretguncelleme/view.html",
+      "sha256": "ef3a7912103420f19d06dd46e1fc0351e472670361fff9ff448fa62a8e069221",
+      "bytes": 1926
     },
     {
       "path": "modules/vardiya/manifest.json",
