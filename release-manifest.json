@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261104-s57-eccb6055ae38",
+  "release": "fd-modular-20261104-s58-39cb2a43f5a5",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -17,6 +17,11 @@
       "bytes": 1834
     },
     {
+      "path": "core/attendance-import-entrypoints.js",
+      "sha256": "b73fba9caaebd05e7a03140e22d67ccc7bc1803d23a33aeb764b84823b5d364c",
+      "bytes": 1868
+    },
+    {
       "path": "core/bonus-entrypoints.js",
       "sha256": "fc68595e9292a755e132c9480d55647398af11b6e358af8326e86341bc8501b8",
       "bytes": 1532
@@ -28,8 +33,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "a142248d4f0c8ce36fffbca3eb7337fa553ab1d47a3b5b0923017e4fe4a7408b",
-      "bytes": 64915
+      "sha256": "77df277878085f12b5e674b06b7d85461a1b288c06ac49222fbe6dd7d4ac6650",
+      "bytes": 65515
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,13 +98,13 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "0ae869f0d429fbaa8831d5d47e07b7c2efc2fb98fed17a13ec219d1a8f485656",
-      "bytes": 7561
+      "sha256": "cc3f9597beec31ed0f642d1a699e841da0119d566cc90db5655d5f8da86b9b92",
+      "bytes": 7678
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "6083a6aea058a915dd81b3485df6fa03b6c69a77fba1eee61b6094a855a36e4d",
-      "bytes": 17872
+      "sha256": "c9e2ff340b6b1d01e0282e9b89325833eaad7c7cb26a3c3ce9845254b02466eb",
+      "bytes": 18010
     },
     {
       "path": "core/order-entrypoints.js",
@@ -218,8 +223,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "607496f0e960cc79da0d4e68cdd3725317fb627d4f0b0554279ea1f1cebd6a64",
-      "bytes": 566407
+      "sha256": "361c1ba63a36762f34761833be079c01cadb7e7af7dac496b2bdbfdc84bae722",
+      "bytes": 560359
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1050,6 +1055,26 @@
       "path": "modules/gunlukrapor/view.html",
       "sha256": "2a5b001f36e61a037c6111d30a4c6f121654a306c83d95a2e82d1cde72c6cef1",
       "bytes": 2680
+    },
+    {
+      "path": "modules/hareketaktar/manifest.json",
+      "sha256": "6e0c9debe95bb21b4f1998b715fee31fb523eecf3d022a0cff98896ab8745628",
+      "bytes": 786
+    },
+    {
+      "path": "modules/hareketaktar/module.js",
+      "sha256": "28bd7fb381fad4411c9df4b1136cc14efb475f135dddb3c2dc2f4b9b278e48d6",
+      "bytes": 8651
+    },
+    {
+      "path": "modules/hareketaktar/style.css",
+      "sha256": "5ae1c1a063ca8ba42e8dceabb954b03dd90134fdf3557173a44ec940331902b6",
+      "bytes": 41
+    },
+    {
+      "path": "modules/hareketaktar/view.html",
+      "sha256": "b0d28a939dbfc3bc61d5ce16169ee2c1f40b00ffb72fead8fafb61a99b14398b",
+      "bytes": 77
     },
     {
       "path": "modules/icra/manifest.json",

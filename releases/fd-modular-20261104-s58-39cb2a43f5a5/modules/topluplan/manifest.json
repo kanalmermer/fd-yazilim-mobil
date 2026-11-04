@@ -1,0 +1,40 @@
+{
+  "name": "Toplu Vardiya Planlama",
+  "roots": [
+    "modalMagicpassTopluPlan"
+  ],
+  "entrypoints": [
+    "magicpassTopluPlanlamaAc",
+    "magicpassTopluPlanlamaKapat",
+    "magicpassTopluPersonelleriCiz",
+    "magicpassTopluSecimSayisiniGuncelle",
+    "magicpassTopluTumunuSec"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/topluplan/view.html",
+      "sha256": "44655e7d4cc1da3ad6fb609880ca19b4069edf56f896d2171c156f060bdc2b7b",
+      "bytes": 2755,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/topluplan/style.css",
+      "sha256": "df0e1b3c07d3055ae346d904e98182a28faeadd76daa6f9e61ee4656c26ba05d",
+      "bytes": 75,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/topluplan/module.js",
+      "sha256": "4169d103b5b2171e6d845c26b261c5b3476534780420b1ce0bd0bb4a1b82df85",
+      "bytes": 5400,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
