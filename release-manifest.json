@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261104-s56-a6bae2e58ab8",
+  "release": "fd-modular-20261104-s57-eccb6055ae38",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -28,8 +28,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "e4bac6903224dd6e443f5a6b7f01d70a4f4fc2a62c99bc973efde0bf1b0d5a21",
-      "bytes": 64330
+      "sha256": "a142248d4f0c8ce36fffbca3eb7337fa553ab1d47a3b5b0923017e4fe4a7408b",
+      "bytes": 64915
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -93,18 +93,23 @@
     },
     {
       "path": "core/module-integration.js",
-      "sha256": "d1808aa16ca2c8a38316a0007aaca082d6af16a65d3fd0b5cbf26810a847e9aa",
-      "bytes": 7454
+      "sha256": "0ae869f0d429fbaa8831d5d47e07b7c2efc2fb98fed17a13ec219d1a8f485656",
+      "bytes": 7561
     },
     {
       "path": "core/module-loader.js",
-      "sha256": "cd205a550978dcd319c25087b5805b815436d1218c18b5ea1a7b5ca17d994ef9",
-      "bytes": 17744
+      "sha256": "6083a6aea058a915dd81b3485df6fa03b6c69a77fba1eee61b6094a855a36e4d",
+      "bytes": 17872
     },
     {
       "path": "core/order-entrypoints.js",
       "sha256": "97b838f81f1f8d5e2ff6e5d4b0f874f305085f67d9211f99a9a0e96022e1c78f",
       "bytes": 6375
+    },
+    {
+      "path": "core/overtime-import-entrypoints.js",
+      "sha256": "c497e850eb84482ebe2bcb18c0c003dce08d9404c8a3ab2268c6d67dae607084",
+      "bytes": 2163
     },
     {
       "path": "core/payroll-entrypoints.js",
@@ -213,8 +218,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "a43dd7c71d24190e2233bb2e64357278cc2356b2f055e9ab8a99fc2f7e344274",
-      "bytes": 570914
+      "sha256": "607496f0e960cc79da0d4e68cdd3725317fb627d4f0b0554279ea1f1cebd6a64",
+      "bytes": 566407
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -1265,6 +1270,26 @@
       "path": "modules/manuelduzeltme/view.html",
       "sha256": "5a6135d03790263f05b38d07aed032ca097f5939eea1f62f649d25a73641973a",
       "bytes": 1777
+    },
+    {
+      "path": "modules/mesaiaktar/manifest.json",
+      "sha256": "047fb3f039f580c7725fa9cce2f0f253a8bc8af14122f1089d8ba066da5f2ae1",
+      "bytes": 773
+    },
+    {
+      "path": "modules/mesaiaktar/module.js",
+      "sha256": "1695dafacc67a409054d1fd1c41998d2065790ba2df180160d59dacfa7e31ca3",
+      "bytes": 6607
+    },
+    {
+      "path": "modules/mesaiaktar/style.css",
+      "sha256": "f1ebb068f46e4c9de297ee6d561c2dfa321e4d8a7fa44a0733c3f9b407dd8b8f",
+      "bytes": 67
+    },
+    {
+      "path": "modules/mesaiaktar/view.html",
+      "sha256": "ae6aa0a0bb20e500234f7d0c442a68e826fbedc68c8fae35d5ddbbafa8061917",
+      "bytes": 77
     },
     {
       "path": "modules/pdfonizleme/manifest.json",
