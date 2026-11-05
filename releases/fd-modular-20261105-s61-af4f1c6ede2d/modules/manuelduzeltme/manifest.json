@@ -1,0 +1,36 @@
+{
+  "name": "Giriş-Çıkış Düzeltme",
+  "roots": [
+    "modalMagicpassDuzeltme"
+  ],
+  "entrypoints": [
+    "fdManuelDuzeltmePenceresiniKapat"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/manuelduzeltme/view.html",
+      "sha256": "5a6135d03790263f05b38d07aed032ca097f5939eea1f62f649d25a73641973a",
+      "bytes": 1777,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/manuelduzeltme/style.css",
+      "sha256": "221e5e8c8e304be4eb9fb80759bd25c2c3710c3bc848045d1f05b614b6a9a33a",
+      "bytes": 72,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/manuelduzeltme/module.js",
+      "sha256": "df4ad726595698b8141b7272cc8d2c46db18f8e8270ce18adef34055c9bed9bf",
+      "bytes": 3582,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

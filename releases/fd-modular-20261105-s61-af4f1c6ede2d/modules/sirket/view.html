@@ -1,0 +1,75 @@
+<div id="sirketApp" style="display:none;">
+    <div class="app-header-bar">
+        <div class="workspace-nav" aria-label="Şirket yönetimi menüsü">
+            <button type="button" class="active" onclick="switchSirketTab('sirket-tab-genel', this)">🏢 Şirket Bilgileri</button>
+            <button type="button" onclick="switchSirketTab('sirket-tab-subeler', this)">🏬 Şube Kayıtları</button>
+        </div>
+    </div>
+    <div class="app-layout"><main style="width:100%;">
+        <section id="sirket-tab-genel" class="tab-content active">
+            <div class="company-layout">
+                <div class="card">
+                    <h3 class="company-form-title">Şirket Kartı</h3>
+                    <form id="sirketForm">
+                        <input type="hidden" id="sirketEditId">
+                        <div class="form-group"><label>Şirket Ünvanı</label><input id="sirketUnvan" required placeholder="Örn. Kanal Mermer San. ve Tic. Ltd. Şti."></div>
+                        <div class="form-row"><div class="form-group"><label>Kısa Ad</label><input id="sirketKisaAd" placeholder="Kanal Mermer"></div><div class="form-group"><label>Vergi Dairesi</label><input id="sirketVergiDairesi"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Vergi No</label><input id="sirketVergiNo" inputmode="numeric"></div><div class="form-group"><label>MERSİS No</label><input id="sirketMersisNo"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Ticaret Sicil No</label><input id="sirketTicaretSicilNo"></div><div class="form-group"><label>Ödenmiş Sermaye (TL)</label><input id="sirketSermaye" type="text" inputmode="decimal" data-case-preserve="true" placeholder="0,00" oninput="paraGirisiVirgulluFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)"></div></div>
+                        <div class="form-group"><label>Şirket Ortakları</label><textarea id="sirketOrtaklar" rows="2" placeholder="Ad Soyad – pay oranı bilgilerini yazın"></textarea></div>
+                        <div class="form-row"><div class="form-group"><label>Telefon</label><input id="sirketTelefon" type="tel"></div><div class="form-group"><label>E-posta</label><input id="sirketEposta" type="email"></div></div>
+                        <div class="form-group"><label>Adres</label><textarea id="sirketAdres" rows="3"></textarea></div>
+                        <div class="form-row"><div class="form-group"><label>web sitesi</label><input id="sirketWeb" type="url" data-case-preserve="true" autocapitalize="none" spellcheck="false" placeholder="https://"></div><div class="form-group"><label>logo bağlantısı</label><input id="sirketLogoUrl" type="url" data-case-preserve="true" autocapitalize="none" spellcheck="false" placeholder="https://..."></div></div>
+                        <div class="form-group"><label>Diğer Bilgiler</label><textarea id="sirketDigerBilgiler" rows="3" placeholder="İleride gerekli olabilecek ek şirket bilgileri"></textarea></div>
+                        <div class="form-group"><label>Notlar</label><textarea id="sirketNotlar" rows="3" placeholder="İç notlar ve açıklamalar"></textarea></div>
+                        <button class="btn-portal" type="submit">Şirket Bilgilerini Kaydet</button>
+                    </form>
+                </div>
+                <div class="card"><h3 class="company-form-title">Kayıtlı Şirketler</h3><div id="sirketListesi"></div></div>
+            </div>
+        </section>
+        <section id="sirket-tab-subeler" class="tab-content">
+            <div class="company-summary"><div class="company-summary-card"><span>Kayıtlı şirket</span><strong id="sirketSayisi">0</strong></div><div class="company-summary-card"><span>Aktif şube</span><strong id="subeSayisiYonetim">0</strong></div></div>
+            <div class="company-layout">
+                <div class="card">
+                    <h3 class="company-form-title">Şube / Şantiye Kartı</h3>
+                    <form id="subeForm">
+                        <input type="hidden" id="subeEditId">
+                        <div class="form-row"><div class="form-group"><label>Bağlı Şirket</label><select id="subeSirketId" required></select></div><div class="form-group"><label>Şube / Şantiye Adı</label><input id="subeAd" required placeholder="Örn. Fethiye Ocağı"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Şube Kodu</label><input id="subeKod" placeholder="FET-01"></div><div class="form-group"><label>Durum</label><select id="subeDurum"><option>Aktif</option><option>Pasif</option></select></div></div>
+                        <div class="form-row"><div class="form-group"><label>İl / İlçe</label><input id="subeKonum" placeholder="Muğla / Fethiye"></div><div class="form-group"><label>Telefon</label><input id="subeTelefon" type="tel"></div></div>
+                        <div class="form-row"><div class="form-group"><label>SGK İşyeri Sicil No</label><input id="subeSgkSicilNo"></div><div class="form-group"><label>Şirket Temsilcisi</label><input id="subeTemsilci" placeholder="Ad Soyad"></div></div>
+                        <div class="form-group"><label>Şube Sorumlusu</label><input id="subeSorumlu" placeholder="Ad Soyad"></div>
+                        <div class="form-group"><label>Adres</label><textarea id="subeAdres" rows="3"></textarea></div>
+                        <label style="display:flex;align-items:center;gap:8px;width:max-content;margin:4px 0 10px;font-weight:800;color:#334155;cursor:pointer;"><input id="subeSifreleriGoster" type="checkbox" style="width:auto;" onchange="subeSifreGorunumunuDegistir(this.checked)"> 👁️ Şifreleri Göster</label>
+                        <details class="profile-section">
+                            <summary>🏢 İŞKUR Bilgileri</summary>
+                            <div>
+                                <div class="form-row"><div class="form-group"><label>İşyeri Numarası</label><input id="subeIskurIsyeriNo" autocomplete="off"></div><div class="form-group"><label>İşveren T.C. No</label><input id="subeIskurIsverenTc" inputmode="numeric" maxlength="11" pattern="\d{11}" autocomplete="off"></div></div>
+                                <div class="form-group"><label>Şifre</label><input id="subeIskurSifre" type="password" autocomplete="new-password"></div>
+                            </div>
+                        </details>
+                        <details class="profile-section">
+                            <summary>🔐 SGK Bilgileri</summary>
+                            <div>
+                                <div class="form-row"><div class="form-group"><label>Kullanıcı Kodu</label><input id="subeSgkKullaniciKodu" autocomplete="off"></div><div class="form-group"><label aria-hidden="true">&nbsp;</label><input id="subeSgkKullaniciEk" aria-label="SGK kullanıcı kodu ikinci alan" autocomplete="off"></div></div>
+                                <div class="form-row"><div class="form-group"><label>Sistem Şifresi</label><input id="subeSgkSistemSifresi" type="password" autocomplete="new-password"></div><div class="form-group"><label>İşyeri Şifresi</label><input id="subeSgkIsyeriSifresi" type="password" autocomplete="new-password"></div></div>
+                            </div>
+                        </details>
+                        <div class="form-group"><label>Diğer Bilgiler</label><textarea id="subeDigerBilgiler" rows="3" placeholder="İleride gerekli olabilecek ek şube bilgileri"></textarea></div>
+                        <div class="form-group"><label>Notlar</label><textarea id="subeNotlar" rows="3" placeholder="İç notlar ve açıklamalar"></textarea></div>
+                        <details class="profile-section" open>
+                            <summary>📄 Personele Verilecek Word Belgeleri</summary>
+                            <div>
+                                <p style="margin:2px 0 12px;color:#64748b;font-size:.76rem;line-height:1.5;">Her şube için ayrı DOCX yükleyin. Mevcut dosyayı düzenlemek için indirin, Word'de değiştirin ve buradan yenisiyle değiştirin. Fazla mesai ve vardiyalı çalışma belgelerindeki kırmızı alanlar personel bilgileriyle otomatik doldurulur.</p>
+                                <div id="subeBelgeAlanlari" class="branch-document-grid"></div>
+                            </div>
+                        </details>
+                        <button class="btn-portal" type="submit">Şubeyi Kaydet</button>
+                    </form>
+                </div>
+                <div class="card"><h3 class="company-form-title">Kayıtlı Şubeler</h3><div id="subeListesi"></div></div>
+            </div>
+        </section>
+    </main></div>
+</div>
