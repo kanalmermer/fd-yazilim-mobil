@@ -1,0 +1,6 @@
+.fd-attendance-load{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;margin:0 0 14px;border:1px solid #cbdde8;border-radius:8px;background:#f3f8fb;color:#35566d;font-size:13px;line-height:1.5}
+.fd-attendance-load[hidden]{display:none!important}
+.fd-attendance-load[data-state="error"]{border-color:#e9c5b8;background:#fff7f3;color:#8c4231}
+.fd-attendance-load button{flex:0 0 auto;border:1px solid currentColor;border-radius:6px;background:#fff;color:inherit;padding:7px 12px;cursor:pointer;font:inherit;line-height:1.3}
+#magicpassApp.fd-attendance-cold .magicpass-rapor-layout,#magicpassApp.fd-attendance-cold .magicpass-gunluk-kart{visibility:hidden!important;pointer-events:none}
+@media(max-width:600px){.fd-attendance-load{align-items:flex-start;flex-wrap:wrap;padding:11px 12px;font-size:12px}.fd-attendance-load button{min-height:38px}}

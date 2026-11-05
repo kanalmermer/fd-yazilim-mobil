@@ -1,0 +1,10 @@
+#modalAdmin .modal-card{width:min(1480px,97vw)!important;max-width:none!important;max-height:94vh!important}
+#modalAdmin .modal-body{padding:18px 22px;overflow:auto}
+#modalAdmin .table-wrapper{overflow-x:hidden}
+#modalAdmin #adminUserTable{width:100%;table-layout:fixed}
+#modalAdmin #adminUserTable th:nth-child(1){width:42px}#modalAdmin #adminUserTable th:nth-child(2){width:18%}#modalAdmin #adminUserTable th:nth-child(3){width:14%}#modalAdmin #adminUserTable th:nth-child(4){width:15%}#modalAdmin #adminUserTable th:nth-child(5){width:27%}#modalAdmin #adminUserTable th:nth-child(6){width:22%}
+#modalAdmin #adminUserTable td{white-space:normal;word-break:break-word}#modalAdmin #adminUserTable .action-btns{display:flex;flex-wrap:wrap;gap:5px}
+
+@media(max-width:1100px){#modalAdmin .table-wrapper{overflow-x:auto}#modalAdmin #adminUserTable{min-width:980px}}
+#modalAdmin [hidden]{display:none!important}#modalAdmin .kullanici-panel-araclari{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 15px}#modalAdmin .kullanici-panel-araclari p{flex:1 1 350px;margin:0;line-height:1.5;color:#475569}#modalAdmin select:disabled{color:#475569;background:#f1f5f9}#modalAdmin .kullanici-sifre-alani{display:grid;grid-template-columns:minmax(110px,1fr) auto auto;gap:5px;align-items:center}#modalAdmin .kullanici-sifre-alani input{min-width:0}#modalAdmin td>small{display:block;margin-top:4px;color:#64748b}
+
