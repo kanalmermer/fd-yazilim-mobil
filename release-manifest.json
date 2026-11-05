@@ -1,10 +1,20 @@
 {
-  "release": "fd-modular-20261105-s66-1e8815ec1879",
+  "release": "fd-modular-20261105-s67-e806ce1926dd",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
       "sha256": "f8f9d5415714da0d13f9e3c7cf37404c42f3031853c6f893ae633f41adc82b95",
       "bytes": 4634
+    },
+    {
+      "path": "core/application-bootstrap.js",
+      "sha256": "85ff5f9fc2dfbad77c60025cd20b2ef5bf74aa03f31169171c0fdbaa2dd5791a",
+      "bytes": 234636
+    },
+    {
+      "path": "core/application-runtime.js",
+      "sha256": "bf3d62f7c7f4dd9764df350235702e7c73cbdb1ba6c21657292a8cac1907ecc0",
+      "bytes": 15908
     },
     {
       "path": "core/asset-people-entrypoints.js",
@@ -43,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "88d150a2a034014976c9b7b1c130a14e7f0402bddeb25f5274ba7550d4acea83",
+      "sha256": "27e91604f4194bf2f4c356d9ae1bad932211c0b6e05f9197d5a9d02b5b39eb94",
       "bytes": 66781
     },
     {
@@ -238,8 +248,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "cdf61a26fb00c5a001b7336a7ef830fb1004ebcc947903b6194bfda88e80c1c5",
-      "bytes": 248849
+      "sha256": "f736b0559f56f707e277c131fb5cb627a68fda84ded37529d0b70a837507a596",
+      "bytes": 162
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",

@@ -1,0 +1,6 @@
+#fdVardiyaKayitDurumu{padding:10px 12px;margin-top:12px;border-radius:8px;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;line-height:1.5}
+#fdVardiyaKayitDurumu[hidden],#fdVardiyaKayitDurumu[data-state=saved]{display:none}
+#fdVardiyaKayitDurumu[data-state=saving]{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+#fdVardiyaKayitDurumu[data-state=saved]{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+#fdVardiyaKayitDurumu[data-state=error]{background:#fff1f2;color:#9f1239;border-color:#fecdd3}
+#fdVardiyaKayitDurumu button{font:inherit;background:white;color:#9f1239;border:1px solid #fda4af;border-radius:7px;padding:7px 10px;cursor:pointer}
