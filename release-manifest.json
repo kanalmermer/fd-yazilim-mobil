@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261105-s64-6d3be97479b4",
+  "release": "fd-modular-20261105-s65-eea031c7f47d",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -43,7 +43,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "a553eb7be593882ed29debef962b2f89583bd7bea880374efdf615ef4e7814f7",
+      "sha256": "d4a8cc21e29eccd26774c8561c4fa22f7719a18f7f4dfdebe4cc9f43ad2e2746",
       "bytes": 66781
     },
     {
@@ -238,8 +238,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "b5839425ba946fbf45e26d5be8c79509ca8d3f4a0f8ed818560c44002408292b",
-      "bytes": 272840
+      "sha256": "1f0704360b93c2e9b41d4e0a1ce2054e5132cb8a52c54056e0028fd66c139b97",
+      "bytes": 257441
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -2015,6 +2015,11 @@
       "path": "shared/list-pagination.js",
       "sha256": "a6854d77af02ce026a6febc95a68720e9992b2eee85f0ecd94a3f90bcbe5a4c1",
       "bytes": 7892
+    },
+    {
+      "path": "shared/output-runtime.js",
+      "sha256": "bf3a39b7cc946e68984a38b902c5e96d5d028fa5c7577f0788ab36c79c85de04",
+      "bytes": 16719
     },
     {
       "path": "shared/page-layout.css",

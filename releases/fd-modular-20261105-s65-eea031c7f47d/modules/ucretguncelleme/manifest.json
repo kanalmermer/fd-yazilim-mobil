@@ -1,0 +1,35 @@
+{
+  "name": "Toplu Ücret Güncelleme ve Ücret Geçmişi",
+  "roots": [
+    "fdTopluZamModal",
+    "fdUcretGecmisiModal"
+  ],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/ucretguncelleme/view.html",
+      "sha256": "ef3a7912103420f19d06dd46e1fc0351e472670361fff9ff448fa62a8e069221",
+      "bytes": 1926,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/ucretguncelleme/style.css",
+      "sha256": "4cee428e7e8d5faa93dd21438c4d15852929bbb1097c59ff9be7cbd482fb0c0e",
+      "bytes": 1655,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/ucretguncelleme/module.js",
+      "sha256": "df852d2d280dc8eecb8096949e32933d7d94eb0f135dbaa0cae9ac4d292c14c5",
+      "bytes": 19617,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

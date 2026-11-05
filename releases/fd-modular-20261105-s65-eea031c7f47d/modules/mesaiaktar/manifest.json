@@ -1,0 +1,32 @@
+{
+  "name": "Excel’den Mesai Aktarımı",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/mesaiaktar/view.html",
+      "sha256": "ae6aa0a0bb20e500234f7d0c442a68e826fbedc68c8fae35d5ddbbafa8061917",
+      "bytes": 77,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/mesaiaktar/style.css",
+      "sha256": "f1ebb068f46e4c9de297ee6d561c2dfa321e4d8a7fa44a0733c3f9b407dd8b8f",
+      "bytes": 67,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/mesaiaktar/module.js",
+      "sha256": "1695dafacc67a409054d1fd1c41998d2065790ba2df180160d59dacfa7e31ca3",
+      "bytes": 6607,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
