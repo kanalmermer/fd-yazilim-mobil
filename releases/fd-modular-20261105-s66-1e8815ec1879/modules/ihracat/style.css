@@ -1,0 +1,40 @@
+    #ihracatFirmaListeEkrani { max-width:1280px; margin:0 auto; }
+    #ihracatFirmaListeEkrani > .card { overflow:hidden; }
+    #ihracatFirmaTablosu { width:100%; min-width:760px; table-layout:fixed; }
+    #ihracatFirmaTablosu th:nth-child(1),#ihracatFirmaTablosu td:nth-child(1){width:46%;padding-left:18px;}
+    #ihracatFirmaTablosu th:nth-child(2),#ihracatFirmaTablosu td:nth-child(2){width:14%;text-align:center;}
+    #ihracatFirmaTablosu th:nth-child(3),#ihracatFirmaTablosu td:nth-child(3){width:16%;text-align:center;}
+    #ihracatFirmaTablosu th:nth-child(4),#ihracatFirmaTablosu td:nth-child(4){width:24%;text-align:right;padding-right:18px;}
+    #ihracatFirmaTablosu td:nth-child(4) .action-btns { justify-content:flex-end;flex-wrap:nowrap; }
+
+
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti{box-shadow:0 3px 12px rgba(15,23,42,.06)}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti .table-wrapper{margin:0;overflow:auto}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti table{min-width:940px;table-layout:fixed}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th{padding:7px 6px;font-size:11px;white-space:nowrap}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td{padding:4px}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th:first-child,
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td:first-child{width:42px}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="aciklama"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="aciklama"]{width:300px}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="kalinlik"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="kalinlik"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="en"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="en"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="boy"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="boy"]{width:82px}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="adet"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="adet"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti th[data-alan="miktar"],
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td[data-alan-hucre="miktar"]{width:92px}
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td input,
+            #ihracatYuklemeFormEkrani .ihracat-ceki-karti td select{min-height:33px;padding:5px 7px;font-size:12px}
+            #ihracatYuklemeFormEkrani .ceki-toplam-satiri td{height:34px;background:#f1f5f9;border-top:2px solid #94a3b8;color:#0f172a;font-weight:800;text-align:right;padding:7px}
+            #ihracatYuklemeFormEkrani .ceki-nakliyeci{padding:12px 14px;background:#f8fafc;border-top:1px solid #dbe5ef}
+            #ihracatYuklemeFormEkrani .ceki-nakliyeci h3{margin:0 0 10px;font-size:14px}
+            #ihracatYuklemeFormEkrani .ceki-nakliyeci .profile-layout{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+            #ihracatYuklemeFormEkrani .ceki-nakliyeci .form-group{margin:0}
+            #ihracatYuklemeFormEkrani .ceki-nakliyeci label{font-size:11px}
+            @media(max-width:900px){#ihracatYuklemeFormEkrani .ceki-nakliyeci .profile-layout{grid-template-columns:repeat(2,minmax(0,1fr))}}
+            @media(max-width:900px){#modalIhracatCekiKopyala .ihracat-ceki-kopya-yerlesim{grid-template-columns:1fr!important}}
+        

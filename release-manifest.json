@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261105-s65-eea031c7f47d",
+  "release": "fd-modular-20261105-s66-1e8815ec1879",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -43,7 +43,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d4a8cc21e29eccd26774c8561c4fa22f7719a18f7f4dfdebe4cc9f43ad2e2746",
+      "sha256": "88d150a2a034014976c9b7b1c130a14e7f0402bddeb25f5274ba7550d4acea83",
       "bytes": 66781
     },
     {
@@ -238,8 +238,8 @@
     },
     {
       "path": "legacy/03-legacy-3.js",
-      "sha256": "1f0704360b93c2e9b41d4e0a1ce2054e5132cb8a52c54056e0028fd66c139b97",
-      "bytes": 257441
+      "sha256": "cdf61a26fb00c5a001b7336a7ef830fb1004ebcc947903b6194bfda88e80c1c5",
+      "bytes": 248849
     },
     {
       "path": "legacy/04-tapuTakipScripti.js",
@@ -2017,6 +2017,11 @@
       "bytes": 7892
     },
     {
+      "path": "shared/notification-runtime.js",
+      "sha256": "2188b5d01847b7bc95cba4bec26273c379f09d62eca55bb15feb6e57aacfc637",
+      "bytes": 12533
+    },
+    {
       "path": "shared/output-runtime.js",
       "sha256": "bf3a39b7cc946e68984a38b902c5e96d5d028fa5c7577f0788ab36c79c85de04",
       "bytes": 16719
@@ -2118,8 +2123,8 @@
     },
     {
       "path": "shared/utilities.js",
-      "sha256": "438e399322da154dacf9ebf13f71937160f2fe835514761c11f20a466cf799c1",
-      "bytes": 6349
+      "sha256": "19f791c1507b17a714c012ea0e84651ce72afb5d69d9223c604913ded92547ed",
+      "bytes": 3407
     },
     {
       "path": "shared/vehicle-data.js",
