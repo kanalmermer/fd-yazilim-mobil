@@ -1,0 +1,26 @@
+<div id="vardiyaApp" style="display:none;">
+    <div class="app-header-bar"><div class="workspace-nav" aria-label="Personel işlemleri menüsü"></div></div>
+    <div class="app-layout"><main style="width:100%; padding:22px; max-width:1380px; margin:0 auto;">
+        <div class="card" style="margin-bottom:14px;">
+            <div style="margin-bottom:13px;"><h2>🕒 Haftalık Personel Vardiya Listesi</h2><p style="margin:5px 0 0;color:#64748b;">İsim ve görev hücrelerini ayrı ayrı sürükleyin. Telefonda aynı türde iki hücreye sırayla dokunun. Başlık ve görevleri sağ tıklayarak düzenleyin.</p></div>
+            <div class="vardiya-filtreler">
+                <div class="vardiya-filtre-alan"><label>ŞUBE</label><select id="vardiyaSube" onchange="vardiyaSecimiDegisti()"><option value="">Şube seçin</option></select></div>
+                <div class="vardiya-filtre-alan"><label>HAFTA İÇİNDEN BİR TARİH SEÇİN</label><input id="vardiyaHafta" type="date" onchange="vardiyaSecimiDegisti()"></div>
+                <div class="vardiya-filtre-aksiyon">
+                    <button class="btn-export btn-excel" onclick="vardiyaExcelAl()">📊 Excel</button>
+                    <button class="btn-export btn-pdf" onclick="vardiyaPdfAl()">📄 PDF</button>
+                    <button class="btn-export" style="background:#0284c7;color:#fff;" onclick="vardiyaGoruntusuAl()">📸 Görüntü Al</button>
+                </div>
+            </div>
+        </div>
+        <div id="fdVardiyaKayitDurumu" hidden role="status" aria-live="polite"><span></span><button type="button" hidden onclick="fdVardiyaGuncelListeyiYukle()">Güncel listeyi yükle</button></div>
+        <div id="vardiyaCiktiAlani" class="card">
+            <div class="vardiya-print-title"><h2 id="vardiyaAnaBaslik" oncontextmenu="vardiyaBaslikDuzenle(event,'anaBaslik')">PERSONEL VARDİYA LİSTESİ</h2><strong id="vardiyaTarihBaslik">-</strong></div>
+            <div id="vardiyaBoard" class="vardiya-board"></div>
+            <div class="vardiya-aciklamalar">
+                <div class="vardiya-aciklama-baslik">AÇIKLAMALAR</div>
+                <div id="vardiyaNotlar" contenteditable="true" data-case-preserve="true" oninput="vardiyaKaydiniGecikmeliYap()" data-placeholder="Liste altında gösterilecek açıklamaları buraya yazın..."></div>
+            </div>
+        </div>    </main></div>
+</div>
+<div id="vardiyaBaslikVardiyaMenu"></div>

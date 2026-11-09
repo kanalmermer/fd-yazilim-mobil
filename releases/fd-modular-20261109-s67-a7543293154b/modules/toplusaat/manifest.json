@@ -1,0 +1,45 @@
+{
+  "name": "Giriş–Çıkış Toplu Saat Doldurma",
+  "roots": [
+    "modalMagicpassTopluSaat"
+  ],
+  "entrypoints": [
+    "magicpassTopluSaatAktifPersonelleri",
+    "magicpassTopluSaatDoldurmaAc",
+    "magicpassTopluSaatPersonelleriniCiz",
+    "magicpassTopluSaatTumunuSec",
+    "magicpassTopluSaatSecimOzetiniGuncelle",
+    "magicpassTopluSaatVardiyaDegisti",
+    "magicpassTopluSaatKaydet",
+    "fdTopluSaatKapat"
+  ],
+  "writeOperations": [
+    "magicpassTopluSaatKaydet"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/toplusaat/view.html",
+      "sha256": "a38ba4c3f41b84154decb5c584880f59f6d3eeee1ca947109527c6c45f6b090f",
+      "bytes": 3149,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/toplusaat/style.css",
+      "sha256": "3842e4dd95396d326b850d681122bbf051d6c5ba14806a85a7ac62ea90c6f3c5",
+      "bytes": 2051,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/toplusaat/module.js",
+      "sha256": "0fa2a3cc4eb670b850f894fbc260931c1587c568f8467fb05c1dcfde66fa8f87",
+      "bytes": 13979,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
