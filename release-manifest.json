@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261109-s67-2bc3a08fe6ad",
+  "release": "fd-modular-20261109-s67-83aae4c3828a",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d95e49b6b885fbbbaffe04872c0887204a63e908fea1b26803be62c6275a5a93",
+      "sha256": "3d2b8b6e6d2d95492a3c6fe5c6fcbdf12d18711785ec0a8359e85c1648bcba9c",
       "bytes": 67387
     },
     {
@@ -2018,8 +2018,8 @@
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "55afbcc5c58e6e7ae5a11b2432a810078638c6d5daee6ec58b2edc7806aa7996",
-      "bytes": 29044
+      "sha256": "60dcda1c873e02d5e76cdc6dfd9935398be4b6d986cb13525ee54079a6750e8f",
+      "bytes": 36558
     },
     {
       "path": "shared/enforcement-data.js",

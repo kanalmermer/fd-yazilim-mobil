@@ -1,0 +1,27 @@
+function tapuMalikStili(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuMalikStili',args,this)}
+function openTapuTakipApp(){return FDModules.open('tapu',Array.from(arguments),this)}
+function tapuYetkiGorunumunuAyarla(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuYetkiGorunumunuAyarla',args,this)}
+function tapuFiltreSecenekleri(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuFiltreSecenekleri',args,this)}
+function tapuFiltreliListe(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuFiltreliListe',args,this)}
+function tapuFiltreDegisti(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuFiltreDegisti',args,this)}
+function tapuEkraniniCiz(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuEkraniniCiz',args,this)}
+function tapuListeyiCiz(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuListeyiCiz',args,this)}
+function tapuSayfaDegistir(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuSayfaDegistir',args,this)}
+function tapuSayfaBoyutuDegistir(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuSayfaBoyutuDegistir',args,this)}
+function tapuDetayAc(){const args=Array.from(arguments);if(!FDModules.status('tapu').loaded)return FDModules.open('tapu',[{fdTitleAction:'tapuDetayAc',args}],this);return FDModules.callIfLoaded('tapu','tapuDetayAc',args,this)}
+function tapuDetayKapat(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuDetayKapat',args,this)}
+function tapuDetayGoruntusunuAc(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuDetayGoruntusunuAc',args,this)}
+function tapuDetayDuzenle(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuDetayDuzenle',args,this)}
+function tapuFormuAc(){const args=Array.from(arguments);if(!FDModules.status('tapu').loaded)return FDModules.open('tapu',[{fdTitleAction:'tapuFormuAc',args}],this);return FDModules.callIfLoaded('tapu','tapuFormuAc',args,this)}
+function tapuFormuKapat(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuFormuKapat',args,this)}
+function tapuKaydet(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuKaydet',args,this)}
+function tapuSil(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuSil',args,this)}
+function tapuGoruntule(){const args=Array.from(arguments);if(!FDModules.status('tapu').loaded)return FDModules.open('tapu',[{fdTitleAction:'tapuGoruntule',args}],this);return FDModules.callIfLoaded('tapu','tapuGoruntule',args,this)}
+function tapuGoruntuKapat(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuGoruntuKapat',args,this)}
+function tapuGoruntuYeniSekme(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuGoruntuYeniSekme',args,this)}
+function tapuGoruntuIndir(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuGoruntuIndir',args,this)}
+function tapuCksArayuzunuKur(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','tapuCksArayuzunuKur',args,this)}
+function fdTapuFiltreTemizle(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','fdTapuFiltreTemizle',args,this)}
+function fdTapuRaporTablosu(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','fdTapuRaporTablosu',args,this)}
+function fdTapuDisariAl(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','fdTapuDisariAl',args,this)}
+function fdTapuDetayKimligi(){const args=Array.from(arguments);return FDModules.callIfLoaded('tapu','fdTapuDetayKimligi',args,this)}

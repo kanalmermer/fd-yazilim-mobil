@@ -1,0 +1,23 @@
+.fd-edm-tracker{margin-bottom:24px;min-width:0}
+.fd-edm-tracker .fd-edm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.fd-edm-tracker .fd-edm-tabs button{padding:10px 14px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#334155;font:inherit;cursor:pointer}
+.fd-edm-tracker .fd-edm-tabs button[aria-selected="true"]{background:#0f766e;color:#fff;border-color:#0f766e}
+.fd-edm-tracker [data-edm-page][hidden]{display:none!important}
+.fd-edm-tracker .btn-submit{width:auto;max-width:100%;margin:10px 0;padding:11px 18px;white-space:normal}
+.fd-edm-tracker small{display:block;color:#475569;line-height:1.6;margin:8px 0 16px}
+.fd-edm-tracker .fd-edm-check{display:flex;align-items:center;gap:10px;margin:12px 0;line-height:1.5}
+.fd-edm-tracker input[type="checkbox"]{width:18px;height:18px;flex:none}
+.fd-edm-tracker .fd-edm-list{border-top:1px solid #e2e8f0;margin-top:16px;padding:12px 0;overflow-wrap:anywhere}
+.fd-edm-tracker [data-edm="status"]{color:#0f766e;line-height:1.6;overflow-wrap:anywhere}
+.fd-edm-tracker [data-edm="status"][data-error="true"]{color:#b91c1c}
+.fd-edm-tracker .fd-edm-report{margin-top:24px;padding-top:20px;border-top:1px solid #cbd5e1;min-width:0;overflow-wrap:anywhere}
+.fd-edm-tracker canvas{width:100%;height:auto;display:block;border:1px solid #e2e8f0}
+.fd-edm-tracker table{width:100%;border-collapse:collapse;table-layout:fixed;margin:12px 0}
+.fd-edm-tracker th,.fd-edm-tracker td{border-bottom:1px solid #e2e8f0;text-align:left;padding:10px 6px;font-size:13px;overflow-wrap:anywhere}
+.fd-edm-tracker [data-edm="report"] h4{margin:24px 0 8px}
+.fd-edm-tracker input,.fd-edm-tracker select{max-width:100%;box-sizing:border-box}
+@media(max-width:600px){.fd-edm-tracker .form-row{display:block}.fd-edm-tracker .form-group{width:100%;min-width:0}.fd-edm-tracker .fd-edm-tabs button{flex:1 1 140px}.fd-edm-tracker th,.fd-edm-tracker td{padding:8px 3px;font-size:12px}}
+
+#ayarlarPanelEdm .fd-edm-tracker{margin:0;border:0;box-shadow:none;padding:0}.fd-edm-tracker [role="tabpanel"]{padding-top:6px}
+
+.fd-edm-tracker .fd-edm-firm-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #e2e8f0}.fd-edm-tracker .fd-edm-firm-row p{margin:0;overflow-wrap:anywhere}.fd-edm-tracker .fd-edm-firm-row button{flex-shrink:0}.fd-edm-tracker .fd-edm-recipient-options{padding:4px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px}.fd-edm-tracker .fd-edm-integration-note{margin-top:24px;color:#64748b;font-size:13px}@media(max-width:600px){.fd-edm-tracker .fd-edm-firm-row{align-items:flex-start;flex-direction:column}}
