@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261107-s67-3fb5ffa62f99",
+  "release": "fd-modular-20261109-s67-659675af47bb",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/application-bootstrap.js",
-      "sha256": "85ff5f9fc2dfbad77c60025cd20b2ef5bf74aa03f31169171c0fdbaa2dd5791a",
-      "bytes": 234636
+      "sha256": "6a7768a1e0d9a4423b5a2ec7006c17a2daf3468289dcc768156cfe0353e01031",
+      "bytes": 234970
     },
     {
       "path": "core/application-runtime.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "5fd53939425a10176e36705eae1667aad58c78a2c40786ee9f0d96682b21da81",
-      "bytes": 66781
+      "sha256": "89ccaf145d2428395f00ce8c4e7b71a8059ebe4407af588bd3d20e53d966fa30",
+      "bytes": 67387
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -85,6 +85,11 @@
       "path": "core/document-entrypoints.js",
       "sha256": "5f5357e2dae5c226b9bd0f35659da59258ac575142d68c75b534ca49f7c79747",
       "bytes": 6548
+    },
+    {
+      "path": "core/edm-entrypoints.js",
+      "sha256": "cd19867e7753714d29729b8f0c46d79454efe3194357321eaefbde079b26b37e",
+      "bytes": 389
     },
     {
       "path": "core/enforcement-entrypoints.js",
@@ -682,6 +687,26 @@
       "bytes": 66
     },
     {
+      "path": "modules/alisfiyat/manifest.json",
+      "sha256": "8f0f0ac8ee3f65b4037d510516e0f4daf72d9b6479bb02b7bd1b766728efb21e",
+      "bytes": 811
+    },
+    {
+      "path": "modules/alisfiyat/module.js",
+      "sha256": "8b12c55df7ebc231724def69ebb4b6ddc7e506021a8ddbcc0e1e909a6f7b414f",
+      "bytes": 1171
+    },
+    {
+      "path": "modules/alisfiyat/style.css",
+      "sha256": "bd9310570d6ab1a810976766124a0cd36cfe68509905fcafd2bd7547398bf840",
+      "bytes": 205
+    },
+    {
+      "path": "modules/alisfiyat/view.html",
+      "sha256": "8b076415e1b15dfd4a52e693319a42461036212f6836507b67c54723560105a3",
+      "bytes": 126
+    },
+    {
       "path": "modules/arac/manifest.json",
       "sha256": "c37bce2ab87da0549bec7d733b7df3ad89becdac554c417eff685e0e759cf987",
       "bytes": 5776
@@ -743,18 +768,18 @@
     },
     {
       "path": "modules/ayarlar/manifest.json",
-      "sha256": "9873ad071636aa6fea1b7fb5ecd27cbe3418555a1284587d1e4cab7a9555a28c",
+      "sha256": "dfe1e010e0a08b2fd12fa494fa660bd5edc5d24262b4a0367a91201f3768011f",
       "bytes": 3404
     },
     {
       "path": "modules/ayarlar/module.js",
-      "sha256": "c61c0cd76d4ee7304a1f1a75d2bba2a98b65f7d77c88c5d9cf0f6ec4625841af",
-      "bytes": 154382
+      "sha256": "9b09d28db3c6539b91ad1ced9d6c69c51555fdf1278e60d01d045457559867e5",
+      "bytes": 131079
     },
     {
       "path": "modules/ayarlar/style.css",
-      "sha256": "e30ffd774f151ab7587a0f8b925db80dbad1a5ae77b28bf47a0b0951e1048efa",
-      "bytes": 24463
+      "sha256": "e6e3e80d10ffb30e3f3088807d9259a997952885fc198be00bcde45f3032f9ee",
+      "bytes": 22404
     },
     {
       "path": "modules/ayarlar/view.html",
@@ -1985,6 +2010,16 @@
       "path": "shared/document-data.js",
       "sha256": "0fe96fd4dfb7e26cb968812bc1b9d043577ee31bf3da733355679a348992d930",
       "bytes": 4019
+    },
+    {
+      "path": "shared/edm-tracker.css",
+      "sha256": "39bcfe382d208dd5ddb77a4fe6951676820814759232fd474a0108c78d2b9268",
+      "bytes": 2056
+    },
+    {
+      "path": "shared/edm-tracker.js",
+      "sha256": "64d11be35e0bcba26c014f3e33a6f81de343d2f38e5fcd613583280f2f1c35fb",
+      "bytes": 25888
     },
     {
       "path": "shared/enforcement-data.js",
