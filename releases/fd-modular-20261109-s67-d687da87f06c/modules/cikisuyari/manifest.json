@@ -1,0 +1,39 @@
+{
+  "name": "İşten Çıkış Uyarısı ve Onay",
+  "roots": [
+    "modalCikisUyari"
+  ],
+  "entrypoints": [
+    "cikisUyariyiGoster",
+    "cikisUyariyiKapat"
+  ],
+  "writeOperations": [
+    "cikisUyariyiKapat"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/cikisuyari/view.html",
+      "sha256": "fae98953cc4b68149e32044a0f46b3f57765f59ecb70a514cde5ea4b16637930",
+      "bytes": 1046,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/cikisuyari/style.css",
+      "sha256": "e97feb75bd5274f93e057656d8a34248816cbf872e9472d848ebd4123ec62a78",
+      "bytes": 306,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/cikisuyari/module.js",
+      "sha256": "4287b651a84c5caa920950f9c2981e850d702d3b8065670bce9e837caad65753",
+      "bytes": 3203,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

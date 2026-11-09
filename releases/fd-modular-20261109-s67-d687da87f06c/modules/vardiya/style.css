@@ -1,0 +1,80 @@
+
+    .vardiya-dinamik-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #cbd5e1;border-left:1px solid #cbd5e1}
+    .vardiya-dinamik-grid .vardiya-panel{border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1}
+    .vardiya-panel-saat{display:block;margin-top:2px;color:#475569;font-size:.62rem;font-weight:750}
+    .vardiya-bolum-sil{color:#b91c1c!important}
+    #vardiyaTanimDetay{width:min(100%,900px);margin:0 auto 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 8px 22px rgba(15,23,42,.06)}
+    #vardiyaTanimDetay>summary{padding:12px 15px;background:#e0f2fe;color:#075985;font-weight:900;cursor:pointer}
+    #vardiyaTanimDetay>.vardiya-tanim-karti{margin:0;border:0;border-top:1px solid #bae6fd;border-radius:0;box-shadow:none}
+    #vardiyaTanimDetay .vardiya-tanim-karti .card-header>button{display:none}
+    @media(max-width:850px){.vardiya-dinamik-grid{grid-template-columns:1fr}}
+    #vardiyaBaslikVardiyaMenu{position:fixed;z-index:140000;display:none;min-width:250px;max-width:360px;padding:7px;border:1px solid #94a3b8;border-radius:10px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.25)}
+    #vardiyaBaslikVardiyaMenu button{display:block;width:100%;padding:9px 10px;border:0;border-bottom:1px solid #e2e8f0;background:#fff;text-align:left;cursor:pointer}
+    #vardiyaBaslikVardiyaMenu button:hover{background:#e0f2fe}
+    #vardiyaBaslikVardiyaMenu strong,#vardiyaBaslikVardiyaMenu small{display:block}
+    #vardiyaBaslikVardiyaMenu small{margin-top:2px;color:#64748b}
+    .vardiya-board { border:1px solid #0f172a; background:#fff; }
+    .vardiya-board { overflow:hidden; border-color:#cbd5e1; border-radius:12px; box-shadow:0 8px 22px rgba(15,23,42,.06); }
+    .vardiya-pair { display:grid; grid-template-columns:1fr 1fr; }
+    .vardiya-pair + .vardiya-pair { border-top:6px solid #facc15; }
+    .vardiya-panel:first-child { border-right:1px solid #cbd5e1; }
+    .vardiya-panel-baslik { padding:9px 8px; border-bottom:1px solid #cbd5e1; background:linear-gradient(180deg,#f8fafc,#eef2f7); color:#0f172a; font-size:.82rem; font-weight:850; text-align:center; cursor:context-menu; }
+    .vardiya-panel-baslik:hover, .vardiya-alt-ust-baslik:hover { background:#e0f2fe; }
+    .vardiya-alt-ust-baslik { grid-column:1/-1; padding:9px; border-bottom:1px solid #cbd5e1; background:#f8fafc; text-align:center; font-weight:850; font-size:.82rem; cursor:context-menu; }
+    .vardiya-satir { display:grid; grid-template-columns:30px minmax(135px,1.12fr) minmax(120px,.88fr); min-height:33px; border-bottom:1px solid #e2e8f0; }
+    .vardiya-panel .vardiya-satir:last-child { border-bottom:0; }
+    .vardiya-sira, .vardiya-personel, .vardiya-gorev { display:flex; align-items:center; padding:5px 7px; }
+    .vardiya-sira { justify-content:center; border-right:1px solid #e2e8f0; color:#64748b; background:#f8fafc; font-size:.72rem; font-weight:800; }
+    .vardiya-personel { border-right:1px solid #e2e8f0; color:#0f172a; font-size:.78rem; font-weight:700; cursor:grab; user-select:none; }
+    .vardiya-gorev { color:#334155; font-size:.75rem; font-weight:650; cursor:grab; user-select:none; }
+    .vardiya-personel:empty::after, .vardiya-gorev:empty::after { content:'Buraya bırak'; color:#cbd5e1; font-weight:500; font-style:italic; }
+    .vardiya-personel:hover, .vardiya-gorev:hover { background:#f0f9ff; }
+    .vardiya-gorev:active { cursor:grabbing; }
+    .vardiya-personel.secili, .vardiya-gorev.secili { background:#dbeafe; outline:2px solid #0284c7; outline-offset:-2px; }
+    .vardiya-gorev.dragging { opacity:.38; background:#e2e8f0; }
+    .vardiya-personel.dragging { opacity:.38; background:#e2e8f0; }
+    .vardiya-filtreler { display:grid; grid-template-columns:minmax(190px,1fr) minmax(190px,1fr) auto; gap:12px; align-items:end; width:100%; }
+    .vardiya-filtre-alan label { display:block; margin-bottom:5px; color:#475569; font-size:.72rem; font-weight:800; }
+    .vardiya-filtre-alan select, .vardiya-filtre-alan input { width:100%; min-height:39px; }
+    .vardiya-filtre-aksiyon { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+    .vardiya-print-title { text-align:center; margin:0 0 14px; }
+    .vardiya-print-title h2 { margin:0 0 4px; font-size:1.12rem; }
+    .vardiya-print-title strong { font-size:.88rem; }
+    #vardiyaCiktiAlani { width:min(100%,900px); margin-left:auto; margin-right:auto; padding:12px; }
+    #vardiyaApp main > .card:first-child { width:min(100%,900px); margin-left:auto; margin-right:auto; }
+    .vardiya-pair + .vardiya-pair { border-top:1px solid #cbd5e1; }
+    .vardiya-panel-baslik { position:relative; min-height:28px; padding:6px 62px; font-size:.76rem; }
+    .vardiya-satir-kontrolleri { position:absolute; right:5px; top:50%; transform:translateY(-50%); display:flex; gap:3px; }
+    .vardiya-satir-kontrolleri button { width:23px; height:21px; padding:0; border:1px solid #cbd5e1; border-radius:5px; background:#fff; color:#475569; font-weight:850; cursor:pointer; line-height:1; }
+    .vardiya-satir-kontrolleri button:hover { background:#e0f2fe; color:#0369a1; }
+    .vardiya-alt-ust-baslik { padding:6px; font-size:.76rem; }
+    .vardiya-satir { grid-template-columns:27px minmax(125px,1.12fr) minmax(110px,.88fr); min-height:25px; }
+    .vardiya-sira, .vardiya-personel, .vardiya-gorev { padding:3px 6px; }
+    .vardiya-sira { font-size:.66rem; }
+    .vardiya-personel { font-size:.71rem; }
+    .vardiya-gorev { font-size:.69rem; }
+    .vardiya-personel:empty::after, .vardiya-gorev:empty::after { content:'' !important; }
+    .vardiya-print-title { width:100%; margin-bottom:9px; text-align:center; }
+    .vardiya-print-title h2 { display:block; width:100%; margin:0 0 3px; text-align:center; font-size:1rem; cursor:context-menu; }
+    .vardiya-print-title h2::before { display:none; }
+    .vardiya-print-title strong { font-size:.78rem; }
+    .vardiya-aciklamalar { margin-top:10px; border-top:1px solid #cbd5e1; padding-top:8px; }
+    .vardiya-aciklama-baslik { margin-bottom:5px; color:#334155; font-size:.72rem; font-weight:850; letter-spacing:.04em; }
+    #vardiyaNotlar { min-height:74px; padding:8px 10px; border:1px solid #cbd5e1; border-radius:7px; background:#fff; color:#0f172a; font-size:.7rem; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; outline:none; }
+    #vardiyaNotlar:empty::before { content:attr(data-placeholder); color:#94a3b8; }
+    #vardiyaNotlar:focus { border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.12); }
+    @media (max-width:760px) {
+        .vardiya-board { min-width:700px; }
+    }
+    @media (max-width:760px) {
+        #vardiyaCiktiAlani { overflow-x:auto; }
+    }
+    @media (max-width:760px) {
+        .vardiya-filtreler { grid-template-columns:1fr; }
+    }
+    @media (max-width:760px) {
+        .vardiya-filtre-aksiyon { justify-content:stretch; }
+    }
+    @media (max-width:760px) {
+        .vardiya-filtre-aksiyon button { flex:1; justify-content:center; }
+    }
