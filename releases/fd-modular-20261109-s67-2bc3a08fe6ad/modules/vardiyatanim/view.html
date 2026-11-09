@@ -1,0 +1,21 @@
+<div id="fdVardiyaTanimKart" class="card vardiya-tanim-karti">
+                <div class="card-header" style="gap:10px;flex-wrap:wrap;">
+                    <div><h2>🕒 Vardiya Tanımları ve Saat Ayarları</h2><p style="margin:5px 0 0;color:#64748b;">Vardiyaları soldan seçin; saat, yemek ve ek mesai kurallarını sağda düzenleyin.</p></div>
+                    <button type="button" class="btn-export" style="margin-left:auto;background:#7c3aed;color:#fff;" onclick="openVardiyaApp()">📅 Haftalık Vardiya Planını Aç</button>
+                </div>
+                <div class="vardiya-tanim-yonetimi">
+                    <aside class="vardiya-tanim-sol">
+                        <div class="vardiya-tanim-sol-baslik"><strong>Vardiyalar</strong><button type="button" onclick="vardiyaTanimYeni()" title="Yeni vardiya">＋</button></div>
+                        <div id="vardiyaTanimListesi"></div>
+                    </aside>
+                    <form id="vardiyaTanimForm" class="vardiya-tanim-form" onsubmit="vardiyaTanimKaydet(event)">
+                        <input id="vardiyaTanimId" type="hidden">
+                        <div class="form-row"><div class="form-group"><label>Vardiya Adı</label><input id="vardiyaTanimAdi" required placeholder="Örn. GÜNDÜZ 08–16"></div><div class="form-group"><label>Vardiya Tanımı</label><input id="vardiyaTanimAciklama" placeholder="Kısa açıklama"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Başlama Saati</label><input id="vardiyaTanimBaslangic" type="time" required></div><div class="form-group"><label>Bitiş Saati</label><input id="vardiyaTanimBitis" type="time" required></div></div>
+                        <div class="form-row"><div class="form-group"><label>Yemek Başlama Saati</label><input id="vardiyaTanimYemekBaslangic" type="time"></div><div class="form-group"><label>Yemek Bitiş Saati</label><input id="vardiyaTanimYemekBitis" type="time"></div></div>
+                        <div class="form-row"><div class="form-group"><label>Ek Mesai Başlama</label><input id="vardiyaTanimMesaiBaslangic" type="time"></div><div class="form-group"><label>Ek Mesai Bitiş / Uyarı Sınırı</label><input id="vardiyaTanimMesaiBitis" type="time"></div></div>
+                        <div class="vardiya-tanim-secimler"><label><input id="vardiyaTanimTatil" type="checkbox"> Bu vardiya tatil vardiyasıdır</label><label><input id="vardiyaTanimResmiTatil" type="checkbox"> Bu vardiya resmî tatil vardiyasıdır</label><label><input id="vardiyaTanimGirisCikisYasak" type="checkbox"> Bu vardiyada giriş–çıkış yapılmaz</label></div>
+                        <div class="vardiya-tanim-aksiyonlar"><button type="button" class="btn-modern btn-del-modern" onclick="vardiyaTanimSil()">Sil</button><button type="submit" class="btn-submit">💾 Vardiyayı Kaydet</button></div>
+                    </form>
+                </div>
+            </div>
