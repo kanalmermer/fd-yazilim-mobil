@@ -1,0 +1,32 @@
+{
+  "name": "Giriş–Çıkış Dosya Aktarımı",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/hareketaktar/view.html",
+      "sha256": "b0d28a939dbfc3bc61d5ce16169ee2c1f40b00ffb72fead8fafb61a99b14398b",
+      "bytes": 77,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/hareketaktar/style.css",
+      "sha256": "5ae1c1a063ca8ba42e8dceabb954b03dd90134fdf3557173a44ec940331902b6",
+      "bytes": 41,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/hareketaktar/module.js",
+      "sha256": "28bd7fb381fad4411c9df4b1136cc14efb475f135dddb3c2dc2f4b9b278e48d6",
+      "bytes": 8651,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

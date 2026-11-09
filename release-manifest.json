@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261109-s67-53ca63a21135",
+  "release": "fd-modular-20261109-s67-6abaa478eab0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "94275fdfcef86a3d0e012d1cc5d339dd09b7b2acd869945a1d14ebb70183eba4",
+      "sha256": "2ce47c473078c097ab613f4ab351b434f6cbc488b9a25d42f4f4501a069060ab",
       "bytes": 67387
     },
     {
@@ -688,13 +688,13 @@
     },
     {
       "path": "modules/alisfiyat/manifest.json",
-      "sha256": "8f0f0ac8ee3f65b4037d510516e0f4daf72d9b6479bb02b7bd1b766728efb21e",
+      "sha256": "3ebc1e6f91e54bbea701f4da8923a8ef04ed70ce949a6354951be50ce849d598",
       "bytes": 811
     },
     {
       "path": "modules/alisfiyat/module.js",
-      "sha256": "8b12c55df7ebc231724def69ebb4b6ddc7e506021a8ddbcc0e1e909a6f7b414f",
-      "bytes": 1171
+      "sha256": "a50b0255b325c586884b8dd6f5f26ad3dae43002aeeeab4a08b3a75b6dff0428",
+      "bytes": 1204
     },
     {
       "path": "modules/alisfiyat/style.css",
@@ -2018,8 +2018,8 @@
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "69678d1c3f7895294e541f6b73601c9e432d619f5242ed4c4ae5249381ad9ac4",
-      "bytes": 26962
+      "sha256": "5bd40be704f84d70b9cdf2a2eb0b8dc7bc8fb55876c9c592c4b35c51881a5340",
+      "bytes": 28212
     },
     {
       "path": "shared/enforcement-data.js",
