@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261110-s67-5c90734fac96",
+  "release": "fd-modular-20261110-s67-6fe29bb8ae9f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "cb7632edb4620ff6682a25c0ab4920e363ee5ca615250a6b4545facba8a928e9",
+      "sha256": "e64341129b82a281e065b6f18e0e7838650ab2efe98893b767c339b0b3e12594",
       "bytes": 67995
     },
     {
@@ -73,8 +73,8 @@
     },
     {
       "path": "core/currency-entrypoints.js",
-      "sha256": "d92e4aab665be406f58f6c4f8239e8ab7028d12c8c114cd27c93aa56a3772a2c",
-      "bytes": 393
+      "sha256": "152ed2ec09b6cb81ce6ec1ce04cf16b67cc9e2e83bfeafb6f006fc1c33f42cce",
+      "bytes": 1009
     },
     {
       "path": "core/daily-report-entrypoints.js",
