@@ -1,0 +1,52 @@
+{
+  "name": "Günlük Personel Raporu",
+  "roots": [
+    "fdGunlukRaporKart"
+  ],
+  "entrypoints": [
+    "magicpassGunlukSubeHafizaAnahtari",
+    "magicpassGunlukSubeHatirla",
+    "magicpassGunlukRaporSubeleriniHazirla",
+    "magicpassGunlukTarihDegistir",
+    "magicpassGunlukOzetFiltresiSec",
+    "magicpassGunlukDurumSinifi",
+    "magicpassGunlukRaporuCiz",
+    "magicpassGunlukKopyaSaat",
+    "magicpassGunlukKopyaBasHarf",
+    "magicpassCanvasPngBlobHazirla",
+    "magicpassGunlukPrimRaporTablosunuDuzenle",
+    "magicpassGunlukPrimCanvasHazirla",
+    "magicpassGunlukBirlesikCanvas",
+    "magicpassGunlukDetayKopyala",
+    "magicpassGunlukRaporDosyaAdi",
+    "magicpassGunlukExcelAl",
+    "magicpassGunlukPdfAl"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/gunlukrapor/view.html",
+      "sha256": "2a5b001f36e61a037c6111d30a4c6f121654a306c83d95a2e82d1cde72c6cef1",
+      "bytes": 2680,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/gunlukrapor/style.css",
+      "sha256": "a92d25dd07bfbd7922f67e7c9b4dac730189cc8a8ff1edf3b1924921ccd722c9",
+      "bytes": 5463,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/gunlukrapor/module.js",
+      "sha256": "ba43b7459569f111acc842e4be243c8fe855d2f3c8b351eeb2086476fd484c1a",
+      "bytes": 22016,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
