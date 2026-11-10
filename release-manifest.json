@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261110-s67-6fe29bb8ae9f",
+  "release": "fd-modular-20261110-s67-dbb7ac7d340f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "e64341129b82a281e065b6f18e0e7838650ab2efe98893b767c339b0b3e12594",
+      "sha256": "d8ac344486b7d7aeaec70aa75328b3ec60b44ff12945991189e8f4084d3f2998",
       "bytes": 67995
     },
     {
@@ -1353,7 +1353,7 @@
     },
     {
       "path": "modules/kurgecmisi/manifest.json",
-      "sha256": "24bad1a31ee7a62557d6f3129ce0f428c33c787b268c0f8d380e8d363c7b7333",
+      "sha256": "8ec2d6bf6b08c02358888a9e6dbff25bc1aba6c31dc66da16c09a08f77515ec6",
       "bytes": 812
     },
     {
@@ -1368,8 +1368,8 @@
     },
     {
       "path": "modules/kurgecmisi/view.html",
-      "sha256": "1664ecd64f9b22ad3c8b9e80dd2a3c999540c26afd69668d7ea544b5cfb3aa3a",
-      "bytes": 1414
+      "sha256": "e452ecfefbd4fe12d29695438c0bd30842cf87684d29de08074de50c8bf85a89",
+      "bytes": 1488
     },
     {
       "path": "modules/manuelduzeltme/manifest.json",
@@ -2048,8 +2048,8 @@
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "a0dbfef35b38ebc18deaa296a841666b725874821ff6aca49ce129a1cb54df14",
-      "bytes": 53700
+      "sha256": "b7e1b5628f8467fbd14bcfcd699c78ac76e677f2e569d01652773f8d1b17d93a",
+      "bytes": 54035
     },
     {
       "path": "shared/enforcement-data.js",
