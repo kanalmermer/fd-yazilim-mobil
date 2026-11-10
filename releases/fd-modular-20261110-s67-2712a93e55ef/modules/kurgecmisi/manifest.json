@@ -1,0 +1,36 @@
+{
+  "name": "Kur Geçmişi",
+  "roots": [
+    "kurGecmisiApp"
+  ],
+  "entrypoints": [
+    "openKurGecmisiApp"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/kurgecmisi/view.html",
+      "sha256": "acc028d1a30991123b4cc6d0e5d8bc71bcbf70d8436f4761933ad9aad4bf309e",
+      "bytes": 1508,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/kurgecmisi/style.css",
+      "sha256": "ba22fa2c627e60f63e8ed392d04c5f9d024af8b224de12f05397939765bc3feb",
+      "bytes": 2252,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/kurgecmisi/module.js",
+      "sha256": "c81161604576aec6011e41c0b14d488b5942ab2310ef341a9f4bec55b6602f2b",
+      "bytes": 2962,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

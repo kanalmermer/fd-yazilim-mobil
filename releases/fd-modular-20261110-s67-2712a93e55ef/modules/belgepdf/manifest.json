@@ -1,0 +1,32 @@
+{
+  "name": "Personel Belge PDF Hazırlama",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/belgepdf/view.html",
+      "sha256": "38c9ac368ce6b07cfb6690c4f124fce4aae523679a8b57bd8b810bbd25932d0b",
+      "bytes": 76,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/belgepdf/style.css",
+      "sha256": "3c07cad154c55194e2bd02b2a68cc81d19581a8131bbf01a12ce8c589a148644",
+      "bytes": 72,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/belgepdf/module.js",
+      "sha256": "a0b18919ef0d4061190d181bc00dc25e814b5b93ed9e21329d6097ef82c44001",
+      "bytes": 5603,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
