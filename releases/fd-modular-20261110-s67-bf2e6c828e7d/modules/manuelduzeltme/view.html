@@ -1,0 +1,15 @@
+<div id="modalMagicpassDuzeltme" class="modal-overlay">
+    <div class="modal-card" style="max-width:720px;">
+        <div class="modal-header"><div><h3>Giriş–Çıkış Kaydını Düzelt</h3><small id="magicpassDuzeltmeBilgi"></small></div><button type="button" class="modal-close" onclick="modalKapat('modalMagicpassDuzeltme')">✕</button></div>
+        <form class="modal-body" onsubmit="magicpassGunDuzeltmeKaydet(event)">
+            <input id="magicpassDuzeltmePersonelId" type="hidden"><input id="magicpassDuzeltmeTarih" type="hidden">
+            <div id="magicpassDuzeltmeVardiyaBilgi" class="magicpass-duzeltme-plan"></div>
+            <input id="magicpassDuzeltmeGiris" type="hidden"><input id="magicpassDuzeltmeCikis" type="hidden">
+            <div class="magicpass-duzeltme-not">Her çalışma aralığını ayrı düzenleyin. Gece çalışmasında çıkışın tarihini kontrol edin; eksik giriş veya çıkışın saatini boş bırakabilirsiniz.</div>
+            <div id="magicpassDuzeltmeAraliklar"></div>
+            <button type="button" class="btn-modern" onclick="magicpassDuzeltmeAralikEkle()">＋ Çalışma Aralığı Ekle</button>
+            <div class="form-group"><label>Düzeltme Açıklaması</label><textarea id="magicpassDuzeltmeAciklama" rows="3" data-case-preserve="true" placeholder="Örn. cihaz okumadı, saha görevi, unutulan çıkış..."></textarea></div>
+            <div class="vardiya-tanim-aksiyonlar"><button type="button" class="btn-modern btn-del-modern" onclick="magicpassGunDuzeltmesiniKaldir()">Düzeltmeyi Kaldır</button><button type="button" class="btn-modern" onclick="modalKapat('modalMagicpassDuzeltme')">İptal</button><button type="submit" class="btn-submit">Kaydet</button></div>
+        </form>
+    </div>
+</div>
