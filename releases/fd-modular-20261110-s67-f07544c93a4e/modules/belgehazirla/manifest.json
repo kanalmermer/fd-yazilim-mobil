@@ -1,0 +1,32 @@
+{
+  "name": "Personel Belge Hazırlama Akışı",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/belgehazirla/view.html",
+      "sha256": "3fa1f34becde7a14dedf87e32d0121b2a3c6b591815f5024a19110ecbf84d255",
+      "bytes": 77,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/belgehazirla/style.css",
+      "sha256": "80b1b93391989e3cf6a08321d68c345d271741145aaede40574ab48c1f279e88",
+      "bytes": 69,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/belgehazirla/module.js",
+      "sha256": "67af651d6525c4a82dc00b9a33cb76e759318427cd633a9bccb366117f8a8ee2",
+      "bytes": 4035,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

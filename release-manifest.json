@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261110-s67-dbb7ac7d340f",
+  "release": "fd-modular-20261110-s67-f07544c93a4e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d8ac344486b7d7aeaec70aa75328b3ec60b44ff12945991189e8f4084d3f2998",
+      "sha256": "4a2cf0201d561af71ee58d2e5bd8a197f840e7767fe2433cdd7499d183b9d307",
       "bytes": 67995
     },
     {
@@ -1173,13 +1173,13 @@
     },
     {
       "path": "modules/ihracat/manifest.json",
-      "sha256": "3aff314a3dba9db8cff2d499ead698d1f30fd1064f6618fd359e6138727f8122",
+      "sha256": "ce36e3a2537840ffaea216b8390351218352f2c6ebcf692f869d6d2a9a7fbf7b",
       "bytes": 1031
     },
     {
       "path": "modules/ihracat/module.js",
-      "sha256": "499b495929e2b0f2f8e83166c0ccf8c3fe17f2762b108ebc92edbc1dbb1b54ab",
-      "bytes": 141550
+      "sha256": "d8cc001c7ccc45c007d6d560b1bbc022365eef622fc34e0ebb07973623f45043",
+      "bytes": 141491
     },
     {
       "path": "modules/ihracat/style.css",
@@ -1353,13 +1353,13 @@
     },
     {
       "path": "modules/kurgecmisi/manifest.json",
-      "sha256": "8ec2d6bf6b08c02358888a9e6dbff25bc1aba6c31dc66da16c09a08f77515ec6",
+      "sha256": "9cc78613d440afaddee75b1ec8749be826afc7edbcc92afb28810ac27d8f5f7a",
       "bytes": 812
     },
     {
       "path": "modules/kurgecmisi/module.js",
-      "sha256": "c9c0a2bad2c15d1645eacbefd3c970784510b91eb8bbc84c88f580d39c0acff6",
-      "bytes": 3066
+      "sha256": "c81161604576aec6011e41c0b14d488b5942ab2310ef341a9f4bec55b6602f2b",
+      "bytes": 2962
     },
     {
       "path": "modules/kurgecmisi/style.css",
@@ -1368,8 +1368,8 @@
     },
     {
       "path": "modules/kurgecmisi/view.html",
-      "sha256": "e452ecfefbd4fe12d29695438c0bd30842cf87684d29de08074de50c8bf85a89",
-      "bytes": 1488
+      "sha256": "acc028d1a30991123b4cc6d0e5d8bc71bcbf70d8436f4761933ad9aad4bf309e",
+      "bytes": 1508
     },
     {
       "path": "modules/manuelduzeltme/manifest.json",
@@ -2033,8 +2033,8 @@
     },
     {
       "path": "shared/currency-history.js",
-      "sha256": "dd2513d06ec75c5cad32b25929404026d3a8b4951c5bc4e558ed4da46b1d6db8",
-      "bytes": 6014
+      "sha256": "f79ae4191e336877beac0dd00c271f1a2429f0fab443d58a6520c93a3dc7edeb",
+      "bytes": 5230
     },
     {
       "path": "shared/document-data.js",
