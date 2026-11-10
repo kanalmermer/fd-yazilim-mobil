@@ -1,0 +1,96 @@
+{
+  "name": "Haftalık Personel Vardiya Listesi",
+  "roots": [
+    "vardiyaApp",
+    "vardiyaBaslikVardiyaMenu"
+  ],
+  "entrypoints": [
+    "openVardiyaApp",
+    "vardiyaFiltreleriniHazirla",
+    "vardiyaAktifKayit",
+    "vardiyaYeniPersonelleriEkle",
+    "vardiyaSecimiDegisti",
+    "vardiyaSatirBul",
+    "vardiyaSurukleBaslat",
+    "vardiyaSurukleBitir",
+    "vardiyaKartUstuneBirak",
+    "vardiyaLaneBirak",
+    "vardiyaKartaTikla",
+    "vardiyaGorevDuzenle",
+    "vardiyaPersonelAdiDuzenle",
+    "vardiyaKartlariDegistir",
+    "vardiyaBosSatirlariTamamla",
+    "vardiyaCiz",
+    "vardiyaPanelHtml",
+    "vardiyaSatirEkle",
+    "vardiyaSatirSil",
+    "vardiyaBaslikDuzenle",
+    "vardiyaKartHtml",
+    "vardiyaHucreSurukleBaslat",
+    "vardiyaHucreSurukleBitir",
+    "vardiyaHucreBirak",
+    "vardiyaHucreTikla",
+    "vardiyaSatiriTasi",
+    "vardiyaHucreleriDegistir",
+    "vardiyaKaydiniGecikmeliYap",
+    "vardiyaDegisiklikKaydet",
+    "vardiyaRaporSatirlari",
+    "vardiyaExcelAl",
+    "vardiyaGoruntuCanvasHazirla",
+    "vardiyaGoruntusuAl",
+    "vardiyaHaftalikBildirimGorunumunuBaslat",
+    "vardiyaBasligaTanimAta",
+    "vardiyaYeniBolumEkle",
+    "vardiyaBolumSil",
+    "vardiyaBolumBasliginiDegistir",
+    "fdVardiyaArayuzunuKur",
+    "vardiyaPdfAl",
+    "fdVardiyaHaftalikKaydet",
+    "fdVardiyaGuncelListeyiYukle"
+  ],
+  "writeOperations": [
+    "vardiyaLaneBirak",
+    "vardiyaGorevDuzenle",
+    "vardiyaPersonelAdiDuzenle",
+    "vardiyaKartlariDegistir",
+    "vardiyaSatirEkle",
+    "vardiyaSatirSil",
+    "vardiyaBaslikDuzenle",
+    "vardiyaHucreSurukleBaslat",
+    "vardiyaHucreBirak",
+    "vardiyaSatiriTasi",
+    "vardiyaHucreleriDegistir",
+    "vardiyaKaydiniGecikmeliYap",
+    "vardiyaDegisiklikKaydet",
+    "vardiyaBasligaTanimAta",
+    "vardiyaYeniBolumEkle",
+    "vardiyaBolumSil",
+    "vardiyaBolumBasliginiDegistir"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/vardiya/view.html",
+      "sha256": "b5ff2604d683f25daec494fc00ad0060ff2af4fcc1edfb9905e7676066ad18f6",
+      "bytes": 2437,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/vardiya/style.css",
+      "sha256": "396a6b7564abe60b2a1a49a5566ebe9995ce41d0063269ac262145284e39adc7",
+      "bytes": 7014,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/vardiya/module.js",
+      "sha256": "19f9be851288f4ccc06eb81d8dbe733bed2a313452c0df227dcbd4459b674c19",
+      "bytes": 58454,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261110-s67-783d485415a2",
+  "release": "fd-modular-20261110-s67-5c90734fac96",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -8,8 +8,8 @@
     },
     {
       "path": "core/application-bootstrap.js",
-      "sha256": "6a7768a1e0d9a4423b5a2ec7006c17a2daf3468289dcc768156cfe0353e01031",
-      "bytes": 234970
+      "sha256": "6d9d46d0a2db680d20023a57049f8c2d10db6edbb5c85cf364325ea9644a1318",
+      "bytes": 235292
     },
     {
       "path": "core/application-runtime.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "30261d9d62b4d0761f39a1533008ebab0fbee007cfb89baec1a48ff1b3affced",
-      "bytes": 67387
+      "sha256": "cb7632edb4620ff6682a25c0ab4920e363ee5ca615250a6b4545facba8a928e9",
+      "bytes": 67995
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -70,6 +70,11 @@
       "path": "core/company-tools-entrypoints.js",
       "sha256": "3857055e7b1a8a373930377b842b633fcac2517627568afdf91610eb608e48d3",
       "bytes": 1905
+    },
+    {
+      "path": "core/currency-entrypoints.js",
+      "sha256": "d92e4aab665be406f58f6c4f8239e8ab7028d12c8c114cd27c93aa56a3772a2c",
+      "bytes": 393
     },
     {
       "path": "core/daily-report-entrypoints.js",
@@ -1168,13 +1173,13 @@
     },
     {
       "path": "modules/ihracat/manifest.json",
-      "sha256": "5d323b58117a5fe5b87ecc22627414ae0d269ba7f32791659e274362ed78a0e0",
+      "sha256": "3aff314a3dba9db8cff2d499ead698d1f30fd1064f6618fd359e6138727f8122",
       "bytes": 1031
     },
     {
       "path": "modules/ihracat/module.js",
-      "sha256": "41e39c307ba31211ca8de46abdded8113abc64bdc8dc4b42a396d09e529d7d6a",
-      "bytes": 141233
+      "sha256": "499b495929e2b0f2f8e83166c0ccf8c3fe17f2762b108ebc92edbc1dbb1b54ab",
+      "bytes": 141550
     },
     {
       "path": "modules/ihracat/style.css",
@@ -1345,6 +1350,26 @@
       "path": "modules/kullanici/view.html",
       "sha256": "17af276addb448a7c1130b045f9ad85456bafa86e3a071035842d89302ff68ea",
       "bytes": 2307
+    },
+    {
+      "path": "modules/kurgecmisi/manifest.json",
+      "sha256": "24bad1a31ee7a62557d6f3129ce0f428c33c787b268c0f8d380e8d363c7b7333",
+      "bytes": 812
+    },
+    {
+      "path": "modules/kurgecmisi/module.js",
+      "sha256": "c9c0a2bad2c15d1645eacbefd3c970784510b91eb8bbc84c88f580d39c0acff6",
+      "bytes": 3066
+    },
+    {
+      "path": "modules/kurgecmisi/style.css",
+      "sha256": "ba22fa2c627e60f63e8ed392d04c5f9d024af8b224de12f05397939765bc3feb",
+      "bytes": 2252
+    },
+    {
+      "path": "modules/kurgecmisi/view.html",
+      "sha256": "1664ecd64f9b22ad3c8b9e80dd2a3c999540c26afd69668d7ea544b5cfb3aa3a",
+      "bytes": 1414
     },
     {
       "path": "modules/manuelduzeltme/manifest.json",
@@ -2007,6 +2032,11 @@
       "bytes": 2359
     },
     {
+      "path": "shared/currency-history.js",
+      "sha256": "dd2513d06ec75c5cad32b25929404026d3a8b4951c5bc4e558ed4da46b1d6db8",
+      "bytes": 6014
+    },
+    {
       "path": "shared/document-data.js",
       "sha256": "0fe96fd4dfb7e26cb968812bc1b9d043577ee31bf3da733355679a348992d930",
       "bytes": 4019
@@ -2018,8 +2048,8 @@
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "19a764b84dd997469106b235bfc40043646d949c3ee789d8c1bd53ec55f8ef2f",
-      "bytes": 52611
+      "sha256": "a0dbfef35b38ebc18deaa296a841666b725874821ff6aca49ce129a1cb54df14",
+      "bytes": 53700
     },
     {
       "path": "shared/enforcement-data.js",
