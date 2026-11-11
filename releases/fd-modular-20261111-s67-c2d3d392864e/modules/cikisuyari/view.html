@@ -1,0 +1,10 @@
+<div id="modalCikisUyari" class="modal-overlay">
+    <div class="modal-card" style="max-width:640px;">
+        <div class="modal-header cikis-uyari-baslik"><h3>⚠️ Önemli İşten Çıkış Uyarısı</h3><button class="modal-close" type="button" onclick="cikisUyariyiKapat(false)">✕</button></div>
+        <div class="modal-body">
+            <p style="color:#7f1d1d; font-weight:700; line-height:1.5;">Bu personele ait tamamlanmamış yükümlülükler tespit edildi. Çıkış kaydı yine de yapılabilir; devam etmek için onay vermeniz gerekir.</p>
+            <div id="cikisUyariIcerik"></div>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;"><button type="button" class="btn-cancel" style="width:auto; margin:0; padding:10px 16px;" onclick="cikisUyariyiKapat(false)">Vazgeç</button><button type="button" class="btn-submit" style="width:auto; padding:10px 16px; background:#b91c1c;" onclick="cikisUyariyiKapat(true)">Uyarıyı Onayla ve Kaydet</button></div>
+        </div>
+    </div>
+</div>

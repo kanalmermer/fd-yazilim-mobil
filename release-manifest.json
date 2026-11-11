@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261110-s67-2712a93e55ef",
+  "release": "fd-modular-20261111-s67-c2d3d392864e",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "02bb21c108ac96777e6422f5532e744d8733303bd7d773e2045d4999e5c5c16e",
+      "sha256": "6a2fd34e7a2982fca388f977d1a7e87c36f0c301b327306abf6a5415962e7bc0",
       "bytes": 67995
     },
     {
@@ -1353,13 +1353,13 @@
     },
     {
       "path": "modules/kurgecmisi/manifest.json",
-      "sha256": "9cc78613d440afaddee75b1ec8749be826afc7edbcc92afb28810ac27d8f5f7a",
+      "sha256": "1439830b6647242aecb50a50fdd7c072e1bf6ac993c53a702c6e3e713037ea38",
       "bytes": 812
     },
     {
       "path": "modules/kurgecmisi/module.js",
-      "sha256": "c81161604576aec6011e41c0b14d488b5942ab2310ef341a9f4bec55b6602f2b",
-      "bytes": 2962
+      "sha256": "01720f4a0760467c74b305d90886109d8a239a055ebaa518178b3df4de364a96",
+      "bytes": 2892
     },
     {
       "path": "modules/kurgecmisi/style.css",
@@ -1368,8 +1368,8 @@
     },
     {
       "path": "modules/kurgecmisi/view.html",
-      "sha256": "acc028d1a30991123b4cc6d0e5d8bc71bcbf70d8436f4761933ad9aad4bf309e",
-      "bytes": 1508
+      "sha256": "19c7870c08d43cc3f4a1bb659ac7ee62705dfe294a20fe2328715b43b8fdae7f",
+      "bytes": 1138
     },
     {
       "path": "modules/manuelduzeltme/manifest.json",
@@ -2043,13 +2043,13 @@
     },
     {
       "path": "shared/edm-tracker.css",
-      "sha256": "dd82c03eedc6814e4bd9936f8443aef82bc7a63edc79ea17b3b44f5509a7936a",
-      "bytes": 12267
+      "sha256": "15377c54e500d442403bda0160099a59fe648f657a0402997beb38c6762ab1d4",
+      "bytes": 14919
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "faa7331c49cc7111e1b5ab4b881d5f1458e378a01a7679a8e66e0e750740e5f0",
-      "bytes": 54220
+      "sha256": "3ab9e765dae0d98616fef1b23e477ddfc3548454249b76238b3bcf3cb4d3f83e",
+      "bytes": 63182
     },
     {
       "path": "shared/enforcement-data.js",
