@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s67-8cd732ac7340",
+  "release": "fd-modular-20261112-s67-5a47746b32f8",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "22c5b3c649024395cbbc132bfff04aa1949b8f45bda2af505b0755de744d780b",
+      "sha256": "041b4c50eb60b05fa90172ddeaafd82c176edafcb1d9f43d03eb2d6e36034186",
       "bytes": 67995
     },
     {
@@ -1253,7 +1253,7 @@
     },
     {
       "path": "modules/izin/manifest.json",
-      "sha256": "792b142e1f8190f419e10e457730a3e8dab30e9799676e144603265e622c0102",
+      "sha256": "549ab917f86c8f25edeaa87ee2ab7557caf53ec387e64fc61aa495e08432a3d4",
       "bytes": 3154
     },
     {
@@ -1263,8 +1263,8 @@
     },
     {
       "path": "modules/izin/style.css",
-      "sha256": "085860f701019074f7d0243bdf7ca183b9a456507d6631c8a85bc73df0397a44",
-      "bytes": 6281
+      "sha256": "0ab940b0cd7f851ea8bc9bf71537cb29b04eacc71004795b573e0f2bd376276f",
+      "bytes": 6568
     },
     {
       "path": "modules/izin/view.html",

@@ -1,0 +1,38 @@
+{
+  "name": "Telefon Bildirim İzni",
+  "roots": [
+    "modalBildirimIzni"
+  ],
+  "entrypoints": [
+    "fdBildirimIzniniErtele",
+    "fdBildirimIzniniOnayla",
+    "fdBildirimIzniPenceresiniKapat"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/bildirimizni/view.html",
+      "sha256": "61a1243f640948b5abe320ddc4b960fd75e62ab57088dfe8fce78dd5df9a2363",
+      "bytes": 944,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/bildirimizni/style.css",
+      "sha256": "222626339204df8d441c04ba3f63e0ffd86268181366ddbe45051bd97cc353ce",
+      "bytes": 68,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/bildirimizni/module.js",
+      "sha256": "7e921463d3e929801c4f88f0f2f9147db880796c5ac300fb7dbd60afd78fd56f",
+      "bytes": 1812,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
