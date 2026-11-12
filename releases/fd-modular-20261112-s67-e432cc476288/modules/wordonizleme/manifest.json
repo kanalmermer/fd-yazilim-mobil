@@ -1,0 +1,32 @@
+{
+  "name": "Personel Word Belge Önizlemesi",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/wordonizleme/view.html",
+      "sha256": "458d1b783d02ee19a9cce30e09857f94eca49b3d5aa7777a865b54e8e74b7ff1",
+      "bytes": 77,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/wordonizleme/style.css",
+      "sha256": "b37a047bb1e8ad88709682581899c1ae20f93df03eb6bc89700bf5c1ddf91182",
+      "bytes": 70,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/wordonizleme/module.js",
+      "sha256": "489072c684452ef3cc1ea3c52c168a1b8f463295a3c81b057e54ce8fc48df126",
+      "bytes": 3602,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
