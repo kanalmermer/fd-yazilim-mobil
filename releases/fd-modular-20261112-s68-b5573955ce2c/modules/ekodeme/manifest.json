@@ -1,0 +1,66 @@
+{
+  "name": "Ek Ödeme",
+  "roots": [
+    "ekOdemeApp",
+    "modalEkOdemeHareketleri"
+  ],
+  "entrypoints": [
+    "openEkOdemeApp",
+    "ekOdemeAyiDegistir",
+    "ekOdemeOncekiAy",
+    "ekOdemeAnahtari",
+    "ekOdemeKaydiBul",
+    "ekOdemeDonemTutariBul",
+    "ekOdemeHareketToplami",
+    "ekOdemeKaydininHareketleriniDuzelt",
+    "ekOdemeKayitlariniDuzelt",
+    "ekOdemeAylariniGetir",
+    "ekOdemeBakiyeHesapla",
+    "ekOdemeCizelgesiniHazirla",
+    "ekOdemeleriKaydet",
+    "ekOdemeOdenenYazilirken",
+    "ekOdemeOdenenGuncelle",
+    "ekOdemeHareketleriniKapat",
+    "ekOdemeHareketExcelIndir",
+    "ekOdemeHareketPdfIndir",
+    "ekOdemeExcelIndir",
+    "ekOdemePdfIndir",
+    "ekOdemeGoruntuAl",
+    "ekOdemeHareketSatirlari",
+    "ekOdemeHareketleriniAc",
+    "ekOdemeHareketDuzenle",
+    "ekOdemeHareketSil"
+  ],
+  "writeOperations": [
+    "ekOdemeleriKaydet",
+    "ekOdemeOdenenGuncelle",
+    "ekOdemeHareketDuzenle",
+    "ekOdemeHareketSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/ekodeme/view.html",
+      "sha256": "788564069c00424f3b78acb14b6c0acfd29c17c4a06952b2024cc7df8c97fdf3",
+      "bytes": 2866,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/ekodeme/style.css",
+      "sha256": "aafdb7c80dbec262ba15b5ab98a568e723d90755efe395c9016a66d94526cd83",
+      "bytes": 137,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/ekodeme/module.js",
+      "sha256": "39f2f0b897684e9f6e7a7ab1dd594bd70efe9a4296c913446cb1bf2d981869fe",
+      "bytes": 27203,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
