@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s67-a8231f36f10d",
+  "release": "fd-modular-20261112-s68-07305f508b88",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "06fded19c351e1d50c16c2a1e9651024c1d6d8ba2fe6da8598a4e250445fcb4b",
+      "sha256": "751759e0f1f19aabdaa003445def015e757e4f5ff7218b0680248b545c3ccf3b",
       "bytes": 67995
     },
     {
@@ -2097,6 +2097,41 @@
       "bytes": 12533
     },
     {
+      "path": "shared/notifications/delivery-and-acknowledgement.js",
+      "sha256": "8f0f7f1c6e55a8f68f0c36896fd5334fd6ccd29da8d3463c34771f3ebd5bbae7",
+      "bytes": 22199
+    },
+    {
+      "path": "shared/notifications/privacy-notice.js",
+      "sha256": "65a3cb0ccc960ea4ae34e61b174d192c34a6ae341c6e214b474ed7c93aa14018",
+      "bytes": 6930
+    },
+    {
+      "path": "shared/output/core.js",
+      "sha256": "2cd8b767ea4676954a7883d96fd13fd51ef07459b13c69fbe945d39d5f0219aa",
+      "bytes": 88459
+    },
+    {
+      "path": "shared/output/pdf-and-filter.css",
+      "sha256": "7336484b04ab8ffcd7d14bb7cb24098796cd56d45aa66b166cfc387af4a038a0",
+      "bytes": 718
+    },
+    {
+      "path": "shared/output/pdf-and-filter.js",
+      "sha256": "c0289e8142b2aa0e3f79348cd4d78ed76690191e3aabd2fbef662d07d88d8491",
+      "bytes": 14096
+    },
+    {
+      "path": "shared/output/ui.css",
+      "sha256": "72b6b0301e0f81373a649b51ae01a6fc5256ab3dd92cc11ab9ed5e5fc67b3153",
+      "bytes": 5230
+    },
+    {
+      "path": "shared/output/ui.js",
+      "sha256": "4d8e560055d61e57ecd5f46e771bb03f4953c613db229fe280061138a6566c58",
+      "bytes": 31764
+    },
+    {
       "path": "shared/output-runtime.js",
       "sha256": "bf3a39b7cc946e68984a38b902c5e96d5d028fa5c7577f0788ab36c79c85de04",
       "bytes": 16719
@@ -2157,6 +2192,26 @@
       "bytes": 230377
     },
     {
+      "path": "shared/personnel-templates/catalog.js",
+      "sha256": "74385f7e50d7005e42f26a3914390cd9ed6c0dde4957dee7bf0b39cf556a5066",
+      "bytes": 10787
+    },
+    {
+      "path": "shared/personnel-templates/drive-preview-entrypoints.js",
+      "sha256": "9e8ae687fc2df456463c7bc60931124611f24064af4435dae8ca6ec0f20dee69",
+      "bytes": 1751
+    },
+    {
+      "path": "shared/personnel-templates/payroll-document-entrypoints.js",
+      "sha256": "30b54b95c91dd291b41fc704f823770fa857d5f636d539ce6dcee571f0d99c42",
+      "bytes": 2727
+    },
+    {
+      "path": "shared/personnel-templates/payroll-document.css",
+      "sha256": "6363e124bdb50fc17a1a9c582c2bc1bb6cb1caa6ec8d1012a0790e7d1083d512",
+      "bytes": 384
+    },
+    {
       "path": "shared/policy-badges.css",
       "sha256": "2445df3449b665fda1f860c74e46cf6f1ee6f088dcfcc1f72bd392ccfb684d0f",
       "bytes": 1119
@@ -2190,6 +2245,106 @@
       "path": "shared/title-data.js",
       "sha256": "d5a60d5070cb9eec0d0c8f735196cbc937d43a5147179a188529a14156e60fff",
       "bytes": 135429
+    },
+    {
+      "path": "shared/ui-compat/08.css",
+      "sha256": "3803752109844b3169585a86be01f783732cbe9e12af968573fc1b2dd10244c9",
+      "bytes": 466
+    },
+    {
+      "path": "shared/ui-compat/10.css",
+      "sha256": "109d6b50e7ca113adaada3fcce01e51737e0595c4e4943ecdc7d38f4cd54c362",
+      "bytes": 1651
+    },
+    {
+      "path": "shared/ui-compat/13.css",
+      "sha256": "120459e52d2e1eb54eb1235ef8891a692e7bbf323f6b46a781e86779c13d84a8",
+      "bytes": 1667
+    },
+    {
+      "path": "shared/ui-compat/base.css",
+      "sha256": "81c7cc13b918463f661958da66a67b9bccef6f5161fcd19b1c71078cd37f35ad",
+      "bytes": 79130
+    },
+    {
+      "path": "shared/ui-compat/evrakOnizlemeStilleri.css",
+      "sha256": "5580816cf58b3012eca8afe820413f2f19e641485e225e99d306ea9f86ed1b74",
+      "bytes": 15448
+    },
+    {
+      "path": "shared/ui-compat/evrakTakipScripti.js",
+      "sha256": "ab6bb8d4a5875a1c7d4967b7876024f72a5160361c29c8c526cc4cfc04f4a957",
+      "bytes": 10706
+    },
+    {
+      "path": "shared/ui-compat/fdAttendanceBalanceDisplayV268.css",
+      "sha256": "21de1d8be38d1ad2feea1c5e67ce476ed76c0fb71fbda24f05850c43c5dbbfed",
+      "bytes": 1523
+    },
+    {
+      "path": "shared/ui-compat/fdAttendanceRenderPerformance.js",
+      "sha256": "6c0dc29405bcdad4a9e37b5e45555c9575244b14d61b0da7848d96383d35e2f3",
+      "bytes": 963
+    },
+    {
+      "path": "shared/ui-compat/fdHesapDonemKorumaV220.js",
+      "sha256": "95d3e230b6fabefd3ff3e9fffc0b6caff548591de9b4f1407e30f09f8a524770",
+      "bytes": 4222
+    },
+    {
+      "path": "shared/ui-compat/fdHizliBelgeVardiyaFiltreV150.js",
+      "sha256": "9e2816f374e94561a4539b5a8577b68c601a1f58cfd504fc87697ddffc48d271",
+      "bytes": 1016
+    },
+    {
+      "path": "shared/ui-compat/fdPersonelOkunurlukV220.css",
+      "sha256": "ff5ae8d353bcfbc7e8d3c383d951e13380088f1f751bfc307a761cac95bfcdbb",
+      "bytes": 1008
+    },
+    {
+      "path": "shared/ui-compat/fdPersonelTasarimV217.js",
+      "sha256": "851c2557f65fe8e3d33d8fa85090cba50a85bc9f60ff919ff66680b32c2877a3",
+      "bytes": 1860
+    },
+    {
+      "path": "shared/ui-compat/fdPersonelTasarimV217Style.css",
+      "sha256": "0976c33eb2b48671e7efd08de5a6dc5789f8d01d888bbb7b85b95003fcc77d21",
+      "bytes": 5152
+    },
+    {
+      "path": "shared/ui-compat/fdTapuTasarimV226.css",
+      "sha256": "2df79aa96f0611df87df9f07f85ec4fb11f48331a234844d1d01d6aff5b8e434",
+      "bytes": 741
+    },
+    {
+      "path": "shared/ui-compat/fdTopluDuzeltmelerV132.js",
+      "sha256": "2d9f431b3832f058d56f4b3584bf92a4bf97dfbe9b9086aebcf904feb9060961",
+      "bytes": 11790
+    },
+    {
+      "path": "shared/ui-compat/fdTopluDuzeltmelerV132Stil.css",
+      "sha256": "7c394563fc8c11b6cb7f324e165ebb45471e8fa819b9e870878188427a7eec78",
+      "bytes": 2525
+    },
+    {
+      "path": "shared/ui-compat/fdV144KatmanOturumAbonelik.js",
+      "sha256": "c82df1a39684353b302af10e2fd3d7f87817b85144528d66855f005b487d130a",
+      "bytes": 4467
+    },
+    {
+      "path": "shared/ui-compat/fdVarlikKisileriV150Style.css",
+      "sha256": "3197afc24a208fbc2411a8cd9651211a272dcd23f81e238dd3c23c2b1185781d",
+      "bytes": 273
+    },
+    {
+      "path": "shared/ui-compat/magicpassDurumSutunuKesinHiza.css",
+      "sha256": "3c02abade7e8eafddab7fc3e23d915cfc532149ad7a52d38dc021f6ece60ff2d",
+      "bytes": 1477
+    },
+    {
+      "path": "shared/ui-compat/tapuCksStili.css",
+      "sha256": "39ee202ba38e32f9e6d6bb06773381852314d0e7a27ae3186f85b53a2e170538",
+      "bytes": 1505
     },
     {
       "path": "shared/user-accounts.js",
@@ -2230,6 +2385,16 @@
       "path": "shared/weekly-roster-safety.js",
       "sha256": "bf61ab4e06fffaad823d24278d87d94cf0a67c33dab0fd1f6a20d680e379a892",
       "bytes": 2729
+    },
+    {
+      "path": "shared/whatsapp/personnel-preferences.js",
+      "sha256": "fabbb6d186ec06ea9f6633a336b1379699f0ee80f363bea1de03e9f8eb5436d0",
+      "bytes": 13244
+    },
+    {
+      "path": "shared/whatsapp/price-template-inspector.js",
+      "sha256": "763cb94fe5d48f5048f9ae17a90652e140052b3e5ec25039b146c9c8db655ec8",
+      "bytes": 14375
     },
     {
       "path": "shared/work-center-common.css",
