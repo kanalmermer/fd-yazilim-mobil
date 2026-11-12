@@ -1,0 +1,32 @@
+<div id="policeTakipApp" style="display:none;">
+    <div class="app-layout"><main style="width:100%;padding:22px;max-width:1500px;margin:0 auto;">
+        <section id="policeOzetleri" class="personel-summary-grid police-ozet-grid"></section>
+        <div class="card">
+            <div class="filter-bar police-filtre"><input id="policeArama" placeholder="🔍 Poliçe no, şirket, plaka, UAVT veya varlık ara..." oninput="policeListesiniCiz()"><select id="policeHedefFiltre" onchange="policeListesiniCiz()"><option value="">Tüm Varlıklar</option></select><select id="policeTurFiltre" onchange="policeListesiniCiz()"><option value="">Tüm Poliçe Türleri</option></select><select id="policeDurumFiltre" onchange="policeListesiniCiz()"><option value="">Tüm Durumlar</option><option value="gecen">Süresi Geçen</option><option value="yaklasan">Yaklaşan</option><option value="aktif">Aktif</option><option value="planli">Başlamadı</option></select><button type="button" class="btn-submit" style="width:auto;margin:0;padding:9px 13px;white-space:nowrap" onclick="policeFormunuAc()">+ Yeni Poliçe</button></div>
+            <div class="table-wrapper"><table id="policeTakipTablosu"><thead><tr><th>#</th><th>Varlık</th><th>Poliçe Türü</th><th>Şirket / Poliçe No</th><th>Başlangıç</th><th>Bitiş</th><th>Prim</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="policeTakipBody"></tbody></table></div>
+        </div>
+    </main></div>
+</div>
+
+<div id="modalPoliceKayit" class="modal-overlay" style="z-index:4500;">
+    <div class="modal-card" style="max-width:960px;">
+        <div class="modal-header"><h3 id="policeModalBaslik">🛡️ Yeni Poliçe</h3><button type="button" class="modal-close" onclick="modalKapat('modalPoliceKayit')">✕</button></div>
+        <form id="policeForm" class="modal-body" onsubmit="policeKaydet(event)"><input type="hidden" id="policeEditId"><div class="profile-layout">
+            <div class="form-group"><label>Varlık Türü</label><select id="policeHedefTip" required onchange="policeHedefSecenekleriniDoldur()"></select></div>
+            <div class="form-group" id="policeHedefSecimGrubu"><label id="policeHedefEtiket" for="policeHedefAc">Varlık</label><div class="police-varlik-secici" id="policeHedefSecici"><button id="policeHedefAc" type="button" class="police-varlik-ac" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls="policeHedefListe" aria-labelledby="policeHedefEtiket policeHedefGorunen" onclick="policeHedefListesiniAc()" onkeydown="policeHedefKlavye(event)"><span id="policeHedefGorunen">Varlık seçin</span><span class="police-varlik-ok" aria-hidden="true">⌄</span></button><select id="policeHedefId" tabindex="-1" aria-hidden="true" required onchange="policeHedefBilgisiniGuncelle();policeHedefSeciciGuncelle()"></select><div id="policeHedefPanel" class="police-varlik-panel" hidden><div class="police-varlik-arama"><input id="policeHedefArama" type="search" placeholder="Varlık adı veya UAVT ara" aria-label="Varlık listesinde ara" aria-controls="policeHedefListe" autocomplete="off" oninput="policeHedefAramasiniUygula()" onkeydown="policeHedefKlavye(event)"><button id="policeHedefAramaTemizle" type="button" title="Aramayı temizle" aria-label="Varlık aramasını temizle" disabled onclick="policeHedefAramasiniTemizle()">×</button></div><small id="policeHedefAramaOzeti" role="status" aria-live="polite"></small><div id="policeHedefListe" role="listbox" aria-label="Varlıklar"></div></div></div></div>
+            <div class="form-group" id="policeDigerAdGrubu" style="display:none"><label>Varlık Adı</label><input id="policeDigerAd" placeholder="Varlık adını yazın"></div>
+            <div class="form-group"><label id="policeEslesmeKoduEtiket">Plaka / UAVT / Referans</label><input id="policeEslesmeKodu"></div>
+            <div class="form-group"><label>Poliçe Türü</label><select id="policeTur" required></select></div>
+            <div class="form-group"><label>Sigorta Şirketi</label><input id="policeSirket" list="policeSirketListesi" required autocomplete="off"><datalist id="policeSirketListesi"></datalist></div>
+            <div class="form-group"><label>Poliçe Numarası</label><input id="policeNo" required></div>
+            <div class="form-group"><label>Poliçe / Prim Bedeli</label><input id="policeBedel" inputmode="decimal" oninput="paraGirisiVirgulluFormatla(this)" onblur="paraGirisiIkiOndalikFormatla(this)" placeholder="0,00"></div>
+            <div class="form-group"><label>Başlangıç Tarihi</label><input id="policeBaslangic" type="date" required onchange="policeBitisiniBirYilSonrayaAyarla()"></div>
+            <div class="form-group"><label>Bitiş Tarihi</label><input id="policeBitis" type="date" required><small>Başlangıç girilince bir yıl sonrası otomatik gelir; istediğiniz gibi değiştirebilirsiniz.</small></div>
+            <div class="form-group" style="grid-column:1/-1"><label>Poliçe Belgesi (PDF veya Görsel)</label><input id="policeBelge" type="file" accept="application/pdf,image/*"><small>Yeni dosya seçmezseniz düzenlemede mevcut belge korunur.</small></div>
+            <div class="form-group" style="grid-column:1/-1"><label>Açıklama / Teminat Notları</label><textarea id="policeAciklama" rows="3"></textarea></div>
+        </div><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px"><button id="policeModalSilBtn" type="button" class="btn-modern btn-del-modern" style="display:none;min-width:110px" onclick="policeModalKaydiniSil()">🗑️ Poliçeyi Sil</button><button id="policeKaydetBtn" type="submit" class="btn-submit" style="width:auto;min-width:190px;margin:0 0 0 auto">💾 Poliçeyi Kaydet</button></div></form>
+    </div>
+</div>
+<div id="modalPoliceVarlikGecmis" class="modal-overlay"></div>
+<div id="modalPoliceOnizleme" class="modal-overlay evrak-preview-modal"><div class="modal-card"><div class="modal-header"><h3 id="policeOnizlemeBaslik">Poliçe Görüntüleme</h3><button class="modal-close" type="button" onclick="policeOnizlemeyiKapat()">✕</button></div><div class="evrak-preview-body"><div data-fd-policy-preview-frame></div></div><div class="evrak-preview-actions"><button id="policeOnizlemeIndirBtn" class="btn-modern btn-detail-modern" type="button" onclick="policeOnizlemeIndir()">⬇ İndir</button><button class="btn-submit" type="button" onclick="policeOnizlemeyiDrivedaAc()">↗ Drive'da Aç</button></div></div></div>
+
