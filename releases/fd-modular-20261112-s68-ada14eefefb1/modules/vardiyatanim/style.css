@@ -1,0 +1,16 @@
+
+    .vardiya-tanim-yonetimi{display:grid;grid-template-columns:235px minmax(0,1fr);gap:14px;padding-top:14px}
+    .vardiya-tanim-sol{overflow:hidden;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc}
+    .vardiya-tanim-sol-baslik{display:flex;align-items:center;justify-content:space-between;padding:10px 11px;border-bottom:1px solid #cbd5e1;background:#e2e8f0}
+    .vardiya-tanim-sol-baslik button{width:29px;height:27px;border:0;border-radius:7px;background:#16a34a;color:#fff;font-size:1.15rem;font-weight:900;cursor:pointer}
+    #vardiyaTanimListesi{max-height:430px;overflow:auto;padding:5px}
+    #vardiyaTanimListesi button{display:block;width:100%;padding:9px 10px;border:0;border-bottom:1px solid #e2e8f0;background:transparent;text-align:left;cursor:pointer;font-weight:780}
+    #vardiyaTanimListesi button:hover{background:#e0f2fe}
+    #vardiyaTanimListesi button.active{border-radius:7px;background:#bfdbfe;color:#1d4ed8;box-shadow:inset 4px 0 #2563eb}
+    .vardiya-tanim-form{padding:13px;border:1px solid #dbe3ed;border-radius:10px;background:#fff}
+    .vardiya-tanim-secimler{display:grid;gap:8px;margin-top:8px;padding:11px;border:1px solid #e2e8f0;border-radius:9px;background:#f8fafc}
+    .vardiya-tanim-secimler label{display:flex;align-items:center;gap:8px;font-weight:700}
+    .vardiya-tanim-secimler input{width:17px;height:17px}
+    .vardiya-tanim-aksiyonlar{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .vardiya-tanim-aksiyonlar .btn-submit{width:auto;margin:0;padding:9px 20px}
+    @media(max-width:800px){.vardiya-tanim-yonetimi{grid-template-columns:1fr}#vardiyaTanimListesi{max-height:180px}}
