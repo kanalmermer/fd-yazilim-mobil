@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s67-25de8cf5f681",
+  "release": "fd-modular-20261112-s67-8cd732ac7340",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ac2d0034dd81439d280322741be84fbe98dfdb7d788cb19d238c07d9fe2b8c1b",
+      "sha256": "22c5b3c649024395cbbc132bfff04aa1949b8f45bda2af505b0755de744d780b",
       "bytes": 67995
     },
     {
@@ -1453,23 +1453,23 @@
     },
     {
       "path": "modules/personelbelge/manifest.json",
-      "sha256": "2c0e12addec664702eeed096e4de25c9f80d1805d8c934fe1315671d9d90cf31",
+      "sha256": "4c0642f15a1f06ed472d790953eb2df7ea3376b2ffc5661ee2e431fca276f447",
       "bytes": 1135
     },
     {
       "path": "modules/personelbelge/module.js",
-      "sha256": "4517684bdfee8928d40827ef95c41795fc04cbd0aebe8e35f198e45126bf999c",
-      "bytes": 19016
+      "sha256": "c2ee839a7ceed15664485d8e70fb3a7490405988580e17d89d932f9288c33c6a",
+      "bytes": 24573
     },
     {
       "path": "modules/personelbelge/style.css",
-      "sha256": "203e931f2b17b1bd79a9761bcca8c4c8ae6f4259e393753d641762c1392e4b65",
-      "bytes": 2973
+      "sha256": "c3911e70f4d2fefef1a1e6ad31bcbdf5b7fbdfe57cfef7e218d5c01a3252ea89",
+      "bytes": 4711
     },
     {
       "path": "modules/personelbelge/view.html",
-      "sha256": "88c54c010bf550688d165386b2b410d45e960269240e20010d124d9d415037a9",
-      "bytes": 2083
+      "sha256": "1b1c87f04a848589bf64a19b7a0bd1e2fe5b732c3b328195056b5b2c559ec3c6",
+      "bytes": 3021
     },
     {
       "path": "modules/personelcikti/manifest.json",

@@ -1,0 +1,15 @@
+
+    .magicpass-toplu-saat-modal .modal-header { background:linear-gradient(135deg,#f8fafc,#f5f3ff); }
+    .magicpass-toplu-saat-bilgi { margin-bottom:14px;padding:12px 14px;border:1px solid #ddd6fe;border-radius:11px;background:#f5f3ff;color:#5b21b6;line-height:1.5;font-size:.78rem; }
+    .magicpass-toplu-saat-personel-kutu { margin-top:4px;border:1px solid #dbe5ef;border-radius:12px;overflow:hidden;background:#f8fafc; }
+    .magicpass-toplu-saat-personel-baslik { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border-bottom:1px solid #dbe5ef;background:#eef2ff; }
+    .magicpass-toplu-saat-personel-baslik > div { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+    .magicpass-toplu-saat-personel-baslik label,.magicpass-toplu-saat-secenekler label { display:flex!important;align-items:center!important;gap:6px;margin:0!important;font-size:.74rem;font-weight:750;color:#334155; }
+    .magicpass-toplu-saat-personeller { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px;max-height:270px;overflow:auto; }
+    .magicpass-toplu-saat-personeller label { display:grid!important;grid-template-columns:18px minmax(0,1fr)!important;gap:8px;align-items:start!important;margin:0!important;padding:9px 10px!important;border:1px solid #e2e8f0;border-radius:9px;background:#fff;cursor:pointer; }
+    .magicpass-toplu-saat-personeller label:hover { border-color:#a78bfa;background:#faf5ff; }
+    .magicpass-toplu-saat-personeller input { width:16px!important;height:16px!important;margin:1px 0 0!important; }
+    .magicpass-toplu-saat-personeller small { display:block;margin-top:2px;color:#64748b; }
+    .magicpass-toplu-saat-secenekler { display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;padding:10px 12px;border:1px solid #e2e8f0;border-radius:10px;background:#fff; }
+    @media(max-width:680px){.magicpass-toplu-saat-personeller{grid-template-columns:1fr}}
+    @media(max-width:680px){.magicpass-toplu-saat-personel-baslik{align-items:flex-start;flex-direction:column}}
