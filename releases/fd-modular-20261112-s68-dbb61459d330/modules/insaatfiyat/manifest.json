@@ -1,0 +1,86 @@
+{
+  "name": "Fiyat ve Teklifler",
+  "roots": [
+    "insaatFiyatApp",
+    "fdFtDosyaModal",
+    "fdFtYeniSayfaModal",
+    "fdFtEditorModal",
+    "fdFtGecmisModal",
+    "fdFtBelgeModal",
+    "fdFtUrunListesi",
+    "fdFtFirmaListesi",
+    "fdFtBirimListesi",
+    "fdFtBelgeInput"
+  ],
+  "entrypoints": [
+    "fdFiyatV2DosyaAra",
+    "fdFiyatV2UrunAra",
+    "fdFiyatV2SayfaAra",
+    "fdFiyatV2DosyaSec",
+    "fdFiyatV2Gorunum",
+    "fdFiyatV2SayfaAc",
+    "fdFiyatV2Excel",
+    "fdFiyatV2Pdf",
+    "fdFiyatV2Goruntu",
+    "fdFiyatV2BelgeSec",
+    "fdFiyatV2BelgeAc",
+    "fdFiyatV2BelgeKapat",
+    "fdFiyatV2BelgeleriYukle",
+    "fdFiyatV2BelgeSil",
+    "fdFiyatV2GecmisAc",
+    "fdFiyatV2DosyaFormuAc",
+    "fdFiyatV2DosyaKaydet",
+    "fdFiyatV2YeniSayfaAc",
+    "fdFiyatV2ZamYap",
+    "fdFiyatV2YeniSayfaKaydet",
+    "fdFiyatV2EditorSatirTasi",
+    "fdFiyatV2UrunSatiriEkle",
+    "fdFiyatV2Duzenle",
+    "fdFiyatV2EditorKaydet",
+    "fdFiyatV2SayfaSil",
+    "fdFiyatV2Yenile",
+    "openInsaatFiyatApp",
+    "fdFiyatV2SeciliDosyaKimligi"
+  ],
+  "writeOperations": [
+    "fdFiyatV2BelgeSec",
+    "fdFiyatV2BelgeleriYukle",
+    "fdFiyatV2BelgeSil",
+    "fdFiyatV2DosyaFormuAc",
+    "fdFiyatV2DosyaKaydet",
+    "fdFiyatV2YeniSayfaAc",
+    "fdFiyatV2ZamYap",
+    "fdFiyatV2YeniSayfaKaydet",
+    "fdFiyatV2EditorSatirTasi",
+    "fdFiyatV2UrunSatiriEkle",
+    "fdFiyatV2Duzenle",
+    "fdFiyatV2EditorKaydet",
+    "fdFiyatV2SayfaSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/insaatfiyat/view.html",
+      "sha256": "695a1c6917f19ffc46b3307b9ffd8abfc527590af13d445cac35d95dab5374ae",
+      "bytes": 6408,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/insaatfiyat/style.css",
+      "sha256": "8d1de4ef78bd29e9c61665a7fef1b239f1eaa09ad323d2c4dba114ac8190aede",
+      "bytes": 18761,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/insaatfiyat/module.js",
+      "sha256": "5d50a5be1c29e25a74d4cadc64e34545c99666c7c49752fd32af4da010cf69c2",
+      "bytes": 64004,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s68-91f9e4e8adf2",
+  "release": "fd-modular-20261112-s68-dbb61459d330",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "d80c189dcaa2817b486fa3ce2f0f5f12eae8a3872f295ca80b44df41ef677a66",
+      "sha256": "c7215f8f56a44fe1016c914b2f347b8f3657d88f755bfc0582c829a1fe8bc855",
       "bytes": 67996
     },
     {
@@ -933,13 +933,13 @@
     },
     {
       "path": "modules/cks/manifest.json",
-      "sha256": "b8d8e8f588ac819d58d5c9a700a21853c559a6ea5c054e1d0f2a7085898fcf9a",
+      "sha256": "491d302858acd04ada45bc328804cdd03a737ef9b2994c9d4762f7392c3139e1",
       "bytes": 2145
     },
     {
       "path": "modules/cks/module.js",
-      "sha256": "422270ed337e23170c1300e4c0d8d322e2a0a4b7ae152b8a1abfe902c7a82341",
-      "bytes": 105687
+      "sha256": "e8730d2499e0cf80846799420637159561c0e6fe34fa8d02074076431722277a",
+      "bytes": 106458
     },
     {
       "path": "modules/cks/style.css",
