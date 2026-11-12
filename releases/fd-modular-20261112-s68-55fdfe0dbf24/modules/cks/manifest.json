@@ -1,0 +1,91 @@
+{
+  "name": "ÇKS Takip",
+  "roots": [
+    "modalTapuCksGenel",
+    "modalTapuCksKayit",
+    "cksTakipApp",
+    "modalCksYilBelge",
+    "fdCksPdfKontrolModal",
+    "fdCksTapuSecModal",
+    "fdCksCokluDuzenleModal"
+  ],
+  "entrypoints": [
+    "tapuCksFiltreleriYenile",
+    "tapuCksParseller",
+    "tapuCksFormuAc",
+    "tapuCksFormuKapat",
+    "tapuCksKaydet",
+    "tapuCksSil",
+    "tapuCksGenelAc",
+    "tapuCksGenelKapat",
+    "tapuCksGenelCiz",
+    "fdCksCiktiVerisi",
+    "cksParselDetayAc",
+    "cksListeyeDon",
+    "cksAktifParseleYeniKayit",
+    "cksFiltreDegisti",
+    "cksYilDegisti",
+    "cksFiltreTemizle",
+    "cksSayfaDegistir",
+    "cksSayfaBoyutuDegistir",
+    "cksTakipYenile",
+    "openCksTakipApp",
+    "cksYilBelgeSec",
+    "cksYilBelgeYukle",
+    "cksYilBelgeGoruntule",
+    "cksYilBelgeKapat",
+    "cksYilBelgeDriveAc",
+    "cksYilBelgeIndir",
+    "cksYilBelgeSil",
+    "cksBelgeSahipDegisti",
+    "fdCksSatirDahil",
+    "fdCksSatirTapuSec",
+    "fdCksTapuSecListele",
+    "fdCksTapuAta",
+    "fdCksPdfKontrolKapat",
+    "fdCksPdfOnayla",
+    "fdCksCokluKayitSec",
+    "fdCksCokluKayitDuzenle",
+    "fdCksCokluKayitSil",
+    "fdCksYetimPdfKayitlariniTemizle"
+  ],
+  "writeOperations": [
+    "tapuCksFormuAc",
+    "tapuCksKaydet",
+    "tapuCksSil",
+    "cksAktifParseleYeniKayit",
+    "cksYilBelgeSec",
+    "cksYilBelgeYukle",
+    "cksYilBelgeSil",
+    "fdCksPdfOnayla",
+    "fdCksCokluKayitDuzenle",
+    "fdCksCokluKayitSil",
+    "fdCksYetimPdfKayitlariniTemizle"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/cks/view.html",
+      "sha256": "1ce53d6e6e8bc16af94386634fcba3f08a80d2243133f4c2076e71e2082694ac",
+      "bytes": 9929,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/cks/style.css",
+      "sha256": "c9a309c27018c15141f7a022b880043b834aa1a59eecce3d5c9dfda867e0c77c",
+      "bytes": 16825,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/cks/module.js",
+      "sha256": "57d2fbeb0c821ff0f0b3c2aa202807c7003148b5fe3201022a5e409b5a65e40e",
+      "bytes": 92325,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
