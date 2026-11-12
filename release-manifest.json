@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s68-ae787b72d043",
+  "release": "fd-modular-20261112-s68-91f9e4e8adf2",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "47d2e3e2bd97889bbba59a6a8725a2dd63c41ff2a14f60d539bbc39a3f2b602d",
-      "bytes": 67995
+      "sha256": "d80c189dcaa2817b486fa3ce2f0f5f12eae8a3872f295ca80b44df41ef677a66",
+      "bytes": 67996
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -933,18 +933,18 @@
     },
     {
       "path": "modules/cks/manifest.json",
-      "sha256": "e4c138b5132c9e13622b1ce64d0efcd1961e35431c296150e77e2f9b8b309162",
-      "bytes": 2144
+      "sha256": "b8d8e8f588ac819d58d5c9a700a21853c559a6ea5c054e1d0f2a7085898fcf9a",
+      "bytes": 2145
     },
     {
       "path": "modules/cks/module.js",
-      "sha256": "21af51b0c8fae866998cb991eda91cff4564c37c294d21c8ae98ea606fb7f1f6",
-      "bytes": 95466
+      "sha256": "422270ed337e23170c1300e4c0d8d322e2a0a4b7ae152b8a1abfe902c7a82341",
+      "bytes": 105687
     },
     {
       "path": "modules/cks/style.css",
-      "sha256": "dc7afb85ac03a845f8377bb514d5e1eb820d3f31b72bd1493ddecb6eea9b8466",
-      "bytes": 17876
+      "sha256": "a2c140656058fe4fe56323c94c9d454c78ee3bbe41e69ab531934c09b35650c9",
+      "bytes": 19718
     },
     {
       "path": "modules/cks/view.html",
@@ -2108,8 +2108,8 @@
     },
     {
       "path": "shared/output/core.js",
-      "sha256": "2cd8b767ea4676954a7883d96fd13fd51ef07459b13c69fbe945d39d5f0219aa",
-      "bytes": 88459
+      "sha256": "343901007f62964502aec552b0c319d47e36db592800cfd01ba4e4d39887ed3d",
+      "bytes": 89156
     },
     {
       "path": "shared/output/pdf-and-filter.css",
@@ -2128,8 +2128,8 @@
     },
     {
       "path": "shared/output/ui.js",
-      "sha256": "4d8e560055d61e57ecd5f46e771bb03f4953c613db229fe280061138a6566c58",
-      "bytes": 31764
+      "sha256": "cc7683bb68aadc1d32d502c4db3f9d98c2179833e29df6938b82f4eacb196081",
+      "bytes": 31809
     },
     {
       "path": "shared/output-runtime.js",

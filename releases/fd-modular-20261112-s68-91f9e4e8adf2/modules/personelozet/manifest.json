@@ -1,0 +1,37 @@
+{
+  "name": "Personel Dashboard ve Yaklaşan Tarihler",
+  "roots": [
+    "fdPersonelOzetPanelleri"
+  ],
+  "entrypoints": [
+    "openPersonelDashboard",
+    "renderPersonelDashboardEkleri"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personelozet/view.html",
+      "sha256": "0b7aa97a4a4c2a6e9652a67c06b3c541f08817325f89cd91bb933d23e9469f7d",
+      "bytes": 1619,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelozet/style.css",
+      "sha256": "4e8d3d53c7eb80b148bc4c8ab22f3620d14c9431b4f63cf6065cc8d709c76e61",
+      "bytes": 1098,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelozet/module.js",
+      "sha256": "b1553a94d0beae3f97c276ecdef2e33ef10bf18aa8c8bad5cd3c74daa530b697",
+      "bytes": 7264,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
