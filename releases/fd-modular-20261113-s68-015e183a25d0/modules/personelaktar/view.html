@@ -1,0 +1,21 @@
+<div id="modalPersonelTopluAktar" class="modal-overlay">
+    <div class="modal-card" style="max-width:1120px;">
+        <div class="modal-header">
+            <h3>📤 Personel Excel Toplu Aktarım</h3>
+            <button class="modal-close" onclick="personelTopluAktarModaliniKapat()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div id="personelTopluAktarOzet" style="margin-bottom:14px;"></div>
+            <div class="table-wrapper" style="max-height:430px;">
+                <table>
+                    <thead><tr><th>Excel Satırı</th><th>T.C. No</th><th>Ad Soyad</th><th>Şube</th><th>Görev</th><th>Ücret</th><th>Durum</th></tr></thead>
+                    <tbody id="personelTopluAktarBody"></tbody>
+                </table>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
+                <button type="button" class="btn-cancel" style="margin:0;" onclick="personelTopluAktarModaliniKapat()">İptal</button>
+                <button type="button" class="btn-submit" id="btnPersonelTopluAktarOnay" style="width:auto;margin:0;" onclick="personelTopluAktarimiKaydet()">Geçerli Kayıtları Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

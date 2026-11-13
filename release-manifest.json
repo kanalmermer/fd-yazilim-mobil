@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261113-s68-824c6413b0bc",
+  "release": "fd-modular-20261113-s68-015e183a25d0",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "cedcda3e6e272662c69d5306996065cf89d6f5b6058e8bcaf5cfd81b02feb4a2",
+      "sha256": "20d5a3865902dabda0f2ce0ec31dea621c3e12ee8247f49b69d678a02f714ebd",
       "bytes": 67996
     },
     {
@@ -83,8 +83,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "e50ff8c7634b9a28d200bc33eeef6ce34618f353ee3e4d6607c544e3d2da75bd",
-      "bytes": 63952
+      "sha256": "58b5e4a65b648ab12ace1436302cc7a3ecbdbd56374409dac6f841d1a68d6b85",
+      "bytes": 66413
     },
     {
       "path": "core/document-entrypoints.js",
@@ -1193,13 +1193,13 @@
     },
     {
       "path": "modules/insaatfiyat/manifest.json",
-      "sha256": "eb6cd4aad32cb66fb0703125eaf52e49fe0ca2e136fba567de43ee01934068e8",
+      "sha256": "ccfebbf529e44051926d659c044ab277a699403df3a25209bdb5ff7a2461e877",
       "bytes": 2106
     },
     {
       "path": "modules/insaatfiyat/module.js",
-      "sha256": "5d50a5be1c29e25a74d4cadc64e34545c99666c7c49752fd32af4da010cf69c2",
-      "bytes": 64004
+      "sha256": "8c11b2d280b86494140119ec270b9d71963c3b041a7b82dd0d0b1c3bc341e4f5",
+      "bytes": 63925
     },
     {
       "path": "modules/insaatfiyat/style.css",
@@ -2038,8 +2038,8 @@
     },
     {
       "path": "shared/document-data.js",
-      "sha256": "0fe96fd4dfb7e26cb968812bc1b9d043577ee31bf3da733355679a348992d930",
-      "bytes": 4019
+      "sha256": "4e9ee75688fd14c86d5fe6e83700660148a3d2f2fcbed5f8376e1ef984d63341",
+      "bytes": 3602
     },
     {
       "path": "shared/edm-tracker.css",

@@ -1,0 +1,32 @@
+{
+  "name": "Personel Word Belgesi Hazırlama",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/wordbelge/view.html",
+      "sha256": "0685635a8d34a6f91bfc73b312c08ee3908e5ce5aab54a71d5ad12c9ff4c6d8e",
+      "bytes": 76,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/wordbelge/style.css",
+      "sha256": "3e36cf255fc246bf0e908120e645cebd92b86898600871cbb30658d8add85380",
+      "bytes": 69,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/wordbelge/module.js",
+      "sha256": "058d03344244290c0775c46663d2fbcd65673f597ddfb1c60b31345413a1b392",
+      "bytes": 10038,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
