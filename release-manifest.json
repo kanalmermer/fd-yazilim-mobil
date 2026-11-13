@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261112-s68-ada14eefefb1",
+  "release": "fd-modular-20261113-s68-06d287507e37",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ebe060e7ed22930019b91620eb5eb1e1a13ccaf3ebaa70724863cdea07de3585",
+      "sha256": "2f03e9edb1a601ddccfff4561d091caadac1c61e650d2996d556d9ea315b85a0",
       "bytes": 67996
     },
     {
@@ -753,13 +753,13 @@
     },
     {
       "path": "modules/avans/manifest.json",
-      "sha256": "5d93ff9c30d048bb49de17455de832942e1d83b195d5cbf85870a4138df92222",
+      "sha256": "cea9d98a867ef65190604dea66812987032ad0b218337aec0ab4b5561cf61819",
       "bytes": 1769
     },
     {
       "path": "modules/avans/module.js",
-      "sha256": "14c8848c60e153a4668d340a9d465eddc83cd4c8bf164bfbc9615a30d638f4ad",
-      "bytes": 54856
+      "sha256": "91c7b8907372cdb00248d2dd41fbb006c5f9ea127a9f3557c59f683aaf0865d8",
+      "bytes": 56442
     },
     {
       "path": "modules/avans/style.css",
@@ -1938,8 +1938,8 @@
     },
     {
       "path": "shared/advance-postponement.js",
-      "sha256": "513c3229f9529fff9dab702f891fd196ba0388179726375b96f8cb965d7f6f4d",
-      "bytes": 1875
+      "sha256": "9556d53f478364059d583a5992992e9e24e0fa291104d92d28f546eff1d77bbe",
+      "bytes": 3540
     },
     {
       "path": "shared/asset-people-data.js",

@@ -1,0 +1,72 @@
+{
+  "name": "Taşıma İrsaliyesi Takip",
+  "roots": [
+    "irsaliyeTakipApp",
+    "modalIrsaliyeFatura",
+    "modalIrsaliyePlakaGecmisi"
+  ],
+  "entrypoints": [
+    "irsaliyeBirimSecenekleriniYenile",
+    "openIrsaliyeTakipApp",
+    "irsaliyeFormTemizle",
+    "irsaliyeDuzenle",
+    "irsaliyeKaydet",
+    "irsaliyeFiltreliListe",
+    "irsaliyeListele",
+    "irsaliyeTumunuSec",
+    "irsaliyeSil",
+    "irsaliyeAciklamaMetni",
+    "irsaliyeMiktarSayiyaCevir",
+    "irsaliyeMiktarFormatla",
+    "irsaliyeFaturaGruplariniHesapla",
+    "irsaliyeFaturaGrupOzetiniCiz",
+    "irsaliyeFaturalandirAc",
+    "irsaliyeFaturaKapat",
+    "irsaliyeMetniniKopyala",
+    "irsaliyeFaturayiKaydet",
+    "irsaliyeExcelAl",
+    "irsaliyePdfAl",
+    "irsaliyePlakaGecmisKayitlari",
+    "irsaliyePlakaGecmisiAc",
+    "irsaliyePlakaGecmisiCiz",
+    "irsaliyePlakaTarihleriniTemizle",
+    "irsaliyePlakaGecmisiKapat",
+    "irsaliyePlakaGecmisiExcel",
+    "irsaliyePlakaGecmisiPdf",
+    "irsaliyeFaturaDuzenle"
+  ],
+  "writeOperations": [
+    "irsaliyeDuzenle",
+    "irsaliyeKaydet",
+    "irsaliyeSil",
+    "irsaliyeFaturalandirAc",
+    "irsaliyeFaturayiKaydet",
+    "irsaliyeFaturaDuzenle"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/irsaliye/view.html",
+      "sha256": "845761a7296c374666d7add3f2aac9e5482ea478c0d25f7c33e136149b40e26a",
+      "bytes": 6489,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/irsaliye/style.css",
+      "sha256": "590f49dcadefcfaee0f52f52331ca4d40a591761c74dad1e9204d39e750c1fc4",
+      "bytes": 2595,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/irsaliye/module.js",
+      "sha256": "cf25b502e3296dc8f41efa6897c96eaba313da1fcd541e407a99e45687e35e17",
+      "bytes": 26990,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

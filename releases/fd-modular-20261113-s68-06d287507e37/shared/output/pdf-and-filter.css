@@ -1,0 +1,10 @@
+
+.fd-v149-pdf-stage{margin:0 auto;background:#fff;color:#0f172a;font-family:Arial,sans-serif;box-sizing:border-box}
+.fd-v149-pdf-stage table{width:100%;border-collapse:collapse}
+.fd-v149-pdf-stage th,.fd-v149-pdf-stage td{border:1px solid #cbd5e1;padding:5px;white-space:normal;vertical-align:top}
+.fd-v149-pdf-stage th{background:#e2e8f0;color:#0f172a;font-weight:800}
+.fd-v149-pdf-stage tr{break-inside:avoid;page-break-inside:avoid}
+.fd-v149-docx-stage{width:max-content;min-width:100%;padding:18px;background:#cbd5e1;box-sizing:border-box}
+.fd-v149-docx-stage .docx-wrapper{padding:0!important;background:#cbd5e1!important}
+.fd-v149-docx-stage section.docx{margin:0 auto 16px!important;box-shadow:none!important}
+

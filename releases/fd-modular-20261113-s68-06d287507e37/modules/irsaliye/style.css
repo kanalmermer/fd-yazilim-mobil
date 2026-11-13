@@ -1,0 +1,29 @@
+.irsaliye-ozetler { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+.irsaliye-ozet { padding:13px; border:1px solid #dbe5ef; border-radius:11px; background:#fff; }
+.irsaliye-ozet span { display:block; color:#64748b; font-size:.68rem; font-weight:800; }
+.irsaliye-ozet strong { display:block; margin-top:6px; color:#0f172a; font-size:1.08rem; }
+.irsaliye-gecikmis td { background:#fff7ed; }
+.irsaliye-faturali td { color:#64748b; background:#f8fafc; }
+.irsaliye-birlestirme { min-height:160px; white-space:pre-wrap; font:500 .78rem/1.55 Arial,sans-serif; }
+.irsaliye-fatura-ozet { margin:12px 0 16px; border:1px solid #cbd5e1; border-radius:11px; overflow:hidden; background:#fff; }
+.irsaliye-fatura-ozet-baslik { padding:11px 13px; background:#e0f2fe; color:#075985; font-size:.8rem; font-weight:850; }
+.irsaliye-fatura-ozet table { width:100%; min-width:620px; border-collapse:collapse; }
+.irsaliye-fatura-ozet th,.irsaliye-fatura-ozet td { padding:9px 10px; border-bottom:1px solid #e2e8f0; text-align:right; }
+.irsaliye-fatura-ozet th:first-child,.irsaliye-fatura-ozet td:first-child { text-align:left; }
+.irsaliye-fatura-ozet tfoot td { border-bottom:0; background:#f8fafc; font-weight:900; }
+#irsaliyeListeKarti .card-header { display:block; }
+#irsaliyeListeKarti .card-header h2 { margin-bottom:11px; }
+#irsaliyeListeKarti .card-header .action-btns { display:grid; grid-template-columns:155px 165px minmax(230px,1fr) auto auto auto; width:100%; gap:7px; align-items:center; }
+#irsaliyeListeKarti .card-header .action-btns > input,#irsaliyeListeKarti .card-header .action-btns > select,#irsaliyeListeKarti .card-header .action-btns > button { width:100%; min-height:38px; margin:0; }
+#irsaliyeListeKarti .table-wrapper { margin-top:3px; }
+#irsaliyeTablosu { table-layout:auto; }
+#irsaliyeTablosu th,#irsaliyeTablosu td { padding:8px 7px; vertical-align:middle; }
+#irsaliyeTablosu th:nth-child(1),#irsaliyeTablosu td:nth-child(1) { width:34px; text-align:center; }
+#irsaliyeTablosu th:nth-child(2) { min-width:190px; }
+#irsaliyeTablosu th:nth-child(6) { min-width:235px; }
+#irsaliyeTablosu th:nth-child(10) { min-width:135px; }
+#irsaliyeTablosu th:last-child { min-width:145px; }
+@media(max-width:1050px){#irsaliyeListeKarti .card-header .action-btns{grid-template-columns:1fr 1fr 2fr}}
+@media(max-width:1050px){.irsaliye-ozetler{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){#irsaliyeListeKarti .card-header .action-btns{grid-template-columns:1fr}}
+@media(max-width:760px){.irsaliye-ozetler{grid-template-columns:repeat(2,1fr)}}

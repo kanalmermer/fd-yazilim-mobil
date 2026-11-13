@@ -1,0 +1,149 @@
+<div id="fdSiparisApp" style="display:none"><div class="fd-siparis-shell">
+<div class="fd-siparis-head">
+<div>
+<h2>📦 Sipariş ve Teslimat Takibi</h2>
+<p>Firma ve sabit ürün kartları üzerinden siparişleri ve tarihli teslimatları yönetin.</p>
+</div>
+<div class="fd-siparis-tools">
+<button class="btn-modern" type="button" onclick="fdSiparisYenile()">↻ Yenile</button>
+<span id="fdSiparisCiktiAraclari" class="fd-siparis-tools" style="display:none">
+<button class="btn-export fd-siparis-shot" type="button" onclick="fdSiparisGoruntu(this)">📸 Görüntü Al</button>
+<button class="btn-export btn-excel" type="button" onclick="fdSiparisExcel()">📊 Excel</button>
+<button class="btn-export btn-pdf" type="button" onclick="fdSiparisPdf()">📄 PDF</button>
+</span>
+</div>
+</div>
+<section id="fdSiparisFirmaGorunumu">
+<div class="fd-siparis-firma-top">
+<div>
+<h3>Firma Kayıtları</h3>
+<p>Önce firmayı kaydedin, ardından firmanın sabit ürünlerini oluşturun.</p>
+</div>
+<button class="btn-submit" style="width:auto;margin:0" data-siparis-write type="button" onclick="fdSiparisFirmaFormuAc()">+ Firma Ekle</button>
+</div>
+<div class="fd-siparis-firma-search">
+<input type="search" placeholder="Firma, yetkili veya telefon ara" oninput="fdSiparisFirmaAra(this.value)">
+<small id="fdSiparisFirmaSonuc">
+</small>
+</div>
+<div id="fdSiparisFirmaKartlari" class="fd-siparis-firma-grid">
+</div>
+</section>
+<section id="fdSiparisDetayGorunumu" style="display:none">
+<div id="fdSiparisFirmaBaglamBasligi" class="fd-siparis-company-hero">
+<button class="fd-siparis-hero-back" type="button" onclick="fdSiparisFirmalaraDon()">← Firma Listesine Dön</button>
+<div class="fd-siparis-hero-title">
+<span>FİRMA SİPARİŞ TABLOSU</span>
+<h3 id="fdSiparisDetayFirmaAdi">
+</h3>
+<p id="fdSiparisDetayFirmaBilgi">
+</p>
+</div>
+<span class="spacer">
+</span>
+<button class="fd-siparis-head-soft" data-siparis-write type="button" onclick="fdSiparisSeciliFirmaDuzenle()">Firma Bilgileri</button>
+</div>
+<section id="fdSiparisUrunGorunumu">
+<div class="fd-siparis-overview">
+<header class="fd-siparis-overview-head">
+<div class="fd-siparis-overview-title">
+<span class="fd-siparis-overview-kicker">FİRMA GENEL DURUMU</span>
+<h3>Açık Sipariş ve Teslimatlar</h3>
+<p>Ürünlerin sipariş, teslimat ve kalan miktarlarını tarih sırasıyla tek tabloda izleyin.</p>
+</div>
+<div class="fd-siparis-overview-actions">
+<span id="fdSiparisUrunSonuc" class="fd-siparis-overview-count"></span>
+<button class="btn-submit" data-siparis-write type="button" onclick="fdSiparisUrunFormuAc()">+ Yeni Ürün</button>
+</div>
+</header>
+<div class="fd-siparis-matrix-legend">
+<span><i></i>Sipariş hareketleri</span>
+<span class="teslim"><i></i>Teslimat hareketleri</span>
+<span class="ipucu">Ürün adına tıklayarak tüm geçmişi açın →</span>
+</div>
+<div class="fd-siparis-table-wrap fd-siparis-matrix-wrap">
+<table class="fd-siparis-urun-table fd-siparis-matrix-table">
+<thead id="fdSiparisUrunBaslik"></thead>
+<tbody id="fdSiparisUrunKartlari"></tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="fdSiparisUrunDetayGorunumu" style="display:none">
+<div class="fd-siparis-workspace">
+<header id="fdSiparisWorkspaceHead" class="fd-siparis-workspace-head">
+<div class="fd-siparis-workspace-main">
+<div class="fd-siparis-product-nav"><button class="fd-siparis-return-table" type="button" onclick="fdSiparisUrunlereDon()">← Firma Sipariş Tablosuna Dön</button><button class="fd-siparis-return-firms" type="button" onclick="fdSiparisFirmalaraDon()">Firma Listesi</button></div>
+<span id="fdSiparisCalismaFirma" class="fd-siparis-company-name"></span>
+<h2 id="fdSiparisSeciliUrunAdi"></h2>
+<p id="fdSiparisSeciliUrunBilgi"></p>
+</div>
+<div class="fd-siparis-workspace-actions">
+<button class="fd-siparis-head-soft" data-siparis-write type="button" onclick="fdSiparisSeciliUrunDuzenle()">Ürün Bilgisi</button>
+</div>
+</header>
+<div id="fdSiparisOzet" class="fd-siparis-summary">
+</div>
+<div class="fd-siparis-period-filter">
+<div class="fd-siparis-period-title"><span>📅</span><div><strong>Tarih Aralığı</strong><small>Sipariş ve teslimat listelerini birlikte süzer</small></div></div>
+<label><span>Başlangıç</span><input id="fdSiparisTarihBaslangic" type="date" onchange="fdSiparisTarihFiltrele()"></label>
+<label><span>Bitiş</span><input id="fdSiparisTarihBitis" type="date" onchange="fdSiparisTarihFiltrele()"></label>
+<button type="button" onclick="fdSiparisTarihTemizle()">Tüm Tarihler</button>
+</div>
+<div id="fdSiparisSiparisPaneli" class="fd-siparis-card fd-siparis-content-panel">
+<div class="fd-siparis-section-head">
+<div><span class="fd-siparis-section-kicker">SİPARİŞLER</span><h3>Sipariş Kayıtları</h3><p><b id="fdSiparisSiparisSayisi">0 kayıt</b> · Bu ürüne gelen bütün sipariş satırları</p></div>
+<button class="fd-siparis-section-action order" data-siparis-write type="button" onclick="fdSiparisYeniFormuAc()">＋ Yeni Sipariş</button>
+</div>
+<div class="fd-siparis-toolbar">
+<input id="fdSiparisAra" type="search" placeholder="Sipariş no, açıklama veya irsaliye ara" oninput="fdSiparisFiltrele()">
+<select id="fdSiparisDurumFiltre" onchange="fdSiparisFiltrele()">
+<option value="">Tüm durumlar</option>
+<option value="bekliyor">Bekliyor</option>
+<option value="kismi">Kısmi teslim</option>
+<option value="gecikti">Geciken</option>
+<option value="tamamlandi">Tamamlanan</option>
+<option value="iptal">İptal</option>
+</select>
+<small id="fdSiparisSonucBilgi">
+</small>
+</div>
+<div class="fd-siparis-table-wrap">
+<table id="fdSiparisTablo" class="fd-siparis-table">
+<thead>
+<tr>
+<th>Sipariş No / Tarih</th>
+<th>Açıklama</th>
+<th>Miktar</th>
+<th>Dağıtılan Teslim</th>
+<th>Satır Kalanı</th>
+<th>Termin / Durum</th>
+<th>İşlem</th>
+</tr>
+</thead>
+<tbody id="fdSiparisBody">
+</tbody>
+</table>
+</div>
+</div>
+<div id="fdSiparisTeslimatBolumu" class="fd-siparis-card fd-siparis-delivery-section fd-siparis-content-panel">
+<div class="fd-siparis-section-head delivery">
+<div><span class="fd-siparis-section-kicker">TESLİMATLAR</span><h3 id="fdSiparisTeslimatPanelBaslik">Teslimat Geçmişi</h3><p><b id="fdSiparisTeslimatSayisi">0 kayıt</b> · <span id="fdSiparisTeslimatPanelBilgi"></span></p></div>
+<button id="fdSiparisPanelTeslimatEkle" class="fd-siparis-section-action delivery" data-siparis-write type="button" onclick="fdSiparisTeslimatAc()">＋ Teslimat Ekle</button>
+</div>
+<div class="fd-siparis-table-wrap">
+<table class="fd-siparis-teslimat-table">
+<thead><tr><th>Teslim Tarihi</th><th>Miktar</th><th>İrsaliye No</th><th>Açıklama</th><th>İşlem</th></tr></thead>
+<tbody id="fdSiparisTeslimatBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+</div></div>
+<datalist id="fdSiparisBirimListesi"></datalist>
+<div id="fdSiparisFirmaModal" class="modal-overlay"><div class="modal-card" style="max-width:680px"><div class="modal-header"><h3 id="fdSiparisFirmaModalBaslik">Yeni Firma Kaydı</h3><button class="modal-close" type="button" onclick="modalKapat('fdSiparisFirmaModal')">✕</button></div><form id="fdSiparisFirmaForm" class="modal-body" onsubmit="fdSiparisFirmaKaydet(event)"><div class="profile-layout"><div class="form-group" style="grid-column:1/-1"><label>Firma Adı</label><input id="fdSiparisFirmaAd" data-case-preserve="true" required></div><div class="form-group"><label>Yetkili</label><input id="fdSiparisFirmaYetkili" data-case-preserve="true"></div><div class="form-group"><label>Telefon</label><input id="fdSiparisFirmaTelefon" inputmode="tel" data-case-preserve="true"></div><div class="form-group"><label>E-posta</label><input id="fdSiparisFirmaEposta" type="email" data-case-preserve="true"></div><div class="form-group" style="grid-column:1/-1"><label>Not</label><textarea id="fdSiparisFirmaNot" rows="2" data-case-preserve="true"></textarea></div></div><button class="btn-submit" type="submit">Firma Kaydını Kaydet</button></form></div></div>
+<div id="fdSiparisUrunModal" class="modal-overlay"><div class="modal-card" style="max-width:620px"><div class="modal-header"><h3 id="fdSiparisUrunModalBaslik">Yeni Ürün Kartı</h3><button class="modal-close" type="button" onclick="modalKapat('fdSiparisUrunModal')">✕</button></div><form id="fdSiparisUrunForm" class="modal-body" onsubmit="fdSiparisUrunKaydet(event)"><div class="profile-layout"><div class="form-group" style="grid-column:1/-1"><label>Ürün Adı</label><input id="fdSiparisUrunAd" data-case-preserve="true" required></div><div class="form-group"><label>Birim</label><input id="fdSiparisUrunBirim" list="fdSiparisBirimListesi" data-case-preserve="true" required></div><div class="form-group" style="grid-column:1/-1"><label>Açıklama</label><textarea id="fdSiparisUrunAciklama" rows="2" data-case-preserve="true"></textarea></div></div><button class="btn-submit" type="submit">Ürün Kartını Kaydet</button></form></div></div>
+<div id="fdSiparisFormModal" class="modal-overlay"><div class="modal-card fd-siparis-order-modal" style="max-width:820px"><div class="modal-header"><div><h3 id="fdSiparisFormBaslik">Yeni Sipariş</h3><small>Sipariş bilgilerini girin; teslimatları ürün detayındaki teslimat bölümünden ekleyin.</small></div><button class="modal-close" type="button" onclick="fdSiparisFormIptal()">✕</button></div><form id="fdSiparisYeniForm" class="fd-siparis-new modal-body" data-siparis-write onsubmit="fdSiparisKaydet(event)"><div class="fd-siparis-entry"><label class="fd-siparis-field"><span>Sipariş No</span><input id="fdSiparisNo" data-case-preserve="true" placeholder="Sipariş no" required></label><label class="fd-siparis-field"><span>Sipariş Tarihi</span><input id="fdSiparisTarih" type="date" required></label><label class="fd-siparis-field"><span>Sipariş Miktarı</span><input id="fdSiparisMiktar" inputmode="decimal" data-case-preserve="true" placeholder="Miktar" required></label><label class="fd-siparis-field"><span>Termin Tarihi</span><input id="fdSiparisTermin" type="date"></label><label class="fd-siparis-field wide"><span>Açıklama</span><input id="fdSiparisAciklama" data-case-preserve="true" placeholder="Sipariş açıklaması"></label><label class="fd-siparis-field wide"><span>Sipariş Notu</span><input id="fdSiparisNot" data-case-preserve="true" placeholder="Sipariş notu"></label><div class="fd-siparis-entry-actions"><label><input id="fdSiparisIptal" type="checkbox"> Sipariş iptal edildi</label><div><button id="fdSiparisDuzenIptalBtn" class="btn-cancel" type="button" style="display:none" onclick="fdSiparisFormIptal()">İptal</button><button id="fdSiparisKaydetBtn" class="btn-submit" type="submit">Siparişi Ekle</button></div></div></div></form></div></div>
+<div id="fdSiparisTeslimatModal" class="modal-overlay"><div class="modal-card" style="max-width:620px"><div class="modal-header"><div><h3 id="fdSiparisTeslimatBaslik">Teslimat Ekle</h3><small id="fdSiparisTeslimatBilgi"></small></div><button class="modal-close" type="button" onclick="modalKapat('fdSiparisTeslimatModal')">✕</button></div><form id="fdSiparisTeslimatForm" class="modal-body" onsubmit="fdSiparisTeslimatKaydet(event)"><input id="fdSiparisTeslimatKayitId" type="hidden"><input id="fdSiparisTeslimatId" type="hidden"><div class="profile-layout"><div class="form-group"><label>Teslim Tarihi</label><input id="fdSiparisTeslimatTarih" type="date" required></div><div class="form-group"><label>Teslim Edilen Miktar</label><input id="fdSiparisTeslimatMiktar" inputmode="decimal" data-case-preserve="true" required></div><div class="form-group"><label>İrsaliye No</label><input id="fdSiparisTeslimatIrsaliye" data-case-preserve="true"></div><div class="form-group"><label>Açıklama</label><input id="fdSiparisTeslimatAciklama" data-case-preserve="true"></div></div><button class="btn-submit" type="submit">Teslimatı Kaydet</button></form></div></div>
