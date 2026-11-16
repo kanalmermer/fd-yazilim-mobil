@@ -1,0 +1,34 @@
+{
+  "name": "Puantaj Ekranı ve Gün Düzenleme",
+  "roots": [
+    "customContextMenu"
+  ],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/puantaj/view.html",
+      "sha256": "30163a4df1afd4c5285be94df4bd0a6e46a6c67d255547898f98397e449b7e7f",
+      "bytes": 1038,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/puantaj/style.css",
+      "sha256": "8a7d2e87ed939021c317dc13bc7637022991e27417a8b2fe096d5d1612932099",
+      "bytes": 505,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/puantaj/module.js",
+      "sha256": "73a3e923e8992c9a637ee748f7e966480e84f369643045442d6eaae442dd2720",
+      "bytes": 7345,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

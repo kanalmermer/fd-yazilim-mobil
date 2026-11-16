@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261116-s68-9d9880620b33",
+  "release": "fd-modular-20261116-s68-cba8861c04f3",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ec5fd5b2d1d05fa717e374558030da7d5144c8aada3fe3595d85b536988b4c40",
+      "sha256": "b211ff8ad9991f0f674b7bf454c9b7742019c613e1fd18c2859cde41246d7513",
       "bytes": 67997
     },
     {
@@ -1513,18 +1513,18 @@
     },
     {
       "path": "modules/personelform/manifest.json",
-      "sha256": "8cfefc05328197ad54359201f667241f8ac17dd97d138543318fe529d37ad764",
+      "sha256": "856bde6d0c2143c4b2c47acfa094db2599a95cd52e359bacdcdf80dcc7139831",
       "bytes": 1069
     },
     {
       "path": "modules/personelform/module.js",
-      "sha256": "fe90a5cf961ec955a0d7c62eb8df0d9f7f28acf15a48e6e1bed09d71af644a8c",
-      "bytes": 39495
+      "sha256": "5f09c34c80308cf977a248e7c9ee46b3070fff89a8eaa68335589e406f88937c",
+      "bytes": 40239
     },
     {
       "path": "modules/personelform/style.css",
-      "sha256": "a380675c493ce285ad2bcc371a17a0302714e496ca46131cff8e8838fb35cfd4",
-      "bytes": 1324
+      "sha256": "0de7a10448d6f6d4b6692f300603d2fbddf22d24176516e46f36b0e7e30e1f32",
+      "bytes": 2159
     },
     {
       "path": "modules/personelform/view.html",
