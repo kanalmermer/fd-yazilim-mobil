@@ -1,0 +1,22 @@
+// Stable menu/tab/legacy bridges. Owner pickers never download this screen.
+function fdVarlikKisileriniCiz(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisileriniCiz',Array.from(arguments),this);}
+function fdVkKayitAc(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkKayitAc',Array.from(arguments),this);}
+function fdVkGorunumSec(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkGorunumSec',Array.from(arguments),this);}
+function fdVkFiltreDegisti(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkFiltreDegisti',Array.from(arguments),this);}
+function fdVkFiltreTemizle(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkFiltreTemizle',Array.from(arguments),this);}
+function fdVkSayfaDegistir(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkSayfaDegistir',Array.from(arguments),this);}
+function fdVkSayfaBoyutuDegistir(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkSayfaBoyutuDegistir',Array.from(arguments),this);}
+function fdVkOzetSec(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkOzetSec',Array.from(arguments),this);}
+function fdVarlikKaydiAc150(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKaydiAc150',Array.from(arguments),this);}
+function fdVarlikKisiDetayAc150(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiDetayAc150',Array.from(arguments),this);}
+function fdVarlikKisiDetayKapat(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiDetayKapat',Array.from(arguments),this);}
+function fdVarlikKisiFiltrele150(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiFiltrele150',Array.from(arguments),this);}
+function fdVarlikKisiDetayCiz150(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiDetayCiz150',Array.from(arguments),this);}
+function fdVkDetayAraDegisti(){return window.FDModules.callIfLoaded('varlikkisileri','fdVkDetayAraDegisti',Array.from(arguments),this);}
+function fdVarlikKisiExcelAl(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiExcelAl',Array.from(arguments),this);}
+function fdVarlikKisiPdfAl(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiPdfAl',Array.from(arguments),this);}
+function fdVarlikKisiFormuAc(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiFormuAc',Array.from(arguments),this);}
+function fdVarlikKisiKaydet(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiKaydet',Array.from(arguments),this);}
+function fdVarlikKisiYenile(){return window.FDModules.callIfLoaded('varlikkisileri','fdVarlikKisiYenile',Array.from(arguments),this);}
+function openVarlikKisileriApp(){return window.FDModules.open('varlikkisileri',Array.from(arguments),this);}
+function fdVarlikKisileriAc(){return window.openVarlikKisileriApp.apply(this,arguments)}

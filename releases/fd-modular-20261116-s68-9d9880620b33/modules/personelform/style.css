@@ -1,0 +1,7 @@
+/* Existing shared personnel/profile/photo/summary styles remain eager and unchanged. */
+#modalPersonel #pNakilAlanlari[hidden], #modalPersonel #pNormalExit[hidden], #modalPersonel #pNakilGecmisi[hidden], #modalPersonel #pCikisSebebiAlan[hidden] { display:none; }
+#modalPersonel .personnel-transfer-note { color:#64748b; font-size:12px; line-height:1.6; margin:8px 0 14px; }
+#modalPersonel #pNakilGecmisListe { padding-left:20px; margin:8px 0 0; font-size:12px; line-height:1.7; overflow-wrap:anywhere; }
+#modalPersonel #pNakilGecmisListe li + li { margin-top:8px; }
+
+#modalPersonel #pNakilGecmisListe{padding:0;list-style:none}#modalPersonel .personnel-transfer-history-card{border:1px solid #dbe5ef;background:#f8fafc;border-radius:9px;padding:14px}#modalPersonel .personnel-transfer-history-card>strong{display:block;font-size:13px;color:#0f766e;margin-bottom:10px}#modalPersonel .personnel-transfer-history-card dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 20px;margin:0}#modalPersonel .personnel-transfer-history-card dt{font-size:11px;color:#64748b}#modalPersonel .personnel-transfer-history-card dd{font-size:13px;font-weight:600;line-height:1.5;margin:3px 0 0;overflow-wrap:anywhere}@media(max-width:600px){#modalPersonel .personnel-transfer-history-card dl{grid-template-columns:1fr}}

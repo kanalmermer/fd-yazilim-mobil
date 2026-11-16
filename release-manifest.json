@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261113-s68-015e183a25d0",
+  "release": "fd-modular-20261116-s68-9d9880620b33",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "20d5a3865902dabda0f2ce0ec31dea621c3e12ee8247f49b69d678a02f714ebd",
-      "bytes": 67996
+      "sha256": "ec5fd5b2d1d05fa717e374558030da7d5144c8aada3fe3595d85b536988b4c40",
+      "bytes": 67997
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -1513,18 +1513,18 @@
     },
     {
       "path": "modules/personelform/manifest.json",
-      "sha256": "84b1074a74b2a5ba8ccae3ee3ccb70b8ed26c42e7c061cdd205ba903b9315ba2",
-      "bytes": 1068
+      "sha256": "8cfefc05328197ad54359201f667241f8ac17dd97d138543318fe529d37ad764",
+      "bytes": 1069
     },
     {
       "path": "modules/personelform/module.js",
-      "sha256": "4c0303441714023112a4b6c8bb4e74ea46580f41d7ed33bcd691be162d801b7d",
-      "bytes": 38708
+      "sha256": "fe90a5cf961ec955a0d7c62eb8df0d9f7f28acf15a48e6e1bed09d71af644a8c",
+      "bytes": 39495
     },
     {
       "path": "modules/personelform/style.css",
-      "sha256": "edbb7f5e601d38f16247bef5944fedbf27aa4e17c7f0999b93ff53ccc4102363",
-      "bytes": 567
+      "sha256": "a380675c493ce285ad2bcc371a17a0302714e496ca46131cff8e8838fb35cfd4",
+      "bytes": 1324
     },
     {
       "path": "modules/personelform/view.html",
@@ -2018,8 +2018,8 @@
     },
     {
       "path": "shared/company-branches.js",
-      "sha256": "5b2ff7ac225b17cbd0cf8bcd57ca91c214852914184ee50fed630643b83efe18",
-      "bytes": 3081
+      "sha256": "b5a6f4288db7919bcd350653577d8dfc7cfe06aca1b659db34b15a2152461385",
+      "bytes": 3650
     },
     {
       "path": "shared/company-tools-home.css",
@@ -2153,8 +2153,8 @@
     },
     {
       "path": "shared/payroll-matrix.js",
-      "sha256": "f294743c1f7306e7f5eb4d7d4cfd33ccb9eaaa5f8f92f61f79e3bbca077146b5",
-      "bytes": 22618
+      "sha256": "5f7da9be01b9788b3b6cb64d2e826dc7233b4e7fe690ce22658ee671c729fddb",
+      "bytes": 23646
     },
     {
       "path": "shared/payroll-overtime.js",
@@ -2188,8 +2188,8 @@
     },
     {
       "path": "shared/personnel-runtime.js",
-      "sha256": "9601d2712fed234e56f56315dffbb96b525d91bb443c12448d7122616c384fda",
-      "bytes": 230377
+      "sha256": "5b9966b978b344904e58fb4566b25dc321847c896d09bd8e04cf7cb85ed1626d",
+      "bytes": 230503
     },
     {
       "path": "shared/personnel-templates/catalog.js",
