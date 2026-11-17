@@ -1,0 +1,41 @@
+<div id="modalPersonelDetay" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>👤 Personel Detay Kartı</h3>
+            <button class="modal-close" onclick="closePersonelDetayModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="detay-tab-header">
+                <button class="detay-tab-btn active" onclick="switchDetayTab('detay-tab-ozluk', this)">📋 Özlük Bilgileri</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-izinler', this)">🏖️ Geçmiş İzinler</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-puantaj', this)">📅 Puantaj</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-avanslar', this)">💳 Avanslar</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-icralar', this)">⚖️ İcra Kayıtları</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-ekodemeler', this)">💰 Ek Ödemeler</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-kkd', this)">🦺 KKD Teslimleri</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-vardiya', this)">🕘 Vardiya</button>
+                <button class="detay-tab-btn" onclick="switchDetayTab('detay-tab-giriscikis', this)">🪪 Giriş–Çıkış</button>
+            </div>
+            <div id="detay-tab-ozluk" class="detay-tab-content active">
+                <div id="detayModalBody" style="font-size: 0.9rem; line-height: 1.6;"></div>
+            </div>
+            <div id="detay-tab-izinler" class="detay-tab-content">
+                <div class="table-wrapper">
+                    <table id="detayIzinTablosu">
+                        <thead>
+                            <tr><th>#</th><th>İzin Türü</th><th>Dönem</th><th>Tarih Aralığı</th><th>Süre</th><th>Rapor / Açıklama</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="detay-tab-puantaj" class="detay-tab-content"><div id="detayPuantajBody"></div></div>
+            <div id="detay-tab-avanslar" class="detay-tab-content"><div id="detayAvansBody"></div></div>
+            <div id="detay-tab-icralar" class="detay-tab-content"><div id="detayIcraBody"></div></div>
+            <div id="detay-tab-ekodemeler" class="detay-tab-content"><div id="detayEkOdemeBody"></div></div>
+            <div id="detay-tab-kkd" class="detay-tab-content"><div id="detayKkdBody"></div></div>
+            <div id="detay-tab-vardiya" class="detay-tab-content"><div id="detayVardiyaBody"></div></div>
+            <div id="detay-tab-giriscikis" class="detay-tab-content"><div id="detayGirisCikisBody"></div></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+{
+  "name": "Giriş–Çıkış Dosya Bağlantısı ve Sabit Dosyadan Aktarım",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/dosyabaglantisi/view.html",
+      "sha256": "e2b40e8000aed0ff7be82009a7e91987a27d9f8704e1ddfe3cfaa932cbec9431",
+      "bytes": 99,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/dosyabaglantisi/style.css",
+      "sha256": "c3723f3e4e978e99a74909f96aa9ce4cc799c5269de10b30ec6a1b90a2c9db27",
+      "bytes": 58,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/dosyabaglantisi/module.js",
+      "sha256": "44e5a0cbe03b42730c67c9af23dca2a1d82a93d50112f9224f49803b96030ec5",
+      "bytes": 16874,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
