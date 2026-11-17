@@ -1,0 +1,50 @@
+{
+  "name": "Şirket Araması ve Takvim",
+  "roots": [
+    "fdOrtakModal",
+    "fdTakvimKayitModal"
+  ],
+  "entrypoints": [
+    "fdAramaSonucAc",
+    "fdGlobalAra",
+    "fdTakvimKayitFormuAc",
+    "fdTakvimKaydet",
+    "fdTakvimSil",
+    "fdTakvimAc",
+    "fdTakvimGorunumSec",
+    "fdTakvimAyDegistir",
+    "fdTakvimCiz",
+    "fdTakvimBugun"
+  ],
+  "writeOperations": [
+    "fdTakvimKayitFormuAc",
+    "fdTakvimKaydet",
+    "fdTakvimSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/companytools/view.html",
+      "sha256": "a40c8478d786aed495ef1111a89e19101ea60b1222708b6318e27f1ed0d11c4a",
+      "bytes": 2818,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/companytools/style.css",
+      "sha256": "0b5891d22f0456f58def8efe65e4415fe0c23c8d0a76a6ceb5d3fc0948c371d6",
+      "bytes": 2734,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/companytools/module.js",
+      "sha256": "fbb3dac52a7a6ef3cdf64144a536b4f25951d38ec6502f799aed3ff5a6fc77f2",
+      "bytes": 31937,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

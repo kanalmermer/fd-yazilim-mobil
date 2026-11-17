@@ -1,0 +1,99 @@
+<div class="app-layout" id="personelListeIcerik">
+        <aside id="pSidebar">
+            <div class="sidebar-header">
+                <h2>Personel Menü</h2>
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+            <ul class="nav-links">
+                <li><button class="nav-btn active" onclick="switchPersonelTab('p-tab-aktif', this)"><span>🟢</span><span class="nav-text">Çalışan Personeller</span></button></li>
+                <li><button class="nav-btn" onclick="switchPersonelTab('p-tab-ayrilan', this)"><span>🔴</span><span class="nav-text">Ayrılan Personeller</span></button></li>
+            </ul>
+        </aside>
+
+        <main>
+            <div class="module-subnav" aria-label="Personel listeleme menüsü">
+                <button type="button" class="active" onclick="switchPersonelTab('p-tab-aktif', this)">Aktif Personeller</button>
+                <button type="button" onclick="switchPersonelTab('p-tab-ayrilan', this)">Ayrılan Personeller</button>
+                <button type="button" class="new-personnel-btn" onclick="openPersonelModal()">+ Yeni Personel Ekle</button>
+                <div class="personel-export-actions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+                    <button type="button" id="btnYillikPersonelBelgeleri" class="btn-export" style="display:none;background:#7c3aed;color:#fff;border-color:#7c3aed;" onclick="yillikPersonelBelgePaneliniAc()">📚 Toplu Personel Belgeleri</button>
+                    <button class="btn-export btn-pdf" onclick="openPersonelExportModal('pdf')">📄 PDF</button>
+                    <button class="btn-export btn-excel" onclick="openPersonelExportModal('excel')">📊 Excel</button>
+                </div>
+            </div>
+            <div id="p-tab-aktif" class="tab-content active">
+                <section class="personel-summary" aria-label="Personel toplamları">
+                    <div class="personel-summary-title">Genel toplam</div>
+                    <div class="personel-summary-grid" id="personelGenelOzet"></div>
+                    <div class="personel-summary-title" style="margin-top:18px;">Şube bazında toplamlar</div>
+                    <div class="branch-summary-list" id="personelSubeOzet"></div>
+                </section>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🟢 Aktif Çalışan Personel Listesi</h2>
+                        <span class="badge badge-count" id="badgeAktifSayisi">0 Kişi</span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="fAktifArama" placeholder="🔍 İsim veya T.C. Ara..." oninput="renderPersonelTables()">
+                        <select id="fAktifSube" onchange="renderPersonelTables()"><option value="">Tüm Şubeler</option></select>
+                        <select id="fAktifYil" onchange="renderPersonelTables()"><option value="">Tüm Giriş Yılları</option></select>
+                        <select id="fAktifEngelli" onchange="renderPersonelTables()"><option value="">Engelli: Tümü</option><option value="evet">Engelli olanlar</option><option value="hayir">Engelli olmayanlar</option></select>
+                        <select id="fAktifEmekli" onchange="renderPersonelTables()"><option value="">Emekli: Tümü</option><option value="evet">Emekli olanlar</option><option value="hayir">Emekli olmayanlar</option></select>
+                        <select id="fAktifSiralama" onchange="renderPersonelTables()">
+                            <option value="sube-asc">Sırala: Şube ve Ad (A-Z)</option>
+                            <option value="ad-asc">Sırala: Ad (A-Z)</option>
+                            <option value="ad-desc">Sırala: Ad (Z-A)</option>
+                            <option value="tarih-yeni">Sırala: En Yeni Giriş</option>
+                            <option value="tarih-eski">Sırala: En Eski Giriş</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrapper" id="aktifPersonelPrintArea">
+                        <div id="pdfPersonelHeaderTitle" style="display:none; text-align:center; margin-bottom:20px;">
+                            <h2 style="font-size:18px; font-weight:bold; color:#0f172a; text-transform:uppercase;">KANAL MERMER AKTİF PERSONEL LİSTESİ</h2>
+                            <p style="font-size:12px; color:#64748b; margin-top:4px;">Rapor Tarihi: <span id="pdfPersonelRaporTarihi"></span></p>
+                        </div>
+                        <table id="tabloAktifPersonel">
+                            <thead>
+                                <tr><th>#</th><th>Foto</th><th>T.C. No</th><th>Ad Soyadı</th><th>Şube</th><th>Görevi</th><th>Telefon</th><th>İşe Giriş T.</th><th>İşlem</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="p-tab-ayrilan" class="tab-content">
+                <section class="personel-summary" aria-label="Ayrılan personel toplamları">
+                    <div class="personel-summary-title">Ayrılan personel genel toplamı</div>
+                    <div class="personel-summary-grid" id="ayrilanGenelOzet"></div>
+                    <div class="personel-summary-title" style="margin-top:18px;">Şube bazında ayrılan personel toplamları</div>
+                    <div class="branch-summary-list" id="ayrilanSubeOzet"></div>
+                </section>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔴 İşten Ayrılan Personel Listesi</h2>
+                        <span class="badge badge-count" id="badgeAyrilanSayisi">0 Kişi</span>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="fAyrilanArama" placeholder="🔍 İsim veya T.C. Ara..." oninput="renderPersonelTables()">
+                        <select id="fAyrilanSube" onchange="renderPersonelTables()"><option value="">Tüm Şubeler</option></select>
+                        <select id="fAyrilanCikisYili" onchange="renderPersonelTables()"><option value="">Tüm Ayrılış Yılları</option></select>
+                        <select id="fAyrilanEngelli" onchange="renderPersonelTables()"><option value="">Engelli: Tümü</option><option value="evet">Engelli olanlar</option><option value="hayir">Engelli olmayanlar</option></select>
+                        <select id="fAyrilanEmekli" onchange="renderPersonelTables()"><option value="">Emekli: Tümü</option><option value="evet">Emekli olanlar</option><option value="hayir">Emekli olmayanlar</option></select>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="tabloAyrilanPersonel">
+                            <thead>
+                                <tr><th>#</th><th>Foto</th><th>T.C. No</th><th>Ad Soyadı</th><th>Şube</th><th>Görevi</th><th>Telefon</th><th>İşe Giriş T.</th><th>İşten Çıkış T.</th><th>İşlem</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
