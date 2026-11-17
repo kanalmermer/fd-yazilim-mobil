@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261117-s68-009900c24434",
+  "release": "fd-modular-20261117-s68-43f37f129d4b",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "6d8ac530f3f108ec9fc3dcef7f8fe1115c9b7da99ad6b6200debccb086f3b739",
+      "sha256": "fe578f11b9d8b16e1805d8ab1366c3fcb71db950d44647d53292228db77e9b45",
       "bytes": 67997
     },
     {
@@ -2263,8 +2263,8 @@
     },
     {
       "path": "shared/ui-compat/base.css",
-      "sha256": "a7f0b6ff98131976a0062c3a516b628dce896214a23e96462188813c9f6576bb",
-      "bytes": 79163
+      "sha256": "e542b652adb08e7d7eb4719b232aef1f86dfe508474fddc5faf87731e8d6a826",
+      "bytes": 80069
     },
     {
       "path": "shared/ui-compat/evrakOnizlemeStilleri.css",

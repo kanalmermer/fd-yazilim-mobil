@@ -1,0 +1,69 @@
+{
+  "name": "Tapu Takip",
+  "roots": [
+    "tapuTakipApp",
+    "modalTapuKayit",
+    "modalTapuDetay",
+    "modalTapuOnizleme"
+  ],
+  "entrypoints": [
+    "tapuMalikStili",
+    "openTapuTakipApp",
+    "tapuYetkiGorunumunuAyarla",
+    "tapuFiltreSecenekleri",
+    "tapuFiltreliListe",
+    "tapuFiltreDegisti",
+    "tapuEkraniniCiz",
+    "tapuListeyiCiz",
+    "tapuSayfaDegistir",
+    "tapuSayfaBoyutuDegistir",
+    "tapuDetayAc",
+    "tapuDetayKapat",
+    "tapuDetayGoruntusunuAc",
+    "tapuDetayDuzenle",
+    "tapuFormuAc",
+    "tapuFormuKapat",
+    "tapuKaydet",
+    "tapuSil",
+    "tapuGoruntule",
+    "tapuGoruntuKapat",
+    "tapuGoruntuYeniSekme",
+    "tapuGoruntuIndir",
+    "tapuCksArayuzunuKur",
+    "fdTapuFiltreTemizle",
+    "fdTapuRaporTablosu",
+    "fdTapuDisariAl",
+    "fdTapuDetayKimligi"
+  ],
+  "writeOperations": [
+    "tapuFormuAc",
+    "tapuKaydet",
+    "tapuSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/tapu/view.html",
+      "sha256": "64248520379177420c94c36409293c0d2252ec745be1d2af11d3b1f9d0d160b1",
+      "bytes": 7438,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/tapu/style.css",
+      "sha256": "4e22eae7b9dae99929f81a8149370a26881882755e3375d453a26ffa7458f00f",
+      "bytes": 9550,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/tapu/module.js",
+      "sha256": "a433ae5f57f7cb5abb6775319ff4f7f52865d765298a5a69ff6c77ea99e47ef0",
+      "bytes": 33961,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Personel Excel Toplu Aktarımı",
+  "roots": [
+    "modalPersonelTopluAktar"
+  ],
+  "entrypoints": [
+    "personelExcelSablonuIndir",
+    "personelExcelDosyasiniOku",
+    "personelTopluAktarModaliniKapat",
+    "personelTopluAktarimiKaydet"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personelaktar/view.html",
+      "sha256": "4edd7eb1f1fc5d6de799daeffcf7fa9cb428d55e157405b7fd452ea525af1a82",
+      "bytes": 1256,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelaktar/style.css",
+      "sha256": "f06e1e02fe06afae4372314ab8cf7ff05d5a601bf76732a8ab2cfd2bd5321f38",
+      "bytes": 90,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelaktar/module.js",
+      "sha256": "7fe656f2f5118eee81c6f6f8650446a8b0e854cca49613897aa87c12531ab6f7",
+      "bytes": 21285,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
