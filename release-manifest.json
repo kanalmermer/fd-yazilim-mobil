@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261118-s68-a5a5768e750b",
+  "release": "fd-modular-20261118-s68-ec65276728c6",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "9f231b3fabdd5b5c186212775eae94810b07adbbff892ad3fd0c768198c6484c",
+      "sha256": "18ec0c50f7a6b9a39dc276dfb176a2693200198089711b57551f738ef5741b58",
       "bytes": 67997
     },
     {
@@ -83,8 +83,8 @@
     },
     {
       "path": "core/data-access.js",
-      "sha256": "58b5e4a65b648ab12ace1436302cc7a3ecbdbd56374409dac6f841d1a68d6b85",
-      "bytes": 66413
+      "sha256": "1abe723a1dd6bd8ce75b2fe7b798d699115a56339e57aa617a2b3b31e1b7b3e6",
+      "bytes": 66459
     },
     {
       "path": "core/document-entrypoints.js",
@@ -1033,13 +1033,13 @@
     },
     {
       "path": "modules/evrak/manifest.json",
-      "sha256": "b271a9d5f124ca7cbfd466cae2dc35d0872fe445b9b72ac029e66de54eae2a19",
+      "sha256": "eae04e2669eb2ba82d00fa2d8a8f2efaa042999e1a6020ce5b29d93c88b8efd3",
       "bytes": 2433
     },
     {
       "path": "modules/evrak/module.js",
-      "sha256": "1a6d1a63c51b4421c4bcc2a1ed61e9efe31b86421ff95f0ba054216305ea1f28",
-      "bytes": 44618
+      "sha256": "03767909fb86c6c550b3613d210e52ed5da1062c3b2d964669afce4af30e3c60",
+      "bytes": 47354
     },
     {
       "path": "modules/evrak/style.css",

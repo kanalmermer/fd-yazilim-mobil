@@ -1,0 +1,37 @@
+{
+  "name": "Ortak PDF Önizleme",
+  "roots": [
+    "modalIcraPdf"
+  ],
+  "entrypoints": [
+    "icraPdfAc",
+    "icraPdfKapat"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/pdfonizleme/view.html",
+      "sha256": "21c16335cc09fed0da0203d15460a4c1b19add34e64033245ef2a8238cb8479d",
+      "bytes": 424,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/pdfonizleme/style.css",
+      "sha256": "0af9e64bfd488939346daaabdc480d06b5d99b0a62a8d6e73bc196f72a706aa2",
+      "bytes": 75,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/pdfonizleme/module.js",
+      "sha256": "15f5c94fc2ed5d3661e0a72677148aef68b82335c57bd6119783d52518c6d7ab",
+      "bytes": 3330,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
