@@ -1,0 +1,49 @@
+{
+  "name": "Şirket ve Şube Yönetimi",
+  "roots": [
+    "sirketApp"
+  ],
+  "entrypoints": [
+    "openSirketApp",
+    "renderSirketYonetimi",
+    "sirketModulunuBaslat"
+  ],
+  "writeOperations": [
+    "saveSirket",
+    "saveSube",
+    "subeSil",
+    "subeBelgeDosyasiSecildi",
+    "subeBelgeKaldir",
+    "subeDizisiniKayitlaGuncelle",
+    "subeKaydiniDogrulayarakKaydet",
+    "subeAdiPersonellereYansit",
+    "subeKurtarmaTaslaginiSakla",
+    "subeKurtarmaTaslaginiTemizle"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/sirket/view.html",
+      "sha256": "f1bea589e3cb951702f5d5bb9e6d1f27f4a1450ba4f6bc1480cb368018a99454",
+      "bytes": 8780,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/sirket/style.css",
+      "sha256": "52d1b344eb03df9d439d4cd751c6b7a6b7cb90a9cbc7c03b26c61e76ef383833",
+      "bytes": 1661,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/sirket/module.js",
+      "sha256": "d82c105b85bf5d00c79551127d75bffccf6b95985f0b93ec86cf323bbd86af2c",
+      "bytes": 41541,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
