@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261117-s68-a49cd4cb6945",
+  "release": "fd-modular-20261118-s68-06577b2cdfc9",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "59ffa6301e3eb4cd9dadf3252cf321ce3fb1539e5fc0897df4871d7c18eacaf6",
+      "sha256": "01a05ddaea91ecd144239753cbed030d63a424a638eeae3775c04870c1008fbb",
       "bytes": 67997
     },
     {
@@ -1533,23 +1533,23 @@
     },
     {
       "path": "modules/personelliste/manifest.json",
-      "sha256": "8f7a69a2f7be8ba4a6254c363873cb39e88c209bcb1bf0049e372c4464936730",
+      "sha256": "817dece3945ef8803ada3a3d5a63cca1c395cba48677b409a8384308c992352a",
       "bytes": 966
     },
     {
       "path": "modules/personelliste/module.js",
-      "sha256": "02ef6f2c27554ce76b0158e8df5c0ed6a22e3854bd35a42e3cb9ae2b2b127304",
-      "bytes": 13833
+      "sha256": "e3d0eec9eb7b876d0aeab336cf9b70590b9bc740c1c520bb5290e4e1d053a06c",
+      "bytes": 27357
     },
     {
       "path": "modules/personelliste/style.css",
-      "sha256": "a4b67507d1b8d3366fe4b6cc8d53a48f62b17e18b6355ecd72e0103535db2db9",
-      "bytes": 12427
+      "sha256": "253256952cb30eb171fa6b5f241d0e635f80e5f7dbb8095295f7b8d9ea70863f",
+      "bytes": 13401
     },
     {
       "path": "modules/personelliste/view.html",
-      "sha256": "1172651159773f866e708a429d6c993c4ad595cf951913a9abcbc77608217fe3",
-      "bytes": 7448
+      "sha256": "1dfefa1718e7f08f2e56c8260c980bd15ecb5cb6230791f65a4d2580672de4e1",
+      "bytes": 7632
     },
     {
       "path": "modules/personelozet/manifest.json",

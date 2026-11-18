@@ -1,0 +1,1 @@
+/* Title design and output adapters are lazy. */

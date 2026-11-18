@@ -1,0 +1,66 @@
+{
+  "name": "İş Sağlığı ve Güvenliği",
+  "roots": [
+    "isgApp"
+  ],
+  "entrypoints": [
+    "fdIsgSettingsMount",
+    "fdIsgSettingsUnmount",
+    "fdIsgReset",
+    "fdIsgDocumentClear",
+    "fdIsgState",
+    "fdIsgSchemas",
+    "fdIsgCatalog",
+    "fdIsgWork_refresh",
+    "fdIsgWork_edit",
+    "fdIsgWork_detail",
+    "fdIsgWork_getExportModels",
+    "fdIsgWork_validateRecord",
+    "fdIsgWork_documentStatus",
+    "fdIsgWork_filtered",
+    "fdIsgWork_personName",
+    "fdIsgWork_personBranch",
+    "fdIsgWork_personId",
+    "fdIsgWork_close",
+    "fdIsgDoc_list",
+    "fdIsgDoc_buildModel",
+    "fdIsgDoc_buildPdf",
+    "fdIsgDoc_open",
+    "fdIsgDoc_plan",
+    "fdIsgDoc_wrap",
+    "fdIsgDoc_browserMeasure",
+    "fdIsgDoc_drawPage",
+    "fdIsgDoc_canonical",
+    "fdIsgDoc_digest",
+    "fdIsgDoc_canCertificate"
+  ],
+  "writeOperations": [
+    "fdIsgWork_edit"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/isg/view.html",
+      "sha256": "0d93f7902c8215f0cd7e5649f87389bae6c82f96234229e1dd79ff032e6067cd",
+      "bytes": 45,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/isg/style.css",
+      "sha256": "ecb88537e9f8404061cafe804b6511bd64602a433e6252886f644e9afeff3027",
+      "bytes": 16675,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/isg/module.js",
+      "sha256": "4b9bfea3b78c3a381b69466567cf248aa7aaeea0e2d309decee1b5dddc23f7b6",
+      "bytes": 149152,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

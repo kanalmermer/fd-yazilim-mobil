@@ -1,0 +1,41 @@
+{
+  "name": "Personel Ana Listesi",
+  "roots": [
+    "personelListeIcerik"
+  ],
+  "entrypoints": [
+    "openPersonelApp",
+    "switchPersonelTab",
+    "renderPersonelOzetleri",
+    "renderPersonelTables",
+    "listeleriDuzenle",
+    "personelDuzeniKur"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personelliste/view.html",
+      "sha256": "1dfefa1718e7f08f2e56c8260c980bd15ecb5cb6230791f65a4d2580672de4e1",
+      "bytes": 7632,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personelliste/style.css",
+      "sha256": "253256952cb30eb171fa6b5f241d0e635f80e5f7dbb8095295f7b8d9ea70863f",
+      "bytes": 13401,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personelliste/module.js",
+      "sha256": "e3d0eec9eb7b876d0aeab336cf9b70590b9bc740c1c520bb5290e4e1d053a06c",
+      "bytes": 27357,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
