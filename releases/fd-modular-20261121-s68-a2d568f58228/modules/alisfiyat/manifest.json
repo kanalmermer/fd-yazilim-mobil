@@ -1,0 +1,36 @@
+{
+  "name": "Alış Fiyat Takibi",
+  "roots": [
+    "alisFiyatApp"
+  ],
+  "entrypoints": [
+    "openAlisFiyatApp"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/alisfiyat/view.html",
+      "sha256": "8b076415e1b15dfd4a52e693319a42461036212f6836507b67c54723560105a3",
+      "bytes": 126,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/alisfiyat/style.css",
+      "sha256": "bd9310570d6ab1a810976766124a0cd36cfe68509905fcafd2bd7547398bf840",
+      "bytes": 205,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/alisfiyat/module.js",
+      "sha256": "a50b0255b325c586884b8dd6f5f26ad3dae43002aeeeab4a08b3a75b6dff0428",
+      "bytes": 1204,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
