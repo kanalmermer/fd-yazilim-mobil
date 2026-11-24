@@ -1,0 +1,5 @@
+
+.tapu-btn{font-size:13px;font-weight:600;border-radius:8px;min-height:38px}.tapu-btn-primary{background:#059669;color:white}.tapu-btn-soft{background:#f3f8fb;color:#36586c;border:1px solid #d8e5ed}.tapu-field{font-size:14px;min-height:40px;border-color:#cbdce6}.tapu-field:focus{outline:2px solid #9bd4de;border-color:#3994a8}.tapu-form-group label{font-size:13px;font-weight:600}.tapu-form-grid{gap:15px}.tapu-cks-table{font-size:13px}.tapu-cks-table th{font-size:12px}.tapu-cks-table :is(td,th){overflow-wrap:anywhere}
+@media(max-width:1000px){}
+@media(max-width:600px){.tapu-actions .tapu-btn{padding:9px 11px}.tapu-form-grid{grid-template-columns:1fr}.tapu-span-2,.tapu-span-3{grid-column:1/-1}.tapu-cks-modal-table{max-height:60dvh}}
+

@@ -1,0 +1,95 @@
+{
+  "name": "Evrak Takip",
+  "roots": [
+    "evrakTakipApp",
+    "modalEvrakBelge",
+    "modalEvrakSurumleri",
+    "modalEvrakOnizleme",
+    "modalEvrakKategori",
+    "modalEvrakWhatsappKisiler",
+    "modalEvrakWhatsappGonder"
+  ],
+  "entrypoints": [
+    "evrakYeniId",
+    "evrakTarih",
+    "evrakBoyut",
+    "evrakBildirim",
+    "evrakBelgeleri",
+    "evrakWhatsappKisileri",
+    "evrakWhatsappNumarasi",
+    "evrakWhatsappKisiFormunuTemizle",
+    "evrakWhatsappKisiListesiniCiz",
+    "evrakWhatsappKisileriniAc",
+    "evrakWhatsappKisiDuzenle",
+    "evrakWhatsappKisiKaydet",
+    "evrakWhatsappKisiSil",
+    "evrakWhatsappSepetiniGuncelle",
+    "evrakWhatsappSepetDegistir",
+    "evrakWhatsappGorunenleriSec",
+    "evrakWhatsappSepetiniTemizle",
+    "evrakWhatsappSepetBelgeleri",
+    "evrakWhatsappKisiSeciminiGoster",
+    "evrakWhatsappTopluSeciminiAc",
+    "evrakWhatsappSepetiTopluIndir",
+    "evrakWhatsappSeciminiAc",
+    "evrakWhatsappGonder",
+    "evrakKaydiYaz",
+    "openEvrakTakipApp",
+    "evrakKategoriSec",
+    "evrakAramayiTemizle",
+    "evrakSonKullanmaEtiketi",
+    "evrakDosyaIkonu",
+    "evrakEkraniniCiz",
+    "evrakKategoriFormuAc",
+    "evrakKategoriKaydet",
+    "evrakBelgeFormuAc",
+    "evrakDosyaMimeTuru",
+    "evrakBelgeKaydet",
+    "evrakGoruntule",
+    "evrakDosyaBaglantisi",
+    "evrakSurumGecmisiAc",
+    "evrakOnizlemeyiKapat",
+    "evrakOnizlemeyiDrivedaAc",
+    "evrakOnizlemeIndir",
+    "evrakBelgeSil",
+    "fdEvrakOnizlemeKimligi"
+  ],
+  "writeOperations": [
+    "evrakWhatsappKisileriniAc",
+    "evrakWhatsappKisiDuzenle",
+    "evrakWhatsappKisiKaydet",
+    "evrakWhatsappKisiSil",
+    "evrakKaydiYaz",
+    "evrakKategoriFormuAc",
+    "evrakKategoriKaydet",
+    "evrakBelgeFormuAc",
+    "evrakBelgeKaydet",
+    "evrakBelgeSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/evrak/view.html",
+      "sha256": "4eedbb2e31629c97dace1b4438499a69a2e04425b3e71715fdadb007d6513e32",
+      "bytes": 7759,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/evrak/style.css",
+      "sha256": "dcffa0eed0e211d1d3ed68fa4a108cf3b64d22de808346fb60dc0c4027f3d68d",
+      "bytes": 10921,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/evrak/module.js",
+      "sha256": "9c40ef3881daa61648fe9f3e95de32c5d13ee0cdedbf4d1ee53d5f6297a9174d",
+      "bytes": 47566,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
