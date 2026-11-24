@@ -1,0 +1,32 @@
+{
+  "name": "Aylık Giriş–Çıkış Raporu ve Çıktıları",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/aylikrapor/view.html",
+      "sha256": "d6623505b7352358ccc4fbd0c5d81e4818ca843eb49f77976d849c00e92d19c3",
+      "bytes": 90,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/aylikrapor/style.css",
+      "sha256": "7893b9e0d98bc53ba257914209fc47ef19b4d8fc05d2e05835cda2e730a01012",
+      "bytes": 97,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/aylikrapor/module.js",
+      "sha256": "8545be540df23a81e9ad5e6ee75f57a5ea20960eb5e42ba0dece216f12283a89",
+      "bytes": 16183,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261123-s68-4563371e3432",
+  "release": "fd-modular-20261124-s68-3f644a12b8fc",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,8 +53,8 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "771721b5bbaf596fc732f253cb2dc5145d319eb764f229b1513e48ca5a4d8261",
-      "bytes": 67997
+      "sha256": "61317fcd0b73b041ded67d0346a610d347dc98c3a1801511ad3fa408030e3e43",
+      "bytes": 67998
     },
     {
       "path": "core/cks-entrypoints.js",
@@ -693,8 +693,8 @@
     },
     {
       "path": "modules/alisfiyat/manifest.json",
-      "sha256": "3ebc1e6f91e54bbea701f4da8923a8ef04ed70ce949a6354951be50ce849d598",
-      "bytes": 811
+      "sha256": "aed08a01cf0dc5330d1cae752509b5a3ab57d834a7fc0dbc90577bf0017a3ba3",
+      "bytes": 812
     },
     {
       "path": "modules/alisfiyat/module.js",
@@ -703,8 +703,8 @@
     },
     {
       "path": "modules/alisfiyat/style.css",
-      "sha256": "bd9310570d6ab1a810976766124a0cd36cfe68509905fcafd2bd7547398bf840",
-      "bytes": 205
+      "sha256": "1845250d53daef75bb2fff564cf476d84c3326d5fc87644f6a4a4853ee23bc93",
+      "bytes": 1421
     },
     {
       "path": "modules/alisfiyat/view.html",
@@ -1033,7 +1033,7 @@
     },
     {
       "path": "modules/evrak/manifest.json",
-      "sha256": "17e5840292b2d079823c7515e61ae4f1f20853640b616c3f9760585f4cb61721",
+      "sha256": "38e2aa9f2b756421d3325d3da5652981917b7861247421da7613619dbe62a32b",
       "bytes": 2433
     },
     {
@@ -1043,8 +1043,8 @@
     },
     {
       "path": "modules/evrak/style.css",
-      "sha256": "9d079bff43d445b1928ce08a775948792f7c1d0b7729a8850302ae1025972585",
-      "bytes": 10100
+      "sha256": "dcffa0eed0e211d1d3ed68fa4a108cf3b64d22de808346fb60dc0c4027f3d68d",
+      "bytes": 10921
     },
     {
       "path": "modules/evrak/view.html",
@@ -2048,8 +2048,8 @@
     },
     {
       "path": "shared/edm-tracker.js",
-      "sha256": "a974692e94f747a6d0ef2a6458bfd1b40b51963f451841edfd72e5b5638eef24",
-      "bytes": 67310
+      "sha256": "22ed3123dc7567af30d3e88bcb01b7c2f3c19448def6303b762466f4166d1b66",
+      "bytes": 78618
     },
     {
       "path": "shared/enforcement-data.js",
@@ -2108,8 +2108,8 @@
     },
     {
       "path": "shared/output/core.js",
-      "sha256": "6bcc87d9dd15199c91b803c5e63399bf4dcab040b491d22b01b365c356d31e1b",
-      "bytes": 89355
+      "sha256": "327bd759d86e6a6eb77d8605a05256c3cc7b4a4d48c82f1b7a261e900ed2f160",
+      "bytes": 89490
     },
     {
       "path": "shared/output/pdf-and-filter.css",
