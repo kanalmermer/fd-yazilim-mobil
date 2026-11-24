@@ -1,0 +1,10 @@
+.police-durum{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:.68rem;font-weight:850}
+.police-durum-gecen{background:#fee2e2;color:#b91c1c}
+.police-durum-yaklasan{background:#ffedd5;color:#c2410c}
+.police-durum-aktif{background:#dcfce7;color:#166534}
+.police-tur-rozet{display:inline-flex;padding:5px 8px;border-radius:999px;color:#fff;font-size:.68rem;font-weight:850;line-height:1.15;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.police-durum-planli{background:#e0f2fe;color:#075985}
+.police-belge-ac{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px;min-width:68px!important;height:34px!important;padding:0 10px!important;text-decoration:none!important;white-space:nowrap}
+.police-tur-belge-link{display:inline-flex;text-decoration:none;border:0;padding:0;background:transparent;cursor:pointer;font:inherit;border-radius:999px;outline:0}
+.police-tur-belge-link:hover .police-tur-rozet{transform:translateY(-1px);filter:brightness(.88);box-shadow:0 3px 8px rgba(15,23,42,.25)}
+.police-tur-belge-link:focus-visible{box-shadow:0 0 0 3px #bae6fd}

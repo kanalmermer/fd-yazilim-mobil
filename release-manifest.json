@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261124-s68-275b679d8ad3",
+  "release": "fd-modular-20261124-s68-13b9b2602990",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "46a351c6591d8d3b29bd3102ecf9ab8f01fd9380d331b49087417e33c3a9ee71",
+      "sha256": "20c60ab9945f56f32cd485a1fd8fbe59ed0eaf72b9dda7b401d781f9054cfbb3",
       "bytes": 67998
     },
     {
@@ -1963,8 +1963,8 @@
     },
     {
       "path": "shared/attendance-fast.js",
-      "sha256": "4a92781389bf92fb25ec32ca969df059a2a11907655721f545385347ebacb92a",
-      "bytes": 22079
+      "sha256": "6a3b31d223accddd991bdf0b4aa4fbfa7eb9fe745e38b3627981c223dd92763d",
+      "bytes": 32391
     },
     {
       "path": "shared/attendance-holiday-shift-label.css",
@@ -2373,8 +2373,8 @@
     },
     {
       "path": "shared/weekly-roster-fast.js",
-      "sha256": "2ee3cffccdb32541a1ecba7c3fdf5c2ef403add63c5e4d276e4e8d6bdb509fd5",
-      "bytes": 5630
+      "sha256": "5f36132ed430f583453ed69b7a1cbff8953ce7c076ac740e986f3cf847dc4ddb",
+      "bytes": 5952
     },
     {
       "path": "shared/weekly-roster-safety.css",

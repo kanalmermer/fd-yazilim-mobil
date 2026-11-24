@@ -1,0 +1,35 @@
+// Stable policy screen/modal bridges; data and rental wrappers remain eager.
+function policeTurSecenekleriniDoldur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeTurSecenekleriniDoldur',args,this)}
+function policeSirketOnerileriniDoldur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeSirketOnerileriniDoldur',args,this)}
+function policeHedefSecenekleriniDoldur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefSecenekleriniDoldur',args,this)}
+function policeHedefBilgisiniGuncelle(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefBilgisiniGuncelle',args,this)}
+function policeBitisiniBirYilSonrayaAyarla(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeBitisiniBirYilSonrayaAyarla',args,this)}
+function policeFormunuAc(){const args=Array.from(arguments);if(!FDModules.status('police').loaded)return FDModules.open('police',[{fdPolicyAction:'policeFormunuAc',args}],this);return FDModules.callIfLoaded('police','policeFormunuAc',args,this)}
+function policeKaydet(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeKaydet',args,this)}
+function policeSil(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeSil',args,this)}
+function policeListesiniCiz(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeListesiniCiz',args,this)}
+function openPoliceTakipApp(){return FDModules.open('police',Array.from(arguments),this)}
+function policeHedefTipSecenekleriniDoldur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefTipSecenekleriniDoldur',args,this)}
+function policeVarlikAramaAnahtari(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeVarlikAramaAnahtari',args,this)}
+function policeHedefPanelKonumunuAyarla(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefPanelKonumunuAyarla',args,this)}
+function policeHedefAktifSatiriAyarla(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefAktifSatiriAyarla',args,this)}
+function policeHedefSeciciGuncelle(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefSeciciGuncelle',args,this)}
+function policeHedefListesiniKapat(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefListesiniKapat',args,this)}
+function policeHedefListesiniAc(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefListesiniAc',args,this)}
+function policeHedefListesindenSec(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefListesindenSec',args,this)}
+function policeHedefKlavye(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefKlavye',args,this)}
+function policeHedefAramasiniUygula(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefAramasiniUygula',args,this)}
+function policeHedefAramasiniTemizle(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeHedefAramasiniTemizle',args,this)}
+function fdPoliceFiltreliListe(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','fdPoliceFiltreliListe',args,this)}
+function policeSentetikFormunuDoldur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeSentetikFormunuDoldur',args,this)}
+function policeKaydiniDuzenle(){const args=Array.from(arguments);if(!FDModules.status('police').loaded)return FDModules.open('police',[{fdPolicyAction:'policeKaydiniDuzenle',args}],this);return FDModules.callIfLoaded('police','policeKaydiniDuzenle',args,this)}
+function policeVarlikGecmisiniAc(){const args=Array.from(arguments);if(!FDModules.status('police').loaded)return FDModules.open('police',[{fdPolicyAction:'policeVarlikGecmisiniAc',args}],this);return FDModules.callIfLoaded('police','policeVarlikGecmisiniAc',args,this)}
+function policeBelgeDosyaAdiOlustur(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeBelgeDosyaAdiOlustur',args,this)}
+function policeOnizlemePenceresiniHazirla(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeOnizlemePenceresiniHazirla',args,this)}
+function policeBelgesiniAc(){const args=Array.from(arguments);if(!FDModules.status('police').loaded)return FDModules.open('police',[{fdPolicyAction:'policeBelgesiniAc',args}],this);return FDModules.callIfLoaded('police','policeBelgesiniAc',args,this)}
+function policeOnizlemeyiKapat(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeOnizlemeyiKapat',args,this)}
+function policeOnizlemeyiDrivedaAc(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeOnizlemeyiDrivedaAc',args,this)}
+function policeOnizlemeIndir(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeOnizlemeIndir',args,this)}
+function policeSentetikKaydiniSil(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeSentetikKaydiniSil',args,this)}
+function policeModalKaydiniSil(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeModalKaydiniSil',args,this)}
+function policeSentetikDegisikliginiKaydet(){const args=Array.from(arguments);return FDModules.callIfLoaded('police','policeSentetikDegisikliginiKaydet',args,this)}
