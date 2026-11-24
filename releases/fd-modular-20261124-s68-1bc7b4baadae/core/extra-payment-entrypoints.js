@@ -1,0 +1,26 @@
+// Stable bridges remain eager so existing personnel/role/tab wrapper order is preserved.
+function openEkOdemeApp(){return FDModules.open('ekodeme',Array.from(arguments),this)}
+function ekOdemeAyiDegistir(){return FDModules.callIfLoaded('ekodeme','ekOdemeAyiDegistir',Array.from(arguments),this)}
+function ekOdemeOncekiAy(){return FDModules.callIfLoaded('ekodeme','ekOdemeOncekiAy',Array.from(arguments),this)}
+function ekOdemeAnahtari(){return FDModules.callIfLoaded('ekodeme','ekOdemeAnahtari',Array.from(arguments),this)}
+function ekOdemeKaydiBul(){return FDModules.callIfLoaded('ekodeme','ekOdemeKaydiBul',Array.from(arguments),this)}
+function ekOdemeDonemTutariBul(){return FDModules.callIfLoaded('ekodeme','ekOdemeDonemTutariBul',Array.from(arguments),this)}
+function ekOdemeHareketToplami(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketToplami',Array.from(arguments),this)}
+function ekOdemeKaydininHareketleriniDuzelt(){return FDModules.callIfLoaded('ekodeme','ekOdemeKaydininHareketleriniDuzelt',Array.from(arguments),this)}
+function ekOdemeKayitlariniDuzelt(){return FDModules.callIfLoaded('ekodeme','ekOdemeKayitlariniDuzelt',Array.from(arguments),this)}
+function ekOdemeAylariniGetir(){return FDModules.callIfLoaded('ekodeme','ekOdemeAylariniGetir',Array.from(arguments),this)}
+function ekOdemeBakiyeHesapla(){return FDModules.callIfLoaded('ekodeme','ekOdemeBakiyeHesapla',Array.from(arguments),this)}
+function ekOdemeCizelgesiniHazirla(){return FDModules.callIfLoaded('ekodeme','ekOdemeCizelgesiniHazirla',Array.from(arguments),this)}
+function ekOdemeleriKaydet(){return FDModules.callIfLoaded('ekodeme','ekOdemeleriKaydet',Array.from(arguments),this)}
+function ekOdemeOdenenYazilirken(){return FDModules.callIfLoaded('ekodeme','ekOdemeOdenenYazilirken',Array.from(arguments),this)}
+function ekOdemeOdenenGuncelle(){return FDModules.callIfLoaded('ekodeme','ekOdemeOdenenGuncelle',Array.from(arguments),this)}
+function ekOdemeHareketleriniKapat(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketleriniKapat',Array.from(arguments),this)}
+function ekOdemeHareketExcelIndir(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketExcelIndir',Array.from(arguments),this)}
+function ekOdemeHareketPdfIndir(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketPdfIndir',Array.from(arguments),this)}
+function ekOdemeExcelIndir(){return FDModules.callIfLoaded('ekodeme','ekOdemeExcelIndir',Array.from(arguments),this)}
+function ekOdemePdfIndir(){return FDModules.callIfLoaded('ekodeme','ekOdemePdfIndir',Array.from(arguments),this)}
+function ekOdemeGoruntuAl(){return FDModules.callIfLoaded('ekodeme','ekOdemeGoruntuAl',Array.from(arguments),this)}
+function ekOdemeHareketSatirlari(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketSatirlari',Array.from(arguments),this)}
+function ekOdemeHareketleriniAc(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketleriniAc',Array.from(arguments),this)}
+function ekOdemeHareketDuzenle(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketDuzenle',Array.from(arguments),this)}
+function ekOdemeHareketSil(){return FDModules.callIfLoaded('ekodeme','ekOdemeHareketSil',Array.from(arguments),this)}

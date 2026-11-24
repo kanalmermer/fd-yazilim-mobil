@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261124-s68-13b9b2602990",
+  "release": "fd-modular-20261124-s68-1bc7b4baadae",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "20c60ab9945f56f32cd485a1fd8fbe59ed0eaf72b9dda7b401d781f9054cfbb3",
+      "sha256": "3df5ce3c57ce69f27b5ea3c31a87bcf1a4eef97c78f8ccb57fed5be20efccfb8",
       "bytes": 67998
     },
     {
@@ -1958,13 +1958,13 @@
     },
     {
       "path": "shared/attendance-fast.css",
-      "sha256": "c4a5d596c3f32ce7f5e53a79eb00c59e77958a23cbe0b959601060f1e4ff01cc",
-      "bytes": 883
+      "sha256": "15863b4e7295d5737c60c318d3139d42e46dcd0ceb0fae11c4b77092303ab160",
+      "bytes": 1580
     },
     {
       "path": "shared/attendance-fast.js",
-      "sha256": "6a3b31d223accddd991bdf0b4aa4fbfa7eb9fe745e38b3627981c223dd92763d",
-      "bytes": 32391
+      "sha256": "d41881eae680ab4966c2b313d7af5ebe902538ece577d57dc5cfad309e99b67d",
+      "bytes": 32599
     },
     {
       "path": "shared/attendance-holiday-shift-label.css",
