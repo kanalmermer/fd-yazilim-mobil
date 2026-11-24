@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261124-s68-7b990f4d190c",
+  "release": "fd-modular-20261124-s68-275b679d8ad3",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7b638d9f9574050a663a99eb22650840adebded1fdd66b530b9c08083afdd194",
+      "sha256": "46a351c6591d8d3b29bd3102ecf9ab8f01fd9380d331b49087417e33c3a9ee71",
       "bytes": 67998
     },
     {
@@ -1753,13 +1753,13 @@
     },
     {
       "path": "modules/toplusaat/manifest.json",
-      "sha256": "6d8032f8cabd4af9b7a5c7e4ec607e3696dae7befd7d47b1a2dbb87ed45092a4",
+      "sha256": "8802fff0700df09a9ced21c7d66f0c0522ede4a09eb2d629decb833238edc191",
       "bytes": 1153
     },
     {
       "path": "modules/toplusaat/module.js",
-      "sha256": "a3bb9603e7df310bdc5e5fe09222f991f8625f8994e364e3542718bed08f48c8",
-      "bytes": 24472
+      "sha256": "4f90c08c002b7d81efe7e1f6fb676f22ceed8e2b6ae0cfb47b6067a726bcaa0a",
+      "bytes": 25227
     },
     {
       "path": "modules/toplusaat/style.css",
@@ -1768,8 +1768,8 @@
     },
     {
       "path": "modules/toplusaat/view.html",
-      "sha256": "7e7de81efb21eb107bba82b9dde3b39e3aa760b8b616fbac421e9d4673facefe",
-      "bytes": 4141
+      "sha256": "7a6ed2f9d45df44e1fc80eab2150c00339d3cbbd0ab3aa9272681b553b649c86",
+      "bytes": 4236
     },
     {
       "path": "modules/ucretguncelleme/manifest.json",
