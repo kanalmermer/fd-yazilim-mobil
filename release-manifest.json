@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261124-s68-5bdc33e39fe0",
+  "release": "fd-modular-20261125-s68-f4274347592f",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "7bcd7e00d3bfe336da1e3c1fc1d8b965a6973cae5877fae09e4bc24ef16e5071",
+      "sha256": "db5b15a4b06a1d106e3205112678edd15e3fb3d8c127536ce5f62a63e37cc616",
       "bytes": 67998
     },
     {
@@ -2188,8 +2188,8 @@
     },
     {
       "path": "shared/personnel-runtime.js",
-      "sha256": "5b9966b978b344904e58fb4566b25dc321847c896d09bd8e04cf7cb85ed1626d",
-      "bytes": 230503
+      "sha256": "fbe1ab8cf12bc49874b68e6c2eb91a36e2706c3f15ee50fcfefa065e439ebe2a",
+      "bytes": 230703
     },
     {
       "path": "shared/personnel-templates/catalog.js",
