@@ -1,0 +1,31 @@
+// Stable original role/tab bindings; automatic notifications and push never load this UI.
+function fdWhatsappCalismaOturumuDegisti(){return !FDModules.status('bildirim').loaded||FDModules.callIfLoaded('bildirim','fdWhatsappCalismaOturumuDegisti',[],this)}
+function fdWhatsappCalismaAlaniniSifirla(){try{return FDModules.callIfLoaded('bildirim','fdWhatsappCalismaAlaniniSifirla',[],this)}catch(_){return undefined}}
+function fdWhatsappGelenKutusuCiz(){return FDModules.callIfLoaded('bildirim',"fdWhatsappGelenKutusuCiz",Array.from(arguments),this)}
+function fdWhatsappKonusmaAc(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKonusmaAc",Array.from(arguments),this)}
+function fdWhatsappBasarisizMesajiTekrarGonder(){return FDModules.callIfLoaded('bildirim',"fdWhatsappBasarisizMesajiTekrarGonder",Array.from(arguments),this)}
+function fdWhatsappGelenKutusuYukle(){return FDModules.callIfLoaded('bildirim',"fdWhatsappGelenKutusuYukle",Array.from(arguments),this)}
+function fdWhatsappKisiyeMesajHazirla(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKisiyeMesajHazirla",Array.from(arguments),this)}
+function fdWhatsappKuyrukSec(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukSec",Array.from(arguments),this)}
+function fdWhatsappKuyrukTumunuSec(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukTumunuSec",Array.from(arguments),this)}
+function fdWhatsappKuyrukDuzenle(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukDuzenle",Array.from(arguments),this)}
+function fdWhatsappKuyrukYukle(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukYukle",Array.from(arguments),this)}
+function fdWhatsappKuyrukDuraklat(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukDuraklat",Array.from(arguments),this)}
+function fdWhatsappKuyrukSecilenleriSil(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukSecilenleriSil",Array.from(arguments),this)}
+function fdWhatsappKuyrukIptal(){return FDModules.callIfLoaded('bildirim',"fdWhatsappKuyrukIptal",Array.from(arguments),this)}
+function fdWhatsappSekmeAc(){return FDModules.callIfLoaded('bildirim',"fdWhatsappSekmeAc",Array.from(arguments),this)}
+function openWhatsappMesajlari(){return FDModules.open('bildirim',[{tab:'inbox',preserveTab:true}],this)}
+function fdWhatsappMesajOnizle(){return FDModules.callIfLoaded('bildirim',"fdWhatsappMesajOnizle",Array.from(arguments),this)}
+function fdWhatsappMesajFormunuTemizle(){return FDModules.callIfLoaded('bildirim',"fdWhatsappMesajFormunuTemizle",Array.from(arguments),this)}
+function fdBildirimModuDegisti(){return FDModules.callIfLoaded('bildirim',"fdBildirimModuDegisti",Array.from(arguments),this)}
+function fdBildirimPlanDuzenlemeAc(){return FDModules.callIfLoaded('bildirim',"fdBildirimPlanDuzenlemeAc",Array.from(arguments),this)}
+function openBildirimModal(options={}){return FDModules.open('bildirim',[options],this)}
+function fdBildirimHedefleriniDoldur(){return FDModules.callIfLoaded('bildirim',"fdBildirimHedefleriniDoldur",Array.from(arguments),this)}
+function fdBildirimPersonelleriniDoldur(){return FDModules.callIfLoaded('bildirim',"fdBildirimPersonelleriniDoldur",Array.from(arguments),this)}
+function fdBildirimSeciliPersonelIds(){return FDModules.callIfLoaded('bildirim',"fdBildirimSeciliPersonelIds",Array.from(arguments),this)}
+function fdBildirimTumPersonelleriSec(){return FDModules.callIfLoaded('bildirim',"fdBildirimTumPersonelleriSec",Array.from(arguments),this)}
+function fdBildirimHedefOzetiniGuncelle(){return FDModules.callIfLoaded('bildirim',"fdBildirimHedefOzetiniGuncelle",Array.from(arguments),this)}
+function fdWhatsappGidenPersonelleriniDoldur(){return FDModules.callIfLoaded('bildirim',"fdWhatsappGidenPersonelleriniDoldur",Array.from(arguments),this)}
+function fdBildirimGecmisiniYukle(){return FDModules.callIfLoaded('bildirim',"fdBildirimGecmisiniYukle",Array.from(arguments),this)}
+function fdBildirimOkumayanlaraTekrarGonder(){return FDModules.callIfLoaded('bildirim',"fdBildirimOkumayanlaraTekrarGonder",Array.from(arguments),this)}
+function fdBildirimGonder(){return FDModules.callIfLoaded('bildirim',"fdBildirimGonder",Array.from(arguments),this)}

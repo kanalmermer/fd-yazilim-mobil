@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261125-s68-f4274347592f",
+  "release": "fd-modular-20261125-s68-de6c9f3322ae",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "db5b15a4b06a1d106e3205112678edd15e3fb3d8c127536ce5f62a63e37cc616",
+      "sha256": "6642865f1e750082bd82063749f920b5270501a0e14a9b0be1850e4b43459caa",
       "bytes": 67998
     },
     {
@@ -1753,13 +1753,13 @@
     },
     {
       "path": "modules/toplusaat/manifest.json",
-      "sha256": "8802fff0700df09a9ced21c7d66f0c0522ede4a09eb2d629decb833238edc191",
+      "sha256": "f888460e37982e827e169b7d4c4f8daddf19ec5068925bb210e9272cb44ba558",
       "bytes": 1153
     },
     {
       "path": "modules/toplusaat/module.js",
-      "sha256": "4f90c08c002b7d81efe7e1f6fb676f22ceed8e2b6ae0cfb47b6067a726bcaa0a",
-      "bytes": 25227
+      "sha256": "60b44434c80df4f210e37b947e8127b437019cbd491e7500b20d5eb71ff94887",
+      "bytes": 25331
     },
     {
       "path": "modules/toplusaat/style.css",
@@ -2188,8 +2188,8 @@
     },
     {
       "path": "shared/personnel-runtime.js",
-      "sha256": "fbe1ab8cf12bc49874b68e6c2eb91a36e2706c3f15ee50fcfefa065e439ebe2a",
-      "bytes": 230703
+      "sha256": "ab8ca3c1b80f142833c4393908e09b0e85c48f6c40867f1491a8803633d2afb5",
+      "bytes": 231436
     },
     {
       "path": "shared/personnel-templates/catalog.js",
