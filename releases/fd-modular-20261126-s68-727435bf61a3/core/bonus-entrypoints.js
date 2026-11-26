@@ -1,0 +1,7 @@
+// Stable original menu/role/tab bindings; no private form state in the shell.
+(function(root){let pending=null;const identity=()=>JSON.stringify([activeUser?.supabaseUserId||activeUser?.id||activeUser?.username||'',activeUser?.sirketId||'',activeUser?.rol||'',typeof fdAktifUygulamaSekmesi==='undefined'?'':fdAktifUygulamaSekmesi]);root.fdBonusLaunchOptions=function(){const p=pending;pending=null;return p&&p.identity===identity()?p.options:null};root.fdBonusLaunch=function(options,receiver){pending={identity:identity(),options};return FDModules.open('prim',[options],receiver)}})(window);
+function openPrimApp(){if(!personelPrimMenusuAcikMi())return showToast('Bu personel için prim takibi aktif değil.','warning');return window.fdBonusLaunch({},this)}
+function openPrimHakkiDuzenleme(event,pId){event.preventDefault();if(FDModules.status('prim').loaded){window.fdBonusLaunchOptions();return FDModules.callIfLoaded('prim','openPrimHakkiDuzenleme',[{preventDefault(){}},pId],this)}return window.fdBonusLaunch({fdBonusAction:'manual',pId:String(pId),period:[document.getElementById('puanAySec').value,document.getElementById('puanYilSec').value]},this)}
+function closePrimHakkiModal(){return FDModules.callIfLoaded('prim','closePrimHakkiModal',Array.from(arguments),this)}
+function primSabitTutariniKaydet(){return FDModules.callIfLoaded('prim','primSabitTutariniKaydet',Array.from(arguments),this)}
+function manuelPrimHakkiniKaydet(){return FDModules.callIfLoaded('prim','manuelPrimHakkiniKaydet',Array.from(arguments),this)}
