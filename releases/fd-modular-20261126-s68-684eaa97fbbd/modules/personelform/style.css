@@ -1,0 +1,17 @@
+/* Existing shared personnel/profile/photo/summary styles remain eager and unchanged. */
+#modalPersonel #pNakilAlanlari[hidden], #modalPersonel #pNormalExit[hidden], #modalPersonel #pNakilGecmisi[hidden], #modalPersonel #pCikisSebebiAlan[hidden] { display:none; }
+#modalPersonel .personnel-transfer-note { color:#64748b; font-size:12px; line-height:1.6; margin:8px 0 14px; }
+#modalPersonel #pNakilGecmisListe { padding-left:20px; margin:8px 0 0; font-size:12px; line-height:1.7; overflow-wrap:anywhere; }
+#modalPersonel #pNakilGecmisListe li + li { margin-top:8px; }
+
+#modalPersonel #pNakilGecmisListe{padding:0;list-style:none}
+#modalPersonel .personnel-transfer-history-card{border:1px solid #dbe5ef;background:#fff;border-radius:10px;padding:14px}
+#modalPersonel .personnel-transfer-history-card>strong{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:#334155;margin-bottom:12px}
+#modalPersonel .personnel-transfer-latest{font-size:11px;font-weight:600;color:#0f766e;background:#e8f5f2;padding:2px 8px;border-radius:20px}
+#modalPersonel .personnel-transfer-route{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr);align-items:stretch;gap:8px}
+#modalPersonel .personnel-transfer-history-card .personnel-transfer-branch{display:grid;gap:12px;margin:0;padding:12px;border-radius:7px;background:#f8fafc;border:1px solid #e2e8f0;min-width:0}
+#modalPersonel .personnel-transfer-history-card .personnel-transfer-branch-new{background:#f0f9f6;border-color:#cce5dd}
+#modalPersonel .personnel-transfer-history-card dt{font-size:11px;color:#64748b;line-height:1.5}
+#modalPersonel .personnel-transfer-history-card dd{font-size:13px;font-weight:600;line-height:1.5;margin:3px 0 0;color:#1e293b;overflow-wrap:anywhere}
+#modalPersonel .personnel-transfer-arrow{align-self:center;text-align:center;color:#0f766e;font-size:22px;font-weight:600}
+@media(max-width:600px){#modalPersonel .personnel-transfer-route{grid-template-columns:minmax(0,1fr);gap:4px}#modalPersonel .personnel-transfer-arrow{transform:rotate(90deg);line-height:24px}#modalPersonel .personnel-transfer-history-card{padding:12px}}

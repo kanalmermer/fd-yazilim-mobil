@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261126-s68-727435bf61a3",
+  "release": "fd-modular-20261126-s68-684eaa97fbbd",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "94c497034249e137525512dddc88f108c1527c77b908f9cabedcfdc6126cd62c",
+      "sha256": "11e2d28b87332c99661f25449b2d46bab8a2f174f247880c35bdda3e2b8269ec",
       "bytes": 67998
     },
     {
@@ -713,18 +713,18 @@
     },
     {
       "path": "modules/arac/manifest.json",
-      "sha256": "e3ff45ff88f58cd8a3513cc97775a14b805041cb4cf786ad1828878b60cdd595",
+      "sha256": "7181dac91b7971ab8ec0c22e22ba8a35eca608f2c743d32381faa0c16953d987",
       "bytes": 5776
     },
     {
       "path": "modules/arac/module.js",
-      "sha256": "9cf9e1bb9a402ba50405173e644a115c5cb4923e772f75142157dbbe59593992",
-      "bytes": 229122
+      "sha256": "714c57413187fcd3b5f6a8c095456e6ed75016514e4c054e4ba7dfca83ab2139",
+      "bytes": 233153
     },
     {
       "path": "modules/arac/style.css",
-      "sha256": "6989865962136fbc3adc3e11f4febea0b00866b08781de5cb4f70c272bdac4f3",
-      "bytes": 24259
+      "sha256": "eec4585da2621bfb5da2f5b98483d663b6f76167dd1202618a33007ff1cf1a78",
+      "bytes": 25549
     },
     {
       "path": "modules/arac/view.html",
@@ -2363,8 +2363,8 @@
     },
     {
       "path": "shared/vehicle-pages.js",
-      "sha256": "77ddd9a0761e8f369bb0e8b87247e023ce227575212827687c90bef39b1844f2",
-      "bytes": 15430
+      "sha256": "b548d3ca8dca796a9c774a938e676303675676bb36a3432f6474b4277b43137b",
+      "bytes": 16566
     },
     {
       "path": "shared/waybill-data.js",

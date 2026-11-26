@@ -1,0 +1,13 @@
+#alisFiyatApp main{width:100%;max-width:1400px;margin:0 auto;padding:22px;box-sizing:border-box;min-width:0}#alisFiyatApp .fd-edm-tracker{margin:0}@media(max-width:600px){#alisFiyatApp main{padding:12px}}
+
+#alisFiyatApp .fd-edm-compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:14px 0}
+#alisFiyatApp .fd-edm-compare-picker,#alisFiyatApp .fd-edm-compare-result{min-width:0;border:1px solid #d9e3ed;border-radius:10px;padding:14px;background:#fff}
+#alisFiyatApp .fd-edm-compare-picker{background:#f7f9fc;display:grid;gap:7px}
+#alisFiyatApp .fd-edm-compare-picker h4,#alisFiyatApp .fd-edm-compare-result h4{margin:0 0 6px;overflow-wrap:anywhere}
+#alisFiyatApp .fd-edm-compare-picker input,#alisFiyatApp .fd-edm-compare-picker select{width:100%;min-width:0;box-sizing:border-box}
+#alisFiyatApp .fd-edm-compare-product{font-weight:600;overflow-wrap:anywhere;margin:7px 0}
+#alisFiyatApp .fd-edm-compare-result table{width:100%;table-layout:fixed}
+#alisFiyatApp .fd-edm-compare-result th,#alisFiyatApp .fd-edm-compare-result td{white-space:normal;overflow-wrap:anywhere;padding:9px 6px;font-size:12px}
+#alisFiyatApp .fd-edm-compare-result th:nth-child(1){width:19%}#alisFiyatApp .fd-edm-compare-result th:nth-child(2){width:33%}
+#alisFiyatApp input[type=date]{color-scheme:light;min-width:0}
+@media(max-width:1100px){#alisFiyatApp .fd-edm-compare-grid{grid-template-columns:minmax(0,1fr)}}

@@ -1,0 +1,8 @@
+
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button:hover{background:#dceef8!important;color:#164e63!important;border-color:#bad8e8!important;box-shadow:none!important;transform:none!important}
+:is(#personelDashboardApp,#personelApp,#izinTakipApp,#puantajApp,#primApp,#avansApp,#icraApp,#ekOdemeApp,#kkdApp,#vardiyaApp,#magicpassApp) .workspace-nav button.active:hover{background:#e5f3f8!important;color:#155e75!important}
+#magicpassAylikTablo thead th:nth-child(n),#magicpassGunlukTablo thead th:nth-child(n){position:sticky!important;top:0!important;z-index:12!important;background:#eef3f8!important;color:#334155!important}
+#magicpassAylikTablo thead .magicpass-tarih-baslik{left:30px!important;z-index:13!important}
+#magicpassAylikTablo tbody td{top:auto!important}
+@media(max-width:760px){#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:68dvh!important;overflow:auto!important}}
+
