@@ -1,0 +1,72 @@
+{
+  "name": "WhatsApp Mesajları",
+  "roots": [
+    "whatsappMesajApp"
+  ],
+  "entrypoints": [
+    "fdWhatsappCalismaOturumuDegisti",
+    "fdWhatsappCalismaAlaniniSifirla",
+    "fdWhatsappGelenKutusuCiz",
+    "fdWhatsappKonusmaAc",
+    "fdWhatsappBasarisizMesajiTekrarGonder",
+    "fdWhatsappGelenKutusuYukle",
+    "fdWhatsappKisiyeMesajHazirla",
+    "fdWhatsappKuyrukSec",
+    "fdWhatsappKuyrukTumunuSec",
+    "fdWhatsappKuyrukDuzenle",
+    "fdWhatsappKuyrukYukle",
+    "fdWhatsappKuyrukDuraklat",
+    "fdWhatsappKuyrukSecilenleriSil",
+    "fdWhatsappKuyrukIptal",
+    "fdWhatsappSekmeAc",
+    "openWhatsappMesajlari",
+    "fdWhatsappMesajOnizle",
+    "fdWhatsappMesajFormunuTemizle",
+    "fdBildirimModuDegisti",
+    "fdBildirimPlanDuzenlemeAc",
+    "openBildirimModal",
+    "fdBildirimHedefleriniDoldur",
+    "fdBildirimPersonelleriniDoldur",
+    "fdBildirimSeciliPersonelIds",
+    "fdBildirimTumPersonelleriSec",
+    "fdBildirimHedefOzetiniGuncelle",
+    "fdWhatsappGidenPersonelleriniDoldur",
+    "fdBildirimGecmisiniYukle",
+    "fdBildirimOkumayanlaraTekrarGonder",
+    "fdBildirimGonder"
+  ],
+  "writeOperations": [
+    "fdWhatsappBasarisizMesajiTekrarGonder",
+    "fdWhatsappKuyrukDuraklat",
+    "fdWhatsappKuyrukSecilenleriSil",
+    "fdWhatsappKuyrukIptal",
+    "fdBildirimOkumayanlaraTekrarGonder",
+    "fdBildirimGonder"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/bildirim/view.html",
+      "sha256": "31a1f04cd108c06609b4c3ae462a9549568b8e3c00582695a26fd1a8a58d554b",
+      "bytes": 8159,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/bildirim/style.css",
+      "sha256": "17edfe4dfc0e805e618fb34557939c2ea71e4bedf8aab383e2c7b486ef7f1d9d",
+      "bytes": 45310,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/bildirim/module.js",
+      "sha256": "c32d303125be1d7cd3c2e37e9b76d59a6d46e50224396b4df9d390418c5238ad",
+      "bytes": 75536,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

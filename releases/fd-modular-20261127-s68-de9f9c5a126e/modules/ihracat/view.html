@@ -1,0 +1,117 @@
+<div id="ihracatApp" style="display:none;">
+    <div class="app-header-bar"><div><strong>🌍 İhracat ve Yüklemeler</strong></div></div>
+    <main style="max-width:1380px;margin:0 auto;padding:22px;">
+        <div id="ihracatFirmaListeEkrani">
+            <div class="card">
+                <div class="card-header" style="gap:12px;flex-wrap:wrap;">
+                    <div><h2>İhracat Firma Listesi</h2><p style="margin:5px 0 0;color:#64748b;">Yükleme ve ihracat evraklarını firma bazında yönetin.</p></div>
+                    <div class="action-btns" style="align-items:center;"><input id="ihracatFirmaArama" placeholder="Firma ara..." oninput="ihracatFirmalariniCiz()" style="min-width:220px;"><select id="ihracatFirmaYuklemeFiltre" onchange="ihracatFirmalariniCiz()"><option value="">Tüm Firmalar</option><option value="var">Yüklemesi Olanlar</option><option value="yok">Yüklemesi Olmayanlar</option></select><select id="ihracatFirmaSiralama" onchange="ihracatFirmalariniCiz()"><option value="ad">Firma Adına Göre</option><option value="son">Son Yüklemeye Göre</option><option value="adet">Yükleme Sayısına Göre</option></select><button class="btn-submit" style="width:auto;min-width:132px;margin:0;padding:10px 16px;white-space:nowrap;" onclick="ihracatFirmaFormuAc()">＋ Firma Ekle</button></div>
+                </div>
+                <div class="table-wrapper"><table id="ihracatFirmaTablosu" style="font-size:14px;"><thead><tr><th>Firma Adı</th><th>Yükleme Sayısı</th><th>Son Yükleme</th><th>İşlem</th></tr></thead><tbody></tbody></table></div>
+            </div>
+        </div>
+        <div id="ihracatFirmaDetayEkrani" style="display:none;">
+            <div class="card">
+                <div class="card-header" style="gap:12px;flex-wrap:wrap;">
+                    <div><button class="btn-modern btn-detail-modern" onclick="ihracatFirmaListesineDon()">← Firma Listesi</button><h2 id="ihracatFirmaDetayBaslik" style="margin-top:10px;"></h2><p id="ihracatFirmaDetayBilgi" style="margin:5px 0 0;color:#64748b;"></p></div>
+                    <button class="btn-submit" style="width:auto;margin:0;" onclick="ihracatYuklemeFormuAc()">＋ Yeni Yükleme / Evrak Ekle</button>
+                </div>
+                <div class="filter-bar" style="margin-bottom:12px;"><input id="ihracatYuklemeArama" placeholder="Yükleme no, satış türü veya açıklama ara..." oninput="ihracatYuklemeleriniCiz()"><input id="ihracatYuklemeBaslangic" type="date" onchange="ihracatYuklemeleriniCiz()"><input id="ihracatYuklemeBitis" type="date" onchange="ihracatYuklemeleriniCiz()"></div>
+                <div class="table-wrapper"><table id="ihracatYuklemeTablosu" style="font-size:14px;"><thead><tr><th>Tarih</th><th>Yükleme No</th><th>Booking No</th><th>Varış Yeri</th><th>Satış Türü</th><th>Proforma No</th><th>Durum</th><th>Çeki Listesi</th><th>Görsel Sayısı</th><th>Not</th><th>İşlem</th></tr></thead><tbody></tbody></table></div>
+            </div>
+        </div>
+        <div id="ihracatYuklemeDetayEkrani" style="display:none;">
+            <div class="card">
+                <div class="card-header" style="gap:12px;flex-wrap:wrap;"><div><button class="btn-modern btn-detail-modern" onclick="ihracatYuklemeListesineDon()">← Yükleme Listesi</button><h2 id="ihracatYuklemeDetayBaslik" style="margin-top:10px;"></h2><p id="ihracatYuklemeDetayAltBaslik" style="margin:5px 0 0;color:#64748b;"></p></div><button id="ihracatYuklemeDetayDuzenle" class="btn-modern btn-edit-modern">✏️ Yüklemeyi Düzenle</button></div>
+                <div id="ihracatYuklemeDetayOzet" class="profile-layout" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px;"></div>
+                <div class="workspace-nav" id="ihracatYuklemeDetaySekmeler" style="margin:0 0 15px;display:flex;align-items:center;gap:7px;flex-wrap:nowrap;overflow-x:auto;">
+                    <button class="active" onclick="ihracatYuklemeDetaySekmeAc('ceki',this)">&#199;eki Listeleri</button>
+                    <button onclick="ihracatYuklemeDetaySekmeAc('proforma',this)">Proforma</button>
+                    <button onclick="ihracatYuklemeDetaySekmeAc('gorsel',this)">Y&#252;kleme G&#246;r&#252;nt&#252;leri</button>
+                    <button onclick="ihracatYuklemeDetaySekmeAc('irsaliye',this)">&#304;rsaliye</button>
+                    <button onclick="ihracatYuklemeDetaySekmeAc('fatura',this)">Fatura</button>
+                    <span class="action-btns" style="display:flex;gap:7px;margin-left:auto;flex:0 0 auto;padding:0 2px;"><button class="btn-modern btn-detail-modern" onclick="ihracatTumBelgelerPdfOlustur(ihracatAktifYuklemeId)">T&#252;m Belgeleri PDF Aktar</button><button class="btn-modern btn-edit-modern" onclick="ihracatTumBelgelerExcelOlustur(ihracatAktifYuklemeId)">T&#252;m Belgeleri Excel Aktar</button></span>
+                </div>
+                <div id="ihracatYuklemeDetayIcerik"></div>
+                <div id="ihracatYuklemeDetayBelgeler" style="display:none;"></div>
+                <div id="ihracatYuklemeDetayGorseller" style="display:none;"></div>
+                <details class="profile-section" style="margin-top:16px;" open><summary>📝 Açıklama / Not</summary><div id="ihracatYuklemeDetayNot" style="padding:16px;white-space:pre-wrap;line-height:1.6;"></div></details>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="modalIhracatFirma" class="modal-overlay">
+    <div class="modal-card" style="max-width:920px;">
+        <div class="modal-header"><h3>🏢 İhracat Firması / Alıcı Bilgileri</h3><button class="modal-close" onclick="ihracatFirmaFormuKapat()">✕</button></div>
+        <div class="modal-body">
+            <form id="ihracatFirmaForm" onsubmit="ihracatFirmaKaydet(event)">
+                <input id="ihracatFirmaEditId" type="hidden">
+                <div class="profile-layout" style="grid-template-columns:repeat(3,minmax(0,1fr));">
+                    <div class="form-group"><label>Firma Unvanı</label><input id="ihracatFirmaAdi" required></div>
+                    <div class="form-group"><label>Ülke</label><input id="ihracatFirmaUlke"></div>
+                    <div class="form-group"><label>Şehir / Bölge</label><input id="ihracatFirmaSehir"></div>
+                    <div class="form-group"><label>Posta Kodu</label><input id="ihracatFirmaPostaKodu"></div>
+                    <div class="form-group"><label>Vergi Dairesi</label><input id="ihracatFirmaVergiDairesi"></div>
+                    <div class="form-group"><label>Vergi / Firma No</label><input id="ihracatFirmaVergiNo"></div>
+                    <div class="form-group"><label>Ticaret Sicil / Kayıt No</label><input id="ihracatFirmaSicilNo"></div>
+                    <div class="form-group"><label>Yetkili</label><input id="ihracatFirmaYetkili"></div>
+                    <div class="form-group"><label>Yetkili Unvanı</label><input id="ihracatFirmaYetkiliUnvan"></div>
+                    <div class="form-group"><label>Telefon</label><input id="ihracatFirmaTelefon"></div>
+                    <div class="form-group"><label>E-posta</label><input id="ihracatFirmaEposta" type="email" data-case-preserve="true"></div>
+                    <div class="form-group"><label>Web Sitesi</label><input id="ihracatFirmaWeb" data-case-preserve="true"></div>
+                </div>
+                <div class="form-group"><label>Fatura Adresi</label><textarea id="ihracatFirmaAdres" rows="3"></textarea></div>
+                <div class="form-group"><label>Teslimat Adresi <small style="font-weight:500;color:#64748b;">(farklıysa)</small></label><textarea id="ihracatFirmaTeslimatAdres" rows="2"></textarea></div>
+                <button class="btn-submit" type="submit">💾 Firmayı Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="ihracatYuklemeFormEkrani" style="display:none;position:fixed;inset:0;z-index:2500;background:#eef5f9;overflow:auto;">
+    <div class="app-header-bar" style="position:sticky;top:0;z-index:2;"><div><strong>📦 Yeni İhracat Yüklemesi</strong></div><button class="btn-back-hub" type="button" onclick="ihracatYuklemeFormuKapat()">← Yükleme Listesine Dön</button></div>
+    <main style="max-width:1250px;margin:0 auto;padding:22px;">
+        
+        <form id="ihracatYuklemeForm" onsubmit="ihracatYuklemeKaydet(event)">
+            <input id="ihracatYuklemeEditId" type="hidden">
+            <div class="card">
+                <div class="card-header"><div><h2 id="ihracatYuklemeFormBaslik">Yükleme Bilgileri</h2><p id="ihracatYuklemeFormFirma" style="margin:5px 0 0;color:#64748b;"></p></div></div>
+                <div class="profile-layout" style="grid-template-columns:repeat(3,minmax(0,1fr));">
+                    <div class="form-group"><label>Yükleme Tarihi</label><input id="ihracatYuklemeTarih" type="date" required onchange="ihracatProformaTariheGoreGuncelle(); ihracatOncekiGunKurunuYukle(true)"></div>
+                    <div class="form-group"><label>Yükleme / Referans No</label><input id="ihracatYuklemeNo" required oninput="ihracatCekiFormProformaGuncelle()"></div>
+                    <div class="form-group"><label>Booking No</label><input id="ihracatBookingNo" oninput="ihracatCekiFormProformaGuncelle()"></div>
+                    <div class="form-group"><label>Varış Yeri</label><input id="ihracatVarisYeri" placeholder="Örn. Liman / Depo" oninput="ihracatCekiFormProformaGuncelle()"></div>
+                    <div class="form-group"><label>Satış Türü</label><select id="ihracatSatisTuru" onchange="ihracatCekiFormProformaGuncelle()"><option>İHRAÇ KAYITLI SATIŞ</option><option>DİREKT İHRACAT</option><option>KDV'Lİ SATIŞ</option><option>BEDELSİZ SATIŞ</option><option>KDV'SİZ SATIŞ</option></select></div>
+                    <div class="form-group"><label>Proforma No</label><input id="ihracatProformaNo" readonly style="background:#e8eef5;font-weight:800;"></div>
+                    <div class="form-group"><label>Fatura No</label><input id="ihracatFaturaNo"></div>
+                    <div class="form-group"><label>Toplam Tutar</label><input id="ihracatFaturaTutar" inputmode="decimal" oninput="paraGirisiFormatla(this); ihracatCekiFormProformaGuncelle(); ihracatKurTlKarsiliginiGuncelle()"></div>
+                    <div class="form-group"><label>Para Birimi</label><select id="ihracatParaBirimi" onchange="ihracatCekiFormProformaGuncelle(); ihracatOncekiGunKurunuYukle(true)"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option></select></div>
+                </div>
+                <div id="ihracatKurBilgisi" style="margin-top:12px;padding:11px 13px;border:1px solid #bfdbfe;border-radius:9px;background:#eff6ff;color:#1e3a8a;">TCMB alış kuru yükleniyor...</div><div class="form-group" style="margin-top:8px;max-width:260px;"><label>Manuel Kur (TL)</label><input id="ihracatManuelKur" type="number" min="0" step="0.0001" placeholder="Kur de&#287;erini de&#287;i&#351;tirin" oninput="ihracatManuelKurDegisti(this)"></div>
+            </div>
+            <div class="card"><div class="form-group"><label>Aciklama / Yukleme Notu</label><textarea id="ihracatYuklemeNot" rows="3" oninput="ihracatCekiFormProformaGuncelle()"></textarea></div></div>
+            <div class="card">
+                <div class="card-header"><div><h2>Çeki Listeleri ve Ürünler</h2></div><div class="action-btns"><button type="button" class="btn-modern btn-edit-modern" onclick="ihracatOncekiYuklemedenCekiKopyala()">📋 Önceki Çeki Listesinden Kopyala</button><button type="button" class="btn-modern btn-detail-modern" onclick="ihracatCekiListesiEkle()">＋ Yeni Çeki Listesi</button></div></div>
+                <div id="ihracatCekiSekmeleri" class="module-subnav" style="margin:0 0 12px;display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#f1f5f9;border-radius:10px;"></div>
+                <div id="ihracatCekiListeleri"></div>
+                <div id="ihracatFormProforma" style="display:none;"></div><div id="ihracatFormFatura" style="display:none;"></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;padding-bottom:28px;"><button type="button" class="btn-cancel" style="width:auto;" onclick="ihracatYuklemeFormuKapat()">Vazgeç</button><button class="btn-submit" style="width:auto;min-width:240px;margin:0;" type="submit">💾 Yüklemeyi Kaydet</button></div>
+        </form>
+    </main>
+</div>
+
+<div id="modalIhracatCekiKopyala" class="modal-overlay" style="z-index:3200;">
+    <div class="modal-card" style="max-width:1180px;width:calc(100% - 24px);max-height:92vh;display:flex;flex-direction:column;">
+        <div class="modal-header"><div><h3 style="margin:0;">&#199;eki Listesi Se&#231; ve Kopyala</h3><small style="color:#64748b;">T&#252;m firmalardaki kay&#305;tl&#305; &#231;eki listelerinden yaln&#305;zca se&#231;ti&#287;iniz liste kopyalan&#305;r.</small></div><button class="modal-close" type="button" onclick="ihracatCekiKopyalamaKapat()">&#10005;</button></div>
+        <div class="modal-body" style="overflow:auto;">
+            <div class="filter-bar" style="margin-bottom:12px;"><input id="ihracatCekiKopyaArama" type="search" placeholder="Firma, y&#252;kleme no, proforma, irsaliye veya liste ad&#305; ara..." oninput="ihracatCekiKopyaKaynaklariniCiz()"></div>
+            <div class="ihracat-ceki-kopya-yerlesim" style="display:grid;grid-template-columns:minmax(320px,0.85fr) minmax(420px,1.15fr);gap:14px;align-items:start;">
+                <div class="table-wrapper" style="max-height:55vh;overflow:auto;margin:0;"><table><thead><tr><th>Tarih</th><th>Firma</th><th>&#199;eki Listesi</th><th>Sat&#305;r</th></tr></thead><tbody id="ihracatCekiKopyaListeBody"></tbody></table></div>
+                <div id="ihracatCekiKopyaOnizleme" style="min-height:260px;border:1px solid #dbe5ef;border-radius:10px;padding:12px;background:#f8fafc;color:#64748b;">Soldaki listeden bir &#231;eki listesi se&#231;in.</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:14px;"><button type="button" class="btn-cancel" style="width:auto;" onclick="ihracatCekiKopyalamaKapat()">Vazge&#231;</button><button id="ihracatCekiKopyalaOnayBtn" type="button" class="btn-submit" style="width:auto;margin:0;" onclick="ihracatSeciliCekiListesiniKopyala()" disabled>Se&#231;ili &#199;eki Listesini Kopyala</button></div>
+        </div>
+    </div>
+</div>

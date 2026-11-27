@@ -1,0 +1,62 @@
+{
+  "name": "KKD Teslim ve Geçmiş Takibi",
+  "roots": [
+    "kkdApp",
+    "modalKkdGecmisi"
+  ],
+  "entrypoints": [
+    "openKkdApp",
+    "kkdFiltreleriniDoldur",
+    "kkdPersonelSecenekleriniDoldur",
+    "kkdKalemEkle",
+    "kkdKalemSil",
+    "kkdKalemTuruDegisti",
+    "kkdKalemleriAl",
+    "kkdOncekiTeslimBul",
+    "kkdOncekiTeslimUyarisiGuncelle",
+    "kkdTeslimKaydet",
+    "kkdFiltrelenmisKayitlariAl",
+    "kkdDonemBasligi",
+    "kkdCizelgesiniHazirla",
+    "kkdKaydiSil",
+    "kkdAyiDegistir",
+    "kkdExcelIndir",
+    "kkdPdfIndir",
+    "kkdGecmisKayitlari",
+    "kkdGecmisiniAc",
+    "kkdGecmisiniKapat",
+    "kkdGecmisExcelIndir",
+    "kkdGecmisPdfIndir",
+    "fdKkdPersonelGorunumunuUygula"
+  ],
+  "writeOperations": [
+    "kkdTeslimKaydet",
+    "kkdKaydiSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/kkd/view.html",
+      "sha256": "406542c5d48d00515e8f7ad7549c9cc5167768167816bf7ee516b67b60259490",
+      "bytes": 4478,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/kkd/style.css",
+      "sha256": "9daf5f0276e04944088c1a4dfd5de80914c0c6034e6fbcf218879f2ef8378066",
+      "bytes": 174,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/kkd/module.js",
+      "sha256": "31f01c800b4da9263bec8bd4ad56f8e15dfd2438de4f7891f4c0d1690866567f",
+      "bytes": 25867,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

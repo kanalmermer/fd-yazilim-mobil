@@ -1,0 +1,46 @@
+{
+  "name": "Vardiya Tanımları ve Saat Ayarları",
+  "roots": [
+    "fdVardiyaTanimKart"
+  ],
+  "entrypoints": [
+    "vardiyaTanimFormunuDoldur",
+    "vardiyaTanimListesiniCiz",
+    "vardiyaTanimYeni",
+    "vardiyaTanimlariniSirketAyarinaKaydet",
+    "vardiyaTanimKaydet",
+    "vardiyaTanimSil",
+    "magicpassVardiyaAyarFormunuDoldur"
+  ],
+  "writeOperations": [
+    "vardiyaTanimlariniSirketAyarinaKaydet",
+    "vardiyaTanimKaydet",
+    "vardiyaTanimSil"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/vardiyatanim/view.html",
+      "sha256": "bdec413d0c694141622993778c973dc7d8e221b66b9262181311ecb8ef557cc3",
+      "bytes": 2960,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/vardiyatanim/style.css",
+      "sha256": "d08692990f307259001ae98b298a5dd8012d74921ab47e15b344c9be5f4e870d",
+      "bytes": 1671,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/vardiyatanim/module.js",
+      "sha256": "59b984bf93b4dd3f35547f97e3582136bd4f2a0bca43facfa69c209adc917b2c",
+      "bytes": 10178,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
