@@ -1,0 +1,110 @@
+
+@media(max-width:760px){}
+
+/* Giriş-çıkış ekranı okunabilirlik ve kullanım düzenlemeleri */
+#magicpassAylikTablo{font-size:.82rem}
+#magicpassAylikTablo td{height:29px;padding:3px!important}
+#magicpassAylikTablo tbody tr:hover td{font-size:inherit}
+#magicpassAylikTablo .magicpass-tarih-gun{font-size:.73rem}
+#magicpassAylikTablo .magicpass-durum{font-size:.77rem}
+.magicpass-durum-hizasi{position:relative;display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:0;min-height:24px;vertical-align:middle;white-space:nowrap}.magicpass-durum-hizasi:not(.magicpass-tik-hizasi) .magicpass-durum{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.magicpass-durum-hizasi .magicpass-manuel-kalem{position:absolute;right:3px;top:50%;width:20px;height:20px;margin:0;flex:0 0 20px;font-size:.9rem;transform:translateY(-50%)}
+.magicpass-durum-hizasi.magicpass-tik-hizasi{display:inline-flex;align-items:center;justify-content:center;width:20px}
+.magicpass-durum-hizasi.magicpass-tik-hizasi .magicpass-durum{width:20px;height:20px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;line-height:20px!important}
+.magicpass-durum-hizasi.magicpass-tik-hizasi .magicpass-manuel-kalem{right:3px;top:50%;width:20px;height:20px;margin:0!important;padding:1px 0 0!important;line-height:19px!important;transform:translateY(-50%)!important}
+.magicpass-durum.planlandi{padding:0!important;background:transparent!important;color:#64748b!important;border:0!important;border-radius:0!important;font-weight:700!important}
+#magicpassAylikTablo th:nth-child(1),#magicpassAylikTablo td:nth-child(1){width:30px;text-align:center}
+#magicpassAylikTablo th:nth-child(2),#magicpassAylikTablo td:nth-child(2){width:120px;text-align:left}
+#magicpassAylikTablo tbody td:nth-child(2){padding-left:11px!important}
+#magicpassAylikTablo th:nth-child(3),#magicpassAylikTablo td:nth-child(3){width:82px;overflow:hidden;text-overflow:ellipsis}
+#magicpassAylikTablo th:nth-child(4),#magicpassAylikTablo td:nth-child(4),#magicpassAylikTablo th:nth-child(5),#magicpassAylikTablo td:nth-child(5){width:48px}
+#magicpassAylikTablo th:nth-child(6),#magicpassAylikTablo td:nth-child(6),#magicpassAylikTablo th:nth-child(7),#magicpassAylikTablo td:nth-child(7),#magicpassAylikTablo th:nth-child(8),#magicpassAylikTablo td:nth-child(8){width:51px}
+#magicpassAylikTablo th:nth-child(9),#magicpassAylikTablo td:nth-child(9){width:68px}
+#magicpassAylikTablo th:nth-child(10),#magicpassAylikTablo td:nth-child(10){width:86px}
+#magicpassAylikTablo th:nth-child(11),#magicpassAylikTablo td:nth-child(11){width:145px;overflow:hidden;text-overflow:ellipsis}
+#magicpassAylikTablo th:nth-child(12),#magicpassAylikTablo td:nth-child(12){width:84px}
+.magicpass-gunluk-tarih-nav{display:grid;grid-template-columns:34px minmax(145px,1fr) 34px;gap:5px;align-items:center}
+.magicpass-gunluk-tarih-nav button{height:37px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f766e;font-size:1.35rem;font-weight:900;line-height:1;cursor:pointer;box-shadow:0 2px 7px rgba(15,23,42,.07)}
+.magicpass-gunluk-tarih-nav button:hover{background:#ecfeff;border-color:#14b8a6}
+.magicpass-gunluk-tarih-nav input{min-width:145px}
+.magicpass-duzeltme-zamanlar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 14px}
+.magicpass-zaman-karti{padding:13px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc}
+.magicpass-zaman-karti>strong{display:block;margin-bottom:10px;color:#0f172a;font-size:.92rem}
+.magicpass-zaman-alanlari{display:grid;grid-template-columns:minmax(135px,1fr) minmax(120px,.75fr);gap:9px}
+.magicpass-zaman-alanlari label{display:block;margin-bottom:5px;color:#475569;font-size:.72rem;font-weight:800}
+.magicpass-zaman-alanlari input{width:100%;height:46px;padding:7px 9px;border:1px solid #94a3b8;border-radius:9px;background:#fff;font-size:1rem;font-weight:750;color:#0f172a}
+.magicpass-duzeltme-aralik{padding:12px;margin-bottom:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}
+.magicpass-duzeltme-aralik-baslik{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#334155}
+.magicpass-duzeltme-aralik-baslik button{border:1px solid #fecaca;border-radius:7px;background:#fff;color:#b91c1c;padding:6px 10px;cursor:pointer}
+.magicpass-duzeltme-not{margin:8px 0 12px;color:#64748b;font-size:.78rem;line-height:1.5}
+#modalMagicpassDuzeltme .modal-card{max-height:94vh;display:flex;flex-direction:column}
+#modalMagicpassDuzeltme .modal-body{min-height:0;overflow:auto}
+#modalMagicpassDuzeltme .magicpass-duzeltme-zamanlar{margin-bottom:0}
+#modalMagicpassDuzeltme button:disabled{opacity:.55;cursor:wait}
+.magicpass-saat-adimlari{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
+.magicpass-saat-adimlari button{padding:5px 9px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:#475569;font-size:.69rem;font-weight:800;cursor:pointer}
+.magicpass-saat-adimlari button:hover{border-color:#8b5cf6;color:#6d28d9;background:#f5f3ff}
+.overlay-progress{display:none;width:min(390px,82vw);margin-top:18px;align-items:center;gap:11px}
+.overlay-progress-track{flex:1;height:12px;overflow:hidden;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(255,255,255,.14);box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
+#overlayProgressFill{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#14b8a6,#38bdf8,#60a5fa);transition:width .35s ease;box-shadow:0 0 14px rgba(56,189,248,.55)}
+#overlayProgressText{min-width:42px;color:#fff;font-size:.86rem;font-variant-numeric:tabular-nums}
+@media(max-width:680px){.magicpass-duzeltme-zamanlar{grid-template-columns:1fr}.magicpass-zaman-alanlari{grid-template-columns:1fr 1fr}}.personel-session #izinPersonelNotMenu,.personel-session #fdAiButon,.personel-session #fdAiPanel,.personel-session #fdAiPerde{display:none!important}
+body.personel-session #fdGlobalArama,
+body.personel-session #fdGlobalAraBtn,
+body.personel-session #fdGlobalTakvimBtn{display:none!important}
+body.personel-session.personel-primsiz button[onclick="openPrimApp()"],
+body.personel-session.personel-primsiz #btnWorkspacePrim{display:none!important}
+.puan-mobil-personel-secim{display:none}
+@media(max-width:760px){html,body{max-width:100%;overflow-x:hidden}.app-header-bar{padding:8px 10px;gap:7px;align-items:flex-start}.workspace-nav,.module-subnav{display:flex!important;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap!important;gap:6px;padding:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}.workspace-nav button,.module-subnav button{flex:0 0 auto!important;min-width:max-content!important;white-space:nowrap;padding:8px 10px!important;font-size:.72rem!important}.app-layout{display:block;min-height:0}.app-layout>main,main{width:100%!important;max-width:100%!important;padding:8px!important;margin:0!important;min-width:0}.card{padding:10px!important;border-radius:10px!important;max-width:100%}.card-header{align-items:flex-start!important;gap:8px!important}.card-header>div{max-width:100%;gap:6px!important}.form-row,.profile-layout,.grid-horizontal{grid-template-columns:1fr!important}input,select,textarea{max-width:100%;min-height:40px;font-size:16px}.table-wrapper{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:max-content}.modal-card{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;max-height:96vh!important;margin:6px!important}.modal-body{padding:12px!important;overflow:auto}.action-btns{flex-wrap:nowrap!important}#puanPersonelAra{width:180px!important;min-height:34px;font-size:.82rem}#magicpassApp .magicpass-shell{grid-template-columns:1fr!important}#magicpassApp .magicpass-personel-panel{max-height:none!important}}
+@media(max-width:900px){#magicpass-tab-liste .magicpass-rapor-layout{display:flex!important;flex-direction:column!important;width:100%!important;gap:12px}#magicpass-tab-liste .magicpass-personel-panel{position:static!important;width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;padding:14px!important;overflow:visible!important;box-sizing:border-box}#magicpass-tab-liste .magicpass-personel-panel>input,#magicpass-tab-liste .magicpass-personel-panel>select{width:100%!important;margin-bottom:9px!important;box-sizing:border-box}#magicpassSolPersonelListesi{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%!important;max-height:230px!important;padding:6px;overflow:auto;box-sizing:border-box;background:#f8fafc}.magicpass-sol-personel{border:1px solid #e2e8f0!important;border-radius:8px!important}.magicpass-sol-personel:last-child{border-bottom:1px solid #e2e8f0!important}#magicpass-tab-liste .magicpass-rapor-panel{width:100%!important;max-width:100%!important;height:auto!important;box-sizing:border-box}}
+@media(max-width:560px){#magicpassSolPersonelListesi{grid-template-columns:1fr!important}}
+@media(max-width:760px){
+html{overscroll-behavior-x:none}body{min-height:100dvh;overscroll-behavior-x:none}.card-header{flex-wrap:wrap!important}.card-header>.action-btns,.action-btns{width:100%;max-width:100%;flex-wrap:wrap!important}.action-btns>*{max-width:100%}.filter-bar{max-width:100%;flex-wrap:wrap!important}.filter-bar>input,.filter-bar>select{flex:1 1 100%;width:100%!important}.modal-overlay{padding:0!important}.modal-card{max-height:calc(100dvh - 12px)!important}img,canvas{max-width:100%;height:auto}button,a,input,select,textarea{touch-action:manipulation}.table-wrapper{overscroll-behavior-inline:contain}
+.puan-mobil-personel-secim{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:0 0 12px;padding:11px;border:1px solid #93c5fd;border-radius:12px;background:#eff6ff}.puan-mobil-personel-secim label{color:#1e3a8a;font-size:.7rem;font-weight:900}.puan-mobil-personel-secim select{width:100%;border-color:#60a5fa;background:#fff;color:#0f172a;font-weight:800}.personel-session .puan-mobil-personel-secim{display:none!important}
+#magicpass-tab-liste .magicpass-aylik-table-wrap{max-height:none!important;overflow-x:auto!important;overflow-y:visible!important;border:1px solid #dbe3ed!important;background:#fff!important;-webkit-overflow-scrolling:touch}
+#magicpassAylikTablo{display:table!important;width:max-content!important;min-width:790px!important;table-layout:fixed!important;background:#fff!important}
+#magicpassAylikTablo thead{display:table-header-group!important}
+#magicpassAylikTablo tbody{display:table-row-group!important}
+#magicpassAylikTablo tr{display:table-row!important}
+#magicpassAylikTablo th,#magicpassAylikTablo td{display:table-cell!important;height:34px!important;padding:5px 6px!important;white-space:nowrap!important;font-size:.75rem!important}
+#magicpassAylikTablo tbody tr:hover td{font-size:.75rem!important;font-weight:inherit!important}
+#magicpassAylikTablo th,#magicpassAylikTablo td{position:static!important}
+#magicpassAylikTablo .magicpass-tarih-baslik,#magicpassAylikTablo .magicpass-tarih-hucre{position:sticky!important;left:30px;z-index:2;background:#fff;text-align:left!important}
+#magicpassAylikTablo .magicpass-tarih-baslik{z-index:4;background:#f8fafc}
+#magicpassAylikTablo .magicpass-tarih-gun{display:block!important;margin-top:2px;text-align:left!important}
+.personel-session #magicpassAylikTablo .magicpass-tarih-baslik,.personel-session #magicpassAylikTablo .magicpass-tarih-hucre{display:table-cell!important;left:0}
+.personel-session #magicpassAylikTablo tbody td:first-child{display:none!important}
+.table-wrapper:has(#puantajTablosu){padding:0!important;overflow:visible!important;border:0!important;background:transparent!important;box-shadow:none!important}
+#puantajTablosu,#puantajTablosu.prim-cizelgesi{display:block!important;width:100%!important;min-width:0!important;table-layout:auto!important;background:transparent!important}
+#puantajTablosu thead{display:none!important}
+#puantajTablosu tbody{display:grid!important;width:100%!important;gap:12px}
+#puantajTablosu tbody tr{display:block!important;width:100%!important;overflow:hidden;border:1px solid #dbe3ed;border-radius:13px;background:#fff;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+#puantajTablosu tbody td,#puantajTablosu.prim-cizelgesi tbody td{display:grid!important;grid-template-columns:minmax(118px,42%) minmax(0,1fr);align-items:center;gap:10px;width:auto!important;min-width:0!important;max-width:none!important;height:auto!important;min-height:44px;padding:8px 10px!important;overflow:visible!important;border:0!important;border-bottom:1px solid #edf2f7!important;white-space:normal!important;text-align:right!important;font-size:.8rem!important;line-height:1.3!important}
+#puantajTablosu tbody td::before{content:attr(data-label);min-width:0;color:#475569;font-size:.8rem;font-weight:850;line-height:1.3;text-align:left;text-transform:none}
+#puantajTablosu tbody td:first-child{display:none!important}
+#puantajTablosu tbody td:nth-child(2){display:grid!important;grid-template-columns:minmax(118px,42%) minmax(0,1fr)!important;align-items:center!important;gap:10px!important;padding:11px 10px!important;background:linear-gradient(135deg,#eff6ff,#f8fafc)!important;color:#0f172a!important;text-align:right!important;font-size:.8rem!important;font-weight:900!important}
+#puantajTablosu tbody td:nth-child(2)::before{display:block;margin:0;font-size:.8rem;letter-spacing:0;text-transform:none}
+#puantajTablosu tbody td:nth-child(2) .bordro-puantaj-personel-btn{width:100%!important;padding:2px 0!important;text-align:right!important;font-size:.8rem!important;line-height:1.3!important;white-space:normal!important}
+#puantajTablosu tbody td:last-child{border-bottom:0!important}
+#puantajTablosu tbody td.p-gun-hucresi{background:#fbfdff}
+#puantajTablosu tbody td.p-ozet{text-align:center!important}
+#puantajTablosu tbody td.p-finans{background:#fffbeb}
+#puantajTablosu tbody td input{width:100%!important;min-width:0!important;max-width:none!important;min-height:38px!important;margin:0!important;font-size:16px!important;text-align:center!important}
+#puantajTablosu tbody td[colspan]{display:block!important;padding:22px 12px!important;text-align:center!important}
+#puantajTablosu tbody td[colspan]::before{display:none!important}
+.personel-session #puantajTablosu tbody td:nth-child(2){display:grid!important}
+}
+
+.puan-filtre-cubugu{display:flex;gap:8px;align-items:flex-end;justify-content:flex-end;flex-wrap:wrap}
+.puan-filtre-alani{display:grid;gap:4px;margin:0;min-width:104px;color:#475569;font-size:.67rem;font-weight:850}
+.puan-filtre-alani>span:first-child{padding-left:2px}
+.puan-filtre-alani :is(select,input){width:100%!important;min-height:36px;padding:6px 9px!important;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+.puan-filtre-arama{min-width:180px}
+.puan-filtre-islemler{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+@media(max-width:760px){
+body:not(.personel-session) .puan-filtre-cubugu{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;padding:10px;border:1px solid #dbe3ed;border-radius:12px;background:#f8fafc;align-items:end}
+body:not(.personel-session) .puan-filtre-alani{min-width:0;width:100%}
+body:not(.personel-session) .puan-filtre-arama,body:not(.personel-session) .puan-filtre-islemler{grid-column:1/-1;width:100%}
+body:not(.personel-session) .puan-filtre-islemler>*{flex:1 1 132px}
+}
+

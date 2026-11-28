@@ -1,0 +1,38 @@
+{
+  "name": "Personel Detay Kartı",
+  "roots": [
+    "modalPersonelDetay"
+  ],
+  "entrypoints": [
+    "switchDetayTab",
+    "openPersonelDetayModal",
+    "closePersonelDetayModal"
+  ],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/personeldetay/view.html",
+      "sha256": "c4d2d9161e3c3fede60f3a0144f585ed1d3b6b2b8693709a0454d17333c3b72a",
+      "bytes": 2953,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/personeldetay/style.css",
+      "sha256": "f163f3f02b4e48d4315bdca01fcfa342a02a86c8f294136cd719a770879f8fa1",
+      "bytes": 1810,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/personeldetay/module.js",
+      "sha256": "b82951b332884f46c2907262e659bfc4a9918d8d9f38c50f292f63af5969e407",
+      "bytes": 21101,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

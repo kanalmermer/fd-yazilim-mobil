@@ -1,0 +1,32 @@
+{
+  "name": "Genel Tablo ve İçerik PDF Hazırlama",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/genelpdf/view.html",
+      "sha256": "1a755062be43850a802abc82f38eb149b8f7f7c319a8676e9a3d97e580926ca2",
+      "bytes": 72,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/genelpdf/style.css",
+      "sha256": "03198b7184cdefd84f8db361a248fbf9f8d6dad9ba5e94f8e3e06acdbc98d8ad",
+      "bytes": 73,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/genelpdf/module.js",
+      "sha256": "8564b97ce43c94c6350f0ed7ac291bbc896ce0fa5c4ee69b1c5c4e5ef4f74896",
+      "bytes": 10985,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}
