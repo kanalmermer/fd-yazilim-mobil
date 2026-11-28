@@ -1,0 +1,37 @@
+
+    .magicpass-gunluk-toolbar { display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-left:auto; }
+    .magicpass-gunluk-toolbar .form-group { margin:0;min-width:155px; }
+    .magicpass-gunluk-toolbar .form-group label { display:block;margin:0 0 5px;font-size:.65rem;font-weight:900;letter-spacing:.045em;text-transform:uppercase;color:#64748b; }
+    .magicpass-gunluk-toolbar .form-group input,.magicpass-gunluk-toolbar .form-group select { min-height:42px;padding:9px 36px 9px 12px;border:1px solid #cbd5e1;border-radius:12px;background-color:#fff;color:#0f172a;font-weight:750;box-shadow:0 2px 7px rgba(15,23,42,.06);outline:none;transition:.15s; }
+    .magicpass-gunluk-toolbar .form-group input:hover,.magicpass-gunluk-toolbar .form-group select:hover { border-color:#94a3b8;box-shadow:0 4px 12px rgba(15,23,42,.09); }
+    .magicpass-gunluk-toolbar .form-group input:focus,.magicpass-gunluk-toolbar .form-group select:focus { border-color:#0d9488;box-shadow:0 0 0 3px rgba(13,148,136,.14); }
+    .magicpass-gunluk-toolbar > button { min-height:42px;border:0;border-radius:12px;padding:9px 15px;box-shadow:0 5px 13px rgba(15,23,42,.12);font-weight:850;transition:transform .15s,box-shadow .15s; }
+    .magicpass-gunluk-toolbar > button:hover { transform:translateY(-1px);box-shadow:0 8px 17px rgba(15,23,42,.16); }
+    #magicpassApp #magicpass-tab-gunluk .fd-gunluk-btn { appearance:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;min-height:44px!important;padding:10px 17px!important;border:0!important;border-radius:13px!important;color:#fff!important;font-size:.78rem!important;font-weight:900!important;letter-spacing:.01em!important;cursor:pointer!important;box-shadow:0 7px 17px rgba(15,23,42,.16)!important;transition:transform .16s ease,box-shadow .16s ease,filter .16s ease!important; }
+    #magicpassApp #magicpass-tab-gunluk .fd-gunluk-btn:hover { transform:translateY(-2px)!important;filter:brightness(1.05)!important;box-shadow:0 11px 24px rgba(15,23,42,.2)!important; }
+    #magicpassApp #magicpass-tab-gunluk .fd-gunluk-excel { background:linear-gradient(135deg,#059669,#10b981)!important; }
+    #magicpassApp #magicpass-tab-gunluk .fd-gunluk-pdf { background:linear-gradient(135deg,#e11d48,#fb7185)!important; }
+    #magicpassApp #magicpass-tab-gunluk .fd-gunluk-kopyala { background:linear-gradient(135deg,#2563eb,#06b6d4)!important; }
+    .magicpass-gunluk-ozet { margin:16px 0 12px;grid-template-columns:repeat(9,minmax(125px,1fr));overflow-x:auto;padding:3px; }
+    .magicpass-gunluk-ozet button { appearance:none;display:grid;grid-template-columns:38px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;min-height:76px;padding:11px 12px;border:1px solid #dbe4ee;border-radius:15px;background:linear-gradient(145deg,#fff,#f8fafc);color:#334155;box-shadow:0 5px 16px rgba(15,23,42,.07);cursor:pointer;text-align:left;transition:transform .16s,border-color .16s,box-shadow .16s; }
+    .magicpass-gunluk-ozet button:hover { transform:translateY(-2px);border-color:#94a3b8;box-shadow:0 9px 22px rgba(15,23,42,.12); }
+    .magicpass-gunluk-ozet button.active { border-color:var(--ozet-renk,#0f766e);background:linear-gradient(145deg,#fff,var(--ozet-zemin,#ecfdf5));box-shadow:0 0 0 2px rgba(15,118,110,.13),0 10px 22px rgba(15,23,42,.12); }
+    .magicpass-gunluk-ozet button i { grid-row:1 / 3;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:var(--ozet-zemin,#e2e8f0);color:var(--ozet-renk,#334155);font-style:normal;font-size:1.05rem; }
+    .magicpass-gunluk-ozet button span { grid-column:2;display:block;color:#64748b;font-size:.65rem;font-weight:850;line-height:1.2; }
+    .magicpass-gunluk-ozet button strong { grid-column:2;display:block;margin:2px 0 0;color:#0f172a;font-size:1.16rem;line-height:1; }
+    .magicpass-gunluk-ozet button[data-durum='']{--ozet-renk:#475569;--ozet-zemin:#f1f5f9}
+    .magicpass-gunluk-ozet button[data-durum='gelen']{--ozet-renk:#059669;--ozet-zemin:#d1fae5}
+    .magicpass-gunluk-ozet button[data-durum='gelmeyen']{--ozet-renk:#dc2626;--ozet-zemin:#fee2e2}
+    .magicpass-gunluk-ozet button[data-durum='izinli']{--ozet-renk:#2563eb;--ozet-zemin:#dbeafe}
+    .magicpass-gunluk-ozet button[data-durum='mesai']{--ozet-renk:#7c3aed;--ozet-zemin:#ede9fe}
+    .magicpass-gunluk-ozet button[data-durum='gec']{--ozet-renk:#d97706;--ozet-zemin:#fef3c7}
+    .magicpass-gunluk-ozet button[data-durum='erken']{--ozet-renk:#ea580c;--ozet-zemin:#ffedd5}
+    .magicpass-gunluk-ozet button[data-durum='kayitsiz']{--ozet-renk:#64748b;--ozet-zemin:#e2e8f0}
+    #magicpassGunlukTablo th,#magicpassGunlukTablo td { white-space:nowrap;text-align:center; }
+    #magicpassGunlukTablo td:nth-child(2),#magicpassGunlukTablo td:nth-child(3),#magicpassGunlukTablo td:nth-child(4) { text-align:left; }
+    .magicpass-gunluk-durum { display:inline-flex;padding:4px 8px;border-radius:999px;font-size:.68rem;font-weight:850;background:#e2e8f0;color:#334155; }
+    .magicpass-gunluk-durum.geldi { background:#dcfce7;color:#166534; }
+    .magicpass-gunluk-durum.gelmedi { background:#fee2e2;color:#b91c1c; }
+    .magicpass-gunluk-durum.izinli { background:#dbeafe;color:#1d4ed8; }
+    .magicpass-gunluk-durum.uyari { background:#fef3c7;color:#92400e; }
+    .magicpass-gunluk-durum.eksik { background:#f97316;color:#fff;box-shadow:0 0 0 3px rgba(249,115,22,.16); }

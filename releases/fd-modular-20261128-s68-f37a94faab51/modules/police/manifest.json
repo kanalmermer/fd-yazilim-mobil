@@ -1,0 +1,81 @@
+{
+  "name": "Poliçe Takip",
+  "roots": [
+    "policeTakipApp",
+    "modalPoliceKayit",
+    "modalPoliceVarlikGecmis",
+    "modalPoliceOnizleme"
+  ],
+  "entrypoints": [
+    "policeTurSecenekleriniDoldur",
+    "policeSirketOnerileriniDoldur",
+    "policeHedefSecenekleriniDoldur",
+    "policeHedefBilgisiniGuncelle",
+    "policeBitisiniBirYilSonrayaAyarla",
+    "policeFormunuAc",
+    "policeKaydet",
+    "policeSil",
+    "policeListesiniCiz",
+    "openPoliceTakipApp",
+    "policeHedefTipSecenekleriniDoldur",
+    "policeVarlikAramaAnahtari",
+    "policeHedefPanelKonumunuAyarla",
+    "policeHedefAktifSatiriAyarla",
+    "policeHedefSeciciGuncelle",
+    "policeHedefListesiniKapat",
+    "policeHedefListesiniAc",
+    "policeHedefListesindenSec",
+    "policeHedefKlavye",
+    "policeHedefAramasiniUygula",
+    "policeHedefAramasiniTemizle",
+    "fdPoliceFiltreliListe",
+    "policeSentetikFormunuDoldur",
+    "policeKaydiniDuzenle",
+    "policeVarlikGecmisiniAc",
+    "policeBelgeDosyaAdiOlustur",
+    "policeOnizlemePenceresiniHazirla",
+    "policeBelgesiniAc",
+    "policeOnizlemeyiKapat",
+    "policeOnizlemeyiDrivedaAc",
+    "policeOnizlemeIndir",
+    "policeSentetikKaydiniSil",
+    "policeModalKaydiniSil",
+    "policeSentetikDegisikliginiKaydet"
+  ],
+  "writeOperations": [
+    "policeFormunuAc",
+    "policeKaydet",
+    "policeSil",
+    "policeSentetikFormunuDoldur",
+    "policeKaydiniDuzenle",
+    "policeSentetikKaydiniSil",
+    "policeModalKaydiniSil",
+    "policeSentetikDegisikliginiKaydet"
+  ],
+  "files": {
+    "view": {
+      "path": "modules/police/view.html",
+      "sha256": "1aaf454182a64a8ea17f75778fe61fe123ea9cbd73badcef496b0aaa56f09f98",
+      "bytes": 6487,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/police/style.css",
+      "sha256": "41df152898654d74c0f378cc1f0b4aad4ffd6a64244ee3ba75a608db0b5e405a",
+      "bytes": 5568,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/police/module.js",
+      "sha256": "ac0193d0aff49abe752a9f5e7aac57b49367f172133e9dbb2f0672be779be6f0",
+      "bytes": 49810,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

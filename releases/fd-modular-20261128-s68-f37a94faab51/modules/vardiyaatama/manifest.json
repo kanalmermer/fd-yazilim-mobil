@@ -1,0 +1,32 @@
+{
+  "name": "Giriş–Çıkış Vardiya Atama ve Gün Türü Yönetimi",
+  "roots": [],
+  "entrypoints": [],
+  "writeOperations": [],
+  "files": {
+    "view": {
+      "path": "modules/vardiyaatama/view.html",
+      "sha256": "d5de1afb2f11871cb5836be51f7579226c3c89e18f037eb5273c3bdbdfd42b50",
+      "bytes": 106,
+      "types": [
+        "text/html"
+      ]
+    },
+    "style": {
+      "path": "modules/vardiyaatama/style.css",
+      "sha256": "269a23a6fea8105649caddca1c5a90dd33ae60751ea59dc74ced1960cabfff08",
+      "bytes": 50,
+      "types": [
+        "text/css"
+      ]
+    },
+    "script": {
+      "path": "modules/vardiyaatama/module.js",
+      "sha256": "3972167446482c1215a633d4857eac940ffc739dd8d5bfff568a03e188b32f73",
+      "bytes": 9090,
+      "types": [
+        "javascript"
+      ]
+    }
+  }
+}

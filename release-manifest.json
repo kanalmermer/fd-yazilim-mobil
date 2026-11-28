@@ -1,5 +1,5 @@
 {
-  "release": "fd-modular-20261127-s68-de9f9c5a126e",
+  "release": "fd-modular-20261128-s68-f37a94faab51",
   "assets": [
     {
       "path": "core/advance-entrypoints.js",
@@ -53,7 +53,7 @@
     },
     {
       "path": "core/catalog.js",
-      "sha256": "ab33e92dbf47931a6f0bd908c21805db083b2391cee959f89b049055fa063dbb",
+      "sha256": "c9514682da40d56a14b473e9c3ec467dd6d11f35acd6dc84a400239fc1bd6f36",
       "bytes": 67998
     },
     {
@@ -753,13 +753,13 @@
     },
     {
       "path": "modules/avans/manifest.json",
-      "sha256": "cea9d98a867ef65190604dea66812987032ad0b218337aec0ab4b5561cf61819",
+      "sha256": "54097ea6f150f6182f32555b15a9b3f36f21b8791542ab3bfbd74369a1cd58d4",
       "bytes": 1769
     },
     {
       "path": "modules/avans/module.js",
-      "sha256": "91c7b8907372cdb00248d2dd41fbb006c5f9ea127a9f3557c59f683aaf0865d8",
-      "bytes": 56442
+      "sha256": "ae9f88581dd8f83a48749ab38b40ffb7841f575cd45579fc15f1107c5bc666ae",
+      "bytes": 57135
     },
     {
       "path": "modules/avans/style.css",
@@ -1513,23 +1513,23 @@
     },
     {
       "path": "modules/personelform/manifest.json",
-      "sha256": "856bde6d0c2143c4b2c47acfa094db2599a95cd52e359bacdcdf80dcc7139831",
+      "sha256": "b81888fdd545a117f6c819bbc5616ef81448935fb9897ce092ca03d63679e29b",
       "bytes": 1069
     },
     {
       "path": "modules/personelform/module.js",
-      "sha256": "5f09c34c80308cf977a248e7c9ee46b3070fff89a8eaa68335589e406f88937c",
-      "bytes": 40239
+      "sha256": "5cd9be560942ad09bee0bd10cd2acf36184f66f9d0b9f714139664b4c3c6bdfd",
+      "bytes": 54529
     },
     {
       "path": "modules/personelform/style.css",
-      "sha256": "0de7a10448d6f6d4b6692f300603d2fbddf22d24176516e46f36b0e7e30e1f32",
-      "bytes": 2159
+      "sha256": "6fdb3ae740b489bc0b084776573cb59da7ebf06704dbc828f82122d6515236cf",
+      "bytes": 4936
     },
     {
       "path": "modules/personelform/view.html",
-      "sha256": "7b96a08eda5499a6c901899a17053b2139e72747b01ce85398fc679d0094d980",
-      "bytes": 13812
+      "sha256": "bfe1d0d1e7dcfa70f58e0a8502c6b848c7cb2d185257ef268040b499b1c5048e",
+      "bytes": 16280
     },
     {
       "path": "modules/personelliste/manifest.json",
@@ -1933,13 +1933,13 @@
     },
     {
       "path": "shared/advance-data.js",
-      "sha256": "2daf935716ae539f70e1fd6c4351dc8a201aea46671b30a071b9c1fa1e99f0dd",
-      "bytes": 11477
+      "sha256": "371902f829e7aa4ecf27406eceafb1c26eceb637979fde6402c7646185c3fa8e",
+      "bytes": 11873
     },
     {
       "path": "shared/advance-postponement.js",
-      "sha256": "9556d53f478364059d583a5992992e9e24e0fa291104d92d28f546eff1d77bbe",
-      "bytes": 3540
+      "sha256": "877247bd043cd231a1492dd6855fc43bf7e3838af46f1039578724f87f44bc00",
+      "bytes": 10056
     },
     {
       "path": "shared/asset-people-data.js",
@@ -2188,8 +2188,8 @@
     },
     {
       "path": "shared/personnel-runtime.js",
-      "sha256": "ab8ca3c1b80f142833c4393908e09b0e85c48f6c40867f1491a8803633d2afb5",
-      "bytes": 231436
+      "sha256": "d2f29d07d3172bc0008ccb4d683ad1581f28f24f10b6b76bcb0aa42cad49b483",
+      "bytes": 231548
     },
     {
       "path": "shared/personnel-templates/catalog.js",
